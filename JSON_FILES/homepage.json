@@ -1,0 +1,267 @@
+{
+  "hero_section": {
+    "main_article": {
+      "author": "Author Name",
+      "date": "June 29, 2025",
+      "title": "Main Article Title",
+      "image_url": "https://picsum.photos/800/600?random=1",
+      "link": "https://example.com"
+    },
+    "side_articles": [
+      {
+        "author": "Author Name 1",
+        "date": "June 28, 2025",
+        "title": "First Side Article Title",
+        "image_url": "https://picsum.photos/400/300?random=2",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Author Name 2",
+        "date": "June 27, 2025",
+        "title": "Second Side Article Title",
+        "image_url": "https://picsum.photos/400/300?random=3",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Author Name 3",
+        "date": "June 26, 2025",
+        "title": "Third Side Article Title",
+        "image_url": "https://picsum.photos/400/300?random=4",
+        "link": "https://example.com"
+      }
+    ]
+  },
+  "featured_section_1": {
+    "main_article": {
+      "author": "Author Name",
+      "date": "June 29, 2025",
+      "title": "Main Featured Article Title",
+      "image_url": "https://picsum.photos/600/400?random=5",
+      "link": "https://example.com"
+    },
+    "latest_news": [
+      {
+        "author": "Article Author 1",
+        "date": "June 28, 2025",
+        "title": "First Article Title",
+        "excerpt": "Brief description or excerpt of the first article content...",
+        "image_url": "https://picsum.photos/300/200?random=6",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Article Author 2",
+        "date": "June 27, 2025",
+        "title": "Second Article Title",
+        "excerpt": "Brief description or excerpt of the second article content...",
+        "image_url": "https://picsum.photos/300/200?random=7",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Article Author 3",
+        "date": "June 26, 2025",
+        "title": "Third Article Title",
+        "excerpt": "Brief description or excerpt of the third article content...",
+        "image_url": "https://picsum.photos/300/200?random=8",
+        "link": "https://example.com"
+      }
+    ]
+  },
+  "strip_section": {
+    "items": ["STARTUPS", "AI", "BUSINESS", "ENTREPRENEUR", "EVENTS", "BRANDS", "TRENDS"]
+  },
+  "top_stories_section": {
+    "top_story_main": {
+      "title": "Breaking: Major News Story Title Here",
+      "excerpt": "Detailed description or summary of the top story that provides context and key information about the news event...",
+      "image_url": "https://picsum.photos/800/400?random=9",
+      "link": "https://example.com",
+      "badge": "TOP STORIES"
+    },
+    "leadership_spotlight": {
+      "title": "Leadership Spotlight",
+      "leader_name": "swati gupta",
+      "leader_role": "Founder CXO TechBot",
+      "leader_bio": "Discover insights from industry leaders who are transforming the way businesses operate in today's competitive landscape.",
+      "leader_image_url": "https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/leaders-images//swati_gupta.png",
+      "link": "#"
+    }
+  },
+  "ad_banner": {
+    "image_url": "https://picsum.photos/1200/200?random=10",
+    "link": "https://example.com/ad-link"
+  },
+  "featured_section_2": {
+    "main_article": {
+      "author": "Author Name",
+      "date": "June 29, 2025",
+      "title": "Main Featured Article Title",
+      "image_url": "https://picsum.photos/600/400?random=11",
+      "link": "https://example.com"
+    },
+    "latest_news": [
+      {
+        "author": "Article Author 1",
+        "date": "June 28, 2025",
+        "title": "First Article Title",
+        "excerpt": "Brief description or excerpt of the first article content...",
+        "image_url": "https://picsum.photos/300/200?random=12",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Article Author 2",
+        "date": "June 27, 2025",
+        "title": "Second Article Title",
+        "excerpt": "Brief description or excerpt of the second article content...",
+        "image_url": "https://picsum.photos/300/200?random=13",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Article Author 3",
+        "date": "June 26, 2025",
+        "title": "Third Article Title",
+        "excerpt": "Brief description or excerpt of the third article content...",
+        "image_url": "https://picsum.photos/300/200?random=14",
+        "link": "https://example.com"
+      }
+    ]
+  },
+  "category_grid_section": [
+    {
+      "category_name": "Sustainability",
+      "articles": [
+        {
+          "author": "Jane Smith",
+          "date": "June 28, 2025",
+          "title": "Green Energy Solutions for the Future",
+          "excerpt": "Exploring innovative renewable energy technologies that are shaping a sustainable tomorrow...",
+          "image_url": "https://picsum.photos/350/250?random=15",
+          "link": "https://example.com"
+        },
+        {
+          "author": "John Doe",
+          "date": "June 27, 2025",
+          "title": "Corporate Environmental Responsibility",
+          "excerpt": "How major corporations are implementing eco-friendly practices to reduce their carbon footprint...",
+          "image_url": "https://picsum.photos/350/250?random=16",
+          "link": "https://example.com"
+        },
+        {
+          "author": "Sarah Johnson",
+          "date": "June 26, 2025",
+          "title": "Climate Change Impact on Global Markets",
+          "excerpt": "Analysis of how environmental changes are affecting international trade and investment strategies...",
+          "image_url": "https://picsum.photos/350/250?random=17",
+          "link": "https://example.com"
+        }
+      ]
+    },
+    {
+      "category_name": "Semiconductors",
+      "articles": [
+        {
+          "author": "Mike Chen",
+          "date": "June 28, 2025",
+          "title": "Next-Gen Chip Manufacturing Breakthroughs",
+          "excerpt": "Revolutionary advances in semiconductor production technology driving the next wave of innovation...",
+          "image_url": "https://picsum.photos/350/250?random=18",
+          "link": "https://example.com"
+        },
+        {
+          "author": "Lisa Wang",
+          "date": "June 27, 2025",
+          "title": "Global Chip Supply Chain Recovery",
+          "excerpt": "How the semiconductor industry is rebuilding resilient supply chains after recent disruptions...",
+          "image_url": "https://picsum.photos/350/250?random=19",
+          "link": "https://example.com"
+        },
+        {
+          "author": "David Park",
+          "date": "June 26, 2025",
+          "title": "AI Chips Powering Machine Learning",
+          "excerpt": "Specialized processors designed for artificial intelligence applications are transforming computing...",
+          "image_url": "https://picsum.photos/350/250?random=20",
+          "link": "https://example.com"
+        }
+      ]
+    }
+  ],
+  "lifestyle_section": {
+    "top_feature": {
+      "author": "Dr. Sarah Chen",
+      "date": "June 29, 2025",
+      "title": "Revolutionary AI Breakthrough Changes Everything",
+      "tag": "Artificial Intelligence",
+      "read_time": "5 min read",
+      "image_url": "https://picsum.photos/500/350?random=21",
+      "link": "https://example.com"
+    },
+    "sidebar_articles": [
+      {
+        "author": "John Smith",
+        "date": "June 28, 2025",
+        "title": "Deep Learning Models Advance Natural Language Processing",
+        "tag": "Machine Learning",
+        "image_url": "https://picsum.photos/300/200?random=22",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Lisa Wang",
+        "date": "June 27, 2025",
+        "title": "Autonomous Systems Reshape Manufacturing Industry",
+        "tag": "Robotics",
+        "image_url": "https://picsum.photos/300/200?random=23",
+        "link": "https://example.com"
+      }
+    ],
+    "small_articles": [
+      {
+        "author": "Mike Johnson",
+        "date": "June 26, 2025",
+        "title": "AI Ethics Guidelines for Responsible Development",
+        "tag": "Ethics",
+        "image_url": "https://picsum.photos/200/150?random=24",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Emma Brown",
+        "date": "June 25, 2025",
+        "title": "Quantum Computing Meets Artificial Intelligence",
+        "tag": "Quantum AI",
+        "image_url": "https://picsum.photos/200/150?random=25",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Dr. David Lee",
+        "date": "June 24, 2025",
+        "title": "AI-Powered Healthcare Diagnostics Breakthrough",
+        "tag": "Healthcare",
+        "image_url": "https://picsum.photos/200/150?random=26",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Anna Wilson",
+        "date": "June 23, 2025",
+        "title": "Voice Recognition Technology Reaches New Heights",
+        "tag": "Speech AI",
+        "image_url": "https://picsum.photos/200/150?random=27",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Tom Garcia",
+        "date": "June 22, 2025",
+        "title": "Computer Vision Applications in Smart Cities",
+        "tag": "Computer Vision",
+        "image_url": "https://picsum.photos/200/150?random=28",
+        "link": "https://example.com"
+      },
+      {
+        "author": "Rachel Davis",
+        "date": "June 21, 2025",
+        "title": "AI Regulation Framework Proposed by Tech Leaders",
+        "tag": "Policy",
+        "image_url": "https://picsum.photos/200/150?random=29",
+        "link": "https://example.com"
+      }
+    ]
+  }
+}

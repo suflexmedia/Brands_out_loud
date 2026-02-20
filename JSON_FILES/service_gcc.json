@@ -1,0 +1,226 @@
+{
+    "page_title": "Gcc",
+    "featured_section": {
+        "main_article": {
+            "author": "Author Name",
+            "date": "June 29, 2025",
+            "title": "Main Featured Article Title",
+            "image_url": "https://picsum.photos/600/400?random=5",
+            "link": "https://example.com"
+        },
+        "latest_news": [
+            {
+                "author": "Article Author 1",
+                "date": "June 28, 2025",
+                "title": "First Article Title",
+                "excerpt": "Brief description or excerpt of the first article content...",
+                "image_url": "https://picsum.photos/300/200?random=6",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Article Author 2",
+                "date": "June 27, 2025",
+                "title": "Second Article Title",
+                "excerpt": "Brief description or excerpt of the second article content...",
+                "image_url": "https://picsum.photos/300/200?random=7",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Article Author 3",
+                "date": "June 26, 2025",
+                "title": "Third Article Title",
+                "excerpt": "Brief description or excerpt of the third article content...",
+                "image_url": "https://picsum.photos/300/200?random=8",
+                "link": "https://example.com"
+            }
+        ]
+    },
+    "ad_banner_1": {
+        "image_url": "https://picsum.photos/1200/200?random=10",
+        "link": "https://example.com/ad-link"
+    },
+    "editor_picks": [
+        {
+            "author": "Sarah Johnson",
+            "date": "June 28, 2025",
+            "title": "The Future of Artificial Intelligence: Trends to Watch in 2025",
+            "excerpt": "Explore the latest developments in AI technology and how they're reshaping industries across the globe.",
+            "image_url": "https://picsum.photos/400/300?random=15",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Michael Chen",
+            "date": "June 27, 2025",
+            "title": "Sustainable Technology: Green Solutions for Modern Challenges",
+            "excerpt": "Discover innovative eco-friendly technologies that are helping companies reduce their carbon footprint.",
+            "image_url": "https://picsum.photos/400/300?random=24",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Emily Rodriguez",
+            "date": "June 26, 2025",
+            "title": "Remote Work Revolution: Building Effective Distributed Teams",
+            "excerpt": "Learn best practices for managing remote teams and creating a productive virtual work environment.",
+            "image_url": "https://picsum.photos/400/300?random=37",
+            "link": "https://example.com"
+        },
+        {
+            "author": "David Thompson",
+            "date": "June 25, 2025",
+            "title": "Cybersecurity in the Digital Age: Protecting Your Business",
+            "excerpt": "Essential strategies and tools to safeguard your organization against evolving cyber threats.",
+            "image_url": "https://picsum.photos/400/300?random=43",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Amanda Foster",
+            "date": "June 30, 2025",
+            "title": "Blockchain Beyond Cryptocurrency: Real-World Applications",
+            "excerpt": "Discover how blockchain technology is revolutionizing supply chain management and digital identity.",
+            "image_url": "https://picsum.photos/400/300?random=52",
+            "link": "https://example.com"
+        },
+        {
+            "author": "James Wilson",
+            "date": "June 29, 2025",
+            "title": "The Rise of Edge Computing: Bringing Processing Power Closer",
+            "excerpt": "Learn how edge computing is reducing latency and improving performance for IoT devices.",
+            "image_url": "https://picsum.photos/400/300?random=61",
+            "link": "https://example.com"
+        }
+    ],
+    "top_stories": [
+        {
+            "author": "Alex Rivera",
+            "date": "June 30, 2025",
+            "title": "Breaking: Major Breakthrough in Quantum Computing Achieved",
+            "excerpt": "Scientists at leading tech companies have successfully demonstrated quantum supremacy in real-world applications.",
+            "image_url": "https://picsum.photos/365/243?random=117",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Jessica Park",
+            "date": "June 30, 2025",
+            "title": "Global Climate Summit Reaches Unprecedented Agreement",
+            "excerpt": "World leaders unite on ambitious carbon reduction targets, setting the stage for environmental action.",
+            "image_url": "https://picsum.photos/365/243?random=123",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Marcus Williams",
+            "date": "June 29, 2025",
+            "title": "Revolutionary Medical Treatment Shows 95% Success Rate",
+            "excerpt": "A groundbreaking gene therapy treatment for rare diseases has shown remarkable results in clinical trials.",
+            "image_url": "https://picsum.photos/365/243?random=135",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Priya Sharma",
+            "date": "June 29, 2025",
+            "title": "Space Exploration Milestone: First Mars Colony Established",
+            "excerpt": "Historic achievement as the first permanent human settlement on Mars becomes operational.",
+            "image_url": "https://picsum.photos/365/243?random=140",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Robert Kim",
+            "date": "June 28, 2025",
+            "title": "Economic Markets Surge Following Tech Innovation Boom",
+            "excerpt": "Global financial markets experience significant growth driven by emerging technologies and investment.",
+            "image_url": "https://picsum.photos/365/243?random=155",
+            "link": "https://example.com"
+        },
+        {
+            "author": "Linda Martinez",
+            "date": "June 28, 2025",
+            "title": "Education Revolution: AI-Powered Learning Transforms Schools",
+            "excerpt": "Artificial intelligence is reshaping education systems worldwide, providing personalized learning.",
+            "image_url": "https://picsum.photos/365/243?random=165",
+            "link": "https://example.com"
+        }
+    ],
+    "sub_category_section": {
+        "section_title": "Regional Focus",
+        "top_feature": {
+            "author": "Dr. Sarah Chen",
+            "date": "June 29, 2025",
+            "title": "Revolutionary AI Breakthrough Changes Everything",
+            "tag": "Artificial Intelligence",
+            "read_time": "5 min read",
+            "image_url": "https://picsum.photos/500/350?random=201",
+            "link": "https://example.com"
+        },
+        "sidebar_articles": [
+            {
+                "author": "John Smith",
+                "date": "June 28, 2025",
+                "title": "Deep Learning Models Advance Natural Language Processing",
+                "tag": "Machine Learning",
+                "image_url": "https://picsum.photos/300/200?random=2224",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Lisa Wang",
+                "date": "June 27, 2025",
+                "title": "Autonomous Systems Reshape Manufacturing Industry",
+                "tag": "Robotics",
+                "image_url": "https://picsum.photos/300/200?random=2356",
+                "link": "https://example.com"
+            }
+        ],
+        "small_articles": [
+            {
+                "author": "Mike Johnson",
+                "date": "June 26, 2025",
+                "title": "AI Ethics Guidelines for Responsible Development",
+                "tag": "Ethics",
+                "image_url": "https://picsum.photos/200/150?random=224",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Emma Brown",
+                "date": "June 25, 2025",
+                "title": "Quantum Computing Meets Artificial Intelligence",
+                "tag": "Quantum AI",
+                "image_url": "https://picsum.photos/200/150?random=265",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Dr. David Lee",
+                "date": "June 24, 2025",
+                "title": "AI-Powered Healthcare Diagnostics Breakthrough",
+                "tag": "Healthcare",
+                "image_url": "https://picsum.photos/200/150?random=276",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Anna Wilson",
+                "date": "June 23, 2025",
+                "title": "Voice Recognition Technology Reaches New Heights",
+                "tag": "Speech AI",
+                "image_url": "https://picsum.photos/200/150?random=287",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Tom Garcia",
+                "date": "June 22, 2025",
+                "title": "Computer Vision Applications in Smart Cities",
+                "tag": "Computer Vision",
+                "image_url": "https://picsum.photos/200/150?random=298",
+                "link": "https://example.com"
+            },
+            {
+                "author": "Rachel Davis",
+                "date": "June 21, 2025",
+                "title": "AI Regulation Framework Proposed by Tech Leaders",
+                "tag": "Policy",
+                "image_url": "https://picsum.photos/200/150?random=249",
+                "link": "https://example.com"
+            }
+        ]
+    },
+    "ad_banner_2": {
+        "image_url": "https://picsum.photos/1200/200?random=111",
+        "link": "https://example.com/ad-link"
+    }
+}

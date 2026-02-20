@@ -31,10 +31,10 @@ class BucketHandler:
         )
         print("Connected to MinIO successfully.")
 
-        # Ensure the bucket exists
+        
         if not cls.client.bucket_exists(cls.bucket_name):
             print(f"Warning: Bucket '{cls.bucket_name}' does not exist.")
-            # Depending on use case, might want to create the bucket here
+            
         else:
             print(f"Bucket '{cls.bucket_name}' confirmed.")
 

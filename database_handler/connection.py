@@ -13,7 +13,7 @@ class DatabaseHandler:
         if not mongo_url:
             raise ValueError("mongo_public_url environment variable is not set.")
         
-        # Motor handles connection pooling automatically under the hood
+        
         cls.client = AsyncIOMotorClient(mongo_url)
         print("Connected to MongoDB successfully.")
 

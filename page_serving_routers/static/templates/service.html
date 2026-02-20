@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brands Out Loud</title>
+    <title>{{ data.page_title|title }}</title>
     <link rel="icon" type="image/png" href="static/icon/website_icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=IBM+Plex+Sans:wght@600&family=Inter:wght@500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Roboto:wght@500&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="stylesheet" href="/static/css/homepage.css">
+    <link rel="stylesheet" href="/static/css/service.css">
 </head>
 
 <body>
@@ -280,7 +279,7 @@
                                 style="color:#fff;font-size:1.125rem"></i><span class="item-title">Newsletters</span>
                         </div>
                     </a>
-
+                    <!-- MOBILE ACCORDION: Business -->
                     <div>
                         <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
                             <div class="item-inner"><i class="ph ph-buildings"
@@ -290,8 +289,7 @@
                         </a>
                         <div class="accordion-content">
                             <div class="accordion-inner">
-                                <a href="/blog/your_test_in_august" class="sub-menu-item" data-category="business"
-                                    data-id="your_test_in_august"><img
+                                <a href="/blog/your_test_in_august" class="sub-menu-item" data-category="business"><img
                                         src="https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/blog-images/9d4333b2-4559-41ff-b560-c7bc2bcd18bc-699287.jpg"
                                         alt="Your test in August" class="sub-menu-thumb">
                                     <div class="sub-menu-text">
@@ -322,6 +320,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- MOBILE ACCORDION: Technology -->
                     <div>
                         <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
                             <div class="item-inner"><i class="ph ph-gear"
@@ -362,6 +361,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- MOBILE ACCORDION: GCC -->
                     <div>
                         <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
                             <div class="item-inner"><i class="ph ph-globe"
@@ -403,6 +403,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- MOBILE ACCORDION: Sustainability -->
                     <div>
                         <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
                             <div class="item-inner"><i class="ph ph-leaf"
@@ -443,6 +444,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- MOBILE ACCORDION: Semiconductor -->
                     <div>
                         <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
                             <div class="item-inner"><i class="ph ph-cpu" style="color:#fff;font-size:1.125rem"></i><span
@@ -488,39 +490,11 @@
             </div>
         </header>
 
-        <section class="hero-section">
-            <div class="hero-grid">
-                <article class="hero-main-article">
-                    <a href="{{ data.hero_section.main_article.link }}" class="hero-image-link">
-                        <div class="hero-overlay"></div>
-                        <div class="hero-bg-img"
-                            style="background-image:url({{ data.hero_section.main_article.image_url }})">
-                        </div>
-                    </a>
-                    <div class="hero-meta">
-                        <div class="hero-date">{{ data.hero_section.main_article.author }} - {{
-                            data.hero_section.main_article.date }}</div>
-                        <a href="{{ data.hero_section.main_article.link }}" class="hero-title-link">{{
-                            data.hero_section.main_article.title }}</a>
-                    </div>
-                </article>
-                <div class="hero-side-grid">
-                    {% for article in data.hero_section.side_articles %}
-                    <article class="side-article{% if loop.last %} side-article-wide{% endif %}">
-                        <a href="{{ article.link }}"
-                            class="{% if loop.last %}side-wide-image-link{% else %}side-image-link{% endif %}">
-                            <div class="side-overlay"></div>
-                            <div class="hero-bg-img" style="background-image:url({{ article.image_url }})"></div>
-                        </a>
-                        <div class="side-meta">
-                            <div class="{% if loop.last %}side-wide-date{% else %}side-date{% endif %}">{{
-                                article.author }} - {{ article.date }}</div><a href="{{ article.link }}"
-                                class="{% if loop.last %}side-wide-title{% else %}side-title-link{% endif %}">{{
-                                article.title }}</a>
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
+        <section class="tech-title-section">
+            <h1 class="tech-title-heading">{{ data.page_title }}</h1>
+            <div class="tech-title-underline-wrap">
+                <hr class="tech-title-line">
+                <hr class="tech-title-accent">
             </div>
         </section>
 
@@ -528,25 +502,25 @@
             <div class="featured-bg"></div>
             <div class="featured-grid">
                 <div class="featured-image-col">
-                    <a href="{{ data.featured_section_1.main_article.link }}" class="featured-image-link"
-                        style="background-image:url({{ data.featured_section_1.main_article.image_url }})">
+                    <a href="{{ data.featured_section.main_article.link }}" class="featured-image-link"
+                        style="background-image:url('{{ data.featured_section.main_article.image_url }}')">
                         <div class="featured-bottom-gradient"></div>
                         <div class="featured-caption">
-                            <div class="featured-author">{{ data.featured_section_1.main_article.author }} - {{
-                                data.featured_section_1.main_article.date }}</div>
-                            <h2 class="featured-heading">{{ data.featured_section_1.main_article.title }}</h2>
+                            <div class="featured-author">{{ data.featured_section.main_article.author }} - {{
+                                data.featured_section.main_article.date }}</div>
+                            <h2 class="featured-heading">{{ data.featured_section.main_article.title }}</h2>
                         </div>
                     </a>
                 </div>
                 <div class="latest-news-col">
                     <h2 class="latest-news-heading">Latest News</h2>
-                    {% for article in data.featured_section_1.latest_news %}
+                    {% for article in data.featured_section.latest_news %}
                     <article class="news-article">
                         <a href="{{ article.link }}" class="news-thumb-link"
-                            style="background-image:url({{ article.image_url }})"></a>
+                            style="background-image:url('{{ article.image_url }}')"></a>
                         <div class="news-info">
-                            <div class="news-date">{{ article.author }} - {{ article.date }}</div><a
-                                href="{{ article.link }}">
+                            <div class="news-date">{{ article.author }} - {{ article.date }}</div>
+                            <a href="{{ article.link }}">
                                 <h3 class="news-title">{{ article.title }}</h3>
                             </a>
                             <p class="news-excerpt">{{ article.excerpt }}</p>
@@ -557,182 +531,116 @@
             </div>
         </section>
 
-        <section class="strip-section">
-            <div class="marquee-track">
-                {% for item in data.strip_section['items'] %}
-                <span class="marquee-word gradient-text strip-{{ item | lower }}">{{ item }}</span>
-                {% endfor %}
+        <a href="{{ data.ad_banner_1.link }}" class="ad-banner"><img src="{{ data.ad_banner_1.image_url }}"
+                alt="Advertisement"></a>
+
+        <section class="editor-picks-section">
+            <div class="editor-picks-container">
+                <div class="editor-picks-header">
+                    <h1 class="editor-picks-title">Editor Picks</h1>
+                    <div class="editor-picks-underline-wrap">
+                        <hr class="editor-picks-line">
+                        <hr class="editor-picks-accent">
+                    </div>
+                </div>
+                <div class="editor-picks-grid">
+                    {% for pick in data.editor_picks %}
+                    <a href="{{ pick.link }}" class="editor-pick-card">
+                        <div class="editor-pick-img-wrap"><img src="{{ pick.image_url }}" alt="{{ pick.title }}"></div>
+                        <div class="editor-pick-info">
+                            <span class="editor-pick-meta">{{ pick.author }} - {{ pick.date }}</span>
+                            <h2 class="editor-pick-title">{{ pick.title }}</h2>
+                            <p class="editor-pick-excerpt">{{ pick.excerpt }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
             </div>
         </section>
 
         <section class="top-stories-section">
+            <div class="top-stories-header">
+                <h2 class="top-stories-title">Top Stories</h2>
+                <hr class="top-stories-line">
+                <hr class="top-stories-accent">
+            </div>
             <div class="top-stories-grid">
-                <div class="top-story-main">
-                    <a href="{{ data.top_stories_section.top_story_main.link }}" class="top-story-link">
-                        <img src="{{ data.top_stories_section.top_story_main.image_url }}" alt="Top Story"
-                            class="top-story-img">
-                        <div class="top-story-card">
-                            <div class="top-story-badge">
-                                <div class="top-story-badge-inner"><span class="top-story-badge-text">{{
-                                        data.top_stories_section.top_story_main.badge }}</span>
-                                </div>
-                            </div>
-                            <h2 class="top-story-title">{{ data.top_stories_section.top_story_main.title }}</h2>
-                            <p class="top-story-desc">{{ data.top_stories_section.top_story_main.excerpt }}</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="leadership-panel">
-                    <h2 class="leadership-title">{{ data.top_stories_section.leadership_spotlight.title }}</h2>
-                    <div class="leadership-content">
-                        <div class="leader-avatar"
-                            style="background-image:url({{ data.top_stories_section.leadership_spotlight.leader_image_url }})">
-                        </div>
-                        <div class="leader-info">
-                            <h3 class="leader-name">{{ data.top_stories_section.leadership_spotlight.leader_name }}</h3>
-                            <p class="leader-role">{{ data.top_stories_section.leadership_spotlight.leader_role }}</p>
-                            <p class="leader-bio">{{ data.top_stories_section.leadership_spotlight.leader_bio }}</p>
-                            <a href="{{ data.top_stories_section.leadership_spotlight.link }}"
-                                class="webstories-btn"><img src="/static/images/webstories.png" alt="Web Stories"></a>
-                        </div>
+                {% for story in data.top_stories %}
+                <a href="{{ story.link }}" class="top-story-card">
+                    <div class="top-story-img" style="background-image:url('{{ story.image_url }}')">
+                    </div>
+                    <div class="top-story-meta">{{ story.author }} - {{ story.date }}</div>
+                    <h3 class="top-story-title">{{ story.title }}</h3>
+                    <p class="top-story-excerpt">{{ story.excerpt }}</p>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="ai-section">
+            <div class="ai-container">
+                <div class="ai-header">
+                    <div class="ai-heading-wrap">
+                        <h2 class="ai-heading">{{ data.sub_category_section.section_title }}</h2>
+                        <div class="ai-underline"></div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <a href="{{ data.ad_banner.link }}" class="ad-banner"><img src="{{ data.ad_banner.image_url }}"
-                alt="Advertisement"></a>
-
-        <section class="featured-section">
-            <div class="featured-bg"></div>
-            <div class="featured-grid">
-                <div class="featured-image-col">
-                    <a href="{{ data.featured_section_2.main_article.link }}" class="featured-image-link"
-                        style="background-image:url({{ data.featured_section_2.main_article.image_url }})">
-                        <div class="featured-bottom-gradient"></div>
-                        <div class="featured-caption">
-                            <div class="featured-author">{{ data.featured_section_2.main_article.author }} - {{
-                                data.featured_section_2.main_article.date }}</div>
-                            <h2 class="featured-heading">{{ data.featured_section_2.main_article.title }}</h2>
-                        </div>
-                    </a>
-                </div>
-                <div class="latest-news-col">
-                    <h2 class="latest-news-heading">Latest News</h2>
-                    {% for article in data.featured_section_2.latest_news %}
-                    <article class="news-article">
-                        <a href="{{ article.link }}" class="news-thumb-link"
-                            style="background-image:url({{ article.image_url }})"></a>
-                        <div class="news-info">
-                            <div class="news-date">{{ article.author }} - {{ article.date }}</div><a
-                                href="{{ article.link }}">
-                                <h3 class="news-title">{{ article.title }}</h3>
-                            </a>
-                            <p class="news-excerpt">{{ article.excerpt }}</p>
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-
-        <section class="category-grid-section">
-            {% for category in data.category_grid_section %}
-            <div class="category-panel">
-                <h2 class="category-panel-title">{{ category.category_name }}</h2>
-                <div class="category-articles">
-                    {% for article in category.articles %}
-                    <a href="{{ article.link }}">
-                        <article class="category-article">
-                            <div class="category-article-thumb" style="background-image:url({{ article.image_url }})">
-                            </div>
-                            <div class="category-article-info">
-                                <div class="category-article-date">{{ article.author }} - {{ article.date }}</div>
-                                <h3 class="category-article-title">{{ article.title }}</h3>
-                                <p class="category-article-excerpt">{{ article.excerpt }}</p>
-                            </div>
-                        </article>
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endfor %}
-        </section>
-
-        <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
-            <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
-                    alt="Footer Action Button"></a>
-        </section>
-
-        <section class="lifestyle-section">
-            <div class="lifestyle-container">
-                <div class="lifestyle-header">
-                    <div class="lifestyle-heading-wrap">
-                        <h2 class="lifestyle-heading">Lifestyle</h2>
-                        <div class="lifestyle-underline"></div>
-                    </div>
-                </div>
-                <div class="lifestyle-top-grid">
-                    <div class="lifestyle-feature">
-                        <a href="{{ data.lifestyle_section.top_feature.link }}" class="lifestyle-feature-link">
-                            <article class="lifestyle-feature-article">
-                                <img src="{{ data.lifestyle_section.top_feature.image_url }}"
-                                    alt="{{ data.lifestyle_section.top_feature.title }}" class="lifestyle-feature-img">
-                                <div class="lifestyle-feature-badge"><span class="lifestyle-badge-tag">{{
-                                        data.lifestyle_section.top_feature.tag }}</span><span
-                                        class="lifestyle-badge-meta">{{ data.lifestyle_section.top_feature.author }} •
-                                        {{ data.lifestyle_section.top_feature.date }}</span></div>
-                                <div class="lifestyle-feature-bottom">
-                                    <h3 class="lifestyle-feature-title">{{ data.lifestyle_section.top_feature.title }}
-                                    </h3>
-                                    <div class="lifestyle-feature-read"><span>{{
-                                            data.lifestyle_section.top_feature.read_time }}</span></div>
+                <div class="ai-top-grid">
+                    <div class="ai-feature">
+                        <a href="{{ data.sub_category_section.top_feature.link }}" class="ai-feature-link">
+                            <article class="ai-feature-article">
+                                <div class="ai-feature-overlay"></div>
+                                <img src="{{ data.sub_category_section.top_feature.image_url }}"
+                                    alt="{{ data.sub_category_section.top_feature.title }}" class="ai-feature-img">
+                                <div class="ai-feature-badge"><span class="ai-badge-tag">{{
+                                        data.sub_category_section.top_feature.tag }}</span><span
+                                        class="ai-badge-meta">{{ data.sub_category_section.top_feature.author }} • {{
+                                        data.sub_category_section.top_feature.date }}</span></div>
+                                <div class="ai-feature-bottom">
+                                    <h3 class="ai-feature-title">{{ data.sub_category_section.top_feature.title }}</h3>
+                                    <div class="ai-feature-read"><span>{{
+                                            data.sub_category_section.top_feature.read_time }}</span></div>
                                 </div>
                             </article>
                         </a>
                     </div>
-                    <div class="lifestyle-sidebar">
-                        {% for side_article in data.lifestyle_section.sidebar_articles %}
-                        <a href="{{ side_article.link }}" class="lifestyle-side-link">
-                            <article class="lifestyle-side-article">
-                                <div class="lifestyle-side-badge"><span class="lifestyle-side-tag">{{ side_article.tag
-                                        }}</span><span class="lifestyle-side-meta"><span>{{ side_article.author
-                                            }}</span><span>•</span><span>{{ side_article.date }}</span></span></div>
-                                <h3 class="lifestyle-side-title">{{ side_article.title }}</h3>
-                                <img src="{{ side_article.image_url }}" alt="{{ side_article.title }}"
-                                    class="lifestyle-side-img">
+                    <div class="ai-sidebar">
+                        {% for sidebar in data.sub_category_section.sidebar_articles %}
+                        <a href="{{ sidebar.link }}" class="ai-side-link">
+                            <article class="ai-side-article">
+                                <div class="ai-side-badge"><span class="ai-side-tag">{{ sidebar.tag }}</span><span
+                                        class="ai-side-meta"><span>{{ sidebar.author }}</span><span>•</span><span>{{
+                                            sidebar.date }}</span></span></div>
+                                <h3 class="ai-side-title">{{ sidebar.title }}</h3>
+                                <img src="{{ sidebar.image_url }}" alt="{{ sidebar.title }}" class="ai-side-img">
                             </article>
                         </a>
                         {% endfor %}
                     </div>
                 </div>
-
-                <div class="lifestyle-small-grid">
-                    {% for small_article in data.lifestyle_section.small_articles[:3] %}
-                    <a href="{{ small_article.link }}" class="lifestyle-small-link">
-                        <article class="lifestyle-small-article"><img src="{{ small_article.image_url }}"
-                                alt="{{ small_article.title }}" class="lifestyle-small-thumb">
+                <div class="ai-small-grid">
+                    {% for small in data.sub_category_section.small_articles[:3] %}
+                    <a href="{{ small.link }}" class="ai-small-link">
+                        <article class="ai-small-article"><img src="{{ small.image_url }}" alt="{{ small.title }}"
+                                class="ai-small-thumb">
                             <div>
-                                <div class="lifestyle-small-badge"><span class="lifestyle-small-tag">{{
-                                        small_article.tag }}</span><span class="lifestyle-small-meta">{{
-                                        small_article.author }} • {{ small_article.date }}</span></div>
-                                <h4 class="lifestyle-small-title">{{ small_article.title }}</h4>
+                                <div class="ai-small-badge"><span class="ai-small-tag">{{ small.tag }}</span><span
+                                        class="ai-small-meta">{{ small.author }} • {{ small.date }}</span></div>
+                                <h4 class="ai-small-title">{{ small.title }}</h4>
                             </div>
                         </article>
                     </a>
                     {% endfor %}
                 </div>
-
-                <div class="lifestyle-small-grid">
-                    {% for small_article in data.lifestyle_section.small_articles[3:6] %}
-                    <a href="{{ small_article.link }}" class="lifestyle-small-link">
-                        <article class="lifestyle-small-article"><img src="{{ small_article.image_url }}"
-                                alt="{{ small_article.title }}" class="lifestyle-small-thumb">
+                <div class="ai-small-grid">
+                    {% for small in data.sub_category_section.small_articles[3:] %}
+                    <a href="{{ small.link }}" class="ai-small-link">
+                        <article class="ai-small-article"><img src="{{ small.image_url }}" alt="{{ small.title }}"
+                                class="ai-small-thumb">
                             <div>
-                                <div class="lifestyle-small-badge"><span class="lifestyle-small-tag">{{
-                                        small_article.tag }}</span><span class="lifestyle-small-meta">{{
-                                        small_article.author }} • {{ small_article.date }}</span></div>
-                                <h4 class="lifestyle-small-title">{{ small_article.title }}</h4>
+                                <div class="ai-small-badge"><span class="ai-small-tag">{{ small.tag }}</span><span
+                                        class="ai-small-meta">{{ small.author }} • {{ small.date }}</span></div>
+                                <h4 class="ai-small-title">{{ small.title }}</h4>
                             </div>
                         </article>
                     </a>
@@ -749,8 +657,11 @@
             </div>
         </section>
 
-        <section class="footer-banner-section" style="background-image:url(/static/images/footer1.png)">
-            <a href="/magazine_page" class="footer-banner-btn"><img src="/static/images/checkout_magazine_button.png"
+        <a href="{{ data.ad_banner_2.link }}" class="ad-banner"><img src="{{ data.ad_banner_2.image_url }}"
+                alt="Advertisement"></a>
+
+        <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
+            <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
                     alt="Footer Action Button"></a>
         </section>
 
@@ -830,7 +741,7 @@
         </footer>
 
     </div>
-    <script src="/static/js/homepage.js"></script>
+    <script src="/static/js/service.js"></script>
 </body>
 
 </html>
