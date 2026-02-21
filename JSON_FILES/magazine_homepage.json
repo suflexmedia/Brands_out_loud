@@ -1,0 +1,61 @@
+{
+  "leadership_spotlight_section": {
+    "magazine_cover": {
+      "image_url": "https://picsum.photos/seed/podcastcover/600/800",
+      "pdf_link": "/magazine/CXO%20TechBOT%20October%202024-1-25.pdf"
+    },
+    "heading": "Leadership Spotlight",
+    "profiles": [
+      {
+        "name": "Suhas Medam",
+        "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+        "image_url": "https://picsum.photos/seed/profile1/214/283"
+      },
+      {
+        "name": "Harsh Kumar",
+        "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+        "image_url": "https://picsum.photos/seed/profile2/214/282"
+      },
+      {
+        "name": "Vivek Bindra",
+        "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+        "image_url": "https://picsum.photos/seed/profile3/214/282"
+      }
+    ]
+  },
+  "ad_banner_1": {
+    "image_url": "https://picsum.photos/1200/200?random=8521",
+    "link": "https://example.com/ad-link"
+  },
+  "magazine_grid_section": [
+    {
+      "title": "EXTERNAL CHECK",
+      "image_url": "https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/magazine-thumbnails/ComfyUI_00005_.png?",
+      "pdf_link": "/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-sample (2).pdf?"
+    },
+    {
+      "title": "TUMHE MAINE DEKHAAA",
+      "image_url": "https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/magazine-thumbnails/IMG_20231230_180145.jpg?",
+      "pdf_link": "/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-CLOUD_COMPUTING_interview_questions.pdf?"
+    },
+    {
+      "title": "TEST_3",
+      "image_url": "https://picsum.photos/1920/1080/?random=abcm",
+      "pdf_link": "/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-7159.pdf.pdf?"
+    },
+    {
+      "title": "TEST_2",
+      "image_url": "https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/magazine-thumbnails/1.sm.webp?",
+      "pdf_link": "/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-test_magazine.pdf?"
+    },
+    {
+      "title": "DEMO_TITLE",
+      "image_url": "https://picsum.photos/1920/1080/?random=abc",
+      "pdf_link": "/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs--CXO%20TechBOT%20October%202024-1-10.pdf"
+    }
+  ],
+  "ad_banner_2": {
+    "image_url": "https://picsum.photos/1200/200?random=752",
+    "link": "https://example.com/ad-link"
+  }
+}
