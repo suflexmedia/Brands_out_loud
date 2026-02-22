@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Brands Out Loud</title>
+    <link rel="icon" type="image/png" href="static/icon/website_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="auth-left">
+            <a href="/" class="auth-logo-link">
+                <img src="/static/images/header_logo.png" alt="Brands Out Loud" class="auth-logo">
+            </a>
+            <div class="auth-left-content">
+                <h1 class="auth-left-title">Stay ahead of the curve.</h1>
+                <p class="auth-left-desc">Get exclusive access to in-depth business insights, industry reports, and leadership stories.</p>
+            </div>
+            <div class="auth-left-footer">
+                <span>&copy; 2025 Brands Out Loud</span>
+            </div>
+        </div>
+
+        <div class="auth-right">
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+
+                <div class="auth-form-container">
+
+                    <form id="login-form" class="auth-form active" novalidate>
+                        <div class="auth-form-header">
+                            <h2 class="auth-form-title">Welcome back</h2>
+                            <p class="auth-form-subtitle">Sign in to your account</p>
+                        </div>
+
+                        <div id="login-message" class="auth-message"></div>
+
+                        <div class="auth-form-fields">
+                            <div class="form-field">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" name="email" placeholder="name@example.com" required>
+                                <span class="field-error">Please enter a valid email</span>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="login-password">Password</label>
+                                <div class="password-field-wrap">
+                                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                                    <button type="button" class="password-toggle" data-target="login-password" aria-label="Toggle password visibility">
+                                        <i class="ph ph-eye"></i>
+                                    </button>
+                                </div>
+                                <span class="field-error">Password is required</span>
+                            </div>
+                        </div>
+
+                        <div class="auth-form-bottom">
+                            <button type="submit" class="auth-submit-btn" id="login-submit-btn">Sign In</button>
+                            <p class="auth-switch-text">
+                                Don't have an account? <a class="auth-switch-link" data-switch="register">Create one</a>
+                            </p>
+                        </div>
+                    </form>
+
+                    <form id="register-form" class="auth-form" novalidate>
+                        <div class="auth-form-header">
+                            <h2 class="auth-form-title">Create Account</h2>
+                            <p class="auth-form-subtitle">Join Brands Out Loud today</p>
+                        </div>
+
+                        <div id="register-message" class="auth-message"></div>
+
+                        <div class="auth-form-fields">
+                            <div class="form-field">
+                                <label for="register-name">Full Name</label>
+                                <input type="text" id="register-name" name="name" placeholder="John Doe" required>
+                                <span class="field-error">Name is required</span>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="register-email">Email</label>
+                                <input type="email" id="register-email" name="email" placeholder="name@example.com" required>
+                                <span class="field-error">Please enter a valid email</span>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="register-phone">Phone <span class="optional-tag">(optional)</span></label>
+                                    <input type="tel" id="register-phone" name="phone" placeholder="+91 9876543210">
+                                </div>
+                                <div class="form-field">
+                                    <label for="register-company">Company <span class="optional-tag">(optional)</span></label>
+                                    <input type="text" id="register-company" name="company_name" placeholder="Company Inc.">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="register-password">Password</label>
+                                <div class="password-field-wrap">
+                                    <input type="password" id="register-password" name="password" placeholder="Min. 6 characters" required>
+                                    <button type="button" class="password-toggle" data-target="register-password" aria-label="Toggle password visibility">
+                                        <i class="ph ph-eye"></i>
+                                    </button>
+                                </div>
+                                <span class="field-error">Password must be at least 6 characters</span>
+                            </div>
+                        </div>
+
+                        <div class="auth-form-bottom">
+                            <button type="submit" class="auth-submit-btn" id="register-submit-btn">Create Account</button>
+                            <p class="auth-switch-text">
+                                Already have an account? <a class="auth-switch-link" data-switch="login">Sign in</a>
+                            </p>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <a href="/" class="auth-back-link"><i class="ph ph-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script src="/static/js/login.js"></script>
+</body>
+
+</html>

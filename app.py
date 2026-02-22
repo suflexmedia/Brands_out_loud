@@ -15,6 +15,7 @@ from PAGE_SERVING_ROUTERS.routers.service_router import router as service_router
 from PAGE_SERVING_ROUTERS.routers.magazine_homepage_router import router as magazine_homepage_router
 from PAGE_SERVING_ROUTERS.routers.magazine_page_router import router as magazine_page_router
 from PAGE_SERVING_ROUTERS.routers.blog_router import router as blog_router
+from PAGE_SERVING_ROUTERS.routers.auth_router import router as auth_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
@@ -141,6 +142,7 @@ app.include_router(service_router)
 app.include_router(magazine_homepage_router)
 app.include_router(magazine_page_router)
 app.include_router(blog_router)
+app.include_router(auth_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():

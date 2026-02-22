@@ -200,6 +200,7 @@ async def getHeader():
         <a href="/gcc">GCC</a>
         <a href="/sustainability">Sustainability</a>
         <a href="/semiconductor">Semiconductor</a>
+        <a href="/login" style="background-color:#C4C3FF;color:#0D0D0D;padding:0.5vh 1.5vw;border-radius:0.3vw;font-weight:700;white-space:nowrap;">Login / Register</a>
       </nav>
       <div class="hamburger">
         <span></span>
@@ -1209,10 +1210,10 @@ async def generate_desktop_toc(data):
                                 </span>
                             </div>
                             <a href="#" class="whatsapp-share-btn inline-flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity" target="_blank" rel="noopener noreferrer">
-                                <img src="/static/images/whatsapp_logo.png" alt="Share on WhatsApp" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+                                <img src="/static/images/whatsapp_logo.png" alt="Share on WhatsApp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                             </a>
                             <a href="#" class="insta-share-btn inline-flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity" target="_blank" rel="noopener noreferrer">
-                                <img src="/static/images/insta_logo.png" alt="Share on Instagram" style="width: 45px; height: 45px; border-radius: 12px; object-fit: cover;">
+                                <img src="/static/images/insta_logo.png" alt="Share on Instagram" style="width: 40px; height: 40px; border-radius: 12px; object-fit: cover;">
                             </a>
                         </div>
                     </div>
@@ -1375,6 +1376,7 @@ async def getHomepageStyleHeader(navbar_data=None):
             <nav class="desktop-nav">
                 <div class="top-nav-links">
                     <a href="/magazine" class="top-nav-link">Magazine</a>
+                    <a href="/login" class="login-btn-desktop">Login / Register</a>
                 </div>
                 <div class="nav-divider"></div>
                 <div class="category-nav">{desktop_dropdowns}
@@ -1401,6 +1403,11 @@ async def getHomepageStyleHeader(navbar_data=None):
 
         <div id="mobile-menu" class="mobile-menu">
             <div>
+                <div class="mobile-auth-section">
+                    <a href="/login" class="login-btn-mobile">
+                        <span class="login-btn-inner"><i class="ph ph-sign-in" style="font-size:1.125rem"></i><span>Login</span></span>
+                    </a>
+                </div>
                 <a href="/magazine" class="mobile-menu-item">
                     <div class="item-inner"><i class="ph ph-book-open" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Magazine</span></div>
                 </a>{mobile_accordions}
@@ -2098,6 +2105,14 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
                     bodyContent
                 };
                 
+                try {
+                    var token = localStorage.getItem('bol_token');
+                    if (token) {
+                        performDownload();
+                        return;
+                    }
+                } catch(err) {}
+                
                 showDownloadModal();
             }
             
@@ -2232,12 +2247,17 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
         let pendingDownloadData = null;
 
         function showDownloadModal() {
-            document.getElementById('downloadModalOverlay').classList.add('show');
+            const overlay = document.getElementById('downloadModalOverlay');
+            if (overlay.parentElement !== document.body) {
+                document.body.appendChild(overlay);
+            }
+            overlay.classList.add('show');
             document.body.style.overflow = 'hidden';
         }
 
         function hideDownloadModal() {
-            document.getElementById('downloadModalOverlay').classList.remove('show');
+            const overlay = document.getElementById('downloadModalOverlay');
+            overlay.classList.remove('show');
             document.body.style.overflow = '';
             document.getElementById('downloadForm').reset();
             document.querySelectorAll('.download-form-field').forEach(f => f.classList.remove('error'));
@@ -2469,6 +2489,7 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
     </script>
     <script src="/static/js/zoom.js"></script>
     <script src="/static/js/homepage.js"></script>
+    <script src="/static/js/auth.js"></script>
 </body>
 
 </html>"""

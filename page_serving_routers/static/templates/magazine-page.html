@@ -1078,6 +1078,13 @@
         }
 
         document.getElementById(&#39;downloadBtn&#39;).addEventListener(&#39;click&#39;, () => {
+            try {
+                var token = localStorage.getItem(&#39;bol_token&#39;);
+                if (token) {
+                    performDownload();
+                    return;
+                }
+            } catch(e) {}
             showDownloadModal();
         });
 
@@ -1566,6 +1573,7 @@
     </div>
     <script src="/static/js/zoom.js"></script>
     <script src="/static/js/magazine-page.js"></script>
+    <script src="/static/js/auth.js"></script>
 </body>
 
 </html>
