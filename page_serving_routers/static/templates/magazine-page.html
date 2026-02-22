@@ -13,10 +13,11 @@
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="/static/css/zoom.css">
     <link rel="stylesheet" href="/static/css/magazine-page.css">
 </head>
 
-<body>
+<body data-zoom-container>
     <div class="page-wrapper">
 
         {% include 'partials/navbar.html' %}
@@ -1563,6 +1564,7 @@
         </footer>
 
     </div>
+    <script src="/static/js/zoom.js"></script>
     <script src="/static/js/magazine-page.js"></script>
 </body>
 

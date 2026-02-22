@@ -1494,6 +1494,7 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
     <link rel="preconnect" href="https://cdn.tailwindcss.com" />
     <link rel="preconnect" href="https://unpkg.com" />
     
+    <link rel="stylesheet" href="/static/css/zoom.css">
     <link rel="stylesheet" href="/static/css/homepage.css">
     <style>body { visibility: hidden; } .fouc-ready { visibility: visible !important; }</style>
     
@@ -1854,7 +1855,7 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
     </style>
 </head>
 
-<body class="font-jakarta bg-white text-bol-black w-full max-w-[100vw] mx-auto bg-white overflow-x-hidden relative" style="margin: 0; padding: 0;">
+<body data-zoom-container class="font-jakarta bg-white text-bol-black w-full max-w-[100vw] mx-auto bg-white overflow-x-hidden relative" style="margin: 0; padding: 0;">
 
     <div class="page-wrapper" style="overflow-x: visible; overflow: visible;">
         [[header_content]]
@@ -2466,6 +2467,7 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
         }
     })();
     </script>
+    <script src="/static/js/zoom.js"></script>
     <script src="/static/js/homepage.js"></script>
 </body>
 
