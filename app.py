@@ -14,6 +14,7 @@ from PAGE_SERVING_ROUTERS.routers.homepage_router import router as homepage_rout
 from PAGE_SERVING_ROUTERS.routers.service_router import router as service_router
 from PAGE_SERVING_ROUTERS.routers.magazine_homepage_router import router as magazine_homepage_router
 from PAGE_SERVING_ROUTERS.routers.magazine_page_router import router as magazine_page_router
+from PAGE_SERVING_ROUTERS.routers.blog_router import router as blog_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
@@ -78,6 +79,21 @@ async def lifespan(app: FastAPI):
                 except FileNotFoundError:
                     print(f"Seed file not found for {col_name}")
 
+        # Blogs
+        if await db["blogs"].count_documents({}) == 0:
+            try:
+                with open(os.path.join(json_dir, "blog.json"), "r", encoding="utf-8") as f:
+                    blog_data = json.load(f)
+                if isinstance(blog_data, list) and len(blog_data) > 0:
+                    await db["blogs"].insert_many(blog_data)
+                elif isinstance(blog_data, dict):
+                    blog_list = list(blog_data.values())
+                    if len(blog_list) > 0:
+                        await db["blogs"].insert_many(blog_list)
+                print("Seeded blogs collection.")
+            except FileNotFoundError:
+                print("Seed file not found for blogs")
+
     except Exception as e:
         print(f"Error during startup connection initialization: {e}")
     yield
@@ -115,6 +131,7 @@ app.include_router(homepage_router)
 app.include_router(service_router)
 app.include_router(magazine_homepage_router)
 app.include_router(magazine_page_router)
+app.include_router(blog_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():

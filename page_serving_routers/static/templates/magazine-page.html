@@ -26,9 +26,9 @@
                 <nav class="desktop-nav">
                     <div class="top-nav-links">
                         <a href="/magazine" class="top-nav-link">Magazine</a>
-                        <a href="#" class="top-nav-link">Newsletters</a>
+                        <!-- <a href="#" class="top-nav-link">Newsletters</a>
                         <a href="/register" class="top-nav-link">Register</a>
-                        <a href="/login" class="login-btn-desktop">Login</a>
+                        <a href="/login" class="login-btn-desktop">Login</a> -->
                     </div>
                     <div class="nav-divider"></div>
                     <div class="category-nav">
@@ -747,7 +747,26 @@
         @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
         .page-loading .text { color: rgba(255,255,255,0.8); font-size: 14px; }
 
+        .page-placeholder {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f0f0f0;
+            z-index: 5;
+        }
+        .placeholder-spinner {
+            width: 30px; height: 30px;
+            border: 3px solid #ddd;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
         body.loading #controls { opacity: 0.5; pointer-events: none; }
+        body.loading .flipbook { visibility: hidden; }
+        body.loading .nav-arrow { display: none !important; }
 
         .toast-notification {
             position: fixed;
@@ -1119,6 +1138,9 @@
         let isDragging = false;
         let pageFlip = null;
         let hasBlankStart = !(getEffectiveWidth() <= 768);
+        const renderedPages = new Set();
+        const pageShells = {};
+        const INITIAL_LOAD_PERCENT = 0.4;
 
         const PDFJS_VERSION = &#39;3.11.174&#39;;
         const CMAP_URL = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/cmaps/`;
@@ -1288,7 +1310,14 @@
             canvas.style.width = &#39;100%&#39;;
             canvas.style.height = &#39;100%&#39;;
 
+            const placeholder = document.createElement(&#39;div&#39;);
+            placeholder.className = &#39;page-placeholder&#39;;
+            const pSpinner = document.createElement(&#39;div&#39;);
+            pSpinner.className = &#39;placeholder-spinner&#39;;
+            placeholder.appendChild(pSpinner);
+
             content.appendChild(canvas);
+            content.appendChild(placeholder);
             page.appendChild(content);
             return { page, content, canvas };
         }
@@ -1346,7 +1375,7 @@
                 canvas.width = targetW;
                 canvas.height = targetH;
                 const pageNum = parseInt(pageEl.dataset.page, 10);
-                if (!isNaN(pageNum)) {
+                if (!isNaN(pageNum) &amp;&amp; renderedPages.has(pageNum)) {
                     upgradePageCanvasToHigh(pageNum, dims);
                 }
             });
@@ -1687,7 +1716,6 @@
                 const dims = calculatePageDimensions();
 
                 flipbook.innerHTML = &#39;&#39;;
-                const pageEls = [];
                 if (hasBlankStart) {
                     const blank = createBlankPageShell(dims);
                     flipbook.appendChild(blank);
@@ -1695,28 +1723,7 @@
                 for (let i = 1; i <= totalPages; i++) {
                     const { page, content, canvas } = createFlipPageShell(i, dims);
                     flipbook.appendChild(page);
-                    pageEls.push(page);
-
-                    setTimeout(async () => {
-                        if (i <= 2) {
-                            const dataHigh = await renderPage(i, &#39;high&#39;);
-                            if (dataHigh) {
-                                drawInto(canvas, dataHigh.highCanvas);
-                                if (dataHigh.links &amp;&amp; dataHigh.links.length > 0) {
-                                    addUrlOverlays(content, dataHigh.links, dataHigh.baseViewport, dims);
-                                }
-                            }
-                        } else {
-                            const dataLow = await renderPage(i, &#39;low&#39;);
-                            if (dataLow) {
-                                drawInto(canvas, dataLow.lowCanvas);
-                                if (dataLow.links &amp;&amp; dataLow.links.length > 0) {
-                                    addUrlOverlays(content, dataLow.links, dataLow.baseViewport, dims);
-                                }
-                                upgradePageCanvasToHigh(i, dims).catch(() => {});
-                            }
-                        }
-                    }, i * 30);
+                    pageShells[i] = { page, content, canvas };
                 }
 
                 if (hasBlankStart &amp;&amp; (totalPages % 2 === 0)) {
@@ -1755,21 +1762,33 @@
                             totalPages: totalPages
                         }, &#39;*&#39;);
                     }
+                    ensureNearbyPagesRendered(currentPage, 4);
                     const dims = calculatePageDimensions();
                     const leftPage = currentPage % 2 === 0 ? currentPage : Math.max(1, currentPage - 1);
                     const rightPage = Math.min(totalPages, leftPage + 1);
-                    upgradePageCanvasToHigh(leftPage, dims);
-                    if (rightPage !== leftPage) upgradePageCanvasToHigh(rightPage, dims);
+                    if (renderedPages.has(leftPage)) upgradePageCanvasToHigh(leftPage, dims);
+                    if (rightPage !== leftPage &amp;&amp; renderedPages.has(rightPage)) upgradePageCanvasToHigh(rightPage, dims);
                 });
 
                 currentPage = 1;
                 updateControls();
 
-                const loader = document.getElementById(&#39;globalLoading&#39;);
-                if (loader) loader.style.display = &#39;none&#39;;
+                const initialCount = Math.max(4, Math.ceil(totalPages * INITIAL_LOAD_PERCENT));
+                const loaderEl = document.getElementById(&#39;globalLoading&#39;);
+                const loaderText = loaderEl ? loaderEl.querySelector(&#39;.text&#39;) : null;
+
+                for (let i = 1; i <= Math.min(initialCount, totalPages); i++) {
+                    await renderAndDisplayPage(i, i <= 2 ? &#39;high&#39; : &#39;low&#39;);
+                    if (loaderText) {
+                        const pct = Math.round((i / Math.min(initialCount, totalPages)) * 100);
+                        loaderText.textContent = `Rendering pages: ${pct}%`;
+                    }
+                }
+
+                if (loaderEl) loaderEl.style.display = &#39;none&#39;;
                 document.body.classList.remove(&#39;loading&#39;);
 
-                preloadPages(2, 8);
+                ensureNearbyPagesRendered(Math.min(initialCount, totalPages), 6);
 
                 if (window.parent !== window) {
                     window.parent.postMessage({
@@ -1788,18 +1807,35 @@
             });
         }
 
-        function preloadPages(startPage, count = 4) {
-            const pagesToLoad = [];
-            for (let i = startPage; i <= Math.min(startPage + count - 1, totalPages); i++) {
-                if (!pagesCache[i] || !pagesCache[i].lowCanvas) {
-                    pagesToLoad.push(i);
+        async function renderAndDisplayPage(pageNum, quality) {
+            if (renderedPages.has(pageNum)) return;
+            const shell = pageShells[pageNum];
+            if (!shell) return;
+            const q = quality || &#39;low&#39;;
+            const data = await renderPage(pageNum, q);
+            if (!data) return;
+            const src = q === &#39;high&#39; ? data.highCanvas : data.lowCanvas;
+            if (src) drawInto(shell.canvas, src);
+            if (data.links &amp;&amp; data.links.length > 0) {
+                addUrlOverlays(shell.content, data.links, data.baseViewport, calculatePageDimensions());
+            }
+            const ph = shell.content.querySelector(&#39;.page-placeholder&#39;);
+            if (ph) ph.remove();
+            renderedPages.add(pageNum);
+            if (q === &#39;low&#39;) {
+                upgradePageCanvasToHigh(pageNum, calculatePageDimensions()).catch(() => {});
+            }
+        }
+
+        function ensureNearbyPagesRendered(centerPage, range) {
+            const r = range || 3;
+            const start = Math.max(1, centerPage - r);
+            const end = Math.min(totalPages, centerPage + r);
+            for (let i = start; i <= end; i++) {
+                if (!renderedPages.has(i)) {
+                    renderAndDisplayPage(i, i <= centerPage + 1 ? &#39;high&#39; : &#39;low&#39;);
                 }
             }
-            pagesToLoad.forEach(pageNum => {
-                setTimeout(() => {
-                    renderPage(pageNum, &#39;low&#39;).catch(() => {});
-                }, (pageNum - startPage) * 100);
-            });
         }
 
         let resizeTimeout;
