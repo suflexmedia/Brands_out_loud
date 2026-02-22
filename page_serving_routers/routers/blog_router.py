@@ -5,6 +5,7 @@ import json
 import os
 import time
 from database_handler.connection import db_handler
+from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
 
 router = APIRouter()
 
@@ -1295,9 +1296,79 @@ async def get_blog_body(data: dict):
 """
 
 
-async def getHomepageStyleHeader():
-    """Return the homepage-style header with desktop/mobile nav and dropdowns."""
-    return """
+async def getHomepageStyleHeader(navbar_data=None):
+    """Return the homepage-style header with desktop/mobile nav and dropdowns populated from navbar_data."""
+    categories = [
+        {"key": "business", "label": "Business", "icon": "ph-buildings"},
+        {"key": "technology", "label": "Technology", "icon": "ph-gear"},
+        {"key": "gcc", "label": "Gcc", "icon": "ph-globe"},
+        {"key": "sustainability", "label": "Sustainability", "icon": "ph-leaf"},
+        {"key": "semiconductor", "label": "Semiconductor", "icon": "ph-cpu"},
+    ]
+
+    if navbar_data is None:
+        navbar_data = {}
+
+    desktop_dropdowns = ""
+    mobile_accordions = ""
+
+    for cat in categories:
+        cat_data = navbar_data.get(cat["key"], {})
+        if isinstance(cat_data, dict):
+            heading = cat_data.get("heading", cat["label"])
+            posts = cat_data.get("posts", [])
+        else:
+            heading = cat["label"]
+            posts = []
+
+        desktop_items = ""
+        mobile_items = ""
+        for post in posts:
+            title = post.get("title", "")
+            image_url = post.get("image_url", "")
+            slug = post.get("slug", "")
+            desktop_items += f'''
+                                <a href="/blog/{slug}" class="dropdown-item" data-category="{cat['key']}" data-id="{slug}">
+                                    <img src="{image_url}" alt="{title}" class="dropdown-thumb">
+                                    <div>
+                                        <h4 class="dropdown-item-title line-clamp-2">{title}</h4>
+                                    </div>
+                                </a>'''
+            mobile_items += f'''
+                            <a href="/blog/{slug}" class="sub-menu-item" data-category="{cat['key']}"><img
+                                    src="{image_url}" alt="{title}" class="sub-menu-thumb">
+                                <div class="sub-menu-text">
+                                    <h4 class="sub-menu-title line-clamp-2">{title}</h4>
+                                </div>
+                            </a>'''
+
+        desktop_dropdowns += f'''
+                    <div class="dropdown-container" data-category="{cat['key']}">
+                        <a href="/{cat['key']}" class="category-link">{cat['label']}</a>
+                        <div class="dropdown-content">
+                            <h3 class="dropdown-heading">{heading}</h3>
+                            <div class="dropdown-list">{desktop_items}
+                                <div class="dropdown-divider">
+                                    <div class="know-more-item"><a href="/{cat['key']}"><span class="know-more-text">Know More</span></a><i class="ph ph-arrow-right know-more-arrow"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>'''
+
+        mobile_accordions += f'''
+                <div>
+                    <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
+                        <div class="item-inner"><i class="ph {cat['icon']}" style="color:#fff;font-size:1.125rem"></i><span class="item-title">{cat['label']}</span></div>
+                        <i class="ph ph-caret-down accordion-icon"></i>
+                    </a>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">{mobile_items}
+                            <div class="sub-menu-divider"><a href="/{cat['key']}" class="know-more-mobile"><span class="know-more-mobile-text">Know More</span><i class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
+                        </div>
+                    </div>
+                </div>'''
+
+    return f"""
     <header class="site-header">
         <div class="desktop-header">
             <a href="/"><img src="/static/images/header_logo.png" alt="Brands Out Loud Logo" class="header-logo"></a>
@@ -1306,62 +1377,7 @@ async def getHomepageStyleHeader():
                     <a href="/magazine" class="top-nav-link">Magazine</a>
                 </div>
                 <div class="nav-divider"></div>
-                <div class="category-nav">
-                    <div class="dropdown-container" data-category="business">
-                        <a href="/business" class="category-link">Business</a>
-                        <div class="dropdown-content">
-                            <h3 class="dropdown-heading">Latest Business Stories</h3>
-                            <div class="dropdown-list">
-                                <div class="dropdown-divider">
-                                    <div class="know-more-item"><a href="/business"><span class="know-more-text">Know More</span></a><i class="ph ph-arrow-right know-more-arrow"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown-container" data-category="technology">
-                        <a href="/technology" class="category-link">Technology</a>
-                        <div class="dropdown-content">
-                            <h3 class="dropdown-heading">Tech Innovations</h3>
-                            <div class="dropdown-list">
-                                <div class="dropdown-divider">
-                                    <div class="know-more-item"><a href="/technology"><span class="know-more-text">Know More</span></a><i class="ph ph-arrow-right know-more-arrow"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown-container" data-category="gcc">
-                        <a href="/gcc" class="category-link">Gcc</a>
-                        <div class="dropdown-content">
-                            <h3 class="dropdown-heading">GCC Regional News</h3>
-                            <div class="dropdown-list">
-                                <div class="dropdown-divider">
-                                    <div class="know-more-item"><a href="/gcc"><span class="know-more-text">Know More</span></a><i class="ph ph-arrow-right know-more-arrow"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown-container" data-category="sustainability">
-                        <a href="/sustainability" class="category-link">Sustainability</a>
-                        <div class="dropdown-content">
-                            <h3 class="dropdown-heading">Green Initiatives</h3>
-                            <div class="dropdown-list">
-                                <div class="dropdown-divider">
-                                    <div class="know-more-item"><a href="/sustainability"><span class="know-more-text">Know More</span></a><i class="ph ph-arrow-right know-more-arrow"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown-container" data-category="semiconductor">
-                        <a href="/semiconductor" class="category-link">Semiconductor</a>
-                        <div class="dropdown-content">
-                            <h3 class="dropdown-heading">Chip Industry Updates</h3>
-                            <div class="dropdown-list">
-                                <div class="dropdown-divider">
-                                    <div class="know-more-item"><a href="/semiconductor"><span class="know-more-text">Know More</span></a><i class="ph ph-arrow-right know-more-arrow"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="category-nav">{desktop_dropdowns}
                 </div>
             </nav>
         </div>
@@ -1387,62 +1403,7 @@ async def getHomepageStyleHeader():
             <div>
                 <a href="/magazine" class="mobile-menu-item">
                     <div class="item-inner"><i class="ph ph-book-open" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Magazine</span></div>
-                </a>
-                <div>
-                    <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
-                        <div class="item-inner"><i class="ph ph-buildings" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Business</span></div>
-                        <i class="ph ph-caret-down accordion-icon"></i>
-                    </a>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <div class="sub-menu-divider"><a href="/business" class="know-more-mobile"><span class="know-more-mobile-text">Know More</span><i class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
-                        <div class="item-inner"><i class="ph ph-gear" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Technology</span></div>
-                        <i class="ph ph-caret-down accordion-icon"></i>
-                    </a>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <div class="sub-menu-divider"><a href="/technology" class="know-more-mobile"><span class="know-more-mobile-text">Know More</span><i class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
-                        <div class="item-inner"><i class="ph ph-globe" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Gcc</span></div>
-                        <i class="ph ph-caret-down accordion-icon"></i>
-                    </a>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <div class="sub-menu-divider"><a href="/gcc" class="know-more-mobile"><span class="know-more-mobile-text">Know More</span><i class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
-                        <div class="item-inner"><i class="ph ph-leaf" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Sustainability</span></div>
-                        <i class="ph ph-caret-down accordion-icon"></i>
-                    </a>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <div class="sub-menu-divider"><a href="/sustainability" class="know-more-mobile"><span class="know-more-mobile-text">Know More</span><i class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
-                        <div class="item-inner"><i class="ph ph-cpu" style="color:#fff;font-size:1.125rem"></i><span class="item-title">Semiconductor</span></div>
-                        <i class="ph ph-caret-down accordion-icon"></i>
-                    </a>
-                    <div class="accordion-content">
-                        <div class="accordion-inner">
-                            <div class="sub-menu-divider"><a href="/semiconductor" class="know-more-mobile"><span class="know-more-mobile-text">Know More</span><i class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
-                        </div>
-                    </div>
-                </div>
+                </a>{mobile_accordions}
             </div>
         </div>
     </header>
@@ -2462,7 +2423,8 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
 
 async def create_blog_html(data: dict, other_blogs: list = []) -> str:
     """Build the full blog HTML page from data and related blogs."""
-    header_html = await getHomepageStyleHeader()
+    navbar_data = await get_navbar_data()
+    header_html = await getHomepageStyleHeader(navbar_data)
     footer_html = await getHomepageStyleFooter()
 
     l = []

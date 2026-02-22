@@ -2,6 +2,7 @@ import os
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
+from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
 import time
 
 router = APIRouter()
@@ -49,8 +50,7 @@ async def get_magazine_homepage_data():
 
 @router.get("/magazine", tags=["Pages"])
 async def serve_magazine_homepage(request: Request):
-    """
-    Serves the static magazine homepage HTML page.
-    """
+    """Serves the static magazine homepage HTML page."""
     data = await get_magazine_homepage_data()
-    return templates.TemplateResponse("magazine-homepage.html", {"request": request, "data": data})
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse("magazine-homepage.html", {"request": request, "data": data, "navbar": navbar})

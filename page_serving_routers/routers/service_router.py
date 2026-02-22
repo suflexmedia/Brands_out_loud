@@ -4,6 +4,7 @@ import time
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
+from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
 
 router = APIRouter()
 
@@ -56,7 +57,7 @@ async def get_service_data(category: str):
 @router.get("/semiconductor", tags=["Pages"])
 async def serve_service_page(request: Request):
     """Serves the static service HTML page populated with dynamic category data."""
-    # Extract the category name from the URL path (e.g., '/technology' -> 'technology')
     category = request.url.path.strip("/")
     data = await get_service_data(category)
-    return templates.TemplateResponse("service.html", {"request": request, "data": data})
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse("service.html", {"request": request, "data": data, "navbar": navbar})

@@ -3,6 +3,7 @@ from urllib.parse import unquote
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
+from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
 import time
 
 router = APIRouter()
@@ -69,9 +70,10 @@ async def serve_magazine_page(request: Request, pdf_name: str):
     The full PDF URL is constructed from MINIO_PUBLIC_ENDPOINT + MINIO_BUCKET_NAME + pdf_name.
     """
     data = await get_magazine_page_data()
+    navbar = await get_navbar_data()
     pdf_url = build_pdf_url(pdf_name)
     print(f"Magazine Page | PDF Name: {pdf_name} | Full URL: {pdf_url}")
     return templates.TemplateResponse(
         "magazine-page.html",
-        {"request": request, "data": data, "pdf_url": pdf_url}
+        {"request": request, "data": data, "navbar": navbar, "pdf_url": pdf_url}
     )

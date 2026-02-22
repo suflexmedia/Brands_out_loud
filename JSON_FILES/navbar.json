@@ -1,0 +1,102 @@
+{
+    "business": {
+        "heading": "Latest Business Stories",
+        "posts": [
+            {
+                "title": "The Future of Remote Work: Trends Shaping 2025",
+                "image_url": "https://picsum.photos/seed/biz1/400/300",
+                "slug": "the_future_of_remote_work:_trends_shaping_2025"
+            },
+            {
+                "title": "How AI is Transforming Supply Chain Management",
+                "image_url": "https://picsum.photos/seed/biz2/400/300",
+                "slug": "how_ai_is_transforming_supply_chain_management"
+            },
+            {
+                "title": "Building Resilient Businesses in an Uncertain Economy",
+                "image_url": "https://picsum.photos/seed/biz3/400/300",
+                "slug": "building_resilient_businesses_in_an_uncertain_economy"
+            }
+        ]
+    },
+    "technology": {
+        "heading": "Tech Innovations",
+        "posts": [
+            {
+                "title": "Quantum Computing: From Lab to Enterprise",
+                "image_url": "https://picsum.photos/seed/tech1/400/300",
+                "slug": "quantum_computing:_from_lab_to_enterprise"
+            },
+            {
+                "title": "The Rise of Edge AI in Consumer Devices",
+                "image_url": "https://picsum.photos/seed/tech2/400/300",
+                "slug": "the_rise_of_edge_ai_in_consumer_devices"
+            },
+            {
+                "title": "Cybersecurity Challenges in the Age of IoT",
+                "image_url": "https://picsum.photos/seed/tech3/400/300",
+                "slug": "cybersecurity_challenges_in_the_age_of_iot"
+            }
+        ]
+    },
+    "gcc": {
+        "heading": "GCC Regional News",
+        "posts": [
+            {
+                "title": "Smart Cities Revolution Across the Gulf States",
+                "image_url": "https://picsum.photos/seed/gcc1/400/300",
+                "slug": "smart_cities_revolution_across_the_gulf_states"
+            },
+            {
+                "title": "GCC's Bold Vision for Renewable Energy Transition",
+                "image_url": "https://picsum.photos/seed/gcc2/400/300",
+                "slug": "gcc's_bold_vision_for_renewable_energy_transition"
+            },
+            {
+                "title": "Tourism Boom: How the GCC is Redefining Hospitality",
+                "image_url": "https://picsum.photos/seed/gcc3/400/300",
+                "slug": "tourism_boom:_how_the_gcc_is_redefining_hospitality"
+            }
+        ]
+    },
+    "sustainability": {
+        "heading": "Green Initiatives",
+        "posts": [
+            {
+                "title": "Carbon Capture Technology: Promise and Progress",
+                "image_url": "https://picsum.photos/seed/sust1/400/300",
+                "slug": "carbon_capture_technology:_promise_and_progress"
+            },
+            {
+                "title": "The Circular Economy: Rethinking Waste as a Resource",
+                "image_url": "https://picsum.photos/seed/sust2/400/300",
+                "slug": "the_circular_economy:_rethinking_waste_as_a_resource"
+            },
+            {
+                "title": "Green Hydrogen: The Fuel of the Future",
+                "image_url": "https://picsum.photos/seed/sust3/400/300",
+                "slug": "green_hydrogen:_the_fuel_of_the_future"
+            }
+        ]
+    },
+    "semiconductor": {
+        "heading": "Chip Industry Updates",
+        "posts": [
+            {
+                "title": "The Race to 2nm: Next-Gen Chip Manufacturing",
+                "image_url": "https://picsum.photos/seed/semi1/400/300",
+                "slug": "the_race_to_2nm:_next-gen_chip_manufacturing"
+            },
+            {
+                "title": "How RISC-V is Disrupting the Processor Landscape",
+                "image_url": "https://picsum.photos/seed/semi2/400/300",
+                "slug": "how_risc-v_is_disrupting_the_processor_landscape"
+            },
+            {
+                "title": "Semiconductor Sovereignty: Nations Building Chip Independence",
+                "image_url": "https://picsum.photos/seed/semi3/400/300",
+                "slug": "semiconductor_sovereignty:_nations_building_chip_independence"
+            }
+        ]
+    }
+}

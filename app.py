@@ -79,6 +79,15 @@ async def lifespan(app: FastAPI):
                 except FileNotFoundError:
                     print(f"Seed file not found for {col_name}")
 
+        # Navbar
+        if await db["navbar"].count_documents({}) == 0:
+            try:
+                with open(os.path.join(json_dir, "navbar.json"), "r", encoding="utf-8") as f:
+                    await db["navbar"].insert_one(json.load(f))
+                print("Seeded navbar collection.")
+            except FileNotFoundError:
+                print("Seed file not found for navbar")
+
         # Blogs
         if await db["blogs"].count_documents({}) == 0:
             try:

@@ -2,6 +2,7 @@ import os
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
+from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
 import json
 import time
 
@@ -57,8 +58,7 @@ async def get_homepage_data():
 
 @router.get("/", tags=["Pages"])
 async def serve_homepage(request: Request):
-    """
-    Serves the static homepage HTML page.
-    """
+    """Serves the static homepage HTML page."""
     data = await get_homepage_data()
-    return templates.TemplateResponse("homepage.html", {"request": request, "data": data})
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse("homepage.html", {"request": request, "data": data, "navbar": navbar})

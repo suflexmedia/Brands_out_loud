@@ -1,0 +1,115 @@
+{% set categories = [
+    {"key": "business", "label": "Business", "icon": "ph-buildings"},
+    {"key": "technology", "label": "Technology", "icon": "ph-gear"},
+    {"key": "gcc", "label": "Gcc", "icon": "ph-globe"},
+    {"key": "sustainability", "label": "Sustainability", "icon": "ph-leaf"},
+    {"key": "semiconductor", "label": "Semiconductor", "icon": "ph-cpu"}
+] %}
+
+<header class="site-header">
+    <div class="desktop-header">
+        <a href="/"><img src="/static/images/header_logo.png" alt="Brands Out Loud Logo"
+                class="header-logo"></a>
+        <nav class="desktop-nav">
+            <div class="top-nav-links">
+                <a href="/magazine" class="top-nav-link">Magazine</a>
+            </div>
+            <div class="nav-divider"></div>
+            <div class="category-nav">
+                {% for cat in categories %}
+                {% set cat_data = navbar.get(cat.key, {}) if navbar else {} %}
+                {% set posts = cat_data.get("posts", []) if cat_data else [] %}
+                <div class="dropdown-container" data-category="{{ cat.key }}">
+                    <a href="/{{ cat.key }}" class="category-link">{{ cat.label }}</a>
+                    <div class="dropdown-content">
+                        <h3 class="dropdown-heading">{{ cat_data.get("heading", cat.label) if cat_data else cat.label }}</h3>
+                        <div class="dropdown-list">
+                            {% for post in posts %}
+                            <a href="/blog/{{ post.slug }}" class="dropdown-item" data-category="{{ cat.key }}"
+                                data-id="{{ post.slug }}">
+                                <img src="{{ post.image_url }}"
+                                    alt="{{ post.title }}" class="dropdown-thumb">
+                                <div>
+                                    <h4 class="dropdown-item-title line-clamp-2">{{ post.title }}</h4>
+                                </div>
+                            </a>
+                            {% endfor %}
+                            <div class="dropdown-divider">
+                                <div class="know-more-item"><a href="/{{ cat.key }}"><span
+                                            class="know-more-text">Know More</span></a><i
+                                        class="ph ph-arrow-right know-more-arrow"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </nav>
+    </div>
+
+    <div class="mobile-header">
+        <button id="mobile-menu-button" class="mobile-menu-btn" aria-label="Toggle Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        <div class="mobile-logo-wrap">
+            <a href="/"><img src="/static/images/header_logo.png" alt="Brands Out Loud Logo"
+                    class="mobile-logo"></a>
+        </div>
+        <div class="mobile-search-wrap">
+            <div class="mobile-search-inner">
+                <input type="text" placeholder="Search..." class="search-input">
+                <div class="search-icon"><i class="ph ph-magnifying-glass"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu">
+        <div>
+            <div class="mobile-auth-section">
+                <a href="/login" class="login-btn-mobile">
+                    <span class="login-btn-inner"><i class="ph ph-sign-in"
+                            style="font-size:1.125rem"></i><span>Login</span></span>
+                </a>
+            </div>
+            <a href="/magazine" class="mobile-menu-item">
+                <div class="item-inner"><i class="ph ph-book-open"
+                        style="color:#fff;font-size:1.125rem"></i><span class="item-title">Magazine</span></div>
+            </a>
+            <a class="mobile-menu-item">
+                <div class="item-inner"><i class="ph ph-envelope-open"
+                        style="color:#fff;font-size:1.125rem"></i><span class="item-title">Newsletters</span>
+                </div>
+            </a>
+            {% for cat in categories %}
+            {% set cat_data = navbar.get(cat.key, {}) if navbar else {} %}
+            {% set posts = cat_data.get("posts", []) if cat_data else [] %}
+            <div>
+                <a href="#" class="accordion-toggle mobile-menu-item" aria-expanded="false">
+                    <div class="item-inner"><i class="ph {{ cat.icon }}"
+                            style="color:#fff;font-size:1.125rem"></i><span class="item-title">{{ cat.label }}</span>
+                    </div>
+                    <i class="ph ph-caret-down accordion-icon"></i>
+                </a>
+                <div class="accordion-content">
+                    <div class="accordion-inner">
+                        {% for post in posts %}
+                        <a href="/blog/{{ post.slug }}" class="sub-menu-item" data-category="{{ cat.key }}"><img
+                                src="{{ post.image_url }}"
+                                alt="{{ post.title }}" class="sub-menu-thumb">
+                            <div class="sub-menu-text">
+                                <h4 class="sub-menu-title line-clamp-2">{{ post.title }}</h4>
+                            </div>
+                        </a>
+                        {% endfor %}
+                        <div class="sub-menu-divider"><a href="/{{ cat.key }}" class="know-more-mobile"><span
+                                    class="know-more-mobile-text">Know More</span><i
+                                    class="ph ph-arrow-right know-more-mobile-arrow"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</header>
