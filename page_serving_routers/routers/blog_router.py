@@ -2415,6 +2415,57 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
             }
         });
     </script>
+    <script>
+    (function() {
+        var initialDPR = window.devicePixelRatio || 1;
+
+        function applyZoomCorrection() {
+            var mainContent = document.getElementById('main-content');
+            if (!mainContent) return;
+
+            var currentDPR = window.devicePixelRatio || 1;
+            var zoomFactor = currentDPR / initialDPR;
+
+            if (Math.abs(zoomFactor - 1) > 0.01) {
+                var scale = 1 / zoomFactor;
+                if ('zoom' in document.body.style) {
+                    mainContent.style.zoom = scale;
+                    mainContent.style.transform = '';
+                    mainContent.style.transformOrigin = '';
+                    mainContent.style.width = '';
+                } else {
+                    mainContent.style.transform = 'scale(' + scale + ')';
+                    mainContent.style.transformOrigin = 'top center';
+                    mainContent.style.width = (zoomFactor * 100) + '%';
+                    mainContent.style.zoom = '';
+                }
+            } else {
+                mainContent.style.zoom = '';
+                mainContent.style.transform = '';
+                mainContent.style.transformOrigin = '';
+                mainContent.style.width = '';
+            }
+        }
+
+        function watchZoom() {
+            var mqString = '(resolution: ' + window.devicePixelRatio + 'dppx)';
+            matchMedia(mqString).addEventListener('change', function() {
+                applyZoomCorrection();
+                watchZoom();
+            }, { once: true });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                applyZoomCorrection();
+                watchZoom();
+            });
+        } else {
+            applyZoomCorrection();
+            watchZoom();
+        }
+    })();
+    </script>
     <script src="/static/js/homepage.js"></script>
 </body>
 
