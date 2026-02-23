@@ -9,6 +9,7 @@ import os
 import time
 import httpx
 import uvicorn
+import bcrypt
 
 from PAGE_SERVING_ROUTERS.routers.homepage_router import router as homepage_router
 from PAGE_SERVING_ROUTERS.routers.service_router import router as service_router
@@ -16,6 +17,8 @@ from PAGE_SERVING_ROUTERS.routers.magazine_homepage_router import router as maga
 from PAGE_SERVING_ROUTERS.routers.magazine_page_router import router as magazine_page_router
 from PAGE_SERVING_ROUTERS.routers.blog_router import router as blog_router
 from PAGE_SERVING_ROUTERS.routers.auth_router import router as auth_router
+from PAGE_SERVING_ROUTERS.routers.admin_router import router as admin_router
+from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
@@ -104,6 +107,34 @@ async def lifespan(app: FastAPI):
             except FileNotFoundError:
                 print("Seed file not found for blogs")
 
+        # Admin Users Collection
+        if await db["admin_users"].count_documents({}) == 0:
+            admin_username = os.environ.get("ADMIN_USERNAME", "admin")
+            admin_password = os.environ.get("ADMIN_PASSWORD", "password")
+            
+            # Hash the password
+            salt = bcrypt.gensalt()
+            hashed_password = bcrypt.hashpw(admin_password.encode('utf-8'), salt).decode('utf-8')
+            
+            default_admin = {
+                "username": admin_username,
+                "password_hash": hashed_password,
+                "role": "system_admin",
+                "permissions": ["analytics", "edit_pages", "blog_section", "magazine_section"],
+                "created_at": time.time()
+            }
+            await db["admin_users"].insert_one(default_admin)
+            print("Seeded default admin user into admin_users collection.")
+
+        # Ensure older admin users are migrated to system_admin role
+        await db["admin_users"].update_many(
+            {"$or": [{"role": "system administrator"}, {"role": {"$exists": False}}]},
+            {"$set": {
+                "role": "system_admin",
+                "permissions": ["analytics", "edit_pages", "blog_section", "magazine_section"]
+            }}
+        )
+
     except Exception as e:
         print(f"Error during startup connection initialization: {e}")
     yield
@@ -143,6 +174,8 @@ app.include_router(magazine_homepage_router)
 app.include_router(magazine_page_router)
 app.include_router(blog_router)
 app.include_router(auth_router)
+app.include_router(admin_router)
+app.include_router(admin_blog_api_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Brands of Cloud</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent: #3B4FD4;
+            --accent-dark: #0D1030;
+            --accent-gradient: linear-gradient(135deg, #0D1030, #3B4FD4);
+            --border: #000000;
+            --bg-body: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg-body);
+            color: var(--text);
+            line-height: 1.4;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .navbar {
+            background-color: var(--bg);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar img {
+            height: 50px;
+            max-width: 100%;
+        }
+
+        #user-greeting {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-right: 1.5rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--bg);
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            text-transform: uppercase;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn:hover {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 3.5rem;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            letter-spacing: -2px;
+            line-height: 0.9;
+            color: var(--text);
+        }
+
+        .page-header p {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            max-width: 380px;
+            text-align: right;
+            color: #444;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg);
+            padding: 2rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+            z-index: 0;
+        }
+
+        .card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+        }
+
+        .card:hover h3,
+        .card:hover p {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+
+        .card p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            color: #444;
+        }
+
+        .coming-soon-badge {
+            align-self: flex-start;
+            background: var(--text);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card:hover .coming-soon-badge {
+            background: white;
+            color: var(--accent-dark);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            width: 90%;
+            max-width: 560px;
+            padding: 3.5rem;
+            position: relative;
+            box-shadow: 12px 12px 0 var(--border);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text);
+            font-family: 'Oswald', sans-serif;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal h3 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
+            line-height: 1;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text);
+        }
+
+        .form-group input[type="password"],
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .form-group input:focus {
+            background: var(--text);
+            color: white;
+        }
+
+        .btn {
+            background: var(--text);
+            color: white;
+            border: 2px solid var(--border);
+            padding: 1.25rem 2rem;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            width: 100%;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: var(--accent-gradient);
+            border-color: var(--accent);
+        }
+
+        #update-profile-msg {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .navbar img {
+                height: 38px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .page-header p {
+                text-align: left;
+                max-width: 100%;
+            }
+
+            .container {
+                padding: 2rem 1.25rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .card {
+                min-height: 200px;
+                padding: 1.5rem;
+            }
+
+            .modal {
+                padding: 2rem 1.5rem;
+                box-shadow: 8px 8px 0 var(--border);
+            }
+
+            .modal h3 {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #user-greeting {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <img src="/static/images/header_logo.png" alt="Brands out loud Logo">
+        </div>
+        <div style="display: flex; align-items: center;">
+            <span id="user-greeting"></span>
+            <a href="/admin/logout" class="logout-btn">Log off</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="page-header">
+            <h2>Dashboard</h2>
+            <p>Welcome back to your administration area.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card" id="analytics-card">
+                <div>
+                    <h3>Analytics</h3>
+                    <p>View visitor statistics, content engagement metrics, and daily reports.</p>
+                </div>
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+
+            <div class="card" id="user-management-card">
+                <div>
+                    <h3>User Management</h3>
+                    <p>Control admin access, manage roles, and monitor activity.</p>
+                </div>
+            </div>
+
+            <div class="card" id="edit-pages-card">
+                <div>
+                    <h3>Edit Pages</h3>
+                    <p>Modify and manage primary website pages and internal content layout.</p>
+                </div>
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+
+            <div class="card" id="blog-section-card">
+                <div>
+                    <h3>Blog Section</h3>
+                    <p>Create, edit, classify, and publish new blog posts and insight articles.</p>
+                </div>
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+
+            <div class="card" id="magazine-section-card">
+                <div>
+                    <h3>Magazine Section</h3>
+                    <p>Manage digital magazine issues, specialized articles, and layouts.</p>
+                </div>
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('profile-modal')">&times;</button>
+            <h3>My Profile</h3>
+
+            <form id="update-profile-form">
+                <div class="form-group">
+                    <label>New Password (leave blank to keep current)</label>
+                    <input type="password" id="update-password">
+                </div>
+                <button type="submit" class="btn">Update Profile</button>
+                <div id="update-profile-msg"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/admin/me');
+                if (!response.ok) {
+                    window.location.href = '/admin/login';
+                    return;
+                }
+                currentUser = await response.json();
+
+                document.getElementById('user-greeting').textContent = `// USER: ${currentUser.username}`;
+
+                const umCard = document.getElementById('user-management-card');
+                const umTitle = umCard.querySelector('h3');
+                const umDesc = umCard.querySelector('p');
+                const umBadge = umCard.querySelector('.coming-soon-badge');
+                if (umBadge) umBadge.remove();
+
+                if (currentUser.role === 'system_admin') {
+                    umTitle.textContent = 'User Management';
+                    umDesc.textContent = 'Control admin access, manage roles, and monitor activity.';
+                    umCard.onclick = () => { window.location.href = '/admin/user-management'; };
+                } else {
+                    umTitle.textContent = 'Profile';
+                    umDesc.textContent = 'Manage your account settings and update your password.';
+                    umCard.onclick = () => openModal('profile-modal');
+                }
+
+                document.getElementById('blog-section-card').onclick = () => {
+                    window.location.href = '/admin/blogs';
+                };
+                const blogBadge = document.getElementById('blog-section-card').querySelector('.coming-soon-badge');
+                if (blogBadge) blogBadge.remove();
+
+                const cardsMap = {
+                    'analytics': document.getElementById('analytics-card'),
+                    'edit_pages': document.getElementById('edit-pages-card'),
+                    'blog_section': document.getElementById('blog-section-card'),
+                    'magazine_section': document.getElementById('magazine-section-card')
+                };
+
+                if (currentUser.role !== 'system_admin') {
+                    for (const [perm, cardEl] of Object.entries(cardsMap)) {
+                        if (!currentUser.permissions.includes(perm)) {
+                            cardEl.style.display = 'none';
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to load user info', e);
+            }
+        });
+
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        document.getElementById('update-profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgEl = document.getElementById('update-profile-msg');
+            msgEl.textContent = 'Updating...';
+            msgEl.style.color = '#666';
+
+            try {
+                const response = await fetch('/admin/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        password: document.getElementById('update-password').value || null
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || 'Failed');
+
+                msgEl.textContent = 'Profile updated successfully!';
+                msgEl.style.color = 'green';
+                document.getElementById('update-password').value = '';
+            } catch (error) {
+                msgEl.textContent = error.message;
+                msgEl.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+
+</html>

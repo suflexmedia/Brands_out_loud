@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Brands of Cloud</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent: #3B4FD4;
+            --accent-dark: #0D1030;
+            --accent-gradient: linear-gradient(135deg, #0D1030, #3B4FD4);
+            --accent-danger: #E53935;
+            --border: #000000;
+            --bg-body: #f5f5f5;
+            --text-gray: #555555;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg-body);
+            color: var(--text);
+            line-height: 1.4;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .navbar {
+            background-color: var(--bg);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            width: 38px;
+            height: 38px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .navbar img {
+            height: 50px;
+            max-width: 100%;
+        }
+
+        .btn-add-user {
+            padding: 0.5rem 1.25rem;
+            background: var(--text);
+            color: white;
+            border: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-add-user:hover {
+            background: var(--accent-gradient);
+            border-color: var(--accent);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 2rem;
+        }
+
+        .users-wrapper {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            overflow: hidden;
+        }
+
+        .users-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .users-header h2 {
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            color: var(--text);
+        }
+
+        .btn-refresh {
+            padding: 0.4rem 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-refresh:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .users-table th {
+            text-align: left;
+            padding: 0.9rem 1.5rem;
+            background: var(--bg);
+            border-bottom: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            color: var(--text);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .users-table td {
+            padding: 1.1rem 1.5rem;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        .users-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .users-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .role-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid var(--border);
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            margin-right: 0.35rem;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.3px;
+        }
+
+        .sysadmin-tag {
+            background: var(--text);
+            color: white;
+            border-color: var(--text);
+        }
+
+        .perm-tag {
+            background: var(--bg);
+            color: var(--text);
+            border-color: #999;
+        }
+
+        .pass-hidden {
+            letter-spacing: 3px;
+            color: var(--text-gray);
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 0.3rem 0.7rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .btn-action:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn-delete {
+            color: var(--accent-danger);
+            border-color: var(--accent-danger);
+        }
+
+        .btn-delete:hover {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .modal {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            width: 100%;
+            max-width: 480px;
+            padding: 3rem 2.5rem;
+            position: relative;
+            box-shadow: 12px 12px 0 var(--border);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 1.25rem;
+            font-size: 2.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--text);
+            font-family: 'Oswald', sans-serif;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .form-group input:focus {
+            background: var(--text);
+            color: white;
+        }
+
+        .form-group input[disabled] {
+            background: #eee;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .multi-select-container {
+            border: 2px solid var(--border);
+            padding: 0.8rem 1rem;
+            background: var(--bg);
+            cursor: pointer;
+            position: relative;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .multi-select-container.disabled {
+            background: #eee;
+            pointer-events: none;
+            color: #999;
+        }
+
+        .multi-select-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -2px;
+            right: -2px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-top: none;
+            z-index: 10;
+            padding: 0.25rem 0;
+        }
+
+        .multi-select-container.open .multi-select-dropdown {
+            display: block;
+        }
+
+        .perm-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .perm-option:last-child {
+            border-bottom: none;
+        }
+
+        .perm-option input {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .perm-option:hover {
+            background: #f5f5f5;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 1.25rem 0;
+            gap: 1rem;
+        }
+
+        .toggle-label h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .toggle-label p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            line-height: 1.4;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ddd;
+            transition: .3s;
+            border: 2px solid var(--border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text);
+            transition: .3s;
+        }
+
+        input:checked+.slider {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(24px);
+            background-color: white;
+        }
+
+        input:disabled+.slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--text);
+            color: white;
+            border: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-gradient);
+            border-color: var(--accent);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #modal-delete .modal {
+            max-width: 420px;
+        }
+
+        .delete-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-cancel {
+            padding: 0.7rem 1.5rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #eee;
+        }
+
+        .btn-confirm-delete {
+            padding: 0.7rem 1.5rem;
+            background: var(--accent-danger);
+            color: white;
+            border: 2px solid var(--accent-danger);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-confirm-delete:hover {
+            background: #c62828;
+            border-color: #c62828;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .navbar img {
+                height: 38px;
+            }
+
+            .container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
+            }
+
+            .users-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal {
+                padding: 2rem 1.5rem;
+                box-shadow: 6px 6px 0 var(--border);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="back-btn" onclick="window.location.href='/admin/dashboard'" title="Back">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <img src="/static/images/header_logo.png" alt="Brands out loud Logo">
+        </div>
+        <button class="btn-add-user" onclick="openModal('modal-create')">Add User</button>
+    </nav>
+
+    <main class="container">
+        <div class="users-wrapper">
+            <div class="users-header">
+                <h2>Existing Users</h2>
+                <button class="btn-refresh" onclick="loadUsers()">Refresh</button>
+            </div>
+
+            <div class="table-scroll">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Password</th>
+                            <th>Permissions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr>
+                            <td colspan="4" style="text-align:center;">Loading users...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Create User -->
+    <div class="modal-overlay" id="modal-create">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('modal-create')">&times;</button>
+            <h3>Create a User</h3>
+            <form id="form-create">
+                <div class="form-group">
+                    <input type="text" id="create-username" placeholder="username input" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="create-password" placeholder="password input" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="multi-select-container" id="create-perms-container"
+                        onclick="toggleDropdown('create-perms-dropdown')">
+                        <span class="dropdown-label" id="create-perms-label">permissions dropdown (multiple
+                            select)</span>
+                        <div class="multi-select-dropdown" id="create-perms-dropdown" onclick="event.stopPropagation()">
+                            <label class="perm-option"><input type="checkbox" value="analytics" class="create-perm">
+                                <span class="perm-text">Analytics</span></label>
+                            <label class="perm-option"><input type="checkbox" value="blogs" class="create-perm"> <span
+                                    class="perm-text">Blogs</span></label>
+                            <label class="perm-option"><input type="checkbox" value="magazines" class="create-perm">
+                                <span class="perm-text">Magazines</span></label>
+                            <label class="perm-option"><input type="checkbox" value="edit_pages" class="create-perm">
+                                <span class="perm-text">Edit pages</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toggle-container">
+                    <div class="toggle-label">
+                        <h4>System Admin</h4>
+                        <p>(If system admin is turned on the user will have all permissions including permission to
+                            create other sys admin and users)</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="create-is-sysadmin"
+                            onchange="toggleSysAdminMode('create-perms-container', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit">Create User</button>
+                <div id="create-msg" style="margin-top:1rem; text-align:center; font-size:0.85rem;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Update User -->
+    <div class="modal-overlay" id="modal-update">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('modal-update')">&times;</button>
+            <h3>Update User</h3>
+            <form id="form-update">
+                <input type="hidden" id="update-id">
+                <div class="form-group">
+                    <input type="text" id="update-username" placeholder="username input prefilled" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="update-password" placeholder="password input (leave blank to keep)">
+                </div>
+
+                <div class="form-group">
+                    <div class="multi-select-container" id="update-perms-container"
+                        onclick="toggleDropdown('update-perms-dropdown')">
+                        <span class="dropdown-label" id="update-perms-label">permissions dropdown (multiple
+                            select)</span>
+                        <div class="multi-select-dropdown" id="update-perms-dropdown" onclick="event.stopPropagation()">
+                            <label class="perm-option"><input type="checkbox" value="analytics" class="update-perm">
+                                <span class="perm-text">Analytics</span></label>
+                            <label class="perm-option"><input type="checkbox" value="blogs" class="update-perm"> <span
+                                    class="perm-text">Blogs</span></label>
+                            <label class="perm-option"><input type="checkbox" value="magazines" class="update-perm">
+                                <span class="perm-text">Magazines</span></label>
+                            <label class="perm-option"><input type="checkbox" value="edit_pages" class="update-perm">
+                                <span class="perm-text">Edit pages</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toggle-container">
+                    <div class="toggle-label">
+                        <h4>System Admin</h4>
+                        <p>(If system admin is turned on the user will have all permissions including permission to
+                            create other sys admin and users)</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="update-is-sysadmin"
+                            onchange="toggleSysAdminMode('update-perms-container', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit">Update User</button>
+                <div id="update-msg" style="margin-top:1rem; text-align:center; font-size:0.85rem;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: View User Details -->
+    <div class="modal-overlay" id="modal-view">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('modal-view')">&times;</button>
+            <h3>User Details</h3>
+            <div class="form-group">
+                <input type="text" id="view-username" disabled>
+            </div>
+            <div class="form-group" style="display:none;">
+                <input type="password" value="********" disabled>
+            </div>
+
+            <div class="form-group">
+                <div class="multi-select-container disabled">
+                    <span class="dropdown-label" id="view-perms-label">permissions displayed as tags</span>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <h4>System Admin</h4>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="view-is-sysadmin" disabled>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <button type="button" class="btn-submit" onclick="closeModal('modal-view')">Close</button>
+        </div>
+    </div>
+
+    <!-- Modal: Delete User -->
+    <div class="modal-overlay" id="modal-delete">
+        <div class="modal">
+            <h3>Are you Sure to Delete this user?</h3>
+            <p
+                style="font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--text-gray); margin-top:0.75rem;">
+                Note that this action is irreversible.</p>
+            <input type="hidden" id="delete-user-id">
+            <div class="delete-actions">
+                <button class="btn-cancel" onclick="closeModal('modal-delete')">cancel</button>
+                <button class="btn-confirm-delete" onclick="confirmDelete()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let allUsers = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('/admin/me');
+                if (!res.ok) { window.location.href = '/admin/login'; return; }
+                currentUser = await res.json();
+                if (currentUser.role !== 'system_admin') { window.location.href = '/admin/dashboard'; return; }
+                await loadUsers();
+            } catch (e) { console.error(e); }
+        });
+
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id).parentElement;
+            if (dropdown.classList.contains('disabled')) return;
+            dropdown.classList.toggle('open');
+        }
+
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.multi-select-container').forEach(el => {
+                if (!el.contains(e.target)) {
+                    el.classList.remove('open');
+                }
+            });
+        });
+
+        function setupPermListener(checkboxClass, labelId) {
+            document.querySelectorAll('.' + checkboxClass).forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const checked = Array.from(document.querySelectorAll('.' + checkboxClass + ':checked')).map(cb => cb.parentNode.textContent.trim());
+                    document.getElementById(labelId).textContent = checked.length > 0 ? checked.join(', ') : 'permissions dropdown (multiple select)';
+                });
+            });
+        }
+        setupPermListener('create-perm', 'create-perms-label');
+        setupPermListener('update-perm', 'update-perms-label');
+
+        function toggleSysAdminMode(containerId, isSysAdmin) {
+            const container = document.getElementById(containerId);
+            if (isSysAdmin) {
+                container.classList.add('disabled');
+                container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                container.querySelector('.dropdown-label').textContent = 'All Permissions Granted';
+            } else {
+                container.classList.remove('disabled');
+                container.querySelector('.dropdown-label').textContent = 'permissions dropdown (multiple select)';
+            }
+        }
+
+        async function loadUsers() {
+            const tbody = document.getElementById('users-tbody');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>';
+            try {
+                const res = await fetch('/admin/users');
+                if (!res.ok) throw new Error('Failed to fetch');
+                allUsers = await res.json();
+
+                tbody.innerHTML = '';
+                allUsers.forEach(u => {
+                    const isSys = u.role === 'system_admin';
+
+                    let permsHtml = '';
+                    if (isSys) {
+                        permsHtml = '<span class="role-tag sysadmin-tag">System Admin</span>';
+                    } else if (u.permissions && u.permissions.length > 0) {
+                        permsHtml = u.permissions.map(p => `<span class="role-tag perm-tag">${p.replace('_', ' ')}</span>`).join('');
+                    } else {
+                        permsHtml = '<span style="color:#999;font-size:0.85rem;">None</span>';
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><div style="font-weight:700;">${u.username}</div></td>
+                        <td class="pass-hidden">••••••••</td>
+                        <td>${permsHtml}</td>
+                        <td class="actions-cell">
+                            <button class="btn-action" onclick="openViewModal('${u._id}')">view</button>
+                            <button class="btn-action" onclick="openUpdateModal('${u._id}')">edit</button>
+                            <button class="btn-action btn-delete" onclick="openDeleteModal('${u._id}')">delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:red;">Error loading users</td></tr>';
+            }
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        document.getElementById('form-create').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('create-msg');
+            msg.textContent = "Processing..."; msg.style.color = "var(--text-gray)";
+
+            const isSys = document.getElementById('create-is-sysadmin').checked;
+            const role = isSys ? 'system_admin' : 'user';
+            const perms = isSys ? ['analytics', 'blogs', 'magazines', 'edit_pages'] :
+                Array.from(document.querySelectorAll('.create-perm:checked')).map(cb => cb.value);
+
+            try {
+                const res = await fetch('/admin/users', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('create-username').value,
+                        password: document.getElementById('create-password').value,
+                        permissions: perms, role: role
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || 'Errors');
+
+                if (isSys && data.status === 'ok') {
+                    const fetchAll = await fetch('/admin/users');
+                    const upUsers = await fetchAll.json();
+                    const justCreated = upUsers.find(u => u.username === document.getElementById('create-username').value);
+                    if (justCreated) {
+                        await fetch(`/admin/users/${justCreated._id}`, {
+                            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ role: 'system_admin', permissions: ['analytics', 'edit_pages', 'blog_section', 'magazine_section'] })
+                        });
+                    }
+                }
+
+                msg.textContent = "Created successfully."; msg.style.color = "green";
+                e.target.reset();
+                toggleSysAdminMode('create-perms-container', false);
+                await loadUsers();
+                setTimeout(() => closeModal('modal-create'), 1000);
+            } catch (e) { msg.textContent = e.message; msg.style.color = "red"; }
+        });
+
+        function openUpdateModal(id) {
+            const u = allUsers.find(x => x._id === id);
+            if (!u) return;
+            document.getElementById('update-id').value = u._id;
+            document.getElementById('update-username').value = u.username;
+            document.getElementById('update-password').value = '';
+
+            const isSys = u.role === 'system_admin';
+            document.getElementById('update-is-sysadmin').checked = isSys;
+            toggleSysAdminMode('update-perms-container', isSys);
+
+            if (!isSys) {
+                const cbs = document.querySelectorAll('.update-perm');
+                cbs.forEach(cb => { cb.checked = (u.permissions || []).includes(cb.value); });
+                const checked = Array.from(document.querySelectorAll('.update-perm:checked')).map(cb => cb.parentNode.textContent.trim());
+                document.getElementById('update-perms-label').textContent = checked.length > 0 ? checked.join(', ') : 'permissions dropdown (multiple select)';
+            }
+            openModal('modal-update');
+        }
+
+        document.getElementById('form-update').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('update-msg');
+            msg.textContent = "Processing..."; msg.style.color = "var(--text-gray)";
+
+            const id = document.getElementById('update-id').value;
+            const isSys = document.getElementById('update-is-sysadmin').checked;
+            const role = isSys ? 'system_admin' : 'user';
+            const permsRaw = Array.from(document.querySelectorAll('.update-perm:checked')).map(cb => {
+                if (cb.value === 'blogs') return 'blog_section';
+                if (cb.value === 'magazines') return 'magazine_section';
+                return cb.value;
+            });
+            const perms = isSys ? ['analytics', 'edit_pages', 'blog_section', 'magazine_section'] : permsRaw;
+
+            try {
+                const res = await fetch(`/admin/users/${id}`, {
+                    method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('update-username').value,
+                        password: document.getElementById('update-password').value || null,
+                        permissions: perms, role: role
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || 'Errors');
+                msg.textContent = "Updated successfully."; msg.style.color = "green";
+                await loadUsers();
+                setTimeout(() => closeModal('modal-update'), 1000);
+            } catch (e) { msg.textContent = e.message; msg.style.color = "red"; }
+        });
+
+        function openViewModal(id) {
+            const u = allUsers.find(x => x._id === id);
+            if (!u) return;
+            document.getElementById('view-username').value = u.username;
+
+            const isSys = u.role === 'system_admin';
+            document.getElementById('view-is-sysadmin').checked = isSys;
+
+            let permsText = 'None';
+            if (isSys) permsText = 'System Admin (All)';
+            else if (u.permissions && u.permissions.length > 0) permsText = u.permissions.join(', ');
+
+            document.getElementById('view-perms-label').textContent = permsText;
+            openModal('modal-view');
+        }
+
+        function openDeleteModal(id) {
+            document.getElementById('delete-user-id').value = id;
+            openModal('modal-delete');
+        }
+
+        async function confirmDelete() {
+            const id = document.getElementById('delete-user-id').value;
+            try {
+                const res = await fetch('/admin/users/' + id, { method: 'DELETE' });
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.detail);
+                }
+                closeModal('modal-delete');
+                await loadUsers();
+            } catch (e) {
+                alert("Error deleting user: " + e.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

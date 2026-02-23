@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" defer></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent: #3B4FD4;
+            --accent-dark: #0D1030;
+            --accent-gradient: linear-gradient(135deg, #0D1030, #3B4FD4);
+            --accent-danger: #E53935;
+            --border: #000000;
+            --bg-body: #f5f5f5;
+            --text-gray: #555555;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg-body);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .page-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transition: margin-right 0.3s ease;
+        }
+
+        .page-wrapper.gallery-open .main-content {
+            margin-right: 33.33vw;
+        }
+
+        .sidebar {
+            width: 33.33vw;
+            min-width: 280px;
+            background: var(--bg);
+            border-left: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 40;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .gallery-toggle-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 72px;
+            background: var(--text);
+            color: white;
+            border: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            cursor: pointer;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 8px;
+            transition: right 0.3s ease;
+        }
+
+        .gallery-toggle-btn:hover {
+            background: var(--accent);
+        }
+
+        .gallery-toggle-btn.open {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .top-navbar {
+            background-color: var(--bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: clamp(60px, 5vw, 80px);
+            border-bottom: 2px solid var(--border);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .top-navbar img {
+            height: 40px;
+        }
+
+        .navbar-back-btn {
+            background: none;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            width: 34px;
+            height: 34px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .navbar-back-btn:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .navbar-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text);
+        }
+
+        .navbar-right-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1px;
+            transition: color 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .navbar-right-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .btn {
+            background: var(--text);
+            color: white;
+            border: 2px solid var(--border);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn:hover {
+            background: var(--accent-gradient);
+            border-color: var(--accent);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background: #eee;
+        }
+
+        .btn-danger {
+            background: var(--accent-danger);
+            border-color: var(--accent-danger);
+        }
+
+        .btn-danger:hover {
+            background: #c62828;
+            border-color: #c62828;
+        }
+
+        .btn-small {
+            padding: 0.35rem 0.7rem;
+            font-size: 0.85rem;
+        }
+
+        .gallery-header {
+            padding: 1.27rem 1.5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 5;
+        }
+
+        .gallery-header h3 {
+            font-size: 1.1rem;
+        }
+
+        .gallery-grid {
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            aspect-ratio: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item-actions {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .gallery-item:hover .gallery-item-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            background: white;
+            border: 2px solid var(--border);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--text);
+            color: white;
+        }
+
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            background: var(--bg-body);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap;
+            font-size: 0.87rem;
+        }
+
+        td:first-child {
+            white-space: normal;
+            min-width: 14rem;
+            line-height: 1.4;
+        }
+
+        th {
+            background: #f5f5f5;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border: 2px solid;
+        }
+
+        .status-published {
+            background: var(--text);
+            color: white;
+            border-color: var(--text);
+        }
+
+        .status-draft {
+            background: transparent;
+            color: var(--accent-danger);
+            border-color: var(--accent-danger);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.2s;
+            border-radius: 0;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            background: var(--text);
+            color: white;
+        }
+
+        .form-group select option {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .dynamic-sections {
+            border: 2px solid var(--border);
+            padding: 1.25rem;
+            background: #fafafa;
+        }
+
+        .section-item {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .builder-tools {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .rich-toolbar {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .rich-btn {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .rich-btn:hover {
+            background: var(--text);
+            color: white;
+        }
+
+        .rich-btn.wide {
+            width: auto;
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .content-editable {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .content-editable:focus {
+            border-color: var(--accent);
+        }
+
+        .list-item-row {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .list-item-editable {
+            min-height: 40px;
+            padding: 0.6rem 0.75rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.87rem;
+            outline: none;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .list-item-editable:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-remove-item {
+            background: none;
+            border: 2px solid var(--accent-danger);
+            color: var(--accent-danger);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.15s;
+        }
+
+        .btn-remove-item:hover {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        #editor-view,
+        #list-view {
+            display: none;
+        }
+
+        .loading {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            display: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--text);
+            color: white;
+            border-left: 4px solid var(--accent);
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            max-width: 350px;
+        }
+
+        #toast.show {
+            transform: translateX(0);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg);
+            padding: 2.5rem;
+            border: 2px solid var(--border);
+            width: 90%;
+            max-width: 520px;
+            box-shadow: 10px 10px 0 var(--border);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-content p {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.87rem;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: nowrap;
+        }
+
+        .modal-actions .btn {
+            white-space: nowrap;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 900px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 100vw;
+                min-width: unset;
+            }
+
+            .page-wrapper.gallery-open .main-content {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .top-navbar {
+                padding: 0.75rem 1rem;
+            }
+
+            .content-scroll {
+                padding: 1rem;
+            }
+
+            .navbar-title {
+                display: none;
+            }
+
+            th,
+            td {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                box-shadow: 6px 6px 0 var(--border);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="main-content">
+            <nav class="top-navbar">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="/admin/dashboard" class="navbar-back-btn" title="Back">
+                        <i class="ph ph-arrow-left"></i>
+                    </a>
+                    <img src="/static/images/header_logo.png" alt="Brands out loud Logo">
+                    <span class="navbar-title">Blog Management</span>
+                </div>
+                <div>
+                    <a href="/admin/dashboard" class="navbar-right-link">Go back to dashboard</a>
+                </div>
+            </nav>
+
+            <div class="content-scroll">
+
+                <!-- List View -->
+                <div id="list-view" style="display: block;">
+                    <div class="page-header">
+                        <div>
+                            <h1 style="font-size: 2rem;">All Blogs</h1>
+                            <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 0.25rem;">Manage your
+                                blog posts here.</p>
+                        </div>
+                        <button class="btn" onclick="showEditor()">
+                            <i class="ph ph-plus"></i> Create New Blog
+                        </button>
+                    </div>
+
+                    <div class="card" style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blogs-table-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Editor View -->
+                <div id="editor-view">
+                    <div class="page-header">
+                        <div>
+                            <h1 id="editor-title" style="font-size: 2rem;">Create Blog</h1>
+                            <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 0.25rem;">Fill in the
+                                details below to publish.</p>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="btn btn-outline" onclick="showList()">Cancel</button>
+                            <button class="btn" id="save-blog-btn" onclick="saveBlog()">Save Blog</button>
+                        </div>
+                    </div>
+
+                    <form id="blog-form">
+                        <div class="form-grid">
+                            <div class="card" style="padding: 2rem;">
+                                <h3
+                                    style="margin-bottom: 1.5rem; font-size: 1.25rem; border-bottom: 2px solid var(--border); padding-bottom: 0.75rem;">
+                                    Basic Info</h3>
+
+                                <div class="form-group">
+                                    <label>Blog Title *</label>
+                                    <input type="text" id="blog-title" required onkeyup="updateSlug()">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Summary *</label>
+                                    <textarea id="blog-summary" rows="3" required></textarea>
+                                </div>
+
+                                <h3
+                                    style="margin: 1.5rem 0 1rem; font-size: 1.25rem; border-top: 2px solid var(--border); padding-top: 1.25rem;">
+                                    Content Sections</h3>
+
+                                <div class="dynamic-sections" id="dynamic-sections-container">
+                                    <!-- Sections populated here -->
+                                </div>
+
+                                <div class="builder-tools">
+                                    <button type="button" class="btn btn-small btn-outline"
+                                        onclick="addSection('h1')"><i class="ph ph-text-h-one"></i> H1</button>
+                                    <button type="button" class="btn btn-small btn-outline"
+                                        onclick="addSection('h2')"><i class="ph ph-text-h-two"></i> H2</button>
+                                    <button type="button" class="btn btn-small btn-outline"
+                                        onclick="addSection('text')"><i class="ph ph-text-align-left"></i> Text</button>
+                                    <button type="button" class="btn btn-small btn-outline"
+                                        onclick="addSection('image')"><i class="ph ph-image"></i> Image</button>
+                                    <button type="button" class="btn btn-small btn-outline"
+                                        onclick="addSection('list')"><i class="ph ph-list-bullets"></i> List</button>
+                                </div>
+                            </div>
+
+                            <div class="card" style="padding: 2rem; height: fit-content;">
+                                <h3
+                                    style="margin-bottom: 1.5rem; font-size: 1.25rem; border-bottom: 2px solid var(--border); padding-bottom: 0.75rem;">
+                                    Publishing</h3>
+
+                                <div class="form-group">
+                                    <label>URL Slug (Auto-generated)</label>
+                                    <input type="text" id="blog-slug" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="blog-category">
+                                        <option value="Business">Business</option>
+                                        <option value="Technology">Technology</option>
+                                        <option value="GCC">GCC</option>
+                                        <option value="Sustainability">Sustainability</option>
+                                        <option value="Semiconductor">Semiconductor</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select id="blog-status">
+                                        <option value="published">Published</option>
+                                        <option value="draft">Draft</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Publish Date</label>
+                                    <input type="date" id="blog-date" required>
+                                </div>
+
+                                <hr style="border: none; border-top: 2px solid var(--border); margin: 1.5rem 0;">
+
+                                <h3 style="margin-bottom: 1.25rem; font-size: 1.25rem;">Main Image</h3>
+
+                                <div class="form-group">
+                                    <label>Image URL (Paste from Gallery)</label>
+                                    <input type="text" id="blog-image-url" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Image Alt Text</label>
+                                    <input type="text" id="blog-image-alt" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Floating Gallery Toggle Button -->
+        <button class="gallery-toggle-btn" id="gallery-toggle" onclick="toggleGallery()">
+            <i class="ph ph-image" style="font-size: 1.1rem;"></i>
+        </button>
+
+        <!-- Gallery Sidebar -->
+        <aside class="sidebar" id="gallery-sidebar">
+            <div class="gallery-header">
+                <h3>Media Gallery</h3>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <label class="btn btn-small btn-outline" style="cursor: pointer; margin: 0;">
+                        <i class="ph ph-upload"></i> Upload
+                        <input type="file" id="gallery-upload" accept="image/*" style="display: none;">
+                    </label>
+                    <button class="action-btn" onclick="toggleGallery()" title="Close Gallery"><i
+                            class="ph ph-x"></i></button>
+                </div>
+            </div>
+            <div class="gallery-grid" id="gallery-container">
+                <!-- Images populated by JS -->
+            </div>
+            <div class="loading" id="gallery-loading">Loading...</div>
+        </aside>
+
+        <!-- Delete Blog Modal -->
+        <div class="modal-overlay" id="delete-modal">
+            <div class="modal-content">
+                <h3>Delete Blog</h3>
+                <p>Are you sure you want to delete this blog? If you have linked this blog elsewhere, you should provide
+                    a redirect URL so users don't face a 404 page.</p>
+
+                <div class="form-group">
+                    <label>Redirect URL (Optional)</label>
+                    <input type="text" id="delete-redirect-url" placeholder="/blog/new-article or https://example.com">
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+                    <button class="btn btn-danger" onclick="confirmDelete(false)">Skip Redirect &amp; Delete</button>
+                    <button class="btn" onclick="confirmDelete(true)">Add Redirect &amp; Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Link URL Modal -->
+        <div class="modal-overlay" id="link-modal">
+            <div class="modal-content">
+                <h3>Insert Link</h3>
+                <p>Enter the URL for the selected text. The link will open in a new tab.</p>
+                <div class="form-group">
+                    <label>URL *</label>
+                    <input type="text" id="link-modal-url" placeholder="https://example.com"
+                        onkeydown="if(event.key==='Enter'){event.preventDefault();confirmLink();}">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeLinkModal()">Cancel</button>
+                    <button class="btn" onclick="confirmLink()">Insert Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">Message here...</div>
+
+    <script>
+        let blogs = [];
+        let galleryImages = [];
+        let isEditing = false;
+        let currentEditingSlug = null;
+        let blogToDelete = null;
+        let dynamicSections = [];
+        let savedSelection = null;
+        let linkTargetEditable = null;
+        let linkTargetSectionIndex = null;
+        let linkTargetItemIndex = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlogs();
+            loadGallery();
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('blog-date').value = today;
+
+            document.getElementById('gallery-upload').addEventListener('change', handleFileUpload);
+        });
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.borderLeftColor = isError ? '#E53935' : '#ffffff';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        async function loadBlogs() {
+            try {
+                const res = await fetch('/admin/api/blogs');
+                if (!res.ok) throw new Error("Failed to load blogs");
+                blogs = await res.json();
+                renderBlogList();
+            } catch (e) {
+                showToast(e.message, true);
+            }
+        }
+
+        async function loadGallery() {
+            const loading = document.getElementById('gallery-loading');
+            loading.style.display = 'flex';
+            try {
+                const res = await fetch('/admin/api/gallery');
+                if (!res.ok) throw new Error("Failed to load gallery");
+                galleryImages = await res.json();
+                renderGallery();
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const loading = document.getElementById('gallery-loading');
+            loading.style.display = 'flex';
+
+            try {
+                const res = await fetch('/admin/api/gallery/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!res.ok) throw new Error('Upload failed');
+
+                showToast("Image uploaded");
+                await loadGallery();
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                loading.style.display = 'none';
+                e.target.value = '';
+            }
+        }
+
+        async function deleteImage(objectName) {
+            if (!confirm("Are you sure you want to delete this image?")) return;
+
+            try {
+                const res = await fetch(`/admin/api/gallery/${encodeURIComponent(objectName)}`, {
+                    method: 'DELETE'
+                });
+                if (!res.ok) throw new Error('Delete failed');
+
+                showToast("Image deleted");
+                await loadGallery();
+            } catch (e) {
+                showToast(e.message, true);
+            }
+        }
+
+        async function deleteBlog(slug, e) {
+            e.stopPropagation();
+            if (!confirm(`Are you sure you want to delete blog "${slug}"?`)) return;
+
+            try {
+                const res = await fetch(`/admin/api/blogs/${encodeURIComponent(slug)}`, {
+                    method: 'DELETE'
+                });
+                if (!res.ok) throw new Error('Delete failed');
+
+                showToast("Blog deleted");
+                await loadBlogs();
+            } catch (e) {
+                showToast(e.message, true);
+            }
+        }
+
+        function toggleGallery() {
+            const sidebar = document.getElementById('gallery-sidebar');
+            const toggleBtn = document.getElementById('gallery-toggle');
+            const pageWrapper = document.querySelector('.page-wrapper');
+            sidebar.classList.toggle('open');
+            toggleBtn.classList.toggle('open');
+            pageWrapper.classList.toggle('gallery-open');
+
+            if (sidebar.classList.contains('open')) {
+                toggleBtn.innerHTML = '<i class="ph ph-caret-right" style="font-size:1.1rem;"></i>';
+            } else {
+                toggleBtn.innerHTML = '<i class="ph ph-image" style="font-size:1.1rem;"></i>';
+            }
+        }
+
+        function renderGallery() {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '';
+
+            galleryImages.forEach(img => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `
+                    <img src="${img.url}" alt="Gallery Image" loading="lazy">
+                    <div class="gallery-item-actions">
+                        <button class="action-btn" onclick="copyToClipboard('${img.url}')" title="Copy URL">
+                            <i class="ph ph-copy"></i>
+                        </button>
+                        <button class="action-btn" style="color:#E53935; border-color:#E53935;" onclick="deleteImage('${img.object_name}')" title="Delete">
+                            <i class="ph ph-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderBlogList() {
+            const tbody = document.getElementById('blogs-table-body');
+            tbody.innerHTML = '';
+
+            if (blogs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No blogs found. Create one!</td></tr>';
+                return;
+            }
+
+            blogs.forEach(blog => {
+                const title = blog.blogContent?.blogTitle || 'Untitled';
+                const cat = blog.blogContent?.blogCategory || 'N/A';
+                const date = blog.date || 'N/A';
+                const status = blog.status || 'draft';
+                const statClass = status === 'published' ? 'status-published' : 'status-draft';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:700;" onclick="editBlog('${blog.slug}')">${title}</td>
+                    <td onclick="editBlog('${blog.slug}')">${cat}</td>
+                    <td onclick="editBlog('${blog.slug}')">${date}</td>
+                    <td onclick="editBlog('${blog.slug}')"><span class="status-badge ${statClass}">${status}</span></td>
+                    <td style="text-align: right;">
+                        <a href="/blog/${blog.slug}" target="_blank" class="btn btn-small btn-outline" style="margin-right: 0.4rem;text-decoration:none;" onclick="event.stopPropagation();" title="Open Blog URL">
+                            <i class="ph ph-arrow-square-out" style="margin:0;"></i>
+                        </a>
+                        <button class="btn btn-small btn-outline" style="margin-right: 0.4rem;" onclick="editBlog('${blog.slug}', event)" title="Edit">
+                            <i class="ph ph-pencil-simple" style="margin:0;"></i>
+                        </button>
+                        <button class="btn btn-small btn-danger" onclick="requestDeleteBlog('${blog.slug}', event)" title="Delete">
+                            <i class="ph ph-trash" style="margin:0;"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function sectionControls(index) {
+            return `
+                <div style="display:flex;gap:0.25rem;">
+                    <button type="button" class="action-btn" style="width:24px;height:24px;" onclick="moveSection(${index}, -1)" ${index === 0 ? 'disabled' : ''}><i class="ph ph-caret-up"></i></button>
+                    <button type="button" class="action-btn" style="width:24px;height:24px;" onclick="moveSection(${index}, 1)" ${index === dynamicSections.length - 1 ? 'disabled' : ''}><i class="ph ph-caret-down"></i></button>
+                    <button type="button" class="action-btn" style="width:24px;height:24px;color:#E53935;border-color:#E53935;" onclick="removeSection(${index})"><i class="ph ph-x"></i></button>
+                </div>`;
+        }
+
+        function renderDynamicSections() {
+            const container = document.getElementById('dynamic-sections-container');
+            container.innerHTML = '';
+
+            if (dynamicSections.length === 0) {
+                container.innerHTML = '<p style="color:#999;font-size:0.85rem;text-align:center;padding:1rem 0;">No content sections yet. Use the buttons below to add content.</p>';
+                return;
+            }
+
+            dynamicSections.forEach((section, index) => {
+                const div = document.createElement('div');
+                div.className = 'section-item';
+
+                const labelMap = { h1: 'Heading 1', h2: 'Heading 2', text: 'Text Block', image: 'Image', list: 'List' };
+                const label = labelMap[section.type] || section.type;
+
+                let body = '';
+
+                if (section.type === 'h1' || section.type === 'h2') {
+                    body = `<input type="text"
+                        data-section-idx="${index}"
+                        class="section-heading-input"
+                        style="width:100%;padding:0.75rem;border:2px solid #000;font-family:'Oswald',sans-serif;font-size:${section.type === 'h1' ? '1.5rem' : '1.2rem'};text-transform:uppercase;outline:none;"
+                        value="${(section.content || '').replace(/"/g, '&quot;')}"
+                        placeholder="Enter ${label} text"
+                        oninput="dynamicSections[${index}].content=this.value; dynamicSections[${index}].id=this.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');">`;
+
+                } else if (section.type === 'text') {
+                    body = `
+                        <div class="rich-toolbar" id="toolbar-${index}">
+                            <button type="button" class="rich-btn" title="Bold" onclick="applyFormat('bold', ${index})"><b>B</b></button>
+                            <button type="button" class="rich-btn" title="Italic" onclick="applyFormat('italic', ${index})"><i>I</i></button>
+                            <button type="button" class="rich-btn" title="Strikethrough" onclick="applyFormat('strikeThrough', ${index})"><s>S</s></button>
+                            <button type="button" class="rich-btn wide" title="Hyperlink" onclick="applyLink(${index})"><i class="ph ph-link"></i> Link</button>
+                            <button type="button" class="rich-btn wide" title="Remove Link" onclick="removeLink(${index})" style="color:var(--accent-danger);border-color:var(--accent-danger);"><i class="ph ph-link-break"></i> Unlink</button>
+                        </div>
+                        <div class="content-editable"
+                            id="editable-${index}"
+                            contenteditable="true"
+                            data-section-idx="${index}"
+                            oninput="dynamicSections[${index}].content=this.innerHTML;"></div>`;
+
+                } else if (section.type === 'image') {
+                    body = `
+                        <div class="form-group" style="margin-bottom:0.75rem;">
+                            <label style="font-family:'Oswald',sans-serif;font-size:0.8rem;text-transform:uppercase;font-weight:700;">Image URL *</label>
+                            <input type="text"
+                                style="width:100%;padding:0.6rem 0.75rem;border:2px solid #000;font-family:'Space Mono',monospace;font-size:0.85rem;outline:none;"
+                                value="${(section.url || '').replace(/"/g, '&quot;')}"
+                                placeholder="Paste image URL from gallery"
+                                oninput="dynamicSections[${index}].url=this.value;">
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label style="font-family:'Oswald',sans-serif;font-size:0.8rem;text-transform:uppercase;font-weight:700;">Alt Text *</label>
+                            <input type="text"
+                                style="width:100%;padding:0.6rem 0.75rem;border:2px solid #000;font-family:'Space Mono',monospace;font-size:0.85rem;outline:none;"
+                                value="${(section.alt || '').replace(/"/g, '&quot;')}"
+                                placeholder="Describe the image (required for accessibility)"
+                                oninput="dynamicSections[${index}].alt=this.value;">
+                        </div>`;
+
+                } else if (section.type === 'list') {
+                    const items = section.items && section.items.length > 0 ? section.items : [''];
+                    const itemsHtml = items.map((item, i) => `
+                        <div class="list-item-row" id="list-${index}-row-${i}">
+                            <div style="flex:1;">
+                                <div class="rich-toolbar">
+                                    <button type="button" class="rich-btn" title="Bold" onclick="applyListFormat('bold', ${index}, ${i})"><b>B</b></button>
+                                    <button type="button" class="rich-btn" title="Italic" onclick="applyListFormat('italic', ${index}, ${i})"><i>I</i></button>
+                                    <button type="button" class="rich-btn" title="Strikethrough" onclick="applyListFormat('strikeThrough', ${index}, ${i})"><s>S</s></button>
+                                    <button type="button" class="rich-btn wide" title="Hyperlink" onclick="applyListLink(${index}, ${i})"><i class="ph ph-link"></i> Link</button>
+                                    <button type="button" class="rich-btn wide" title="Remove Link" onclick="removeListLink(${index}, ${i})" style="color:var(--accent-danger);border-color:var(--accent-danger);"><i class="ph ph-link-break"></i> Unlink</button>
+                                </div>
+                                <div class="content-editable list-item-editable"
+                                    id="list-editable-${index}-${i}"
+                                    contenteditable="true"
+                                    data-section-idx="${index}"
+                                    data-item-idx="${i}"
+                                    oninput="dynamicSections[${index}].items[${i}]=this.innerHTML;"></div>
+                            </div>
+                            <button type="button" class="btn-remove-item" onclick="removeListItem(${index}, ${i})" title="Remove item">&times;</button>
+                        </div>`).join('');
+
+                    body = `
+                        <div id="list-items-${index}">${itemsHtml}</div>
+                        <button type="button" class="btn btn-small btn-outline" style="margin-top:0.5rem;" onclick="addListItem(${index})">
+                            <i class="ph ph-plus"></i> Add Item
+                        </button>`;
+                }
+
+                div.innerHTML = `
+                    <div class="section-header">
+                        <span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.3px;">
+                            ${label}
+                        </span>
+                        ${sectionControls(index)}
+                    </div>
+                    ${body}`;
+
+                container.appendChild(div);
+
+                if (section.type === 'text') {
+                    const editable = div.querySelector(`#editable-${index}`);
+                    if (editable) editable.innerHTML = section.content || '';
+                }
+
+                if (section.type === 'list') {
+                    const items = section.items && section.items.length > 0 ? section.items : [''];
+                    items.forEach((item, i) => {
+                        const listEditable = div.querySelector(`#list-editable-${index}-${i}`);
+                        if (listEditable) listEditable.innerHTML = item || '';
+                    });
+                }
+            });
+        }
+
+        function applyFormat(command, index) {
+            const editable = document.getElementById(`editable-${index}`);
+            if (!editable) return;
+            editable.focus();
+            document.execCommand(command, false, null);
+            dynamicSections[index].content = editable.innerHTML;
+        }
+
+        function applyLink(index) {
+            const editable = document.getElementById(`editable-${index}`);
+            if (!editable) return;
+            const sel = window.getSelection();
+            if (!sel || sel.isCollapsed) {
+                showToast('Select some text first, then click Link.', true);
+                return;
+            }
+            savedSelection = sel.getRangeAt(0);
+            linkTargetEditable = editable;
+            linkTargetSectionIndex = index;
+            linkTargetItemIndex = null;
+            document.getElementById('link-modal-url').value = '';
+            document.getElementById('link-modal').style.display = 'flex';
+            setTimeout(() => document.getElementById('link-modal-url').focus(), 100);
+        }
+
+        function stripAllLinks(html) {
+            if (!html) return html;
+            let cleaned = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
+            cleaned = cleaned.replace(/(<[^>]*)\s*style="[^"]*color[^"]*"([^>]*>)/gi, function(match, before, after) {
+                return before + after;
+            });
+            cleaned = cleaned.replace(/<font\b[^>]*>([\s\S]*?)<\/font>/gi, '$1');
+            return cleaned;
+        }
+
+        function removeLink(index) {
+            const cleaned = stripAllLinks(dynamicSections[index].content);
+            dynamicSections[index].content = cleaned;
+            renderDynamicSections();
+            showToast('All links removed from this section.');
+        }
+
+        function applyListFormat(command, sectionIndex, itemIndex) {
+            const editable = document.getElementById(`list-editable-${sectionIndex}-${itemIndex}`);
+            if (!editable) return;
+            editable.focus();
+            document.execCommand(command, false, null);
+            dynamicSections[sectionIndex].items[itemIndex] = editable.innerHTML;
+        }
+
+        function applyListLink(sectionIndex, itemIndex) {
+            const editable = document.getElementById(`list-editable-${sectionIndex}-${itemIndex}`);
+            if (!editable) return;
+            const sel = window.getSelection();
+            if (!sel || sel.isCollapsed) {
+                showToast('Select some text first, then click Link.', true);
+                return;
+            }
+            savedSelection = sel.getRangeAt(0);
+            linkTargetEditable = editable;
+            linkTargetSectionIndex = sectionIndex;
+            linkTargetItemIndex = itemIndex;
+            document.getElementById('link-modal-url').value = '';
+            document.getElementById('link-modal').style.display = 'flex';
+            setTimeout(() => document.getElementById('link-modal-url').focus(), 100);
+        }
+
+        function removeListLink(sectionIndex, itemIndex) {
+            const cleaned = stripAllLinks(dynamicSections[sectionIndex].items[itemIndex]);
+            dynamicSections[sectionIndex].items[itemIndex] = cleaned;
+            renderDynamicSections();
+            showToast('All links removed from this item.');
+        }
+
+        function closeLinkModal() {
+            document.getElementById('link-modal').style.display = 'none';
+            savedSelection = null;
+            linkTargetEditable = null;
+            linkTargetSectionIndex = null;
+            linkTargetItemIndex = null;
+        }
+
+        function confirmLink() {
+            let url = document.getElementById('link-modal-url').value.trim();
+            if (!url) {
+                showToast('Please enter a URL.', true);
+                return;
+            }
+
+            if (!/^https?:\/\//i.test(url) && !url.startsWith('/') && !url.startsWith('#') && !url.startsWith('mailto:')) {
+                url = 'https://' + url;
+            }
+
+            if (savedSelection && linkTargetEditable) {
+                linkTargetEditable.focus();
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(savedSelection);
+                document.execCommand('createLink', false, url);
+                const links = linkTargetEditable.querySelectorAll('a');
+                links.forEach(a => { a.target = '_blank'; a.style.color = '#3B4FD4'; });
+
+                if (linkTargetItemIndex !== null) {
+                    dynamicSections[linkTargetSectionIndex].items[linkTargetItemIndex] = linkTargetEditable.innerHTML;
+                } else {
+                    dynamicSections[linkTargetSectionIndex].content = linkTargetEditable.innerHTML;
+                }
+            }
+
+            closeLinkModal();
+        }
+
+        function addListItem(index) {
+            if (!dynamicSections[index].items) dynamicSections[index].items = [];
+            dynamicSections[index].items.push('');
+            renderDynamicSections();
+        }
+
+        function removeListItem(sectionIndex, itemIndex) {
+            dynamicSections[sectionIndex].items.splice(itemIndex, 1);
+            if (dynamicSections[sectionIndex].items.length === 0) {
+                dynamicSections[sectionIndex].items = [''];
+            }
+            renderDynamicSections();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("URL copied to clipboard!");
+            });
+        }
+
+        function updateSlug() {
+            if (isEditing) return;
+            const title = document.getElementById('blog-title').value;
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+            document.getElementById('blog-slug').value = slug;
+        }
+
+        function addSection(type) {
+            if (type === 'image') {
+                dynamicSections.push({ type: 'image', url: '', alt: '' });
+            } else if (type === 'list') {
+                dynamicSections.push({ type: 'list', items: [''] });
+            } else if (type === 'text') {
+                dynamicSections.push({ type: 'text', content: '' });
+            } else {
+                dynamicSections.push({ type: type, content: '', id: '' });
+            }
+            renderDynamicSections();
+        }
+
+        function removeSection(index) {
+            dynamicSections.splice(index, 1);
+            renderDynamicSections();
+        }
+
+        function moveSection(index, dir) {
+            if (index + dir < 0 || index + dir >= dynamicSections.length) return;
+            const temp = dynamicSections[index];
+            dynamicSections[index] = dynamicSections[index + dir];
+            dynamicSections[index + dir] = temp;
+            renderDynamicSections();
+        }
+
+        function updateSectionData(index, key, value) {
+            dynamicSections[index][key] = value;
+            if ((dynamicSections[index].type === 'h1' || dynamicSections[index].type === 'h2') && key === 'content' && !dynamicSections[index].id) {
+                dynamicSections[index].id = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                renderDynamicSections();
+            }
+        }
+
+        function showList() {
+            document.getElementById('editor-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
+        }
+
+        function showEditor(isEditMode = false) {
+            isEditing = isEditMode;
+            document.getElementById('editor-title').textContent = isEditMode ? 'Edit Blog' : 'Create Blog';
+
+            if (!isEditMode) {
+                document.getElementById('blog-form').reset();
+                document.getElementById('blog-slug').readOnly = false;
+                dynamicSections = [];
+                currentEditingSlug = null;
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('blog-date').value = today;
+            } else {
+                document.getElementById('blog-slug').readOnly = true;
+            }
+
+            renderDynamicSections();
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('editor-view').style.display = 'block';
+        }
+
+        function editBlog(slug, e) {
+            if (e) e.stopPropagation();
+            const blog = blogs.find(b => b.slug === slug);
+            if (!blog) return;
+
+            showEditor(true);
+            currentEditingSlug = slug;
+
+            document.getElementById('blog-title').value = blog.blogContent?.blogTitle || '';
+            document.getElementById('blog-summary').value = blog.blogContent?.blogSummary || '';
+            document.getElementById('blog-slug').value = blog.slug;
+            document.getElementById('blog-category').value = blog.blogContent?.blogCategory || 'Business';
+            document.getElementById('blog-status').value = blog.status || 'published';
+            document.getElementById('blog-date').value = blog.date || '';
+            document.getElementById('blog-image-url').value = blog.blogContent?.mainImageUrl || '';
+            document.getElementById('blog-image-alt').value = blog.blogContent?.mainImageAlt || '';
+
+            dynamicSections = JSON.parse(JSON.stringify(blog.blogContent?.dynamicSections || []));
+            renderDynamicSections();
+        }
+
+        async function saveBlog() {
+            const form = document.getElementById('blog-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const slug = document.getElementById('blog-slug').value;
+            const timeStr = isEditing ? blogs.find(b => b.slug === slug)?.created_at : new Date().toISOString();
+
+            const payload = {
+                slug: slug,
+                status: document.getElementById('blog-status').value,
+                isDeleted: false,
+                date: document.getElementById('blog-date').value,
+                created_at: timeStr,
+                blogContent: {
+                    blogTitle: document.getElementById('blog-title').value,
+                    blogSummary: document.getElementById('blog-summary').value,
+                    blogCategory: document.getElementById('blog-category').value,
+                    mainImageUrl: document.getElementById('blog-image-url').value,
+                    mainImageAlt: document.getElementById('blog-image-alt').value,
+                    dynamicSections: dynamicSections
+                }
+            };
+
+            const url = isEditing ? `/admin/api/blogs/${encodeURIComponent(currentEditingSlug)}` : '/admin/api/blogs';
+            const method = isEditing ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || 'Failed to save blog');
+
+                showToast(data.message);
+                showList();
+                await loadBlogs();
+            } catch (e) {
+                showToast(e.message, true);
+            }
+        }
+
+        function requestDeleteBlog(slug, e) {
+            e.stopPropagation();
+            blogToDelete = slug;
+            document.getElementById('delete-redirect-url').value = '';
+            document.getElementById('delete-modal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'none';
+            blogToDelete = null;
+        }
+
+        async function confirmDelete(useRedirect) {
+            if (!blogToDelete) return;
+
+            let url = `/admin/api/blogs/${encodeURIComponent(blogToDelete)}`;
+
+            if (useRedirect) {
+                const redirectUrl = document.getElementById('delete-redirect-url').value.trim();
+                if (redirectUrl) {
+                    url += `?redirect_url=${encodeURIComponent(redirectUrl)}`;
+                }
+            }
+
+            try {
+                const res = await fetch(url, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+
+                showToast("Blog deleted");
+                closeDeleteModal();
+                await loadBlogs();
+            } catch (e) {
+                showToast(e.message, true);
+            }
+        }
+    </script>
+</body>
+
+</html>

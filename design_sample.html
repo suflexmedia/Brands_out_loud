@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brutalist - Brands of Cloud</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --bg-card: #ffffff;
+            --text-main: #000000;
+            --accent: #E53935;
+            /* Red */
+            --border: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .navbar {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .navbar h2 {
+            font-size: 3rem;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-body);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: 5rem;
+            letter-spacing: -3px;
+            line-height: 0.9;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 400px;
+            text-align: right;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+            z-index: 0;
+        }
+
+        .card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+        }
+
+        .card:hover h3,
+        .card:hover p {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .coming-soon-badge {
+            align-self: flex-start;
+            background: var(--text-main);
+            color: white;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card:hover .coming-soon-badge {
+            background: white;
+            color: var(--accent);
+        }
+
+        /* Modals */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            width: 90%;
+            max-width: 600px;
+            padding: 4rem;
+            position: relative;
+            box-shadow: 15px 15px 0 var(--border);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 3rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text-main);
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal h3 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            background: var(--text-main);
+            color: white;
+        }
+
+        .btn {
+            background: var(--text-main);
+            color: white;
+            border: 2px solid var(--border);
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h2>BRANDS_OF_CLOUD</h2>
+        </div>
+        <div>
+            <span id="user-greeting" style="margin-right: 2rem; font-size: 1.2rem; font-weight: 700;">// USER:
+                ADMIN</span>
+            <a href="#" class="logout-btn">EXIT</a>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="page-header">
+            <h2>SYSTEM<br>DASHBOARD</h2>
+            <p>Master control interface. Proceed with intent.</p>
+        </div>
+        <div class="dashboard-grid">
+            <div class="card" id="analytics-card">
+                <div>
+                    <h3>DATA / METRICS</h3>
+                    <p>Raw numbers and engagement statistics.</p>
+                </div>
+                <span class="coming-soon-badge">LOCKED</span>
+            </div>
+            <div class="card" id="user-management-card" onclick="openModal('profile-modal')">
+                <div>
+                    <h3>IDENTITY</h3>
+                    <p>Manage system access and authentication protocols.</p>
+                </div>
+            </div>
+            <div class="card" id="edit-pages-card">
+                <div>
+                    <h3>STRUCTURE</h3>
+                    <p>Inject and modify primary layout architecture.</p>
+                </div>
+                <span class="coming-soon-badge">LOCKED</span>
+            </div>
+            <div class="card" id="blog-section-card">
+                <div>
+                    <h3>TRANSMISSIONS</h3>
+                    <p>Broadcast critical updates and journal entries.</p>
+                </div>
+            </div>
+            <div class="card" id="magazine-section-card">
+                <div>
+                    <h3>PUBLICATIONS</h3>
+                    <p>Assemble and deploy heavy editorial content.</p>
+                </div>
+                <span class="coming-soon-badge">LOCKED</span>
+            </div>
+        </div>
+    </main>
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('profile-modal')">&times;</button>
+            <h3>UPDATE LOGIC</h3>
+            <form id="update-profile-form">
+                <div class="form-group">
+                    <label>NEW AUTH KEY</label>
+                    <input type="password" placeholder="[ ENTER KEY ]">
+                </div>
+                <button type="submit" class="btn" onclick="closeModal('profile-modal'); return false;">INITIATE
+                    OVERRIDE</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
+</body>
+
+</html>
