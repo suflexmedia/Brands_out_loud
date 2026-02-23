@@ -486,6 +486,12 @@
                 const blogBadge = document.getElementById('blog-section-card').querySelector('.coming-soon-badge');
                 if (blogBadge) blogBadge.remove();
 
+                document.getElementById('magazine-section-card').onclick = () => {
+                    window.location.href = '/admin/magazines';
+                };
+                const magazineBadge = document.getElementById('magazine-section-card').querySelector('.coming-soon-badge');
+                if (magazineBadge) magazineBadge.remove();
+
                 const cardsMap = {
                     'analytics': document.getElementById('analytics-card'),
                     'edit_pages': document.getElementById('edit-pages-card'),

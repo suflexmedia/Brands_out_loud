@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException, UploadFile, File
 from database_handler import db_handler
 from bucket_handler.minio_client import bucket_handler
+from cache_manager import cache_manager
 import time
 import os
 import uuid
@@ -61,7 +62,11 @@ async def api_create_blog(request: Request):
         
     data["created_at"] = time.time()
     await db["blogs"].insert_one(data)
-    
+
+    cache_manager.invalidate("blogs")
+    cache_manager.invalidate("navbar")
+    cache_manager.invalidate_pattern("related_blogs_")
+
     return {"status": "ok", "message": "Blog created successfully"}
 
 @router.put("/blogs/{slug}")
@@ -80,10 +85,14 @@ async def api_update_blog(request: Request, slug: str):
         {"slug": slug},
         {"$set": data}
     )
-    
+
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Blog not found")
-        
+
+    cache_manager.invalidate("blogs")
+    cache_manager.invalidate("navbar")
+    cache_manager.invalidate_pattern("related_blogs_")
+
     return {"status": "ok", "message": "Blog updated successfully"}
 
 @router.delete("/blogs/{slug}")
@@ -94,11 +103,14 @@ async def api_delete_blog(request: Request, slug: str, redirect_url: str = None)
         
     db = db_handler.get_db()
     result = await db["blogs"].delete_one({"slug": slug})
-    
+
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Blog not found")
-        
-    # If a redirect URL is provided, save it
+
+    cache_manager.invalidate("blogs")
+    cache_manager.invalidate("navbar")
+    cache_manager.invalidate_pattern("related_blogs_")
+
     if redirect_url:
         old_path = f"/blog/{slug}"
         # Store in redirects collection
@@ -136,8 +148,16 @@ async def api_list_gallery(request: Request):
             endpoint = os.getenv("MINIO_PUBLIC_ENDPOINT", "http://localhost:9000")
             url = f"{endpoint}/{bucket_name}/{obj.object_name}"
             
+            raw_name = obj.object_name.replace("gallery/", "", 1)
+            parts = raw_name.split("_", 1)
+            if len(parts) == 2 and len(parts[0]) == 36:
+                display_name = parts[1]
+            else:
+                display_name = raw_name
+            
             images.append({
                 "object_name": obj.object_name,
+                "display_name": display_name,
                 "size": obj.size,
                 "url": url,
                 "last_modified": str(obj.last_modified)
@@ -157,8 +177,8 @@ async def api_upload_gallery(request: Request, file: UploadFile = File(...)):
         client = bucket_handler.get_client()
         bucket_name = bucket_handler.bucket_name
         
-        file_extension = os.path.splitext(file.filename)[1]
-        unique_filename = f"gallery/{uuid.uuid4()}{file_extension}"
+        safe_original = file.filename.replace("/", "_").replace("\\", "_")
+        unique_filename = f"gallery/{uuid.uuid4()}_{safe_original}"
         
         content = await file.read()
         file_size = len(content)

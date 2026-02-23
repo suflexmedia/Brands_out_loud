@@ -1,10 +1,11 @@
+"""Serves service category pages with cached data from MongoDB."""
+
 import os
-import json
-import time
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
 from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+from cache_manager import cache_manager
 
 router = APIRouter()
 
@@ -14,41 +15,34 @@ JSON_DIR = os.path.join(BASE_DIR, "..", "JSON_FILES")
 
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
-service_cache = {}
-CACHE_TTL = 300  
+
+def _make_service_fetcher(category: str):
+    """
+    Returns an async fetcher function bound to a specific service category.
+    Each category gets its own cache key: 'service_<category>'.
+    """
+    async def _fetch():
+        db = db_handler.get_db()
+        collection_name = f"service_{category}"
+        collection = db[collection_name]
+
+        doc_count = await collection.count_documents({})
+        if doc_count == 0:
+            return {}
+        return await collection.find_one({})
+
+    return _fetch
+
 
 async def get_service_data(category: str):
     """
-    Fetches the service data for a given category from the cache if valid, 
-    otherwise fetches from MongoDB and updates the cache.
-    Also auto-renews the cache if called while still valid.
+    Returns service data for the given category using the centralized cache manager.
+    Fixed 5-minute absolute expiry with stale-while-revalidate.
     """
-    current_time = time.time()
-    
-    if category in service_cache and current_time < service_cache[category]["expires_at"]:
-        service_cache[category]["expires_at"] = current_time + CACHE_TTL
-        return service_cache[category]["data"]
+    cache_key = f"service_{category}"
+    fetcher = _make_service_fetcher(category)
+    return await cache_manager.get(cache_key, fetcher)
 
-    db_start_time = time.time()
-    db = db_handler.get_db()
-    collection_name = f"service_{category}"
-    collection = db[collection_name]
-    
-    doc_count = await collection.count_documents({})
-    if doc_count == 0:
-        service_data = {}
-    else:
-        service_data = await collection.find_one({})
-    
-    db_elapsed = time.time() - db_start_time
-    print(f"Database Fetch | Service Data ({category}) | Time: {db_elapsed:.4f}s")
-    
-    service_cache[category] = {
-        "data": service_data,
-        "expires_at": current_time + CACHE_TTL
-    }
-    
-    return service_data
 
 @router.get("/business", tags=["Pages"])
 @router.get("/technology", tags=["Pages"])

@@ -107,12 +107,12 @@ async def admin_blogs_page(request: Request):
     return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/blog_management.html")
 
 
-@router.get("/blogs")
-async def admin_blogs_page(request: Request):
-    """Serve the admin blog management HTML page."""
+@router.get("/magazines")
+async def admin_magazines_page(request: Request):
+    """Serve the admin magazine management HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/blog_management.html")
+    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/magazine_management.html")
 
 
 @router.get("/logout")

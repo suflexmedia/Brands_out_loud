@@ -19,9 +19,11 @@ from PAGE_SERVING_ROUTERS.routers.blog_router import router as blog_router
 from PAGE_SERVING_ROUTERS.routers.auth_router import router as auth_router
 from PAGE_SERVING_ROUTERS.routers.admin_router import router as admin_router
 from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
+from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
+from cache_manager import cache_manager
 
 load_dotenv()
 
@@ -176,11 +178,53 @@ app.include_router(blog_router)
 app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(admin_blog_api_router)
+app.include_router(admin_magazine_api_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():
     """Returns the health status of the API."""
     return {"status": "ok"}
+
+
+@app.get("/admin/api/cache/status")
+async def cache_status(request: Request):
+    """Returns the current state of all application caches."""
+    from API_ROUTERS.admin.admin_blog_router import is_authenticated
+    if not await is_authenticated(request):
+        from fastapi import HTTPException as HE
+        raise HE(status_code=401, detail="Unauthorized")
+    return cache_manager.get_status()
+
+
+@app.post("/admin/api/cache/invalidate")
+async def cache_invalidate(request: Request):
+    """
+    Invalidate one or all caches.
+    Body: {"key": "blogs"} to invalidate a specific cache,
+          {"key": "all"} to invalidate everything,
+          {"prefix": "service_"} to invalidate by prefix.
+    """
+    from API_ROUTERS.admin.admin_blog_router import is_authenticated
+    if not await is_authenticated(request):
+        from fastapi import HTTPException as HE
+        raise HE(status_code=401, detail="Unauthorized")
+
+    body = await request.json()
+    key = body.get("key")
+    prefix = body.get("prefix")
+
+    if key == "all":
+        cache_manager.invalidate_all()
+        return {"status": "ok", "message": "All caches invalidated"}
+    elif key:
+        cache_manager.invalidate(key)
+        return {"status": "ok", "message": f"Cache '{key}' invalidated"}
+    elif prefix:
+        cache_manager.invalidate_pattern(prefix)
+        return {"status": "ok", "message": f"Caches with prefix '{prefix}' invalidated"}
+    else:
+        from fastapi import HTTPException as HE
+        raise HE(status_code=400, detail="Provide 'key' or 'prefix' in request body")
 
 
 @app.get("/download_proxy")

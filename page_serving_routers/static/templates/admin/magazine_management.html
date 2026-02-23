@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Management - Admin</title>
+    <title>Magazine Management - Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -99,8 +99,6 @@
             background: var(--text);
             color: white;
             border: none;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
             cursor: pointer;
             z-index: 30;
             display: flex;
@@ -506,126 +504,24 @@
             color: var(--text);
         }
 
-        .dynamic-sections {
-            border: 2px solid var(--border);
-            padding: 1.25rem;
-            background: #fafafa;
-        }
-
-        .section-item {
-            background: var(--bg);
-            border: 2px solid var(--border);
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .builder-tools {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .rich-toolbar {
-            display: flex;
-            gap: 0.25rem;
-            margin-bottom: 0.4rem;
-            flex-wrap: wrap;
-        }
-
-        .rich-btn {
-            background: var(--bg);
-            border: 2px solid var(--border);
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s;
-            flex-shrink: 0;
-        }
-
-        .rich-btn:hover {
-            background: var(--text);
-            color: white;
-        }
-
-        .rich-btn.wide {
-            width: auto;
-            padding: 0 0.5rem;
+        .form-group .help-text {
             font-size: 0.75rem;
+            color: var(--text-gray);
+            margin-top: 0.25rem;
         }
 
-        .content-editable {
+        .image-preview {
+            margin-top: 0.75rem;
+            border: 2px solid var(--border);
+            max-width: 200px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .image-preview img {
             width: 100%;
-            min-height: 100px;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.9rem;
-            outline: none;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        .content-editable:focus {
-            border-color: var(--accent);
-        }
-
-        .list-item-row {
-            display: flex;
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-            align-items: flex-start;
-        }
-
-        .list-item-editable {
-            min-height: 40px;
-            padding: 0.6rem 0.75rem;
-            border: 2px solid var(--border);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.87rem;
-            outline: none;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        .list-item-editable:focus {
-            border-color: var(--accent);
-        }
-
-        .btn-remove-item {
-            background: none;
-            border: 2px solid var(--accent-danger);
-            color: var(--accent-danger);
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-            font-size: 1rem;
-            font-weight: 700;
-            transition: all 0.15s;
-        }
-
-        .btn-remove-item:hover {
-            background: var(--accent-danger);
-            color: white;
+            height: auto;
+            display: block;
         }
 
         #editor-view,
@@ -766,7 +662,7 @@
                         <i class="ph ph-arrow-left"></i>
                     </a>
                     <img src="/static/images/header_logo.png" alt="Brands out loud Logo">
-                    <span class="navbar-title">Blog Management</span>
+                    <span class="navbar-title">Magazine Management</span>
                 </div>
                 <div>
                     <a href="/admin/dashboard" class="navbar-right-link">Go back to dashboard</a>
@@ -775,16 +671,15 @@
 
             <div class="content-scroll">
 
-                <!-- List View -->
                 <div id="list-view" style="display: block;">
                     <div class="page-header">
                         <div>
-                            <h1 style="font-size: 2rem;">All Blogs</h1>
+                            <h1 style="font-size: 2rem;">All Magazines</h1>
                             <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 0.25rem;">Manage your
-                                blog posts here.</p>
+                                digital magazine issues here.</p>
                         </div>
                         <button class="btn" onclick="showEditor()">
-                            <i class="ph ph-plus"></i> Create New Blog
+                            <i class="ph ph-plus"></i> Create New Magazine
                         </button>
                     </div>
 
@@ -799,63 +694,52 @@
                                     <th style="text-align: right;">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="blogs-table-body">
-                                <!-- Populated by JS -->
+                            <tbody id="magazines-table-body">
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Editor View -->
                 <div id="editor-view">
                     <div class="page-header">
                         <div>
-                            <h1 id="editor-title" style="font-size: 2rem;">Create Blog</h1>
+                            <h1 id="editor-title" style="font-size: 2rem;">Create Magazine</h1>
                             <p style="color: var(--text-gray); font-size: 0.85rem; margin-top: 0.25rem;">Fill in the
                                 details below to publish.</p>
                         </div>
                         <div style="display: flex; gap: 0.75rem;">
                             <button class="btn btn-outline" onclick="showList()">Cancel</button>
-                            <button class="btn" id="save-blog-btn" onclick="saveBlog()">Save Blog</button>
+                            <button class="btn" id="save-magazine-btn" onclick="saveMagazine()">Save Magazine</button>
                         </div>
                     </div>
 
-                    <form id="blog-form">
+                    <form id="magazine-form">
                         <div class="form-grid">
                             <div class="card" style="padding: 2rem;">
                                 <h3
                                     style="margin-bottom: 1.5rem; font-size: 1.25rem; border-bottom: 2px solid var(--border); padding-bottom: 0.75rem;">
-                                    Basic Info</h3>
+                                    Magazine Details</h3>
 
                                 <div class="form-group">
-                                    <label>Blog Title *</label>
-                                    <input type="text" id="blog-title" required onkeyup="updateSlug()">
+                                    <label>Magazine Title *</label>
+                                    <input type="text" id="mag-title" required onkeyup="updateSlug()">
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Summary *</label>
-                                    <textarea id="blog-summary" rows="3" required></textarea>
+                                    <label>PDF URL *</label>
+                                    <input type="url" id="mag-pdf-url" required
+                                        placeholder="https://example.com/magazine.pdf">
+                                    <p class="help-text">Direct link to the PDF file.</p>
                                 </div>
 
-                                <h3
-                                    style="margin: 1.5rem 0 1rem; font-size: 1.25rem; border-top: 2px solid var(--border); padding-top: 1.25rem;">
-                                    Content Sections</h3>
-
-                                <div class="dynamic-sections" id="dynamic-sections-container">
-                                    <!-- Sections populated here -->
-                                </div>
-
-                                <div class="builder-tools">
-                                    <button type="button" class="btn btn-small btn-outline"
-                                        onclick="addSection('h1')"><i class="ph ph-text-h-one"></i> H1</button>
-                                    <button type="button" class="btn btn-small btn-outline"
-                                        onclick="addSection('h2')"><i class="ph ph-text-h-two"></i> H2</button>
-                                    <button type="button" class="btn btn-small btn-outline"
-                                        onclick="addSection('text')"><i class="ph ph-text-align-left"></i> Text</button>
-                                    <button type="button" class="btn btn-small btn-outline"
-                                        onclick="addSection('image')"><i class="ph ph-image"></i> Image</button>
-                                    <button type="button" class="btn btn-small btn-outline"
-                                        onclick="addSection('list')"><i class="ph ph-list-bullets"></i> List</button>
+                                <div class="form-group">
+                                    <label>Cover Image URL *</label>
+                                    <input type="url" id="mag-image-url" required
+                                        placeholder="Paste image URL from gallery" oninput="updateImagePreview()">
+                                    <p class="help-text">Thumbnail image used in the magazine grid.</p>
+                                    <div class="image-preview" id="image-preview">
+                                        <img id="image-preview-img" src="" alt="Cover preview">
+                                    </div>
                                 </div>
                             </div>
 
@@ -866,23 +750,18 @@
 
                                 <div class="form-group">
                                     <label>URL Slug (Auto-generated)</label>
-                                    <input type="text" id="blog-slug" required>
+                                    <input type="text" id="mag-slug" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Category</label>
-                                    <select id="blog-category">
-                                        <option value="Business">Business</option>
-                                        <option value="Technology">Technology</option>
-                                        <option value="GCC">GCC</option>
-                                        <option value="Sustainability">Sustainability</option>
-                                        <option value="Semiconductor">Semiconductor</option>
-                                    </select>
+                                    <label>Category (Optional)</label>
+                                    <input type="text" id="mag-category" placeholder="e.g. Technology, Business">
+                                    <p class="help-text">Free-text category label.</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Status</label>
-                                    <select id="blog-status">
+                                    <select id="mag-status">
                                         <option value="published">Published</option>
                                         <option value="draft">Draft</option>
                                     </select>
@@ -890,21 +769,7 @@
 
                                 <div class="form-group">
                                     <label>Publish Date</label>
-                                    <input type="date" id="blog-date" required>
-                                </div>
-
-                                <hr style="border: none; border-top: 2px solid var(--border); margin: 1.5rem 0;">
-
-                                <h3 style="margin-bottom: 1.25rem; font-size: 1.25rem;">Main Image</h3>
-
-                                <div class="form-group">
-                                    <label>Image URL (Paste from Gallery)</label>
-                                    <input type="text" id="blog-image-url" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Image Alt Text</label>
-                                    <input type="text" id="blog-image-alt" required>
+                                    <input type="date" id="mag-date" required>
                                 </div>
                             </div>
                         </div>
@@ -914,19 +779,17 @@
             </div>
         </main>
 
-        <!-- Floating Gallery Toggle Button -->
         <button class="gallery-toggle-btn" id="gallery-toggle" onclick="toggleGallery()">
             <i class="ph ph-image" style="font-size: 1.1rem;"></i>
         </button>
 
-        <!-- Gallery Sidebar -->
         <aside class="sidebar" id="gallery-sidebar">
             <div class="gallery-header">
                 <h3>Media Gallery</h3>
                 <div style="display: flex; gap: 0.5rem; align-items: center;">
                     <label class="btn btn-small btn-outline" style="cursor: pointer; margin: 0;">
                         <i class="ph ph-upload"></i> Upload
-                        <input type="file" id="gallery-upload" accept="image/*" multiple style="display: none;">
+                        <input type="file" id="gallery-upload" accept="image/*,.pdf,application/pdf" multiple style="display: none;">
                     </label>
                     <button class="action-btn" onclick="toggleGallery()" title="Close Gallery"><i
                             class="ph ph-x"></i></button>
@@ -937,44 +800,17 @@
                 <input type="text" id="gallery-search" placeholder="Search images by name..." oninput="filterGallery()">
             </div>
             <div class="gallery-grid" id="gallery-container">
-                <!-- Images populated by JS -->
             </div>
             <div class="loading" id="gallery-loading">Loading...</div>
         </aside>
 
-        <!-- Delete Blog Modal -->
         <div class="modal-overlay" id="delete-modal">
             <div class="modal-content">
-                <h3>Delete Blog</h3>
-                <p>Are you sure you want to delete this blog? If you have linked this blog elsewhere, you should provide
-                    a redirect URL so users don't face a 404 page.</p>
-
-                <div class="form-group">
-                    <label>Redirect URL (Optional)</label>
-                    <input type="text" id="delete-redirect-url" placeholder="/blog/new-article or https://example.com">
-                </div>
-
+                <h3>Delete Magazine</h3>
+                <p>Are you sure you want to delete this magazine? This action cannot be undone.</p>
                 <div class="modal-actions">
                     <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
-                    <button class="btn btn-danger" onclick="confirmDelete(false)">Skip Redirect &amp; Delete</button>
-                    <button class="btn" onclick="confirmDelete(true)">Add Redirect &amp; Delete</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Link URL Modal -->
-        <div class="modal-overlay" id="link-modal">
-            <div class="modal-content">
-                <h3>Insert Link</h3>
-                <p>Enter the URL for the selected text. The link will open in a new tab.</p>
-                <div class="form-group">
-                    <label>URL *</label>
-                    <input type="text" id="link-modal-url" placeholder="https://example.com"
-                        onkeydown="if(event.key==='Enter'){event.preventDefault();confirmLink();}">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-outline" onclick="closeLinkModal()">Cancel</button>
-                    <button class="btn" onclick="confirmLink()">Insert Link</button>
+                    <button class="btn btn-danger" onclick="confirmDelete()">Delete Magazine</button>
                 </div>
             </div>
         </div>
@@ -983,23 +819,18 @@
     <div id="toast">Message here...</div>
 
     <script>
-        let blogs = [];
+        let magazines = [];
         let galleryImages = [];
         let isEditing = false;
         let currentEditingSlug = null;
-        let blogToDelete = null;
-        let dynamicSections = [];
-        let savedSelection = null;
-        let linkTargetEditable = null;
-        let linkTargetSectionIndex = null;
-        let linkTargetItemIndex = null;
+        let magazineToDelete = null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadBlogs();
+            loadMagazines();
             loadGallery();
 
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('blog-date').value = today;
+            document.getElementById('mag-date').value = today;
 
             document.getElementById('gallery-upload').addEventListener('change', handleFileUpload);
 
@@ -1023,7 +854,6 @@
                 e.preventDefault();
                 e.stopPropagation();
                 galleryContainer.classList.remove('drag-over');
-
                 const files = e.dataTransfer.files;
                 if (files.length > 0) {
                     handleDroppedFiles(files);
@@ -1039,12 +869,12 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        async function loadBlogs() {
+        async function loadMagazines() {
             try {
-                const res = await fetch('/admin/api/blogs');
-                if (!res.ok) throw new Error("Failed to load blogs");
-                blogs = await res.json();
-                renderBlogList();
+                const res = await fetch('/admin/api/magazines');
+                if (!res.ok) throw new Error("Failed to load magazines");
+                magazines = await res.json();
+                renderMagazineList();
             } catch (e) {
                 showToast(e.message, true);
             }
@@ -1085,10 +915,10 @@
 
             try {
                 for (const file of files) {
-                    if (!file.type.startsWith('image/')) continue;
+                    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') continue;
                     await uploadSingleFile(file);
                 }
-                showToast(`${files.length} image(s) uploaded`);
+                showToast(`${files.length} file(s) uploaded`);
                 await loadGallery();
             } catch (err) {
                 showToast(err.message, true);
@@ -1105,15 +935,15 @@
             let uploadCount = 0;
             try {
                 for (const file of files) {
-                    if (!file.type.startsWith('image/')) continue;
+                    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') continue;
                     await uploadSingleFile(file);
                     uploadCount++;
                 }
                 if (uploadCount > 0) {
-                    showToast(`${uploadCount} image(s) uploaded via drag & drop`);
+                    showToast(`${uploadCount} file(s) uploaded via drag & drop`);
                     await loadGallery();
                 } else {
-                    showToast('No valid image files found', true);
+                    showToast('No valid files found (images or PDFs only)', true);
                 }
             } catch (err) {
                 showToast(err.message, true);
@@ -1130,26 +960,8 @@
                     method: 'DELETE'
                 });
                 if (!res.ok) throw new Error('Delete failed');
-
                 showToast("Image deleted");
                 await loadGallery();
-            } catch (e) {
-                showToast(e.message, true);
-            }
-        }
-
-        async function deleteBlog(slug, e) {
-            e.stopPropagation();
-            if (!confirm(`Are you sure you want to delete blog "${slug}"?`)) return;
-
-            try {
-                const res = await fetch(`/admin/api/blogs/${encodeURIComponent(slug)}`, {
-                    method: 'DELETE'
-                });
-                if (!res.ok) throw new Error('Delete failed');
-
-                showToast("Blog deleted");
-                await loadBlogs();
             } catch (e) {
                 showToast(e.message, true);
             }
@@ -1198,12 +1010,18 @@
                 const displayName = img.display_name || img.object_name.split('/').pop();
                 const safeUrl = img.url.replace(/'/g, "\\'");
                 const safeObjName = img.object_name.replace(/'/g, "\\'");
+                const isPdf = displayName.toLowerCase().endsWith('.pdf');
 
                 const div = document.createElement('div');
                 div.className = 'gallery-item';
+
+                const thumbContent = isPdf
+                    ? `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f0f0f0;"><i class="ph ph-file-pdf" style="font-size:2.5rem;color:#E53935;"></i><span style="font-size:0.6rem;margin-top:0.25rem;color:#555;font-family:'Space Mono',monospace;">PDF</span></div>`
+                    : `<img src="${img.url}" alt="${displayName}" loading="lazy">`;
+
                 div.innerHTML = `
                     <div class="gallery-item-thumb">
-                        <img src="${img.url}" alt="${displayName}" loading="lazy">
+                        ${thumbContent}
                         <div class="gallery-item-actions">
                             <button class="action-btn" onclick="copyToClipboard('${safeUrl}')" title="Copy URL">
                                 <i class="ph ph-copy"></i>
@@ -1233,36 +1051,42 @@
             renderGallery(filtered);
         }
 
-        function renderBlogList() {
-            const tbody = document.getElementById('blogs-table-body');
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("URL copied to clipboard!");
+            });
+        }
+
+        function renderMagazineList() {
+            const tbody = document.getElementById('magazines-table-body');
             tbody.innerHTML = '';
 
-            if (blogs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No blogs found. Create one!</td></tr>';
+            if (magazines.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No magazines found. Create one!</td></tr>';
                 return;
             }
 
-            blogs.forEach(blog => {
-                const title = blog.blogContent?.blogTitle || 'Untitled';
-                const cat = blog.blogContent?.blogCategory || 'N/A';
-                const date = blog.date || 'N/A';
-                const status = blog.status || 'draft';
+            magazines.forEach(mag => {
+                const title = mag.title || 'Untitled';
+                const cat = mag.category || '—';
+                const date = mag.date || '—';
+                const status = mag.status || 'draft';
                 const statClass = status === 'published' ? 'status-published' : 'status-draft';
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight:700;" onclick="editBlog('${blog.slug}')">${title}</td>
-                    <td onclick="editBlog('${blog.slug}')">${cat}</td>
-                    <td onclick="editBlog('${blog.slug}')">${date}</td>
-                    <td onclick="editBlog('${blog.slug}')"><span class="status-badge ${statClass}">${status}</span></td>
+                    <td style="font-weight:700;" onclick="editMagazine('${mag.slug}')">${title}</td>
+                    <td onclick="editMagazine('${mag.slug}')">${cat}</td>
+                    <td onclick="editMagazine('${mag.slug}')">${date}</td>
+                    <td onclick="editMagazine('${mag.slug}')"><span class="status-badge ${statClass}">${status}</span></td>
                     <td style="text-align: right;">
-                        <a href="/blog/${blog.slug}" target="_blank" class="btn btn-small btn-outline" style="margin-right: 0.4rem;text-decoration:none;" onclick="event.stopPropagation();" title="Open Blog URL">
+                        <a href="/magazine/${mag.slug}" target="_blank" class="btn btn-small btn-outline" style="margin-right: 0.4rem;text-decoration:none;" onclick="event.stopPropagation();" title="Open Magazine Page">
                             <i class="ph ph-arrow-square-out" style="margin:0;"></i>
                         </a>
-                        <button class="btn btn-small btn-outline" style="margin-right: 0.4rem;" onclick="editBlog('${blog.slug}', event)" title="Edit">
+                        <button class="btn btn-small btn-outline" style="margin-right: 0.4rem;" onclick="editMagazine('${mag.slug}', event)" title="Edit">
                             <i class="ph ph-pencil-simple" style="margin:0;"></i>
                         </button>
-                        <button class="btn btn-small btn-danger" onclick="requestDeleteBlog('${blog.slug}', event)" title="Delete">
+                        <button class="btn btn-small btn-danger" onclick="requestDeleteMagazine('${mag.slug}', event)" title="Delete">
                             <i class="ph ph-trash" style="margin:0;"></i>
                         </button>
                     </td>
@@ -1271,301 +1095,26 @@
             });
         }
 
-        function sectionControls(index) {
-            return `
-                <div style="display:flex;gap:0.25rem;">
-                    <button type="button" class="action-btn" style="width:24px;height:24px;" onclick="moveSection(${index}, -1)" ${index === 0 ? 'disabled' : ''}><i class="ph ph-caret-up"></i></button>
-                    <button type="button" class="action-btn" style="width:24px;height:24px;" onclick="moveSection(${index}, 1)" ${index === dynamicSections.length - 1 ? 'disabled' : ''}><i class="ph ph-caret-down"></i></button>
-                    <button type="button" class="action-btn" style="width:24px;height:24px;color:#E53935;border-color:#E53935;" onclick="removeSection(${index})"><i class="ph ph-x"></i></button>
-                </div>`;
-        }
-
-        function renderDynamicSections() {
-            const container = document.getElementById('dynamic-sections-container');
-            container.innerHTML = '';
-
-            if (dynamicSections.length === 0) {
-                container.innerHTML = '<p style="color:#999;font-size:0.85rem;text-align:center;padding:1rem 0;">No content sections yet. Use the buttons below to add content.</p>';
-                return;
-            }
-
-            dynamicSections.forEach((section, index) => {
-                const div = document.createElement('div');
-                div.className = 'section-item';
-
-                const labelMap = { h1: 'Heading 1', h2: 'Heading 2', text: 'Text Block', image: 'Image', list: 'List' };
-                const label = labelMap[section.type] || section.type;
-
-                let body = '';
-
-                if (section.type === 'h1' || section.type === 'h2') {
-                    body = `<input type="text"
-                        data-section-idx="${index}"
-                        class="section-heading-input"
-                        style="width:100%;padding:0.75rem;border:2px solid #000;font-family:'Oswald',sans-serif;font-size:${section.type === 'h1' ? '1.5rem' : '1.2rem'};text-transform:uppercase;outline:none;"
-                        value="${(section.content || '').replace(/"/g, '&quot;')}"
-                        placeholder="Enter ${label} text"
-                        oninput="dynamicSections[${index}].content=this.value; dynamicSections[${index}].id=this.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');">`;
-
-                } else if (section.type === 'text') {
-                    body = `
-                        <div class="rich-toolbar" id="toolbar-${index}">
-                            <button type="button" class="rich-btn" title="Bold" onclick="applyFormat('bold', ${index})"><b>B</b></button>
-                            <button type="button" class="rich-btn" title="Italic" onclick="applyFormat('italic', ${index})"><i>I</i></button>
-                            <button type="button" class="rich-btn" title="Strikethrough" onclick="applyFormat('strikeThrough', ${index})"><s>S</s></button>
-                            <button type="button" class="rich-btn wide" title="Hyperlink" onclick="applyLink(${index})"><i class="ph ph-link"></i> Link</button>
-                            <button type="button" class="rich-btn wide" title="Remove Link" onclick="removeLink(${index})" style="color:var(--accent-danger);border-color:var(--accent-danger);"><i class="ph ph-link-break"></i> Unlink</button>
-                        </div>
-                        <div class="content-editable"
-                            id="editable-${index}"
-                            contenteditable="true"
-                            data-section-idx="${index}"
-                            oninput="dynamicSections[${index}].content=this.innerHTML;"></div>`;
-
-                } else if (section.type === 'image') {
-                    body = `
-                        <div class="form-group" style="margin-bottom:0.75rem;">
-                            <label style="font-family:'Oswald',sans-serif;font-size:0.8rem;text-transform:uppercase;font-weight:700;">Image URL *</label>
-                            <input type="text"
-                                style="width:100%;padding:0.6rem 0.75rem;border:2px solid #000;font-family:'Space Mono',monospace;font-size:0.85rem;outline:none;"
-                                value="${(section.url || '').replace(/"/g, '&quot;')}"
-                                placeholder="Paste image URL from gallery"
-                                oninput="dynamicSections[${index}].url=this.value;">
-                        </div>
-                        <div class="form-group" style="margin-bottom:0;">
-                            <label style="font-family:'Oswald',sans-serif;font-size:0.8rem;text-transform:uppercase;font-weight:700;">Alt Text *</label>
-                            <input type="text"
-                                style="width:100%;padding:0.6rem 0.75rem;border:2px solid #000;font-family:'Space Mono',monospace;font-size:0.85rem;outline:none;"
-                                value="${(section.alt || '').replace(/"/g, '&quot;')}"
-                                placeholder="Describe the image (required for accessibility)"
-                                oninput="dynamicSections[${index}].alt=this.value;">
-                        </div>`;
-
-                } else if (section.type === 'list') {
-                    const items = section.items && section.items.length > 0 ? section.items : [''];
-                    const itemsHtml = items.map((item, i) => `
-                        <div class="list-item-row" id="list-${index}-row-${i}">
-                            <div style="flex:1;">
-                                <div class="rich-toolbar">
-                                    <button type="button" class="rich-btn" title="Bold" onclick="applyListFormat('bold', ${index}, ${i})"><b>B</b></button>
-                                    <button type="button" class="rich-btn" title="Italic" onclick="applyListFormat('italic', ${index}, ${i})"><i>I</i></button>
-                                    <button type="button" class="rich-btn" title="Strikethrough" onclick="applyListFormat('strikeThrough', ${index}, ${i})"><s>S</s></button>
-                                    <button type="button" class="rich-btn wide" title="Hyperlink" onclick="applyListLink(${index}, ${i})"><i class="ph ph-link"></i> Link</button>
-                                    <button type="button" class="rich-btn wide" title="Remove Link" onclick="removeListLink(${index}, ${i})" style="color:var(--accent-danger);border-color:var(--accent-danger);"><i class="ph ph-link-break"></i> Unlink</button>
-                                </div>
-                                <div class="content-editable list-item-editable"
-                                    id="list-editable-${index}-${i}"
-                                    contenteditable="true"
-                                    data-section-idx="${index}"
-                                    data-item-idx="${i}"
-                                    oninput="dynamicSections[${index}].items[${i}]=this.innerHTML;"></div>
-                            </div>
-                            <button type="button" class="btn-remove-item" onclick="removeListItem(${index}, ${i})" title="Remove item">&times;</button>
-                        </div>`).join('');
-
-                    body = `
-                        <div id="list-items-${index}">${itemsHtml}</div>
-                        <button type="button" class="btn btn-small btn-outline" style="margin-top:0.5rem;" onclick="addListItem(${index})">
-                            <i class="ph ph-plus"></i> Add Item
-                        </button>`;
-                }
-
-                div.innerHTML = `
-                    <div class="section-header">
-                        <span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.3px;">
-                            ${label}
-                        </span>
-                        ${sectionControls(index)}
-                    </div>
-                    ${body}`;
-
-                container.appendChild(div);
-
-                if (section.type === 'text') {
-                    const editable = div.querySelector(`#editable-${index}`);
-                    if (editable) editable.innerHTML = section.content || '';
-                }
-
-                if (section.type === 'list') {
-                    const items = section.items && section.items.length > 0 ? section.items : [''];
-                    items.forEach((item, i) => {
-                        const listEditable = div.querySelector(`#list-editable-${index}-${i}`);
-                        if (listEditable) listEditable.innerHTML = item || '';
-                    });
-                }
-            });
-        }
-
-        function applyFormat(command, index) {
-            const editable = document.getElementById(`editable-${index}`);
-            if (!editable) return;
-            editable.focus();
-            document.execCommand(command, false, null);
-            dynamicSections[index].content = editable.innerHTML;
-        }
-
-        function applyLink(index) {
-            const editable = document.getElementById(`editable-${index}`);
-            if (!editable) return;
-            const sel = window.getSelection();
-            if (!sel || sel.isCollapsed) {
-                showToast('Select some text first, then click Link.', true);
-                return;
-            }
-            savedSelection = sel.getRangeAt(0);
-            linkTargetEditable = editable;
-            linkTargetSectionIndex = index;
-            linkTargetItemIndex = null;
-            document.getElementById('link-modal-url').value = '';
-            document.getElementById('link-modal').style.display = 'flex';
-            setTimeout(() => document.getElementById('link-modal-url').focus(), 100);
-        }
-
-        function stripAllLinks(html) {
-            if (!html) return html;
-            let cleaned = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
-            cleaned = cleaned.replace(/(<[^>]*)\s*style="[^"]*color[^"]*"([^>]*>)/gi, function(match, before, after) {
-                return before + after;
-            });
-            cleaned = cleaned.replace(/<font\b[^>]*>([\s\S]*?)<\/font>/gi, '$1');
-            return cleaned;
-        }
-
-        function removeLink(index) {
-            const cleaned = stripAllLinks(dynamicSections[index].content);
-            dynamicSections[index].content = cleaned;
-            renderDynamicSections();
-            showToast('All links removed from this section.');
-        }
-
-        function applyListFormat(command, sectionIndex, itemIndex) {
-            const editable = document.getElementById(`list-editable-${sectionIndex}-${itemIndex}`);
-            if (!editable) return;
-            editable.focus();
-            document.execCommand(command, false, null);
-            dynamicSections[sectionIndex].items[itemIndex] = editable.innerHTML;
-        }
-
-        function applyListLink(sectionIndex, itemIndex) {
-            const editable = document.getElementById(`list-editable-${sectionIndex}-${itemIndex}`);
-            if (!editable) return;
-            const sel = window.getSelection();
-            if (!sel || sel.isCollapsed) {
-                showToast('Select some text first, then click Link.', true);
-                return;
-            }
-            savedSelection = sel.getRangeAt(0);
-            linkTargetEditable = editable;
-            linkTargetSectionIndex = sectionIndex;
-            linkTargetItemIndex = itemIndex;
-            document.getElementById('link-modal-url').value = '';
-            document.getElementById('link-modal').style.display = 'flex';
-            setTimeout(() => document.getElementById('link-modal-url').focus(), 100);
-        }
-
-        function removeListLink(sectionIndex, itemIndex) {
-            const cleaned = stripAllLinks(dynamicSections[sectionIndex].items[itemIndex]);
-            dynamicSections[sectionIndex].items[itemIndex] = cleaned;
-            renderDynamicSections();
-            showToast('All links removed from this item.');
-        }
-
-        function closeLinkModal() {
-            document.getElementById('link-modal').style.display = 'none';
-            savedSelection = null;
-            linkTargetEditable = null;
-            linkTargetSectionIndex = null;
-            linkTargetItemIndex = null;
-        }
-
-        function confirmLink() {
-            let url = document.getElementById('link-modal-url').value.trim();
-            if (!url) {
-                showToast('Please enter a URL.', true);
-                return;
-            }
-
-            if (!/^https?:\/\//i.test(url) && !url.startsWith('/') && !url.startsWith('#') && !url.startsWith('mailto:')) {
-                url = 'https://' + url;
-            }
-
-            if (savedSelection && linkTargetEditable) {
-                linkTargetEditable.focus();
-                const sel = window.getSelection();
-                sel.removeAllRanges();
-                sel.addRange(savedSelection);
-                document.execCommand('createLink', false, url);
-                const links = linkTargetEditable.querySelectorAll('a');
-                links.forEach(a => { a.target = '_blank'; a.style.color = '#3B4FD4'; });
-
-                if (linkTargetItemIndex !== null) {
-                    dynamicSections[linkTargetSectionIndex].items[linkTargetItemIndex] = linkTargetEditable.innerHTML;
-                } else {
-                    dynamicSections[linkTargetSectionIndex].content = linkTargetEditable.innerHTML;
-                }
-            }
-
-            closeLinkModal();
-        }
-
-        function addListItem(index) {
-            if (!dynamicSections[index].items) dynamicSections[index].items = [];
-            dynamicSections[index].items.push('');
-            renderDynamicSections();
-        }
-
-        function removeListItem(sectionIndex, itemIndex) {
-            dynamicSections[sectionIndex].items.splice(itemIndex, 1);
-            if (dynamicSections[sectionIndex].items.length === 0) {
-                dynamicSections[sectionIndex].items = [''];
-            }
-            renderDynamicSections();
-        }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast("URL copied to clipboard!");
-            });
-        }
-
         function updateSlug() {
             if (isEditing) return;
-            const title = document.getElementById('blog-title').value;
+            const title = document.getElementById('mag-title').value;
             const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-            document.getElementById('blog-slug').value = slug;
+            document.getElementById('mag-slug').value = slug;
         }
 
-        function addSection(type) {
-            if (type === 'image') {
-                dynamicSections.push({ type: 'image', url: '', alt: '' });
-            } else if (type === 'list') {
-                dynamicSections.push({ type: 'list', items: [''] });
-            } else if (type === 'text') {
-                dynamicSections.push({ type: 'text', content: '' });
+        function updateImagePreview() {
+            const url = document.getElementById('mag-image-url').value.trim();
+            const preview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('image-preview-img');
+
+            if (url) {
+                previewImg.src = url;
+                preview.style.display = 'block';
+                previewImg.onerror = () => {
+                    preview.style.display = 'none';
+                };
             } else {
-                dynamicSections.push({ type: type, content: '', id: '' });
-            }
-            renderDynamicSections();
-        }
-
-        function removeSection(index) {
-            dynamicSections.splice(index, 1);
-            renderDynamicSections();
-        }
-
-        function moveSection(index, dir) {
-            if (index + dir < 0 || index + dir >= dynamicSections.length) return;
-            const temp = dynamicSections[index];
-            dynamicSections[index] = dynamicSections[index + dir];
-            dynamicSections[index + dir] = temp;
-            renderDynamicSections();
-        }
-
-        function updateSectionData(index, key, value) {
-            dynamicSections[index][key] = value;
-            if ((dynamicSections[index].type === 'h1' || dynamicSections[index].type === 'h2') && key === 'content' && !dynamicSections[index].id) {
-                dynamicSections[index].id = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-                renderDynamicSections();
+                preview.style.display = 'none';
             }
         }
 
@@ -1576,72 +1125,62 @@
 
         function showEditor(isEditMode = false) {
             isEditing = isEditMode;
-            document.getElementById('editor-title').textContent = isEditMode ? 'Edit Blog' : 'Create Blog';
+            document.getElementById('editor-title').textContent = isEditMode ? 'Edit Magazine' : 'Create Magazine';
 
             if (!isEditMode) {
-                document.getElementById('blog-form').reset();
-                document.getElementById('blog-slug').readOnly = false;
-                dynamicSections = [];
+                document.getElementById('magazine-form').reset();
+                document.getElementById('mag-slug').readOnly = false;
                 currentEditingSlug = null;
                 const today = new Date().toISOString().split('T')[0];
-                document.getElementById('blog-date').value = today;
+                document.getElementById('mag-date').value = today;
+                document.getElementById('image-preview').style.display = 'none';
             } else {
-                document.getElementById('blog-slug').readOnly = true;
+                document.getElementById('mag-slug').readOnly = true;
             }
 
-            renderDynamicSections();
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('editor-view').style.display = 'block';
         }
 
-        function editBlog(slug, e) {
+        function editMagazine(slug, e) {
             if (e) e.stopPropagation();
-            const blog = blogs.find(b => b.slug === slug);
-            if (!blog) return;
+            const mag = magazines.find(m => m.slug === slug);
+            if (!mag) return;
 
             showEditor(true);
             currentEditingSlug = slug;
 
-            document.getElementById('blog-title').value = blog.blogContent?.blogTitle || '';
-            document.getElementById('blog-summary').value = blog.blogContent?.blogSummary || '';
-            document.getElementById('blog-slug').value = blog.slug;
-            document.getElementById('blog-category').value = blog.blogContent?.blogCategory || 'Business';
-            document.getElementById('blog-status').value = blog.status || 'published';
-            document.getElementById('blog-date').value = blog.date || '';
-            document.getElementById('blog-image-url').value = blog.blogContent?.mainImageUrl || '';
-            document.getElementById('blog-image-alt').value = blog.blogContent?.mainImageAlt || '';
+            document.getElementById('mag-title').value = mag.title || '';
+            document.getElementById('mag-pdf-url').value = mag.pdf_url || '';
+            document.getElementById('mag-image-url').value = mag.image_url || '';
+            document.getElementById('mag-slug').value = mag.slug;
+            document.getElementById('mag-category').value = mag.category || '';
+            document.getElementById('mag-status').value = mag.status || 'published';
+            document.getElementById('mag-date').value = mag.date || '';
 
-            dynamicSections = JSON.parse(JSON.stringify(blog.blogContent?.dynamicSections || []));
-            renderDynamicSections();
+            updateImagePreview();
         }
 
-        async function saveBlog() {
-            const form = document.getElementById('blog-form');
+        async function saveMagazine() {
+            const form = document.getElementById('magazine-form');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
 
-            const slug = document.getElementById('blog-slug').value;
-            const timeStr = isEditing ? blogs.find(b => b.slug === slug)?.created_at : new Date().toISOString();
+            const slug = document.getElementById('mag-slug').value;
 
             const payload = {
                 slug: slug,
-                status: document.getElementById('blog-status').value,
-                isDeleted: false,
-                date: document.getElementById('blog-date').value,
-                created_at: timeStr,
-                blogContent: {
-                    blogTitle: document.getElementById('blog-title').value,
-                    blogSummary: document.getElementById('blog-summary').value,
-                    blogCategory: document.getElementById('blog-category').value,
-                    mainImageUrl: document.getElementById('blog-image-url').value,
-                    mainImageAlt: document.getElementById('blog-image-alt').value,
-                    dynamicSections: dynamicSections
-                }
+                title: document.getElementById('mag-title').value,
+                pdf_url: document.getElementById('mag-pdf-url').value,
+                image_url: document.getElementById('mag-image-url').value,
+                category: document.getElementById('mag-category').value,
+                status: document.getElementById('mag-status').value,
+                date: document.getElementById('mag-date').value,
             };
 
-            const url = isEditing ? `/admin/api/blogs/${encodeURIComponent(currentEditingSlug)}` : '/admin/api/blogs';
+            const url = isEditing ? `/admin/api/magazines/${encodeURIComponent(currentEditingSlug)}` : '/admin/api/magazines';
             const method = isEditing ? 'PUT' : 'POST';
 
             try {
@@ -1652,47 +1191,39 @@
                 });
 
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || 'Failed to save blog');
+                if (!res.ok) throw new Error(data.detail || 'Failed to save magazine');
 
                 showToast(data.message);
                 showList();
-                await loadBlogs();
+                await loadMagazines();
             } catch (e) {
                 showToast(e.message, true);
             }
         }
 
-        function requestDeleteBlog(slug, e) {
+        function requestDeleteMagazine(slug, e) {
             e.stopPropagation();
-            blogToDelete = slug;
-            document.getElementById('delete-redirect-url').value = '';
+            magazineToDelete = slug;
             document.getElementById('delete-modal').style.display = 'flex';
         }
 
         function closeDeleteModal() {
             document.getElementById('delete-modal').style.display = 'none';
-            blogToDelete = null;
+            magazineToDelete = null;
         }
 
-        async function confirmDelete(useRedirect) {
-            if (!blogToDelete) return;
-
-            let url = `/admin/api/blogs/${encodeURIComponent(blogToDelete)}`;
-
-            if (useRedirect) {
-                const redirectUrl = document.getElementById('delete-redirect-url').value.trim();
-                if (redirectUrl) {
-                    url += `?redirect_url=${encodeURIComponent(redirectUrl)}`;
-                }
-            }
+        async function confirmDelete() {
+            if (!magazineToDelete) return;
 
             try {
-                const res = await fetch(url, { method: 'DELETE' });
+                const res = await fetch(`/admin/api/magazines/${encodeURIComponent(magazineToDelete)}`, {
+                    method: 'DELETE'
+                });
                 if (!res.ok) throw new Error('Delete failed');
 
-                showToast("Blog deleted");
+                showToast("Magazine deleted");
                 closeDeleteModal();
-                await loadBlogs();
+                await loadMagazines();
             } catch (e) {
                 showToast(e.message, true);
             }

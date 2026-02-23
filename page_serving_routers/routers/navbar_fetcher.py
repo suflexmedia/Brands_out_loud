@@ -1,39 +1,23 @@
-import time
+"""Fetches and caches navbar dropdown data from MongoDB."""
+
 from database_handler.connection import db_handler
-
-navbar_cache = {
-    "data": None,
-    "expires_at": 0
-}
-CACHE_TTL = 300
+from cache_manager import cache_manager
 
 
-async def get_navbar_data():
-    """
-    Fetches the navbar dropdown data from the cache if valid,
-    otherwise fetches from MongoDB and updates the cache.
-    TTL is 5 minutes (300 seconds).
-    """
-    current_time = time.time()
-
-    if navbar_cache["data"] and current_time < navbar_cache["expires_at"]:
-        navbar_cache["expires_at"] = current_time + CACHE_TTL
-        return navbar_cache["data"]
-
-    db_start_time = time.time()
+async def _fetch_navbar_from_db():
+    """Fetch navbar data directly from MongoDB."""
     db = db_handler.get_db()
     collection = db["navbar"]
 
     doc_count = await collection.count_documents({})
     if doc_count == 0:
-        navbar_data = {}
-    else:
-        navbar_data = await collection.find_one({})
+        return {}
+    return await collection.find_one({})
 
-    db_elapsed = time.time() - db_start_time
-    print(f"Database Fetch | Navbar Data | Time: {db_elapsed:.4f}s")
 
-    navbar_cache["data"] = navbar_data
-    navbar_cache["expires_at"] = current_time + CACHE_TTL
-
-    return navbar_data
+async def get_navbar_data():
+    """
+    Returns navbar data using the centralized cache manager.
+    Fixed 5-minute absolute expiry with stale-while-revalidate.
+    """
+    return await cache_manager.get("navbar", _fetch_navbar_from_db)

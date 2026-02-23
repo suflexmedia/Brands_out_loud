@@ -6,14 +6,9 @@ import os
 import time
 from database_handler.connection import db_handler
 from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+from cache_manager import cache_manager
 
 router = APIRouter()
-
-blog_cache = {
-    "data": None,
-    "expires_at": 0
-}
-CACHE_TTL = 300
 
 
 async def getHeader():
@@ -1258,12 +1253,29 @@ async def get_blog_content(data: list):
                 f"""<h6  class="font-jakarta font-medium text-[14px] md:text-[18px] leading-[20px] md:leading-[22px] text-black scroll-mt-20" >{item_content}</h6>"""
             )
         elif item_type == "image":
+            url = ""
+            alt = "image"
             if isinstance(item_content, dict):
                 url = item_content.get('url', '')
                 alt = item_content.get('alt', 'image')
+            else:
+                url = i.get('url', '')
+                alt = i.get('alt', 'image')
+            if url:
                 content.append(
-                    f"""<div class="w-full h-[120px] sm:h-[160px] md:h-[236px] my-8 md:my-12"><img src="{url}" alt="{alt}" class="w-full h-full object-cover"/></div>"""
+                    f"""<div class="w-full h-[120px] sm:h-[160px] md:h-[236px] my-8 md:my-12"><img src="{url}" alt="{alt}" class="w-full h-full object-cover" loading="lazy" width="1200" height="236"/></div>"""
                 )
+        elif item_type == "list":
+            items = i.get("items", [])
+            if items:
+                list_items = "\n".join(
+                    f"""<li class="font-jakarta font-medium text-[15px] md:text-[16px] leading-[26px] md:leading-[30px] text-black">{li}</li>"""
+                    for li in items if li
+                )
+                if list_items:
+                    content.append(
+                        f"""<ul class="list-disc pl-6 space-y-2 my-4">{list_items}</ul>"""
+                    )
     content_str = "\n".join(content)
     return f"""<section class="space-y-6 md:space-y-5 text-left order-1 lg:order-2 max-w-[59vw]">{content_str}</section>"""
 
@@ -2521,32 +2533,58 @@ async def create_blog_html(data: dict, other_blogs: list = []) -> str:
     return html
 
 
-async def get_all_blogs():
-    """Fetch all blogs from MongoDB with caching. Returns a dict keyed by slug for O(1) lookup."""
-    current_time = time.time()
-    
-    if blog_cache["data"] and current_time < blog_cache["expires_at"]:
-        blog_cache["expires_at"] = current_time + CACHE_TTL
-        return blog_cache["data"]
-
-    db_start_time = time.time()
+async def _fetch_all_blogs_from_db():
+    """Fetch all blogs directly from MongoDB. Returns a dict keyed by slug for O(1) lookup."""
     db = db_handler.get_db()
     collection = db["blogs"]
-    
+
     all_blogs_list = await collection.find(
         {"isDeleted": {"$ne": True}},
         {"_id": 0}
     ).sort("created_at", -1).to_list(length=None)
-    
-    db_elapsed = time.time() - db_start_time
-    print(f"Database Fetch | All Blogs | Time: {db_elapsed:.4f}s")
-    
-    all_blogs = {blog.get("slug"): blog for blog in all_blogs_list if blog.get("slug")}
-    
-    blog_cache["data"] = all_blogs
-    blog_cache["expires_at"] = current_time + CACHE_TTL
-    
-    return all_blogs
+
+    return {blog.get("slug"): blog for blog in all_blogs_list if blog.get("slug")}
+
+
+async def get_all_blogs():
+    """Fetch all blogs with caching via centralized cache manager."""
+    return await cache_manager.get("blogs", _fetch_all_blogs_from_db)
+
+
+async def _fetch_related_blogs_by_category_from_db(category: str):
+    """Fetch the latest 4 blogs of a given category from MongoDB.
+
+    Fetches 4 instead of 3 so that after excluding the current blog
+    we still have 3 results available.
+    """
+    db = db_handler.get_db()
+    collection = db["blogs"]
+
+    blogs = await collection.find(
+        {
+            "isDeleted": {"$ne": True},
+            "blogContent.blogCategory": {"$regex": f"^{category}$", "$options": "i"},
+        },
+        {"_id": 0},
+    ).sort("created_at", -1).limit(4).to_list(length=4)
+
+    return blogs
+
+
+async def get_related_blogs(category: str, current_slug: str):
+    """Get the 3 most recent blogs in the same category, excluding the current blog.
+
+    Uses cache_manager with a per-category cache key (5-minute TTL via CACHE_TTL).
+    """
+    cache_key = f"related_blogs_{category.lower().replace(' ', '_')}"
+
+    blogs = await cache_manager.get(
+        cache_key,
+        lambda: _fetch_related_blogs_by_category_from_db(category),
+    )
+
+    related = [blog for blog in blogs if blog.get("slug") != current_slug]
+    return related[:3]
 
 
 @router.get("/blog/{slug}", tags=["Pages"])
@@ -2559,8 +2597,6 @@ async def get_blog(slug: str):
 
         if not blog_record:
             raise HTTPException(status_code=404, detail=f"Blog post not found: {slug}")
-        
-        other_blogs = [blog for key, blog in all_blogs.items() if key != slug]
         
         blog_content_raw = blog_record.get('blogContent', {})
         blog_data = {}
@@ -2582,7 +2618,13 @@ async def get_blog(slug: str):
             else:
                 blog_data['blogDate'] = str(display_date)
         
-        html_content = await create_blog_html(blog_data, other_blogs)
+        category = blog_data.get('blogCategory', '')
+        if category:
+            related_blogs = await get_related_blogs(category, slug)
+        else:
+            related_blogs = []
+        
+        html_content = await create_blog_html(blog_data, related_blogs)
         
         return HTMLResponse(html_content)
         

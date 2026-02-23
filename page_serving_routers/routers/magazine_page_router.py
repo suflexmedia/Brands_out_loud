@@ -1,10 +1,12 @@
+"""Serves individual magazine pages with cached data and PDF viewer."""
+
 import os
 from urllib.parse import unquote
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Query
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
 from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
-import time
+from cache_manager import cache_manager
 
 router = APIRouter()
 
@@ -14,41 +16,23 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "static", "templates")
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 
-magazine_page_cache = {
-    "data": None,
-    "expires_at": 0
-}
-CACHE_TTL = 300
-
-
-async def get_magazine_page_data():
-    """
-    Fetches the magazine page data from the cache if valid,
-    otherwise fetches from MongoDB and updates the cache.
-    """
-    current_time = time.time()
-
-    if magazine_page_cache["data"] and current_time < magazine_page_cache["expires_at"]:
-        magazine_page_cache["expires_at"] = current_time + CACHE_TTL
-        return magazine_page_cache["data"]
-
-    db_start_time = time.time()
+async def _fetch_magazine_page_from_db():
+    """Fetch magazine page data directly from MongoDB."""
     db = db_handler.get_db()
     collection = db["magazine_page"]
 
     doc_count = await collection.count_documents({})
     if doc_count == 0:
-        magazine_page_data = {}
-    else:
-        magazine_page_data = await collection.find_one({})
+        return {}
+    return await collection.find_one({})
 
-    db_elapsed = time.time() - db_start_time
-    print(f"Database Fetch | Magazine Page Data | Time: {db_elapsed:.4f}s")
 
-    magazine_page_cache["data"] = magazine_page_data
-    magazine_page_cache["expires_at"] = current_time + CACHE_TTL
-
-    return magazine_page_data
+async def get_magazine_page_data():
+    """
+    Returns magazine page data using the centralized cache manager.
+    Fixed 5-minute absolute expiry with stale-while-revalidate.
+    """
+    return await cache_manager.get("magazine_page", _fetch_magazine_page_from_db)
 
 
 def build_pdf_url(pdf_name: str) -> str:
@@ -62,18 +46,82 @@ def build_pdf_url(pdf_name: str) -> str:
     return f"{endpoint}/{bucket_name}/{decoded_name}"
 
 
+async def find_magazine_by_slug(slug: str):
+    """Look up a magazine from the magazines collection by slug."""
+    db = db_handler.get_db()
+    return await db["magazines"].find_one({"slug": slug})
+
+
+@router.get("/api/magazines/grid", tags=["Public API"])
+async def public_magazines_grid(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(9, ge=1, le=18),
+    exclude_slug: str = Query(None),
+):
+    """
+    Public endpoint for the explore earlier editions grid.
+    Returns paginated published magazines, excluding the current one if specified.
+    Max 9 per page with pagination metadata.
+    """
+    db = db_handler.get_db()
+
+    query = {"status": "published"}
+    if exclude_slug:
+        query["slug"] = {"$ne": exclude_slug}
+
+    total = await db["magazines"].count_documents(query)
+    skip = (page - 1) * per_page
+
+    magazines = await db["magazines"].find(query).sort("created_at", -1).skip(skip).limit(per_page).to_list(length=per_page)
+
+    for mag in magazines:
+        if "_id" in mag:
+            mag["_id"] = str(mag["_id"])
+
+    total_pages = max(1, (total + per_page - 1) // per_page)
+
+    return {
+        "magazines": magazines,
+        "page": page,
+        "per_page": per_page,
+        "total": total,
+        "total_pages": total_pages,
+        "has_next": page < total_pages,
+        "has_prev": page > 1,
+    }
+
+
 @router.get("/magazine/{pdf_name:path}", tags=["Pages"])
 async def serve_magazine_page(request: Request, pdf_name: str):
     """
     Serves the magazine page with the PDF viewer.
-    Only the PDF filename is passed as a URL parameter.
-    The full PDF URL is constructed from MINIO_PUBLIC_ENDPOINT + MINIO_BUCKET_NAME + pdf_name.
+    First checks if pdf_name matches a magazine slug in the magazines collection.
+    If found, uses the stored pdf_url. Otherwise falls back to constructing
+    the URL from MinIO endpoint + bucket + pdf_name.
     """
     data = await get_magazine_page_data()
     navbar = await get_navbar_data()
-    pdf_url = build_pdf_url(pdf_name)
-    print(f"Magazine Page | PDF Name: {pdf_name} | Full URL: {pdf_url}")
+
+    magazine = await find_magazine_by_slug(pdf_name)
+
+    if magazine:
+        pdf_url = magazine.get("pdf_url", "")
+        current_slug = magazine.get("slug", "")
+        magazine_title = magazine.get("title", "")
+    else:
+        pdf_url = build_pdf_url(pdf_name)
+        current_slug = ""
+        magazine_title = ""
+
+    print(f"Magazine Page | PDF Name: {pdf_name} | Full URL: {pdf_url} | Slug: {current_slug}")
     return templates.TemplateResponse(
         "magazine-page.html",
-        {"request": request, "data": data, "navbar": navbar, "pdf_url": pdf_url}
+        {
+            "request": request,
+            "data": data,
+            "navbar": navbar,
+            "pdf_url": pdf_url,
+            "current_slug": current_slug,
+            "magazine_title": magazine_title,
+        }
     )

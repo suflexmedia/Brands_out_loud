@@ -1467,24 +1467,93 @@
         </div>
 
         <section class="magazine-grid-section">
-            <div class="magazine-grid-inner">
-                {% for row in data.magazine_grid_section | batch(3) %}
-                <div class="magazine-row">
-                    {% for magazine in row %}
-                    <div class="magazine-card"
-                        onclick="window.open('/magazine/{{ magazine.pdf_name }}', '_blank')">
-                        <div class="magazine-card-thumb">
-                            <div class="magazine-card-overlay"></div>
-                            <img src="{{ magazine.image_url }}"
-                                alt="{{ magazine.title }}">
-                        </div>
-                        <div class="magazine-card-title">{{ magazine.title }}</div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endfor %}
+            <div class="magazine-grid-inner" id="dynamic-magazine-grid">
+            </div>
+            <div id="magazine-grid-pagination" style="display:none; justify-content:center; gap:1rem; padding:1.5rem 0;">
+                <button id="mag-prev-btn" onclick="loadMagazineGrid(currentMagPage - 1)"
+                    style="padding:0.6rem 1.4rem; border:1px solid #ccc; background:#fff; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.9rem; border-radius:4px; transition:all 0.2s;">
+                    ← Previous
+                </button>
+                <span id="mag-page-info" style="display:flex; align-items:center; font-size:0.9rem; color:#666;"></span>
+                <button id="mag-next-btn" onclick="loadMagazineGrid(currentMagPage + 1)"
+                    style="padding:0.6rem 1.4rem; border:1px solid #ccc; background:#fff; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.9rem; border-radius:4px; transition:all 0.2s;">
+                    Next →
+                </button>
             </div>
         </section>
+
+        <script>
+            var currentMagPage = 1;
+            var currentSlug = '{{ current_slug }}';
+
+            function loadMagazineGrid(page) {
+                if (page < 1) return;
+                currentMagPage = page;
+
+                var url = '/api/magazines/grid?page=' + page + '&per_page=9';
+                if (currentSlug) {
+                    url += '&exclude_slug=' + encodeURIComponent(currentSlug);
+                }
+
+                fetch(url)
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        var grid = document.getElementById('dynamic-magazine-grid');
+                        grid.innerHTML = '';
+
+                        if (!data.magazines || data.magazines.length === 0) {
+                            grid.innerHTML = '<p style="text-align:center;padding:2rem;color:#888;">No magazines found.</p>';
+                            document.getElementById('magazine-grid-pagination').style.display = 'none';
+                            return;
+                        }
+
+                        var magazines = data.magazines;
+                        for (var i = 0; i < magazines.length; i += 3) {
+                            var row = document.createElement('div');
+                            row.className = 'magazine-row';
+
+                            for (var j = i; j < Math.min(i + 3, magazines.length); j++) {
+                                var mag = magazines[j];
+                                var card = document.createElement('div');
+                                card.className = 'magazine-card';
+                                card.setAttribute('data-slug', mag.slug);
+                                card.onclick = (function(slug) {
+                                    return function() { window.location.href = '/magazine/' + slug; };
+                                })(mag.slug);
+
+                                card.innerHTML =
+                                    '<div class="magazine-card-thumb">' +
+                                        '<div class="magazine-card-overlay"></div>' +
+                                        '<img src="' + mag.image_url + '" alt="' + mag.title + '">' +
+                                    '</div>' +
+                                    '<div class="magazine-card-title">' + mag.title + '</div>';
+
+                                row.appendChild(card);
+                            }
+                            grid.appendChild(row);
+                        }
+
+                        var paginationEl = document.getElementById('magazine-grid-pagination');
+                        if (data.total_pages > 1) {
+                            paginationEl.style.display = 'flex';
+                            document.getElementById('mag-page-info').textContent = 'Page ' + data.page + ' of ' + data.total_pages;
+                            document.getElementById('mag-prev-btn').disabled = !data.has_prev;
+                            document.getElementById('mag-next-btn').disabled = !data.has_next;
+                            document.getElementById('mag-prev-btn').style.opacity = data.has_prev ? '1' : '0.4';
+                            document.getElementById('mag-next-btn').style.opacity = data.has_next ? '1' : '0.4';
+                        } else {
+                            paginationEl.style.display = 'none';
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('Failed to load magazines grid:', err);
+                    });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                loadMagazineGrid(1);
+            });
+        </script>
 
         <a href="{{ data.ad_banner_2.link }}" class="ad-banner">
             <img src="{{ data.ad_banner_2.image_url }}" alt="Advertisement">
