@@ -1054,7 +1054,7 @@
             const loading = document.getElementById('gallery-loading');
             loading.style.display = 'flex';
             try {
-                const res = await fetch('/admin/api/gallery');
+                const res = await fetch('/admin/api/gallery?media_type=images');
                 if (!res.ok) throw new Error("Failed to load gallery");
                 galleryImages = await res.json();
                 renderGallery();

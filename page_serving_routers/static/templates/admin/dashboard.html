@@ -492,6 +492,12 @@
                 const magazineBadge = document.getElementById('magazine-section-card').querySelector('.coming-soon-badge');
                 if (magazineBadge) magazineBadge.remove();
 
+                document.getElementById('analytics-card').onclick = () => {
+                    window.location.href = '/admin/analytics';
+                };
+                const analyticsBadge = document.getElementById('analytics-card').querySelector('.coming-soon-badge');
+                if (analyticsBadge) analyticsBadge.remove();
+
                 const cardsMap = {
                     'analytics': document.getElementById('analytics-card'),
                     'edit_pages': document.getElementById('edit-pages-card'),

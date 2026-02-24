@@ -10,8 +10,18 @@ import mimetypes
 
 router = APIRouter(prefix="/admin/api", tags=["admin_api"])
 
-# Session cookie name (must match admin_router.py)
 COOKIE_NAME = "admin_session"
+
+CATEGORY_HEADINGS = {
+    "business": "Latest Business Stories",
+    "technology": "Tech Innovations",
+    "gcc": "GCC Regional News",
+    "sustainability": "Green Initiatives",
+    "semiconductor": "Chip Industry Updates",
+}
+
+MAX_NAVBAR_POSTS = 3
+
 
 async def is_authenticated(request: Request) -> bool:
     """Check if the user has a valid admin session cookie in the DB."""
@@ -22,6 +32,49 @@ async def is_authenticated(request: Request) -> bool:
     db = db_handler.get_db()
     session = await db["admin_sessions"].find_one({"token": token})
     return session is not None
+
+
+async def update_navbar_collection():
+    """Rebuild the navbar collection from the latest published blogs per category.
+
+    For each category, fetches the most recent MAX_NAVBAR_POSTS published blogs
+    and writes the result as a single document into the 'navbar' collection.
+    """
+    db = db_handler.get_db()
+
+    navbar_data = {}
+
+    for category_key, heading in CATEGORY_HEADINGS.items():
+        category_filter = {
+            "status": "published",
+            "blogContent.blogCategory": {"$regex": f"^{category_key}$", "$options": "i"},
+        }
+
+        cursor = db["blogs"].find(category_filter).sort("created_at", -1).limit(MAX_NAVBAR_POSTS)
+        blogs = await cursor.to_list(length=MAX_NAVBAR_POSTS)
+
+        posts = []
+        for blog in blogs:
+            blog_content = blog.get("blogContent", {})
+            posts.append({
+                "title": blog_content.get("blogTitle", "Untitled"),
+                "image_url": blog_content.get("mainImageUrl", ""),
+                "slug": blog.get("slug", ""),
+            })
+
+        navbar_data[category_key] = {
+            "heading": heading,
+            "posts": posts,
+        }
+
+    existing = await db["navbar"].find_one({})
+    if existing:
+        await db["navbar"].update_one(
+            {"_id": existing["_id"]},
+            {"$set": navbar_data},
+        )
+    else:
+        await db["navbar"].insert_one(navbar_data)
 
 # ---------------------------------------------------------
 # Blog Management Endpoints
@@ -63,6 +116,7 @@ async def api_create_blog(request: Request):
     data["created_at"] = time.time()
     await db["blogs"].insert_one(data)
 
+    await update_navbar_collection()
     cache_manager.invalidate("blogs")
     cache_manager.invalidate("navbar")
     cache_manager.invalidate_pattern("related_blogs_")
@@ -89,6 +143,7 @@ async def api_update_blog(request: Request, slug: str):
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Blog not found")
 
+    await update_navbar_collection()
     cache_manager.invalidate("blogs")
     cache_manager.invalidate("navbar")
     cache_manager.invalidate_pattern("related_blogs_")
@@ -107,6 +162,7 @@ async def api_delete_blog(request: Request, slug: str, redirect_url: str = None)
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Blog not found")
 
+    await update_navbar_collection()
     cache_manager.invalidate("blogs")
     cache_manager.invalidate("navbar")
     cache_manager.invalidate_pattern("related_blogs_")
@@ -131,9 +187,15 @@ async def api_delete_blog(request: Request, slug: str, redirect_url: str = None)
 # MinIO Gallery Endpoints
 # ---------------------------------------------------------
 
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp", ".ico", ".avif", ".tiff"}
+
 @router.get("/gallery")
-async def api_list_gallery(request: Request):
-    """List images in MinIO gallery bucket."""
+async def api_list_gallery(request: Request, media_type: str = "all"):
+    """List files in MinIO gallery bucket.
+
+    Args:
+        media_type: Filter by type - 'images' for images only, 'all' for everything.
+    """
     if not await is_authenticated(request):
         raise HTTPException(status_code=401, detail="Unauthorized")
         
@@ -145,6 +207,11 @@ async def api_list_gallery(request: Request):
         
         images = []
         for obj in objects:
+            if media_type == "images":
+                ext = os.path.splitext(obj.object_name)[1].lower()
+                if ext not in IMAGE_EXTENSIONS:
+                    continue
+
             endpoint = os.getenv("MINIO_PUBLIC_ENDPOINT", "http://localhost:9000")
             url = f"{endpoint}/{bucket_name}/{obj.object_name}"
             

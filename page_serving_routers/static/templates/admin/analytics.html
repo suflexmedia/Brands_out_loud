@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Brands Out Loud Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent: #3B4FD4;
+            --accent-dark: #0D1030;
+            --accent-gradient: linear-gradient(135deg, #0D1030, #3B4FD4);
+            --border: #000000;
+            --bg-body: #f5f5f5;
+            --green: #22c55e;
+            --red: #ef4444;
+            --yellow: #eab308;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg-body);
+            color: var(--text);
+            line-height: 1.4;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .navbar {
+            background-color: var(--bg);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar img {
+            height: 50px;
+            max-width: 100%;
+        }
+
+        .back-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--bg);
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            text-transform: uppercase;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            letter-spacing: -2px;
+            line-height: 0.9;
+        }
+
+        .period-selector {
+            display: flex;
+            gap: 0;
+            border: 2px solid var(--border);
+        }
+
+        .period-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg);
+            color: var(--text);
+            border: none;
+            border-right: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .period-btn:last-child {
+            border-right: none;
+        }
+
+        .period-btn.active {
+            background: var(--text);
+            color: white;
+        }
+
+        .period-btn:hover:not(.active) {
+            background: var(--bg-body);
+        }
+
+        .realtime-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border: 2px solid var(--green);
+            color: var(--green);
+        }
+
+        .realtime-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card .label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-card .value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .metric-card .sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 0.35rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-box {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .chart-box h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+        }
+
+        .tables-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-box {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .table-box h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.6rem 0.75rem;
+            border-bottom: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover td {
+            background: var(--bg-body);
+        }
+
+        .path-cell {
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-type {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .activity-type.blog {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .activity-type.magazine {
+            color: #9333ea;
+            border-color: #9333ea;
+        }
+
+        .activity-title {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 3px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            font-family: 'Space Mono', monospace;
+            position: relative;
+            cursor: default;
+        }
+
+        .heatmap-cell .heat-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.65rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .heatmap-cell:hover .heat-tooltip {
+            display: block;
+        }
+
+        .heatmap-labels {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 3px;
+            margin-top: 4px;
+        }
+
+        .heatmap-labels span {
+            text-align: center;
+            font-size: 0.55rem;
+            color: #888;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 2px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .leads-table-wrap {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .clickable-card {
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .clickable-card:hover {
+            border-color: var(--accent);
+            box-shadow: 4px 4px 0 var(--border);
+        }
+
+        .clickable-card .card-arrow {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            margin-top: 0.75rem;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 3rem 1rem;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            width: 100%;
+            max-width: 1000px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-close {
+            background: none;
+            border: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--text);
+            color: white;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-body table {
+            width: 100%;
+        }
+
+        .modal-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-top: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .modal-pagination button {
+            padding: 0.4rem 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-pagination button:hover:not(:disabled) {
+            background: var(--text);
+            color: white;
+        }
+
+        .modal-pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .source-badge {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.15rem 0.45rem;
+            border: 1px solid;
+            display: inline-block;
+        }
+
+        .source-badge.blog {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .source-badge.magazine {
+            color: #9333ea;
+            border-color: #9333ea;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+            .navbar img {
+                height: 38px;
+            }
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            .page-header {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .metric-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .metric-card .value {
+                font-size: 1.8rem;
+            }
+            .period-selector {
+                flex-wrap: wrap;
+            }
+            .heatmap-grid {
+                grid-template-columns: repeat(12, 1fr);
+            }
+            .heatmap-labels {
+                grid-template-columns: repeat(12, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metric-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <img src="/static/images/header_logo.png" alt="Brands out loud Logo">
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="realtime-badge" id="realtime-badge">
+                <span class="realtime-dot"></span>
+                <span id="realtime-count">0</span> live
+            </div>
+            <a href="/admin/dashboard" class="back-btn">&larr; Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="page-header">
+            <h2>Analytics</h2>
+            <div class="period-selector" id="period-selector">
+                <button class="period-btn" data-period="today">Today</button>
+                <button class="period-btn" data-period="week">7 Days</button>
+                <button class="period-btn active" data-period="month">30 Days</button>
+                <button class="period-btn" data-period="year">Year</button>
+                <button class="period-btn" data-period="all">All Time</button>
+            </div>
+        </div>
+
+        <section class="metric-grid" id="metric-grid">
+            <div class="metric-card">
+                <div class="label">Page Views</div>
+                <div class="value" id="m-views">—</div>
+                <div class="sub" id="m-views-sub"></div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Unique Visitors</div>
+                <div class="value" id="m-unique">—</div>
+                <div class="sub" id="m-unique-sub"></div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Total Blogs</div>
+                <div class="value" id="m-blogs">—</div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Total Magazines</div>
+                <div class="value" id="m-magazines">—</div>
+            </div>
+            <div class="metric-card clickable-card" onclick="openLeadsModal()">
+                <div class="label">PDF Leads</div>
+                <div class="value" id="m-leads">—</div>
+                <div class="card-arrow">View All &rarr;</div>
+            </div>
+            <div class="metric-card clickable-card" onclick="openUsersModal()">
+                <div class="label">Registered Users</div>
+                <div class="value" id="m-users">—</div>
+                <div class="card-arrow">View All &rarr;</div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Admin Users</div>
+                <div class="value" id="m-admins">—</div>
+                <div class="sub" id="m-sessions-sub"></div>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-box">
+                <h3>Traffic Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="traffic-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-box">
+                <h3>Device Breakdown</h3>
+                <div class="chart-container">
+                    <canvas id="device-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-box">
+                <h3>Blog Categories</h3>
+                <div class="chart-container">
+                    <canvas id="categories-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-box">
+                <h3>Peak Traffic Hours (UTC)</h3>
+                <div id="heatmap-container" style="padding: 0.5rem 0;"></div>
+            </div>
+        </section>
+
+        <section class="tables-grid">
+            <div class="table-box">
+                <h3>Top Pages</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Page</th>
+                            <th>Views</th>
+                            <th>Unique</th>
+                            <th>Avg Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top-pages-body"></tbody>
+                </table>
+            </div>
+            <div class="table-box">
+                <h3>Top Blog Posts</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Blog</th>
+                            <th>Views</th>
+                            <th>Unique</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top-blogs-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="tables-grid">
+            <div class="table-box">
+                <h3>Top Referrers</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Domain</th>
+                            <th>Visits</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referrers-body"></tbody>
+                </table>
+            </div>
+            <div class="table-box">
+                <h3>Slowest Pages</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Page</th>
+                            <th>Avg (s)</th>
+                            <th>Max (s)</th>
+                            <th>Hits</th>
+                        </tr>
+                    </thead>
+                    <tbody id="response-times-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="tables-grid">
+            <div class="table-box">
+                <h3>Recent Activity</h3>
+                <ul class="activity-list" id="activity-list"></ul>
+            </div>
+            <div class="table-box">
+                <h3>Leads by PDF</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PDF</th>
+                            <th>Downloads</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leads-by-pdf-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="leads-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>PDF Download Leads</h3>
+                <button class="modal-close" onclick="closeModal('leads-modal')">&times; Close</button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                            <th>Document</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leads-modal-body"></tbody>
+                </table>
+            </div>
+            <div class="modal-pagination">
+                <span id="leads-pagination-info"></span>
+                <div style="display:flex;gap:0.5rem;">
+                    <button id="leads-prev-btn" onclick="loadLeadsPage(leadsCurrentPage - 1)">&larr; Prev</button>
+                    <button id="leads-next-btn" onclick="loadLeadsPage(leadsCurrentPage + 1)">Next &rarr;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="users-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registered Users</h3>
+                <button class="modal-close" onclick="closeModal('users-modal')">&times; Close</button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-modal-body"></tbody>
+                </table>
+            </div>
+            <div class="modal-pagination">
+                <span id="users-pagination-info"></span>
+                <div style="display:flex;gap:0.5rem;">
+                    <button id="users-prev-btn" onclick="loadUsersPage(usersCurrentPage - 1)">&larr; Prev</button>
+                    <button id="users-next-btn" onclick="loadUsersPage(usersCurrentPage + 1)">Next &rarr;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">Loading Analytics...</div>
+
+    <script>
+        let currentPeriod = 'month';
+        let trafficChart = null;
+        let deviceChart = null;
+        let categoriesChart = null;
+        let leadsCurrentPage = 1;
+        let usersCurrentPage = 1;
+
+        const CHART_COLORS = ['#3B4FD4', '#0D1030', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#22c55e', '#eab308'];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/admin/me');
+                if (!response.ok) {
+                    window.location.href = '/admin/login';
+                    return;
+                }
+            } catch (e) {
+                window.location.href = '/admin/login';
+                return;
+            }
+
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentPeriod = btn.dataset.period;
+                    loadAllData();
+                });
+            });
+
+            await loadAllData();
+            document.getElementById('loading-overlay').classList.add('hidden');
+
+            setInterval(refreshRealtime, 30000);
+        });
+
+        async function loadAllData() {
+            await Promise.all([
+                loadOverview(),
+                loadTrafficChart(),
+                loadDeviceBreakdown(),
+                loadBlogCategories(),
+                loadTopPages(),
+                loadTopBlogs(),
+                loadReferrers(),
+                loadPeakHours(),
+                loadResponseTimes(),
+                loadRecentActivity(),
+                loadPdfLeads(),
+                loadRegisteredUsersCount(),
+            ]);
+        }
+
+        async function apiFetch(endpoint, params = {}) {
+            const url = new URL(endpoint, window.location.origin);
+            Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`API error: ${res.status}`);
+            return res.json();
+        }
+
+        async function loadOverview() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/overview');
+                const c = data.content;
+                const t = data.traffic;
+
+                document.getElementById('m-blogs').textContent = c.total_blogs.toLocaleString();
+                document.getElementById('m-magazines').textContent = c.total_magazines.toLocaleString();
+                document.getElementById('m-leads').textContent = c.total_pdf_leads.toLocaleString();
+                document.getElementById('m-admins').textContent = c.total_admin_users.toLocaleString();
+                document.getElementById('m-sessions-sub').textContent = `${c.active_sessions} active sessions`;
+
+                let views, unique, viewsLabel, uniqueLabel;
+                if (currentPeriod === 'today') {
+                    views = t.views_today;
+                    unique = t.unique_today;
+                    viewsLabel = 'today';
+                    uniqueLabel = 'today';
+                } else if (currentPeriod === 'week') {
+                    views = t.views_week;
+                    unique = t.unique_week;
+                    viewsLabel = 'last 7 days';
+                    uniqueLabel = 'last 7 days';
+                } else if (currentPeriod === 'month' || currentPeriod === 'year' || currentPeriod === 'all') {
+                    views = currentPeriod === 'month' ? t.views_month : t.views_total;
+                    unique = currentPeriod === 'month' ? t.unique_month : t.unique_month;
+                    viewsLabel = currentPeriod === 'month' ? 'last 30 days' : (currentPeriod === 'all' ? 'all time' : 'selected period');
+                    uniqueLabel = viewsLabel;
+                }
+
+                document.getElementById('m-views').textContent = (views || 0).toLocaleString();
+                document.getElementById('m-views-sub').textContent = viewsLabel;
+                document.getElementById('m-unique').textContent = (unique || 0).toLocaleString();
+                document.getElementById('m-unique-sub').textContent = uniqueLabel;
+                document.getElementById('realtime-count').textContent = t.realtime_visitors;
+            } catch (e) {
+                console.error('Overview error:', e);
+            }
+        }
+
+        async function refreshRealtime() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/overview');
+                document.getElementById('realtime-count').textContent = data.traffic.realtime_visitors;
+            } catch (e) {}
+        }
+
+        async function loadTrafficChart() {
+            try {
+                const period = currentPeriod === 'all' ? 'year' : currentPeriod;
+                const data = await apiFetch('/admin/api/analytics/traffic-over-time', { period });
+
+                const labels = data.data.map(d => d.label);
+                const views = data.data.map(d => d.views);
+                const uniques = data.data.map(d => d.unique_visitors);
+
+                if (trafficChart) trafficChart.destroy();
+
+                const ctx = document.getElementById('traffic-chart').getContext('2d');
+                trafficChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [
+                            {
+                                label: 'Page Views',
+                                data: views,
+                                borderColor: '#3B4FD4',
+                                backgroundColor: 'rgba(59, 79, 212, 0.1)',
+                                fill: true,
+                                tension: 0.3,
+                                borderWidth: 2,
+                                pointRadius: 2,
+                            },
+                            {
+                                label: 'Unique Visitors',
+                                data: uniques,
+                                borderColor: '#0D1030',
+                                backgroundColor: 'rgba(13, 16, 48, 0.05)',
+                                fill: true,
+                                tension: 0.3,
+                                borderWidth: 2,
+                                pointRadius: 2,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { font: { family: "'Space Mono', monospace", size: 11 } }
+                            }
+                        },
+                        scales: {
+                            x: { ticks: { font: { family: "'Space Mono', monospace", size: 10 }, maxRotation: 45 } },
+                            y: { beginAtZero: true, ticks: { font: { family: "'Space Mono', monospace", size: 10 } } }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Traffic chart error:', e);
+            }
+        }
+
+        async function loadDeviceBreakdown() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/device-breakdown', { period: currentPeriod });
+                const labels = data.devices.map(d => d.device || 'unknown');
+                const counts = data.devices.map(d => d.count);
+
+                if (deviceChart) deviceChart.destroy();
+
+                const ctx = document.getElementById('device-chart').getContext('2d');
+                deviceChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data: counts,
+                            backgroundColor: CHART_COLORS.slice(0, labels.length),
+                            borderWidth: 2,
+                            borderColor: '#fff',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { family: "'Space Mono', monospace", size: 11 }, padding: 12 }
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Device chart error:', e);
+            }
+        }
+
+        async function loadBlogCategories() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/blog-categories');
+                const labels = data.categories.map(c => c.category);
+                const counts = data.categories.map(c => c.count);
+
+                if (categoriesChart) categoriesChart.destroy();
+
+                const ctx = document.getElementById('categories-chart').getContext('2d');
+                categoriesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Blogs',
+                            data: counts,
+                            backgroundColor: CHART_COLORS.slice(0, labels.length),
+                            borderWidth: 0,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, ticks: { font: { family: "'Space Mono', monospace", size: 10 } } },
+                            y: { ticks: { font: { family: "'Space Mono', monospace", size: 10 } } }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Categories chart error:', e);
+            }
+        }
+
+        async function loadTopPages() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/top-pages', { period: currentPeriod, limit: 10 });
+                const tbody = document.getElementById('top-pages-body');
+                tbody.innerHTML = data.pages.length === 0
+                    ? '<tr><td colspan="4" style="text-align:center;color:#888;">No data yet</td></tr>'
+                    : data.pages.map(p => `
+                        <tr>
+                            <td class="path-cell" title="${p.path}">${p.path}</td>
+                            <td>${p.views.toLocaleString()}</td>
+                            <td>${p.unique_visitors.toLocaleString()}</td>
+                            <td>${p.avg_response_time}s</td>
+                        </tr>
+                    `).join('');
+            } catch (e) {
+                console.error('Top pages error:', e);
+            }
+        }
+
+        async function loadTopBlogs() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/top-blogs', { period: currentPeriod, limit: 10 });
+                const tbody = document.getElementById('top-blogs-body');
+                tbody.innerHTML = data.blogs.length === 0
+                    ? '<tr><td colspan="3" style="text-align:center;color:#888;">No data yet</td></tr>'
+                    : data.blogs.map(b => `
+                        <tr>
+                            <td class="path-cell" title="${b.title}">${b.title}</td>
+                            <td>${b.views.toLocaleString()}</td>
+                            <td>${b.unique_visitors.toLocaleString()}</td>
+                        </tr>
+                    `).join('');
+            } catch (e) {
+                console.error('Top blogs error:', e);
+            }
+        }
+
+        async function loadReferrers() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/top-referrers', { period: currentPeriod, limit: 10 });
+                const tbody = document.getElementById('referrers-body');
+                tbody.innerHTML = data.referrers.length === 0
+                    ? '<tr><td colspan="2" style="text-align:center;color:#888;">No data yet</td></tr>'
+                    : data.referrers.map(r => `
+                        <tr>
+                            <td class="path-cell" title="${r.domain}">${r.domain}</td>
+                            <td>${r.count.toLocaleString()}</td>
+                        </tr>
+                    `).join('');
+            } catch (e) {
+                console.error('Referrers error:', e);
+            }
+        }
+
+        async function loadPeakHours() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/peak-hours', { period: currentPeriod });
+                const hours = data.hours;
+                const maxCount = Math.max(...hours.map(h => h.count), 1);
+
+                const container = document.getElementById('heatmap-container');
+
+                let cellsHtml = '<div class="heatmap-grid">';
+                hours.forEach(h => {
+                    const intensity = h.count / maxCount;
+                    let bg;
+                    if (intensity === 0) bg = '#f5f5f5';
+                    else if (intensity < 0.25) bg = '#c7d2fe';
+                    else if (intensity < 0.5) bg = '#818cf8';
+                    else if (intensity < 0.75) bg = '#4f46e5';
+                    else bg = '#1e1b4b';
+
+                    const textColor = intensity > 0.4 ? '#fff' : '#333';
+
+                    cellsHtml += `<div class="heatmap-cell" style="background:${bg};color:${textColor};">
+                        ${h.count > 0 ? h.count : ''}
+                        <div class="heat-tooltip">${h.hour}:00 UTC — ${h.count} views</div>
+                    </div>`;
+                });
+                cellsHtml += '</div>';
+
+                cellsHtml += '<div class="heatmap-labels">';
+                hours.forEach(h => {
+                    cellsHtml += `<span>${h.hour}</span>`;
+                });
+                cellsHtml += '</div>';
+
+                container.innerHTML = cellsHtml;
+            } catch (e) {
+                console.error('Peak hours error:', e);
+            }
+        }
+
+        async function loadResponseTimes() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/response-times', { period: currentPeriod, limit: 10 });
+                const tbody = document.getElementById('response-times-body');
+                tbody.innerHTML = data.pages.length === 0
+                    ? '<tr><td colspan="4" style="text-align:center;color:#888;">No data yet</td></tr>'
+                    : data.pages.map(p => `
+                        <tr>
+                            <td class="path-cell" title="${p.path}">${p.path}</td>
+                            <td>${p.avg_time}</td>
+                            <td>${p.max_time}</td>
+                            <td>${p.request_count}</td>
+                        </tr>
+                    `).join('');
+            } catch (e) {
+                console.error('Response times error:', e);
+            }
+        }
+
+        async function loadRecentActivity() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/recent-activity', { limit: 10 });
+                const list = document.getElementById('activity-list');
+                list.innerHTML = data.activities.length === 0
+                    ? '<li style="color:#888;">No recent activity</li>'
+                    : data.activities.map(a => {
+                        const date = a.created_at ? new Date(a.created_at * 1000).toLocaleDateString() : '';
+                        return `<li>
+                            <span class="activity-type ${a.type}">${a.type}</span>
+                            <span class="activity-title" title="${a.title}">${a.title}</span>
+                            <span style="font-size:0.65rem;color:#888;white-space:nowrap;">${date}</span>
+                        </li>`;
+                    }).join('');
+            } catch (e) {
+                console.error('Recent activity error:', e);
+            }
+        }
+
+        async function loadPdfLeads() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/pdf-leads', { page: 1, per_page: 50 });
+
+                const byPdfBody = document.getElementById('leads-by-pdf-body');
+                byPdfBody.innerHTML = data.by_pdf.length === 0
+                    ? '<tr><td colspan="2" style="text-align:center;color:#888;">No data yet</td></tr>'
+                    : data.by_pdf.map(p => {
+                        const name = p.pdf_link ? p.pdf_link.split('/').pop() : 'Unknown';
+                        return `<tr>
+                            <td class="path-cell" title="${p.pdf_link}">${name}</td>
+                            <td>${p.count}</td>
+                        </tr>`;
+                    }).join('');
+            } catch (e) {
+                console.error('PDF leads error:', e);
+            }
+        }
+
+        async function loadRegisteredUsersCount() {
+            try {
+                const data = await apiFetch('/admin/api/analytics/registered-users', { page: 1, per_page: 1 });
+                document.getElementById('m-users').textContent = (data.total || 0).toLocaleString();
+            } catch (e) {
+                document.getElementById('m-users').textContent = '0';
+            }
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => {
+                    m.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+
+        async function openLeadsModal() {
+            leadsCurrentPage = 1;
+            openModal('leads-modal');
+            await loadLeadsPage(1);
+        }
+
+        async function loadLeadsPage(page) {
+            leadsCurrentPage = page;
+            try {
+                const data = await apiFetch('/admin/api/analytics/pdf-leads', { page, per_page: 50 });
+                const tbody = document.getElementById('leads-modal-body');
+                tbody.innerHTML = data.leads.length === 0
+                    ? '<tr><td colspan="6" style="text-align:center;color:#888;">No leads yet</td></tr>'
+                    : data.leads.map(l => `
+                        <tr>
+                            <td>${(l.first_name || '')} ${(l.last_name || '')}</td>
+                            <td class="path-cell" title="${l.email || ''}">${l.email || ''}</td>
+                            <td>${l.mobile_number || '—'}</td>
+                            <td>${l.company_name || '—'}</td>
+                            <td class="path-cell" title="${l.document_name || ''}">${l.document_name || '—'}</td>
+                            <td><span class="source-badge ${l.source}">${l.source}</span></td>
+                        </tr>
+                    `).join('');
+
+                document.getElementById('leads-pagination-info').textContent =
+                    `Page ${data.page} of ${data.total_pages} (${data.total} total)`;
+                document.getElementById('leads-prev-btn').disabled = !data.has_prev;
+                document.getElementById('leads-next-btn').disabled = !data.has_next;
+            } catch (e) {
+                console.error('Leads modal error:', e);
+            }
+        }
+
+        async function openUsersModal() {
+            usersCurrentPage = 1;
+            openModal('users-modal');
+            await loadUsersPage(1);
+        }
+
+        async function loadUsersPage(page) {
+            usersCurrentPage = page;
+            try {
+                const data = await apiFetch('/admin/api/analytics/registered-users', { page, per_page: 50 });
+                const tbody = document.getElementById('users-modal-body');
+                tbody.innerHTML = data.users.length === 0
+                    ? '<tr><td colspan="5" style="text-align:center;color:#888;">No registered users yet</td></tr>'
+                    : data.users.map(u => {
+                        let joined = '—';
+                        if (u.created_at) {
+                            try {
+                                joined = new Date(u.created_at).toLocaleDateString();
+                            } catch (e) {
+                                joined = String(u.created_at);
+                            }
+                        }
+                        return `<tr>
+                            <td>${u.name || '—'}</td>
+                            <td class="path-cell" title="${u.email || ''}">${u.email || ''}</td>
+                            <td>${u.phone || '—'}</td>
+                            <td>${u.company_name || '—'}</td>
+                            <td style="white-space:nowrap;">${joined}</td>
+                        </tr>`;
+                    }).join('');
+
+                document.getElementById('users-pagination-info').textContent =
+                    `Page ${data.page} of ${data.total_pages} (${data.total} total)`;
+                document.getElementById('users-prev-btn').disabled = !data.has_prev;
+                document.getElementById('users-next-btn').disabled = !data.has_next;
+            } catch (e) {
+                console.error('Users modal error:', e);
+            }
+        }
+    </script>
+</body>
+
+</html>

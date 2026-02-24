@@ -115,6 +115,14 @@ async def admin_magazines_page(request: Request):
     return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/magazine_management.html")
 
 
+@router.get("/analytics")
+async def admin_analytics_page(request: Request):
+    """Serve the admin analytics HTML page."""
+    if not await is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/analytics.html")
+
+
 @router.get("/logout")
 async def logout(request: Request):
     """Clear the session cookie from DB and log the user out."""

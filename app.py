@@ -7,6 +7,8 @@ from typing import Optional
 from dotenv import load_dotenv
 import os
 import time
+import hashlib
+import asyncio
 import httpx
 import uvicorn
 import bcrypt
@@ -20,6 +22,7 @@ from PAGE_SERVING_ROUTERS.routers.auth_router import router as auth_router
 from PAGE_SERVING_ROUTERS.routers.admin_router import router as admin_router
 from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
 from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api_router
+from API_ROUTERS.admin.admin_analytics_router import router as admin_analytics_api_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
@@ -137,6 +140,26 @@ async def lifespan(app: FastAPI):
             }}
         )
 
+        from datetime import datetime, timedelta
+        from pymongo import ASCENDING
+        try:
+            await db["page_views"].create_index(
+                [("timestamp", ASCENDING)],
+                expireAfterSeconds=90 * 24 * 60 * 60,
+                name="page_views_ttl_90d"
+            )
+            await db["page_views"].create_index(
+                [("path", ASCENDING), ("timestamp", ASCENDING)],
+                name="page_views_path_ts"
+            )
+            await db["page_views"].create_index(
+                [("ip_hash", ASCENDING), ("timestamp", ASCENDING)],
+                name="page_views_ip_ts"
+            )
+            print("Page views indexes ensured.")
+        except Exception as idx_err:
+            print(f"Page views index creation note: {idx_err}")
+
     except Exception as e:
         print(f"Error during startup connection initialization: {e}")
     yield
@@ -150,20 +173,76 @@ class HealthCheck(BaseModel):
     """Data model for health check response."""
     status: str
 
+TRACKED_PREFIXES = ("/", "/blog/", "/magazine", "/business", "/technology", "/gcc", "/sustainability", "/semiconductor", "/login")
+EXCLUDED_PREFIXES = ("/static/", "/admin/", "/api/", "/health", "/download_proxy", "/favicon")
+
+
+def _parse_device_type(ua: str) -> str:
+    """Determine device type from user-agent string."""
+    ua_lower = ua.lower()
+    if any(kw in ua_lower for kw in ("mobile", "android", "iphone", "ipod", "opera mini", "iemobile")):
+        return "mobile"
+    if any(kw in ua_lower for kw in ("ipad", "tablet", "kindle", "silk", "playbook")):
+        return "tablet"
+    if "bot" in ua_lower or "crawler" in ua_lower or "spider" in ua_lower:
+        return "bot"
+    return "desktop"
+
+
+def _should_track(path: str, method: str) -> bool:
+    """Decide whether a request path should be tracked for analytics."""
+    if method != "GET":
+        return False
+    for prefix in EXCLUDED_PREFIXES:
+        if path.startswith(prefix):
+            return False
+    if path == "/":
+        return True
+    for prefix in TRACKED_PREFIXES:
+        if prefix != "/" and path.startswith(prefix):
+            return True
+    return False
+
+
 app = FastAPI(title="Brands of cloud", lifespan=lifespan)
 
 @app.middleware("http")
 async def log_request_time(request: Request, call_next):
     """
-    Middleware to log the total execution time of the request.
-    This helps identify slow API calls overall.
+    Middleware to log the total execution time of the request
+    and track public page views in MongoDB for analytics.
     """
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
-    
+
     response.headers["X-Process-Time"] = str(process_time)
     print(f"API Execution Time | [{request.method}] {request.url.path} | Total Time: {process_time:.4f}s")
+
+    req_path = request.url.path
+    if _should_track(req_path, request.method):
+        try:
+            from datetime import datetime, timezone
+            client_ip = request.client.host if request.client else "unknown"
+            ip_hash = hashlib.sha256(client_ip.encode()).hexdigest()[:16]
+            user_agent = request.headers.get("user-agent", "")
+            referer = request.headers.get("referer", "")
+
+            page_view = {
+                "path": req_path,
+                "timestamp": datetime.now(timezone.utc),
+                "process_time": round(process_time, 4),
+                "ip_hash": ip_hash,
+                "user_agent": user_agent,
+                "referer": referer,
+                "device_type": _parse_device_type(user_agent),
+            }
+
+            db = db_handler.get_db()
+            asyncio.create_task(db["page_views"].insert_one(page_view))
+        except Exception as track_err:
+            print(f"Page view tracking error: {track_err}")
+
     return response
 
 
@@ -179,6 +258,7 @@ app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(admin_blog_api_router)
 app.include_router(admin_magazine_api_router)
+app.include_router(admin_analytics_api_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():
