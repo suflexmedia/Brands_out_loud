@@ -63,4 +63,10 @@ async def serve_service_page(request: Request):
     category = request.url.path.strip("/")
     data = await get_service_data(category)
     navbar = await get_navbar_data()
+
+    # Auto-resolve fuel ambition link to latest magazine
+    from API_ROUTERS.admin.admin_magazine_homepage_router import _get_latest_magazine_slug
+    latest_slug = await _get_latest_magazine_slug()
+    data["fuel_ambition_link"] = f"/magazine/{latest_slug}" if latest_slug else "/magazine_page"
+
     return templates.TemplateResponse("service.html", {"request": request, "data": data, "navbar": navbar})

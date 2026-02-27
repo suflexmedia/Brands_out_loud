@@ -154,6 +154,11 @@ async def _fetch_homepage_from_db():
 
     data["category_grid_section"] = category_grid
 
+    # ── Fuel Ambition Link (auto-resolve to latest magazine) ──────
+    from API_ROUTERS.admin.admin_magazine_homepage_router import _get_latest_magazine_slug
+    latest_slug = await _get_latest_magazine_slug()
+    data["fuel_ambition_link"] = f"/magazine/{latest_slug}" if latest_slug else "/magazine_page"
+
     return data
 
 

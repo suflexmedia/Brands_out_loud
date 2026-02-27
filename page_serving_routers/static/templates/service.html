@@ -118,7 +118,7 @@
         -->
 
         <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
-            <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
+            <a href="{{ data.fuel_ambition_link if data.fuel_ambition_link else '/magazine_page' }}" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
                     alt="Footer Action Button"></a>
         </section>
 
