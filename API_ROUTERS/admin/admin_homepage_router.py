@@ -14,7 +14,7 @@ router = APIRouter(prefix="/admin/api/homepage", tags=["admin_homepage_api"])
 COOKIE_NAME = "admin_session"
 
 # Templates for rendering homepage preview
-_BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "PAGE_SERVING_ROUTERS", "static", "templates")
+_BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "page_serving_routers", "static", "templates")
 _templates = Jinja2Templates(directory=_BASE_DIR)
 
 
@@ -526,7 +526,7 @@ async def preview_homepage(request: Request):
     data = await _resolve_config_to_homepage_data(config_data)
 
     # Get navbar data
-    from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+    from page_serving_routers.routers.navbar_fetcher import get_navbar_data
     navbar = await get_navbar_data()
 
     html = _templates.TemplateResponse("homepage.html", {

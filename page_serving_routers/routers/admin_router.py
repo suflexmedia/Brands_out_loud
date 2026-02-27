@@ -45,7 +45,7 @@ async def login_page(request: Request):
     """Serve the admin login HTML page."""
     if await is_authenticated(request):
         return RedirectResponse(url="/admin/dashboard", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/login.html")
+    return FileResponse("page_serving_routers/static/templates/admin/login.html")
 
 @router.post("/login")
 async def login_post(
@@ -88,7 +88,7 @@ async def dashboard_page(request: Request):
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/dashboard.html")
+    return FileResponse("page_serving_routers/static/templates/admin/dashboard.html")
 
 @router.get("/user-management")
 async def user_management_page(request: Request):
@@ -97,14 +97,14 @@ async def user_management_page(request: Request):
     if not current_admin or current_admin.get("role") != "system_admin":
         return RedirectResponse(url="/admin/dashboard", status_code=status.HTTP_302_FOUND)
     
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/user_management.html")
+    return FileResponse("page_serving_routers/static/templates/admin/user_management.html")
 
 @router.get("/blogs")
 async def admin_blogs_page(request: Request):
     """Serve the admin blog management HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/blog_management.html")
+    return FileResponse("page_serving_routers/static/templates/admin/blog_management.html")
 
 
 @router.get("/magazines")
@@ -112,7 +112,7 @@ async def admin_magazines_page(request: Request):
     """Serve the admin magazine management HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/magazine_management.html")
+    return FileResponse("page_serving_routers/static/templates/admin/magazine_management.html")
 
 
 @router.get("/analytics")
@@ -120,7 +120,7 @@ async def admin_analytics_page(request: Request):
     """Serve the admin analytics HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/analytics.html")
+    return FileResponse("page_serving_routers/static/templates/admin/analytics.html")
 
 
 @router.get("/edit-pages")
@@ -128,7 +128,7 @@ async def admin_edit_pages(request: Request):
     """Serve the admin edit pages HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_pages.html")
+    return FileResponse("page_serving_routers/static/templates/admin/edit_pages.html")
 
 
 @router.get("/edit-pages/homepage")
@@ -136,7 +136,7 @@ async def admin_edit_homepage(request: Request):
     """Serve the admin homepage editor HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_homepage.html")
+    return FileResponse("page_serving_routers/static/templates/admin/edit_homepage.html")
 
 
 @router.get("/edit-pages/magazine-homepage")
@@ -144,7 +144,7 @@ async def admin_edit_magazine_homepage(request: Request):
     """Serve the admin magazine homepage editor HTML page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_magazine_homepage.html")
+    return FileResponse("page_serving_routers/static/templates/admin/edit_magazine_homepage.html")
 
 
 @router.get("/edit-pages/service/{category}")
@@ -155,7 +155,7 @@ async def admin_edit_service_page(request: Request, category: str):
     valid = {"business", "technology", "gcc", "sustainability", "semiconductor"}
     if category not in valid:
         return RedirectResponse(url="/admin/edit-pages", status_code=status.HTTP_302_FOUND)
-    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_service_page.html")
+    return FileResponse("page_serving_routers/static/templates/admin/edit_service_page.html")
 
 
 @router.get("/logout")

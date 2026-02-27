@@ -13,7 +13,7 @@ COOKIE_NAME = "admin_session"
 
 _BASE_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-    "PAGE_SERVING_ROUTERS", "static", "templates",
+    "page_serving_routers", "static", "templates",
 )
 _templates = Jinja2Templates(directory=_BASE_DIR)
 
@@ -284,7 +284,7 @@ async def preview_magazine_homepage(request: Request):
     config_data = await request.json()
     data = await resolve_config_to_template_data(config_data)
 
-    from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+    from page_serving_routers.routers.navbar_fetcher import get_navbar_data
     navbar = await get_navbar_data()
 
     return _templates.TemplateResponse("magazine-homepage.html", {

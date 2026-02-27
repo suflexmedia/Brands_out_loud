@@ -7,7 +7,7 @@ magazine slugs to cover data. Falls back gracefully if no config exists yet.
 import os
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
-from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+from page_serving_routers.routers.navbar_fetcher import get_navbar_data
 from cache_manager import cache_manager
 
 router = APIRouter()

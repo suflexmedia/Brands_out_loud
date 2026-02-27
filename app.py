@@ -13,14 +13,14 @@ import httpx
 import uvicorn
 import bcrypt
 
-from PAGE_SERVING_ROUTERS.routers.homepage_router import router as homepage_router
-from PAGE_SERVING_ROUTERS.routers.service_router import router as service_router
-from PAGE_SERVING_ROUTERS.routers.magazine_homepage_router import router as magazine_homepage_router
-from PAGE_SERVING_ROUTERS.routers.magazine_page_router import router as magazine_page_router
-from PAGE_SERVING_ROUTERS.routers.blog_router import router as blog_router
-from PAGE_SERVING_ROUTERS.routers.auth_router import router as auth_router
-from PAGE_SERVING_ROUTERS.routers.sitemap_router import router as sitemap_router
-from PAGE_SERVING_ROUTERS.routers.admin_router import router as admin_router
+from page_serving_routers.routers.homepage_router import router as homepage_router
+from page_serving_routers.routers.service_router import router as service_router
+from page_serving_routers.routers.magazine_homepage_router import router as magazine_homepage_router
+from page_serving_routers.routers.magazine_page_router import router as magazine_page_router
+from page_serving_routers.routers.blog_router import router as blog_router
+from page_serving_routers.routers.auth_router import router as auth_router
+from page_serving_routers.routers.sitemap_router import router as sitemap_router
+from page_serving_routers.routers.admin_router import router as admin_router
 from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
 from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api_router
 from API_ROUTERS.admin.admin_analytics_router import router as admin_analytics_api_router
@@ -250,7 +250,7 @@ async def log_request_time(request: Request, call_next):
     return response
 
 
-app.mount("/static", StaticFiles(directory="PAGE_SERVING_ROUTERS/static"), name="static")
+app.mount("/static", StaticFiles(directory="page_serving_routers/static"), name="static")
 
 
 app.include_router(sitemap_router)

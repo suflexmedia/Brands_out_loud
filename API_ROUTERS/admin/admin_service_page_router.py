@@ -28,7 +28,7 @@ CATEGORY_TITLES = {
 
 _BASE_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-    "PAGE_SERVING_ROUTERS",
+    "page_serving_routers",
     "static",
     "templates",
 )
@@ -362,7 +362,7 @@ async def preview_service_page(request: Request, category: str):
     config_data = await request.json()
     data = await resolve_config_to_service_data(config_data, category)
 
-    from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+    from page_serving_routers.routers.navbar_fetcher import get_navbar_data
 
     navbar = await get_navbar_data()
 

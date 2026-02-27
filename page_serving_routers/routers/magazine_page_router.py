@@ -5,7 +5,7 @@ from urllib.parse import unquote
 from fastapi import APIRouter, Request, Query
 from fastapi.templating import Jinja2Templates
 from database_handler.connection import db_handler
-from PAGE_SERVING_ROUTERS.routers.navbar_fetcher import get_navbar_data
+from page_serving_routers.routers.navbar_fetcher import get_navbar_data
 from cache_manager import cache_manager
 
 router = APIRouter()
