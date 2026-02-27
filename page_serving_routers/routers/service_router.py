@@ -18,14 +18,23 @@ templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 def _make_service_fetcher(category: str):
     """
-    Returns an async fetcher function bound to a specific service category.
-    Each category gets its own cache key: 'service_<category>'.
+    Returns an async fetcher that resolves service page data.
+    If a service_page_config doc exists for the category, it uses config-based
+    resolution. Otherwise, falls back to legacy service_{category} collection.
     """
     async def _fetch():
         db = db_handler.get_db()
+
+        # Check for admin-configured service page config
+        config_doc = await db["service_page_config"].find_one({"category": category})
+        if config_doc:
+            config_doc.pop("_id", None)
+            from API_ROUTERS.admin.admin_service_page_router import resolve_config_to_service_data
+            return await resolve_config_to_service_data(config_doc, category)
+
+        # Legacy fallback: read from service_{category} collection
         collection_name = f"service_{category}"
         collection = db[collection_name]
-
         doc_count = await collection.count_documents({})
         if doc_count == 0:
             return {}

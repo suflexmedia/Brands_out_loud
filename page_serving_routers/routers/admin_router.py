@@ -147,6 +147,17 @@ async def admin_edit_magazine_homepage(request: Request):
     return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_magazine_homepage.html")
 
 
+@router.get("/edit-pages/service/{category}")
+async def admin_edit_service_page(request: Request, category: str):
+    """Serve the admin service page editor HTML page."""
+    if not await is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    valid = {"business", "technology", "gcc", "sustainability", "semiconductor"}
+    if category not in valid:
+        return RedirectResponse(url="/admin/edit-pages", status_code=status.HTTP_302_FOUND)
+    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_service_page.html")
+
+
 @router.get("/logout")
 async def logout(request: Request):
     """Clear the session cookie from DB and log the user out."""

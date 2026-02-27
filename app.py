@@ -25,6 +25,7 @@ from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api
 from API_ROUTERS.admin.admin_analytics_router import router as admin_analytics_api_router
 from API_ROUTERS.admin.admin_homepage_router import router as admin_homepage_api_router
 from API_ROUTERS.admin.admin_magazine_homepage_router import router as admin_magazine_homepage_api_router
+from API_ROUTERS.admin.admin_service_page_router import router as admin_service_page_api_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
@@ -263,6 +264,7 @@ app.include_router(admin_magazine_api_router)
 app.include_router(admin_analytics_api_router)
 app.include_router(admin_homepage_api_router)
 app.include_router(admin_magazine_homepage_api_router)
+app.include_router(admin_service_page_api_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():
