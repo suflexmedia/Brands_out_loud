@@ -19,6 +19,7 @@ from PAGE_SERVING_ROUTERS.routers.magazine_homepage_router import router as maga
 from PAGE_SERVING_ROUTERS.routers.magazine_page_router import router as magazine_page_router
 from PAGE_SERVING_ROUTERS.routers.blog_router import router as blog_router
 from PAGE_SERVING_ROUTERS.routers.auth_router import router as auth_router
+from PAGE_SERVING_ROUTERS.routers.sitemap_router import router as sitemap_router
 from PAGE_SERVING_ROUTERS.routers.admin_router import router as admin_router
 from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
 from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api_router
@@ -177,7 +178,7 @@ class HealthCheck(BaseModel):
     status: str
 
 TRACKED_PREFIXES = ("/", "/blog/", "/magazine", "/business", "/technology", "/gcc", "/sustainability", "/semiconductor", "/login")
-EXCLUDED_PREFIXES = ("/static/", "/admin/", "/api/", "/health", "/download_proxy", "/favicon")
+EXCLUDED_PREFIXES = ("/static/", "/admin/", "/api/", "/health", "/download_proxy", "/favicon", "/sitemap", "/robots.txt")
 
 
 def _parse_device_type(ua: str) -> str:
@@ -252,6 +253,7 @@ async def log_request_time(request: Request, call_next):
 app.mount("/static", StaticFiles(directory="PAGE_SERVING_ROUTERS/static"), name="static")
 
 
+app.include_router(sitemap_router)
 app.include_router(homepage_router)
 app.include_router(service_router)
 app.include_router(magazine_homepage_router)

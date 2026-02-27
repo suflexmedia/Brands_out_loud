@@ -121,6 +121,7 @@ async def api_create_blog(request: Request):
     cache_manager.invalidate("navbar")
     cache_manager.invalidate("homepage")
     cache_manager.invalidate_pattern("related_blogs_")
+    cache_manager.invalidate_pattern("sitemap_")
 
     return {"status": "ok", "message": "Blog created successfully"}
 
@@ -149,6 +150,7 @@ async def api_update_blog(request: Request, slug: str):
     cache_manager.invalidate("navbar")
     cache_manager.invalidate("homepage")
     cache_manager.invalidate_pattern("related_blogs_")
+    cache_manager.invalidate_pattern("sitemap_")
 
     return {"status": "ok", "message": "Blog updated successfully"}
 
@@ -169,6 +171,7 @@ async def api_delete_blog(request: Request, slug: str, redirect_url: str = None)
     cache_manager.invalidate("navbar")
     cache_manager.invalidate("homepage")
     cache_manager.invalidate_pattern("related_blogs_")
+    cache_manager.invalidate_pattern("sitemap_")
 
     if redirect_url:
         old_path = f"/blog/{slug}"

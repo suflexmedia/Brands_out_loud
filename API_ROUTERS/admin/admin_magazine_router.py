@@ -93,6 +93,8 @@ async def api_create_magazine(request: Request):
     cache_manager.invalidate("magazines")
     cache_manager.invalidate("magazines_grid")
     cache_manager.invalidate_pattern("magazines_page_")
+    cache_manager.invalidate("sitemap_index")
+    cache_manager.invalidate("sitemap_magazine")
 
     return {"status": "ok", "message": "Magazine created successfully"}
 
@@ -119,6 +121,8 @@ async def api_update_magazine(request: Request, slug: str):
     cache_manager.invalidate("magazines")
     cache_manager.invalidate("magazines_grid")
     cache_manager.invalidate_pattern("magazines_page_")
+    cache_manager.invalidate("sitemap_index")
+    cache_manager.invalidate("sitemap_magazine")
 
     return {"status": "ok", "message": "Magazine updated successfully"}
 
@@ -138,6 +142,8 @@ async def api_delete_magazine(request: Request, slug: str):
     cache_manager.invalidate("magazines")
     cache_manager.invalidate("magazines_grid")
     cache_manager.invalidate_pattern("magazines_page_")
+    cache_manager.invalidate("sitemap_index")
+    cache_manager.invalidate("sitemap_magazine")
 
     return {"status": "ok", "message": "Magazine deleted successfully"}
 

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "Bash(find D:\\\\Programming\\\\Projects\\\\suhas_medam\\\\Brands_out_loud\\\\PAGE_SERVING_ROUTERS\\\\static:*)"
+      "Bash(find D:\\\\Programming\\\\Projects\\\\suhas_medam\\\\Brands_out_loud\\\\PAGE_SERVING_ROUTERS\\\\static:*)",
+      "Bash(python3:*)"
     ]
   }
 }
