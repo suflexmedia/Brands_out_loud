@@ -73,7 +73,7 @@
                     </a>
                 </div>
                 <div class="latest-news-col">
-                    <h2 class="latest-news-heading">Latest News</h2>
+                    <h2 class="latest-news-heading">Trending News</h2>
                     {% for article in data.featured_section_1.latest_news %}
                     <article class="news-article">
                         <a href="{{ article.link }}" class="news-thumb-link"
@@ -134,8 +134,11 @@
             </div>
         </section>
 
+        <!-- AD BANNER (hidden) -->
+        <!--
         <a href="{{ data.ad_banner.link }}" class="ad-banner"><img src="{{ data.ad_banner.image_url }}"
                 alt="Advertisement"></a>
+        -->
 
         <section class="featured-section">
             <div class="featured-bg"></div>
@@ -196,91 +199,6 @@
         <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
             <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
                     alt="Footer Action Button"></a>
-        </section>
-
-        <section class="lifestyle-section">
-            <div class="lifestyle-container">
-                <div class="lifestyle-header">
-                    <div class="lifestyle-heading-wrap">
-                        <h2 class="lifestyle-heading">Lifestyle</h2>
-                        <div class="lifestyle-underline"></div>
-                    </div>
-                </div>
-                <div class="lifestyle-top-grid">
-                    <div class="lifestyle-feature">
-                        <a href="{{ data.lifestyle_section.top_feature.link }}" class="lifestyle-feature-link">
-                            <article class="lifestyle-feature-article">
-                                <img src="{{ data.lifestyle_section.top_feature.image_url }}"
-                                    alt="{{ data.lifestyle_section.top_feature.title }}" class="lifestyle-feature-img">
-                                <div class="lifestyle-feature-badge"><span class="lifestyle-badge-tag">{{
-                                        data.lifestyle_section.top_feature.tag }}</span><span
-                                        class="lifestyle-badge-meta">{{ data.lifestyle_section.top_feature.author }} •
-                                        {{ data.lifestyle_section.top_feature.date }}</span></div>
-                                <div class="lifestyle-feature-bottom">
-                                    <h3 class="lifestyle-feature-title">{{ data.lifestyle_section.top_feature.title }}
-                                    </h3>
-                                    <div class="lifestyle-feature-read"><span>{{
-                                            data.lifestyle_section.top_feature.read_time }}</span></div>
-                                </div>
-                            </article>
-                        </a>
-                    </div>
-                    <div class="lifestyle-sidebar">
-                        {% for side_article in data.lifestyle_section.sidebar_articles %}
-                        <a href="{{ side_article.link }}" class="lifestyle-side-link">
-                            <article class="lifestyle-side-article">
-                                <div class="lifestyle-side-badge"><span class="lifestyle-side-tag">{{ side_article.tag
-                                        }}</span><span class="lifestyle-side-meta"><span>{{ side_article.author
-                                            }}</span><span>•</span><span>{{ side_article.date }}</span></span></div>
-                                <h3 class="lifestyle-side-title">{{ side_article.title }}</h3>
-                                <img src="{{ side_article.image_url }}" alt="{{ side_article.title }}"
-                                    class="lifestyle-side-img">
-                            </article>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="lifestyle-small-grid">
-                    {% for small_article in data.lifestyle_section.small_articles[:3] %}
-                    <a href="{{ small_article.link }}" class="lifestyle-small-link">
-                        <article class="lifestyle-small-article"><img src="{{ small_article.image_url }}"
-                                alt="{{ small_article.title }}" class="lifestyle-small-thumb">
-                            <div>
-                                <div class="lifestyle-small-badge"><span class="lifestyle-small-tag">{{
-                                        small_article.tag }}</span><span class="lifestyle-small-meta">{{
-                                        small_article.author }} • {{ small_article.date }}</span></div>
-                                <h4 class="lifestyle-small-title">{{ small_article.title }}</h4>
-                            </div>
-                        </article>
-                    </a>
-                    {% endfor %}
-                </div>
-
-                <div class="lifestyle-small-grid">
-                    {% for small_article in data.lifestyle_section.small_articles[3:6] %}
-                    <a href="{{ small_article.link }}" class="lifestyle-small-link">
-                        <article class="lifestyle-small-article"><img src="{{ small_article.image_url }}"
-                                alt="{{ small_article.title }}" class="lifestyle-small-thumb">
-                            <div>
-                                <div class="lifestyle-small-badge"><span class="lifestyle-small-tag">{{
-                                        small_article.tag }}</span><span class="lifestyle-small-meta">{{
-                                        small_article.author }} • {{ small_article.date }}</span></div>
-                                <h4 class="lifestyle-small-title">{{ small_article.title }}</h4>
-                            </div>
-                        </article>
-                    </a>
-                    {% endfor %}
-                </div>
-                <div class="view-all-wrap">
-                    <a href="#" class="view-all-link">View All Articles
-                        <svg xmlns="http://www.w3.org/2000/svg" class="view-all-arrow" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
         </section>
 
         <section class="footer-banner-section" style="background-image:url(/static/images/footer1.png)">

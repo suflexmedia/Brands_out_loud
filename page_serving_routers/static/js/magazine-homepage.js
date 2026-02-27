@@ -72,6 +72,95 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    var carouselTrack = document.getElementById('profilesTrack');
+    var dotsContainer = document.getElementById('carouselDots');
+    var carouselAutoPlay = null;
+    var carouselActive = false;
+    var carouselIndex = 0;
+    var touchStartX = 0;
+    var touchDelta = 0;
+
+    function goToSlide(index) {
+        var cards = carouselTrack ? carouselTrack.querySelectorAll('.profile-card') : [];
+        var total = cards.length;
+        carouselIndex = (index + total) % total;
+        carouselTrack.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
+        var dots = dotsContainer ? dotsContainer.querySelectorAll('.carousel-dot') : [];
+        dots.forEach(function (dot, i) {
+            dot.classList.toggle('active', i === carouselIndex);
+        });
+    }
+
+    function buildDots(total) {
+        if (!dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        for (var i = 0; i < total; i++) {
+            var btn = document.createElement('button');
+            btn.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            btn.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+            btn.setAttribute('data-index', i);
+            btn.addEventListener('click', function () {
+                goToSlide(parseInt(this.getAttribute('data-index')));
+                resetAutoPlay();
+            });
+            dotsContainer.appendChild(btn);
+        }
+    }
+
+    function resetAutoPlay() {
+        clearInterval(carouselAutoPlay);
+        var cards = carouselTrack ? carouselTrack.querySelectorAll('.profile-card') : [];
+        carouselAutoPlay = setInterval(function () {
+            goToSlide(carouselIndex + 1);
+        }, 4000);
+    }
+
+    function initCarousel() {
+        if (!carouselTrack || !dotsContainer) return;
+        var cards = carouselTrack.querySelectorAll('.profile-card');
+        if (cards.length === 0) return;
+
+        carouselIndex = 0;
+        carouselTrack.style.transform = 'translateX(0)';
+        buildDots(cards.length);
+        resetAutoPlay();
+
+        carouselTrack.addEventListener('touchstart', function (e) {
+            touchStartX = e.touches[0].clientX;
+            clearInterval(carouselAutoPlay);
+        }, { passive: true });
+
+        carouselTrack.addEventListener('touchend', function (e) {
+            touchDelta = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(touchDelta) > 40) {
+                goToSlide(touchDelta < 0 ? carouselIndex + 1 : carouselIndex - 1);
+            }
+            resetAutoPlay();
+        }, { passive: true });
+
+        carouselActive = true;
+    }
+
+    function destroyCarousel() {
+        if (!carouselActive) return;
+        clearInterval(carouselAutoPlay);
+        if (carouselTrack) carouselTrack.style.transform = '';
+        if (dotsContainer) dotsContainer.innerHTML = '';
+        carouselActive = false;
+    }
+
+    function handleCarouselOnResize() {
+        if (window.innerWidth < 768) {
+            if (!carouselActive) initCarousel();
+        } else {
+            destroyCarousel();
+        }
+    }
+
+    handleCarouselOnResize();
+    window.addEventListener('resize', handleCarouselOnResize);
+
+
     var highFiveEmojis = document.querySelectorAll('.high-five-emoji');
     var countNumbers = document.querySelectorAll('.count-number');
     var highFiveCount = parseInt(localStorage.getItem('highFiveCount') || '521');

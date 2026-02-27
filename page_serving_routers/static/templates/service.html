@@ -62,8 +62,11 @@
             </div>
         </section>
 
+        <!-- AD BANNER 1 (hidden) -->
+        <!--
         <a href="{{ data.ad_banner_1.link }}" class="ad-banner"><img src="{{ data.ad_banner_1.image_url }}"
                 alt="Advertisement"></a>
+        -->
 
         <section class="editor-picks-section">
             <div class="editor-picks-container">
@@ -108,88 +111,11 @@
             </div>
         </section>
 
-        <section class="ai-section">
-            <div class="ai-container">
-                <div class="ai-header">
-                    <div class="ai-heading-wrap">
-                        <h2 class="ai-heading">{{ data.sub_category_section.section_title }}</h2>
-                        <div class="ai-underline"></div>
-                    </div>
-                </div>
-                <div class="ai-top-grid">
-                    <div class="ai-feature">
-                        <a href="{{ data.sub_category_section.top_feature.link }}" class="ai-feature-link">
-                            <article class="ai-feature-article">
-                                <div class="ai-feature-overlay"></div>
-                                <img src="{{ data.sub_category_section.top_feature.image_url }}"
-                                    alt="{{ data.sub_category_section.top_feature.title }}" class="ai-feature-img">
-                                <div class="ai-feature-badge"><span class="ai-badge-tag">{{
-                                        data.sub_category_section.top_feature.tag }}</span><span
-                                        class="ai-badge-meta">{{ data.sub_category_section.top_feature.author }} • {{
-                                        data.sub_category_section.top_feature.date }}</span></div>
-                                <div class="ai-feature-bottom">
-                                    <h3 class="ai-feature-title">{{ data.sub_category_section.top_feature.title }}</h3>
-                                    <div class="ai-feature-read"><span>{{
-                                            data.sub_category_section.top_feature.read_time }}</span></div>
-                                </div>
-                            </article>
-                        </a>
-                    </div>
-                    <div class="ai-sidebar">
-                        {% for sidebar in data.sub_category_section.sidebar_articles %}
-                        <a href="{{ sidebar.link }}" class="ai-side-link">
-                            <article class="ai-side-article">
-                                <div class="ai-side-badge"><span class="ai-side-tag">{{ sidebar.tag }}</span><span
-                                        class="ai-side-meta"><span>{{ sidebar.author }}</span><span>•</span><span>{{
-                                            sidebar.date }}</span></span></div>
-                                <h3 class="ai-side-title">{{ sidebar.title }}</h3>
-                                <img src="{{ sidebar.image_url }}" alt="{{ sidebar.title }}" class="ai-side-img">
-                            </article>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="ai-small-grid">
-                    {% for small in data.sub_category_section.small_articles[:3] %}
-                    <a href="{{ small.link }}" class="ai-small-link">
-                        <article class="ai-small-article"><img src="{{ small.image_url }}" alt="{{ small.title }}"
-                                class="ai-small-thumb">
-                            <div>
-                                <div class="ai-small-badge"><span class="ai-small-tag">{{ small.tag }}</span><span
-                                        class="ai-small-meta">{{ small.author }} • {{ small.date }}</span></div>
-                                <h4 class="ai-small-title">{{ small.title }}</h4>
-                            </div>
-                        </article>
-                    </a>
-                    {% endfor %}
-                </div>
-                <div class="ai-small-grid">
-                    {% for small in data.sub_category_section.small_articles[3:] %}
-                    <a href="{{ small.link }}" class="ai-small-link">
-                        <article class="ai-small-article"><img src="{{ small.image_url }}" alt="{{ small.title }}"
-                                class="ai-small-thumb">
-                            <div>
-                                <div class="ai-small-badge"><span class="ai-small-tag">{{ small.tag }}</span><span
-                                        class="ai-small-meta">{{ small.author }} • {{ small.date }}</span></div>
-                                <h4 class="ai-small-title">{{ small.title }}</h4>
-                            </div>
-                        </article>
-                    </a>
-                    {% endfor %}
-                </div>
-                <div class="view-all-wrap">
-                    <a href="#" class="view-all-link">View All Articles
-                        <svg xmlns="http://www.w3.org/2000/svg" class="view-all-arrow" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
-
+        <!-- AD BANNER 2 (hidden) -->
+        <!--
         <a href="{{ data.ad_banner_2.link }}" class="ad-banner"><img src="{{ data.ad_banner_2.image_url }}"
                 alt="Advertisement"></a>
+        -->
 
         <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
             <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"

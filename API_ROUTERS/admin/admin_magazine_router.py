@@ -20,6 +20,18 @@ async def is_authenticated(request: Request) -> bool:
     return session is not None
 
 
+@router.get("/magazines/categories")
+async def api_magazine_categories(request: Request):
+    """Return sorted list of distinct non-empty category values from the magazines collection."""
+    if not await is_authenticated(request):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    db = db_handler.get_db()
+    categories = await db["magazines"].distinct("category")
+    result = sorted([c for c in categories if c and c.strip()])
+    return result
+
+
 @router.get("/magazines")
 async def api_list_magazines(request: Request):
     """Get all magazines sorted by created_at descending."""

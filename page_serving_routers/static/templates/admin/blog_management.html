@@ -716,6 +716,126 @@
             font-size: 0.85rem;
         }
 
+        .filter-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 160px;
+        }
+
+        .filter-group label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text-gray);
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.5rem 0.75rem;
+            border: 2px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.82rem;
+            outline: none;
+            background: var(--bg);
+            color: var(--text);
+            transition: border-color 0.2s;
+            border-radius: 0;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: var(--accent);
+        }
+
+        .filter-reset {
+            background: none;
+            border: 2px solid var(--border);
+            padding: 0.5rem 0.75rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text-gray);
+            align-self: flex-end;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .filter-reset:hover {
+            background: var(--bg-body);
+            color: var(--text);
+        }
+
+        .filter-count {
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            align-self: flex-end;
+            padding-bottom: 0.55rem;
+            white-space: nowrap;
+        }
+
+        .filter-combobox-wrap {
+            position: relative;
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 0;
+            right: 0;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-top: none;
+            z-index: 200;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .filter-dropdown.open {
+            display: block;
+        }
+
+        .filter-dropdown-item {
+            padding: 0.5rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.82rem;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            color: var(--text);
+        }
+
+        .filter-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .filter-dropdown-item:hover,
+        .filter-dropdown-item.highlighted {
+            background: var(--text);
+            color: white;
+        }
+
+        .filter-dropdown-empty {
+            padding: 0.5rem 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+        }
+
         @media (max-width: 900px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -753,6 +873,14 @@
                 padding: 1.5rem;
                 box-shadow: 6px 6px 0 var(--border);
             }
+
+            .filter-bar {
+                gap: 0.5rem;
+            }
+
+            .filter-group {
+                min-width: 120px;
+            }
         }
     </style>
 </head>
@@ -786,6 +914,36 @@
                         <button class="btn" onclick="showEditor()">
                             <i class="ph ph-plus"></i> Create New Blog
                         </button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select id="filter-status" onchange="applyBlogFilters()">
+                                <option value="">All Statuses</option>
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Date From</label>
+                            <input type="date" id="filter-date-from" oninput="applyBlogFilters()">
+                        </div>
+                        <div class="filter-group">
+                            <label>Date To</label>
+                            <input type="date" id="filter-date-to" oninput="applyBlogFilters()">
+                        </div>
+                        <div class="filter-group filter-combobox-wrap">
+                            <label>Category</label>
+                            <input type="text" id="filter-category" placeholder="Type to filter..." autocomplete="off"
+                                oninput="filterBlogCategoryDropdown()" onfocus="openBlogCategoryDropdown()"
+                                onkeydown="handleBlogCategoryKey(event)">
+                            <div class="filter-dropdown" id="blog-cat-dropdown"></div>
+                        </div>
+                        <button class="filter-reset" onclick="resetBlogFilters()">
+                            <i class="ph ph-x"></i> Clear
+                        </button>
+                        <span class="filter-count" id="blog-filter-count"></span>
                     </div>
 
                     <div class="card" style="overflow-x: auto;">
@@ -984,6 +1142,7 @@
 
     <script>
         let blogs = [];
+        let allBlogs = [];
         let galleryImages = [];
         let isEditing = false;
         let currentEditingSlug = null;
@@ -1002,6 +1161,13 @@
             document.getElementById('blog-date').value = today;
 
             document.getElementById('gallery-upload').addEventListener('change', handleFileUpload);
+
+            document.addEventListener('click', (e) => {
+                const wrap = document.querySelector('.filter-combobox-wrap');
+                if (wrap && !wrap.contains(e.target)) {
+                    closeBlogCategoryDropdown();
+                }
+            });
 
             const galleryContainer = document.getElementById('gallery-container');
 
@@ -1039,15 +1205,114 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
+        const BLOG_CATEGORIES = ['Business', 'Technology', 'GCC', 'Sustainability', 'Semiconductor'];
+        let blogCatHighlight = -1;
+
+        function renderBlogCategoryDropdown(items) {
+            const dd = document.getElementById('blog-cat-dropdown');
+            if (items.length === 0) {
+                dd.innerHTML = '<div class="filter-dropdown-empty">No matches</div>';
+            } else {
+                dd.innerHTML = items.map((c, i) =>
+                    `<div class="filter-dropdown-item" data-value="${c}" onmousedown="selectBlogCategory('${c}')">${c}</div>`
+                ).join('');
+            }
+            blogCatHighlight = -1;
+        }
+
+        function openBlogCategoryDropdown() {
+            const query = document.getElementById('filter-category').value.trim().toLowerCase();
+            const filtered = BLOG_CATEGORIES.filter(c => c.toLowerCase().includes(query));
+            renderBlogCategoryDropdown(filtered);
+            document.getElementById('blog-cat-dropdown').classList.add('open');
+        }
+
+        function filterBlogCategoryDropdown() {
+            const query = document.getElementById('filter-category').value.trim().toLowerCase();
+            const filtered = BLOG_CATEGORIES.filter(c => c.toLowerCase().includes(query));
+            renderBlogCategoryDropdown(filtered);
+            document.getElementById('blog-cat-dropdown').classList.add('open');
+            applyBlogFilters();
+        }
+
+        function selectBlogCategory(value) {
+            document.getElementById('filter-category').value = value;
+            closeBlogCategoryDropdown();
+            applyBlogFilters();
+        }
+
+        function closeBlogCategoryDropdown() {
+            document.getElementById('blog-cat-dropdown').classList.remove('open');
+            blogCatHighlight = -1;
+        }
+
+        function handleBlogCategoryKey(e) {
+            const dd = document.getElementById('blog-cat-dropdown');
+            const items = dd.querySelectorAll('.filter-dropdown-item');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                blogCatHighlight = Math.min(blogCatHighlight + 1, items.length - 1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                blogCatHighlight = Math.max(blogCatHighlight - 1, 0);
+            } else if (e.key === 'Enter' && blogCatHighlight >= 0) {
+                e.preventDefault();
+                selectBlogCategory(items[blogCatHighlight].dataset.value);
+                return;
+            } else if (e.key === 'Escape') {
+                closeBlogCategoryDropdown();
+                return;
+            }
+            items.forEach((el, i) => el.classList.toggle('highlighted', i === blogCatHighlight));
+        }
+
         async function loadBlogs() {
             try {
                 const res = await fetch('/admin/api/blogs');
                 if (!res.ok) throw new Error("Failed to load blogs");
-                blogs = await res.json();
-                renderBlogList();
+                allBlogs = await res.json();
+                blogs = allBlogs;
+                applyBlogFilters();
             } catch (e) {
                 showToast(e.message, true);
             }
+        }
+
+        function applyBlogFilters() {
+            const status = document.getElementById('filter-status').value;
+            const dateFrom = document.getElementById('filter-date-from').value;
+            const dateTo = document.getElementById('filter-date-to').value;
+            const category = document.getElementById('filter-category').value.trim().toLowerCase();
+
+            blogs = allBlogs.filter(blog => {
+                const blogStatus = (blog.status || 'draft');
+                const blogDate = blog.blogContent?.blogDate || blog.date || '';
+                const blogCat = (blog.blogContent?.blogCategory || '').toLowerCase();
+
+                if (status && blogStatus !== status) return false;
+                if (dateFrom && blogDate && blogDate < dateFrom) return false;
+                if (dateTo && blogDate && blogDate > dateTo) return false;
+                if (category && !blogCat.includes(category)) return false;
+                return true;
+            });
+
+            const countEl = document.getElementById('blog-filter-count');
+            if (countEl) {
+                countEl.textContent = allBlogs.length === blogs.length
+                    ? `${allBlogs.length} blogs`
+                    : `${blogs.length} of ${allBlogs.length} blogs`;
+            }
+
+            renderBlogList();
+        }
+
+        function resetBlogFilters() {
+            document.getElementById('filter-status').value = '';
+            document.getElementById('filter-date-from').value = '';
+            document.getElementById('filter-date-to').value = '';
+            document.getElementById('filter-category').value = '';
+            closeBlogCategoryDropdown();
+            applyBlogFilters();
         }
 
         async function loadGallery() {
@@ -1424,7 +1689,7 @@
         function stripAllLinks(html) {
             if (!html) return html;
             let cleaned = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
-            cleaned = cleaned.replace(/(<[^>]*)\s*style="[^"]*color[^"]*"([^>]*>)/gi, function(match, before, after) {
+            cleaned = cleaned.replace(/(<[^>]*)\s*style="[^"]*color[^"]*"([^>]*>)/gi, function (match, before, after) {
                 return before + after;
             });
             cleaned = cleaned.replace(/<font\b[^>]*>([\s\S]*?)<\/font>/gi, '$1');

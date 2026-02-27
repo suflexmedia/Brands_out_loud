@@ -1458,9 +1458,12 @@
             </div>
         </section>
 
+        <!-- AD BANNER 1 (hidden) -->
+        <!--
         <a href="{{ data.ad_banner_1.link }}" class="ad-banner">
             <img src="{{ data.ad_banner_1.image_url }}" alt="Advertisement">
         </a>
+        -->
 
         <div class="explore-ideas">
             <img src="/static/images/explore_new_ideas.png" alt="Explore New Ideas">
@@ -1469,7 +1472,8 @@
         <section class="magazine-grid-section">
             <div class="magazine-grid-inner" id="dynamic-magazine-grid">
             </div>
-            <div id="magazine-grid-pagination" style="display:none; justify-content:center; gap:1rem; padding:1.5rem 0;">
+            <div id="magazine-grid-pagination"
+                style="display:none; justify-content:center; gap:1rem; padding:1.5rem 0;">
                 <button id="mag-prev-btn" onclick="loadMagazineGrid(currentMagPage - 1)"
                     style="padding:0.6rem 1.4rem; border:1px solid #ccc; background:#fff; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.9rem; border-radius:4px; transition:all 0.2s;">
                     ← Previous
@@ -1496,8 +1500,8 @@
                 }
 
                 fetch(url)
-                    .then(function(res) { return res.json(); })
-                    .then(function(data) {
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
                         var grid = document.getElementById('dynamic-magazine-grid');
                         grid.innerHTML = '';
 
@@ -1517,14 +1521,14 @@
                                 var card = document.createElement('div');
                                 card.className = 'magazine-card';
                                 card.setAttribute('data-slug', mag.slug);
-                                card.onclick = (function(slug) {
-                                    return function() { window.location.href = '/magazine/' + slug; };
+                                card.onclick = (function (slug) {
+                                    return function () { window.location.href = '/magazine/' + slug; };
                                 })(mag.slug);
 
                                 card.innerHTML =
                                     '<div class="magazine-card-thumb">' +
-                                        '<div class="magazine-card-overlay"></div>' +
-                                        '<img src="' + mag.image_url + '" alt="' + mag.title + '">' +
+                                    '<div class="magazine-card-overlay"></div>' +
+                                    '<img src="' + mag.image_url + '" alt="' + mag.title + '">' +
                                     '</div>' +
                                     '<div class="magazine-card-title">' + mag.title + '</div>';
 
@@ -1545,19 +1549,22 @@
                             paginationEl.style.display = 'none';
                         }
                     })
-                    .catch(function(err) {
+                    .catch(function (err) {
                         console.error('Failed to load magazines grid:', err);
                     });
             }
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 loadMagazineGrid(1);
             });
         </script>
 
+        <!-- AD BANNER 2 (hidden) -->
+        <!--
         <a href="{{ data.ad_banner_2.link }}" class="ad-banner">
             <img src="{{ data.ad_banner_2.image_url }}" alt="Advertisement">
         </a>
+        -->
 
         <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
             <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"

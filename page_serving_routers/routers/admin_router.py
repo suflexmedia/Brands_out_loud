@@ -123,6 +123,22 @@ async def admin_analytics_page(request: Request):
     return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/analytics.html")
 
 
+@router.get("/edit-pages")
+async def admin_edit_pages(request: Request):
+    """Serve the admin edit pages HTML page."""
+    if not await is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_pages.html")
+
+
+@router.get("/edit-pages/homepage")
+async def admin_edit_homepage(request: Request):
+    """Serve the admin homepage editor HTML page."""
+    if not await is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    return FileResponse("PAGE_SERVING_ROUTERS/static/templates/admin/edit_homepage.html")
+
+
 @router.get("/logout")
 async def logout(request: Request):
     """Clear the session cookie from DB and log the user out."""

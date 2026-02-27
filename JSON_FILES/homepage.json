@@ -67,7 +67,15 @@
     ]
   },
   "strip_section": {
-    "items": ["STARTUPS", "AI", "BUSINESS", "ENTREPRENEUR", "EVENTS", "BRANDS", "TRENDS"]
+    "items": [
+      "STARTUPS",
+      "AI",
+      "BUSINESS",
+      "ENTREPRENEUR",
+      "EVENTS",
+      "BRANDS",
+      "TRENDS"
+    ]
   },
   "top_stories_section": {
     "top_story_main": {
@@ -184,84 +192,5 @@
         }
       ]
     }
-  ],
-  "lifestyle_section": {
-    "top_feature": {
-      "author": "Dr. Sarah Chen",
-      "date": "June 29, 2025",
-      "title": "Revolutionary AI Breakthrough Changes Everything",
-      "tag": "Artificial Intelligence",
-      "read_time": "5 min read",
-      "image_url": "https://picsum.photos/500/350?random=21",
-      "link": "https://example.com"
-    },
-    "sidebar_articles": [
-      {
-        "author": "John Smith",
-        "date": "June 28, 2025",
-        "title": "Deep Learning Models Advance Natural Language Processing",
-        "tag": "Machine Learning",
-        "image_url": "https://picsum.photos/300/200?random=22",
-        "link": "https://example.com"
-      },
-      {
-        "author": "Lisa Wang",
-        "date": "June 27, 2025",
-        "title": "Autonomous Systems Reshape Manufacturing Industry",
-        "tag": "Robotics",
-        "image_url": "https://picsum.photos/300/200?random=23",
-        "link": "https://example.com"
-      }
-    ],
-    "small_articles": [
-      {
-        "author": "Mike Johnson",
-        "date": "June 26, 2025",
-        "title": "AI Ethics Guidelines for Responsible Development",
-        "tag": "Ethics",
-        "image_url": "https://picsum.photos/200/150?random=24",
-        "link": "https://example.com"
-      },
-      {
-        "author": "Emma Brown",
-        "date": "June 25, 2025",
-        "title": "Quantum Computing Meets Artificial Intelligence",
-        "tag": "Quantum AI",
-        "image_url": "https://picsum.photos/200/150?random=25",
-        "link": "https://example.com"
-      },
-      {
-        "author": "Dr. David Lee",
-        "date": "June 24, 2025",
-        "title": "AI-Powered Healthcare Diagnostics Breakthrough",
-        "tag": "Healthcare",
-        "image_url": "https://picsum.photos/200/150?random=26",
-        "link": "https://example.com"
-      },
-      {
-        "author": "Anna Wilson",
-        "date": "June 23, 2025",
-        "title": "Voice Recognition Technology Reaches New Heights",
-        "tag": "Speech AI",
-        "image_url": "https://picsum.photos/200/150?random=27",
-        "link": "https://example.com"
-      },
-      {
-        "author": "Tom Garcia",
-        "date": "June 22, 2025",
-        "title": "Computer Vision Applications in Smart Cities",
-        "tag": "Computer Vision",
-        "image_url": "https://picsum.photos/200/150?random=28",
-        "link": "https://example.com"
-      },
-      {
-        "author": "Rachel Davis",
-        "date": "June 21, 2025",
-        "title": "AI Regulation Framework Proposed by Tech Leaders",
-        "tag": "Policy",
-        "image_url": "https://picsum.photos/200/150?random=29",
-        "link": "https://example.com"
-      }
-    ]
-  }
+  ]
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Brands of Cloud</title>
+    <title>Edit Pages - Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -68,12 +68,37 @@
             max-width: 100%;
         }
 
+        .nav-back {
+            padding: 0.5rem 1.25rem;
+            background: var(--bg);
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            text-transform: uppercase;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-back:hover {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         #user-greeting {
             font-family: 'Space Mono', monospace;
             font-size: 0.9rem;
             font-weight: 700;
             color: var(--text);
-            margin-right: 1.5rem;
         }
 
         .logout-btn {
@@ -128,7 +153,7 @@
             color: #444;
         }
 
-        .dashboard-grid {
+        .pages-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
@@ -196,6 +221,42 @@
             color: #444;
         }
 
+        .card-badge {
+            align-self: flex-start;
+            background: var(--accent-gradient);
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card:hover .card-badge {
+            background: white;
+            color: var(--accent-dark);
+        }
+
+        .card-disabled {
+            cursor: default;
+        }
+
+        .card-disabled::before {
+            display: none;
+        }
+
+        .card-disabled:hover {
+            border-color: var(--border);
+        }
+
+        .card-disabled:hover h3,
+        .card-disabled:hover p {
+            color: inherit;
+        }
+
         .coming-soon-badge {
             align-self: flex-start;
             background: var(--text);
@@ -210,11 +271,7 @@
             z-index: 1;
         }
 
-        .card:hover .coming-soon-badge {
-            background: white;
-            color: var(--accent-dark);
-        }
-
+        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -232,7 +289,7 @@
             background: var(--bg);
             border: 2px solid var(--border);
             width: 90%;
-            max-width: 560px;
+            max-width: 780px;
             padding: 3.5rem;
             position: relative;
             box-shadow: 12px 12px 0 var(--border);
@@ -257,69 +314,89 @@
 
         .modal h3 {
             font-size: 2.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             letter-spacing: -1px;
             line-height: 1;
             color: var(--text);
         }
 
-        .form-group {
-            margin-bottom: 1.75rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text);
-        }
-
-        .form-group input[type="password"],
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid var(--border);
+        .modal-subtitle {
             font-family: 'Space Mono', monospace;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.2s;
-            background: var(--bg);
-            color: var(--text);
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 2rem;
         }
 
-        .form-group input:focus {
-            background: var(--text);
-            color: white;
+        .service-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
         }
 
-        .btn {
-            background: var(--text);
-            color: white;
+        .service-option-btn {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
             border: 2px solid var(--border);
-            padding: 1.25rem 2rem;
+            background: var(--bg);
             cursor: pointer;
             font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
             text-transform: uppercase;
-            width: 100%;
-            transition: all 0.2s;
             letter-spacing: 0.5px;
+            color: var(--text);
+            transition: all 0.2s;
+            text-decoration: none;
+            min-height: 110px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:hover {
+        .service-option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: var(--accent-gradient);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+            z-index: 0;
+        }
+
+        .service-option-btn:hover::before {
+            transform: scaleY(1);
+        }
+
+        .service-option-btn:hover {
             border-color: var(--accent);
         }
 
-        #update-profile-msg {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
-            margin-top: 1rem;
+        .service-option-btn .svc-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            transition: color 0.2s;
+        }
+
+        .service-option-btn .arrow {
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            margin-top: 0.75rem;
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .service-option-btn:hover .svc-name,
+        .service-option-btn:hover .arrow {
+            color: white;
+        }
+
+        .service-option-btn:hover .arrow {
+            transform: translateX(4px);
         }
 
         @media (max-width: 768px) {
@@ -347,7 +424,7 @@
                 padding: 2rem 1.25rem;
             }
 
-            .dashboard-grid {
+            .pages-grid {
                 grid-template-columns: 1fr;
                 gap: 1.25rem;
             }
@@ -365,6 +442,10 @@
             .modal h3 {
                 font-size: 1.75rem;
             }
+
+            .service-options {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -380,79 +461,84 @@
         <div class="navbar-left">
             <img src="/static/images/header_logo.png" alt="Brands out loud Logo">
         </div>
-        <div style="display: flex; align-items: center;">
+        <div class="nav-right">
             <span id="user-greeting"></span>
+            <a href="/admin/dashboard" class="nav-back">&larr; Dashboard</a>
             <a href="/admin/logout" class="logout-btn">Log off</a>
         </div>
     </nav>
 
     <main class="container">
         <div class="page-header">
-            <h2>Dashboard</h2>
-            <p>Welcome back to your administration area.</p>
+            <h2>Edit Pages</h2>
+            <p>Manage and update the primary website page content and layouts.</p>
         </div>
 
-        <div class="dashboard-grid">
-            <div class="card" id="analytics-card">
-                <div>
-                    <h3>Analytics</h3>
-                    <p>View visitor statistics, content engagement metrics, and daily reports.</p>
-                </div>
+        <div class="pages-grid">
 
+            <!-- Home Page Card -->
+            <div class="card" id="card-homepage" onclick="window.location.href='/admin/edit-pages/homepage'">
+                <div>
+                    <h3>Home Page</h3>
+                    <p>Edit hero section, featured content, and the main landing experience.</p>
+                </div>
+                <span class="card-badge">Edit &rarr;</span>
             </div>
 
-            <div class="card" id="user-management-card">
+            <!-- Service Pages Card -->
+            <div class="card" id="card-service-pages" onclick="openServiceModal()">
                 <div>
-                    <h3>User Management</h3>
-                    <p>Control admin access, manage roles, and monitor activity.</p>
+                    <h3>Service Pages</h3>
+                    <p>Select a service page to edit its content, layout, and featured sections.</p>
                 </div>
+                <span class="card-badge">5 Pages &rarr;</span>
             </div>
 
-            <div class="card" id="edit-pages-card">
+            <!-- Magazine Home Page Card -->
+            <div class="card card-disabled" id="card-magazine-home">
                 <div>
-                    <h3>Edit Pages</h3>
-                    <p>Modify and manage primary website pages and internal content layout.</p>
+                    <h3>Magazine Home</h3>
+                    <p>Edit the magazine landing page layout, featured issues, and category display.</p>
                 </div>
-
+                <span class="coming-soon-badge">Coming Soon</span>
             </div>
 
-            <div class="card" id="blog-section-card">
-                <div>
-                    <h3>Blog Section</h3>
-                    <p>Create, edit, classify, and publish new blog posts and insight articles.</p>
-                </div>
-
-            </div>
-
-            <div class="card" id="magazine-section-card">
-                <div>
-                    <h3>Magazine Section</h3>
-                    <p>Manage digital magazine issues, specialized articles, and layouts.</p>
-                </div>
-
-            </div>
         </div>
     </main>
 
-    <div class="modal-overlay" id="profile-modal">
+    <!-- Service Pages Modal -->
+    <div class="modal-overlay" id="service-modal">
         <div class="modal">
-            <button class="modal-close" onclick="closeModal('profile-modal')">&times;</button>
-            <h3>My Profile</h3>
+            <button class="modal-close" onclick="closeServiceModal()">&times;</button>
+            <h3>Service Pages</h3>
+            <p class="modal-subtitle">Select a service page to edit</p>
 
-            <form id="update-profile-form">
-                <div class="form-group">
-                    <label>New Password (leave blank to keep current)</label>
-                    <input type="password" id="update-password">
-                </div>
-                <button type="submit" class="btn">Update Profile</button>
-                <div id="update-profile-msg"></div>
-            </form>
+            <div class="service-options">
+                <a class="service-option-btn" id="btn-service-business" href="#">
+                    <span class="svc-name">Business</span>
+                    <span class="arrow">&rarr;</span>
+                </a>
+                <a class="service-option-btn" id="btn-service-gcc" href="#">
+                    <span class="svc-name">GCC</span>
+                    <span class="arrow">&rarr;</span>
+                </a>
+                <a class="service-option-btn" id="btn-service-semiconductor" href="#">
+                    <span class="svc-name">Semiconductor</span>
+                    <span class="arrow">&rarr;</span>
+                </a>
+                <a class="service-option-btn" id="btn-service-sustainability" href="#">
+                    <span class="svc-name">Sustainability</span>
+                    <span class="arrow">&rarr;</span>
+                </a>
+                <a class="service-option-btn" id="btn-service-technology" href="#">
+                    <span class="svc-name">Technology</span>
+                    <span class="arrow">&rarr;</span>
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentUser = null;
-
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch('/admin/me');
@@ -460,101 +546,30 @@
                     window.location.href = '/admin/login';
                     return;
                 }
-                currentUser = await response.json();
-
-                document.getElementById('user-greeting').textContent = `// USER: ${currentUser.username}`;
-
-                const umCard = document.getElementById('user-management-card');
-                const umTitle = umCard.querySelector('h3');
-                const umDesc = umCard.querySelector('p');
-                const umBadge = umCard.querySelector('.coming-soon-badge');
-                if (umBadge) umBadge.remove();
-
-                if (currentUser.role === 'system_admin') {
-                    umTitle.textContent = 'User Management';
-                    umDesc.textContent = 'Control admin access, manage roles, and monitor activity.';
-                    umCard.onclick = () => { window.location.href = '/admin/user-management'; };
-                } else {
-                    umTitle.textContent = 'Profile';
-                    umDesc.textContent = 'Manage your account settings and update your password.';
-                    umCard.onclick = () => openModal('profile-modal');
-                }
-
-                document.getElementById('blog-section-card').onclick = () => {
-                    window.location.href = '/admin/blogs';
-                };
-                const blogBadge = document.getElementById('blog-section-card').querySelector('.coming-soon-badge');
-                if (blogBadge) blogBadge.remove();
-
-                document.getElementById('magazine-section-card').onclick = () => {
-                    window.location.href = '/admin/magazines';
-                };
-                const magazineBadge = document.getElementById('magazine-section-card').querySelector('.coming-soon-badge');
-                if (magazineBadge) magazineBadge.remove();
-
-                document.getElementById('analytics-card').onclick = () => {
-                    window.location.href = '/admin/analytics';
-                };
-                const analyticsBadge = document.getElementById('analytics-card').querySelector('.coming-soon-badge');
-                if (analyticsBadge) analyticsBadge.remove();
-
-                document.getElementById('edit-pages-card').onclick = () => {
-                    window.location.href = '/admin/edit-pages';
-                };
-                const editPagesBadge = document.getElementById('edit-pages-card').querySelector('.coming-soon-badge');
-                if (editPagesBadge) editPagesBadge.remove();
-
-                const cardsMap = {
-                    'analytics': document.getElementById('analytics-card'),
-                    'edit_pages': document.getElementById('edit-pages-card'),
-                    'blog_section': document.getElementById('blog-section-card'),
-                    'magazine_section': document.getElementById('magazine-section-card')
-                };
-
-                if (currentUser.role !== 'system_admin') {
-                    for (const [perm, cardEl] of Object.entries(cardsMap)) {
-                        if (!currentUser.permissions.includes(perm)) {
-                            cardEl.style.display = 'none';
-                        }
-                    }
-                }
+                const user = await response.json();
+                document.getElementById('user-greeting').textContent = `// USER: ${user.username}`;
             } catch (e) {
-                console.error('Failed to load user info', e);
+                window.location.href = '/admin/login';
             }
         });
 
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+        function openServiceModal() {
+            document.getElementById('service-modal').style.display = 'flex';
         }
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+        function closeServiceModal() {
+            document.getElementById('service-modal').style.display = 'none';
         }
 
-        document.getElementById('update-profile-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const msgEl = document.getElementById('update-profile-msg');
-            msgEl.textContent = 'Updating...';
-            msgEl.style.color = '#666';
+        document.getElementById('service-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('service-modal')) {
+                closeServiceModal();
+            }
+        });
 
-            try {
-                const response = await fetch('/admin/profile', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        password: document.getElementById('update-password').value || null
-                    })
-                });
-
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.detail || 'Failed');
-
-                msgEl.textContent = 'Profile updated successfully!';
-                msgEl.style.color = 'green';
-                document.getElementById('update-password').value = '';
-            } catch (error) {
-                msgEl.textContent = error.message;
-                msgEl.style.color = 'red';
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeServiceModal();
             }
         });
     </script>
