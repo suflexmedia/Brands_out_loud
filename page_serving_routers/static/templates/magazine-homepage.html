@@ -25,42 +25,59 @@
         <section class="leadership-spotlight-section">
             <div class="leadership-spotlight-inner">
                 <div class="magazine-cover-card">
+                    {% if data.leadership_spotlight_section and data.leadership_spotlight_section.magazine_cover and data.leadership_spotlight_section.magazine_cover.image_url %}
+                    <div class="magazine-cover-img"
+                        style="background-image: url('{{ data.leadership_spotlight_section.magazine_cover.image_url }}')"></div>
+                    <a href="/magazine/{{ data.leadership_spotlight_section.magazine_cover.slug }}" class="read-story-btn">
+                        <img src="/static/images/read_full_story_button.png" alt="Read full story">
+                    </a>
+                    {% else %}
                     <div class="magazine-cover-img"
                         style="background-image: url('https://picsum.photos/seed/podcastcover/600/800')"></div>
-                    <a href="/magazine/CXO%20TechBOT%20October%202024-1-25.pdf" class="read-story-btn">
-                        <img src="static/images/read_full_story_button.png" alt="Read full story">
+                    <a href="/magazine_page" class="read-story-btn">
+                        <img src="/static/images/read_full_story_button.png" alt="Read full story">
                     </a>
+                    {% endif %}
                 </div>
 
                 <div class="profiles-column">
-                    <h2 class="leadership-heading">Leadership Spotlight</h2>
+                    <h2 class="leadership-heading">{{ data.leadership_spotlight_section.heading if data.leadership_spotlight_section and data.leadership_spotlight_section.heading else 'Leadership Spotlight' }}</h2>
 
                     <div class="profiles-carousel-viewport">
                         <div class="profiles-carousel-track" id="profilesTrack">
-                            <div class="profile-card">
-                                <div class="profile-img-wrap">
-                                    <img src="https://picsum.photos/seed/profile1/214/283" alt="Suhas Medam">
+                            {% if data.leadership_spotlight_section and data.leadership_spotlight_section.profiles %}
+                                {% for profile in data.leadership_spotlight_section.profiles %}
+                                <div class="profile-card">
+                                    <div class="profile-img-wrap">
+                                        <img src="{{ profile.image_url if profile.image_url else 'https://picsum.photos/seed/profile' ~ loop.index ~ '/214/283' }}" alt="{{ profile.name }}">
+                                    </div>
+                                    <h3 class="profile-name">{{ profile.name if profile.name else 'Profile ' ~ loop.index }}</h3>
+                                    <p class="profile-desc">{{ profile.description if profile.description else '' }}</p>
                                 </div>
-                                <h3 class="profile-name">Suhas Medam</h3>
-                                <p class="profile-desc">It is a long established fact that a reader will be distracted
-                                    by the readable content of a page when looking at its layout.</p>
-                            </div>
-                            <div class="profile-card">
-                                <div class="profile-img-wrap">
-                                    <img src="https://picsum.photos/seed/profile2/214/282" alt="Harsh Kumar">
+                                {% endfor %}
+                            {% else %}
+                                <div class="profile-card">
+                                    <div class="profile-img-wrap">
+                                        <img src="https://picsum.photos/seed/profile1/214/283" alt="Profile 1">
+                                    </div>
+                                    <h3 class="profile-name">Profile 1</h3>
+                                    <p class="profile-desc"></p>
                                 </div>
-                                <h3 class="profile-name">Harsh Kumar</h3>
-                                <p class="profile-desc">It is a long established fact that a reader will be distracted
-                                    by the readable content of a page when looking at its layout.</p>
-                            </div>
-                            <div class="profile-card">
-                                <div class="profile-img-wrap">
-                                    <img src="https://picsum.photos/seed/profile3/214/282" alt="Vivek Bindra">
+                                <div class="profile-card">
+                                    <div class="profile-img-wrap">
+                                        <img src="https://picsum.photos/seed/profile2/214/282" alt="Profile 2">
+                                    </div>
+                                    <h3 class="profile-name">Profile 2</h3>
+                                    <p class="profile-desc"></p>
                                 </div>
-                                <h3 class="profile-name">Vivek Bindra</h3>
-                                <p class="profile-desc">It is a long established fact that a reader will be distracted
-                                    by the readable content of a page when looking at its layout.</p>
-                            </div>
+                                <div class="profile-card">
+                                    <div class="profile-img-wrap">
+                                        <img src="https://picsum.photos/seed/profile3/214/282" alt="Profile 3">
+                                    </div>
+                                    <h3 class="profile-name">Profile 3</h3>
+                                    <p class="profile-desc"></p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -82,54 +99,25 @@
         </div>
 
         <section class="magazine-grid-section">
-            <div class="magazine-grid-inner">
-                <div class="magazine-row">
-                    <div class="magazine-card"
-                        onclick="window.open('/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-sample (2).pdf?', '_blank')">
-                        <div class="magazine-card-thumb">
-                            <div class="magazine-card-overlay"></div>
-                            <img src="https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/magazine-thumbnails/ComfyUI_00005_.png?"
-                                alt="external check">
-                        </div>
-                        <div class="magazine-card-title">EXTERNAL CHECK</div>
+            <div class="magazine-grid-inner" id="dynamic-magazine-grid"
+                 data-mode="{{ data.magazine_grid_section.mode if data.magazine_grid_section else 'auto' }}">
+                {% if data.magazine_grid_section and data.magazine_grid_section.mode == 'manual' and data.magazine_grid_section.magazines %}
+                    {% for row_start in range(0, data.magazine_grid_section.magazines|length, 3) %}
+                    <div class="magazine-row">
+                        {% for mag in data.magazine_grid_section.magazines[row_start:row_start+3] %}
+                            {% if mag and mag.slug %}
+                            <div class="magazine-card" onclick="window.location.href='/magazine/{{ mag.slug }}'">
+                                <div class="magazine-card-thumb">
+                                    <div class="magazine-card-overlay"></div>
+                                    <img src="{{ mag.image_url }}" alt="{{ mag.title }}">
+                                </div>
+                                <div class="magazine-card-title">{{ mag.title|upper }}</div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
-                    <div class="magazine-card"
-                        onclick="window.open('/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-CLOUD_COMPUTING_interview_questions.pdf?', '_blank')">
-                        <div class="magazine-card-thumb">
-                            <div class="magazine-card-overlay"></div>
-                            <img src="https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/magazine-thumbnails/IMG_20231230_180145.jpg?"
-                                alt="Tumhe maine dekhaaa">
-                        </div>
-                        <div class="magazine-card-title">TUMHE MAINE DEKHAAA</div>
-                    </div>
-                    <div class="magazine-card"
-                        onclick="window.open('/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-7159.pdf.pdf?', '_blank')">
-                        <div class="magazine-card-thumb">
-                            <div class="magazine-card-overlay"></div>
-                            <img src="https://picsum.photos/1920/1080/?random=abcm" alt="test_3">
-                        </div>
-                        <div class="magazine-card-title">TEST_3</div>
-                    </div>
-                </div>
-                <div class="magazine-row">
-                    <div class="magazine-card"
-                        onclick="window.open('/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs-test_magazine.pdf?', '_blank')">
-                        <div class="magazine-card-thumb">
-                            <div class="magazine-card-overlay"></div>
-                            <img src="https://iwyjssxhrcucnrkzkvmt.supabase.co/storage/v1/object/public/magazine-thumbnails/1.sm.webp?"
-                                alt="test_2">
-                        </div>
-                        <div class="magazine-card-title">TEST_2</div>
-                    </div>
-                    <div class="magazine-card"
-                        onclick="window.open('/magazine/https:--iwyjssxhrcucnrkzkvmt.supabase.co-storage-v1-object-public-magazine-pdfs--CXO%20TechBOT%20October%202024-1-10.pdf', '_blank')">
-                        <div class="magazine-card-thumb">
-                            <div class="magazine-card-overlay"></div>
-                            <img src="https://picsum.photos/1920/1080/?random=abc" alt="demo_title">
-                        </div>
-                        <div class="magazine-card-title">DEMO_TITLE</div>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </section>
 
@@ -141,7 +129,7 @@
         -->
 
         <section class="fuel-ambition-section" style="background-image:url(/static/images/fuel_ambition.png)">
-            <a href="/magazine_page" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
+            <a href="{{ data.fuel_ambition_link if data.fuel_ambition_link else '/magazine_page' }}" class="fuel-ambition-btn"><img src="/static/images/checkout_magazine_button.png"
                     alt="Footer Action Button"></a>
         </section>
 

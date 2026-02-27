@@ -161,6 +161,119 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', handleCarouselOnResize);
 
 
+    // ── Dynamic Magazine Grid ──────────────────────────────────────
+    var magazineGridContainer = document.getElementById('dynamic-magazine-grid');
+    var currentGridPage = 1;
+    var gridPerPage = 6;
+
+    function buildMagazineCard(mag) {
+        var card = document.createElement('div');
+        card.className = 'magazine-card';
+        card.onclick = function () {
+            window.location.href = '/magazine/' + mag.slug;
+        };
+        card.style.cursor = 'pointer';
+
+        var thumb = document.createElement('div');
+        thumb.className = 'magazine-card-thumb';
+
+        var overlay = document.createElement('div');
+        overlay.className = 'magazine-card-overlay';
+        thumb.appendChild(overlay);
+
+        var img = document.createElement('img');
+        img.src = mag.image_url || mag.thumbnail_url || 'https://picsum.photos/1920/1080/?random=' + mag.slug;
+        img.alt = mag.title || 'Magazine';
+        thumb.appendChild(img);
+
+        var title = document.createElement('div');
+        title.className = 'magazine-card-title';
+        title.textContent = (mag.title || 'Untitled').toUpperCase();
+
+        card.appendChild(thumb);
+        card.appendChild(title);
+        return card;
+    }
+
+    function renderMagazineGrid(magazines) {
+        if (!magazineGridContainer) return;
+        // Clear existing content except pagination
+        var existingPagination = magazineGridContainer.querySelector('.magazine-grid-pagination');
+        magazineGridContainer.innerHTML = '';
+
+        // Build rows of 3
+        for (var i = 0; i < magazines.length; i += 3) {
+            var row = document.createElement('div');
+            row.className = 'magazine-row';
+            var rowItems = magazines.slice(i, i + 3);
+            for (var j = 0; j < rowItems.length; j++) {
+                row.appendChild(buildMagazineCard(rowItems[j]));
+            }
+            magazineGridContainer.appendChild(row);
+        }
+    }
+
+    function renderGridPagination(data) {
+        if (!magazineGridContainer || !data.has_next) return;
+
+        var paginationDiv = document.createElement('div');
+        paginationDiv.className = 'magazine-grid-pagination';
+        paginationDiv.style.textAlign = 'center';
+        paginationDiv.style.marginTop = '2rem';
+
+        var loadMoreBtn = document.createElement('button');
+        loadMoreBtn.className = 'fuel-ambition-btn';
+        loadMoreBtn.textContent = 'Load More Magazines';
+        loadMoreBtn.style.cssText = 'padding: 0.75rem 2rem; background: #0D1030; color: white; border: none; font-family: "Oswald", sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;';
+        loadMoreBtn.onmouseover = function () { this.style.background = '#3B4FD4'; };
+        loadMoreBtn.onmouseout = function () { this.style.background = '#0D1030'; };
+        loadMoreBtn.onclick = function () {
+            currentGridPage++;
+            loadMagazineGrid(true);
+        };
+
+        paginationDiv.appendChild(loadMoreBtn);
+        magazineGridContainer.appendChild(paginationDiv);
+    }
+
+    function loadMagazineGrid(append) {
+        if (!magazineGridContainer) return;
+
+        fetch('/admin/api/magazines/grid?page=' + currentGridPage + '&per_page=' + gridPerPage)
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (append) {
+                    // Remove old pagination before appending
+                    var oldPagination = magazineGridContainer.querySelector('.magazine-grid-pagination');
+                    if (oldPagination) oldPagination.remove();
+
+                    // Append new rows
+                    var mags = data.magazines || [];
+                    for (var i = 0; i < mags.length; i += 3) {
+                        var row = document.createElement('div');
+                        row.className = 'magazine-row';
+                        var rowItems = mags.slice(i, i + 3);
+                        for (var j = 0; j < rowItems.length; j++) {
+                            row.appendChild(buildMagazineCard(rowItems[j]));
+                        }
+                        magazineGridContainer.appendChild(row);
+                    }
+                } else {
+                    renderMagazineGrid(data.magazines || []);
+                }
+                renderGridPagination(data);
+            })
+            .catch(function (err) {
+                console.error('Failed to load magazine grid:', err);
+            });
+    }
+
+    var gridMode = magazineGridContainer ? magazineGridContainer.getAttribute('data-mode') : 'auto';
+    if (gridMode === 'auto') {
+        loadMagazineGrid(false);
+    }
+
+    // ── High Five Counter ────────────────────────────────────────────
     var highFiveEmojis = document.querySelectorAll('.high-five-emoji');
     var countNumbers = document.querySelectorAll('.count-number');
     var highFiveCount = parseInt(localStorage.getItem('highFiveCount') || '521');
