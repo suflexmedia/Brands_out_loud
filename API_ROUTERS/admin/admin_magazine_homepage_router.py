@@ -287,7 +287,7 @@ async def preview_magazine_homepage(request: Request):
     from page_serving_routers.routers.navbar_fetcher import get_navbar_data
     navbar = await get_navbar_data()
 
-    return _templates.TemplateResponse("magazine-homepage.html", {
+    return _templates.TemplateResponse(request=request, name="magazine-homepage.html", context={
         "request": request,
         "data": data,
         "navbar": navbar,

@@ -69,4 +69,4 @@ async def serve_service_page(request: Request):
     latest_slug = await _get_latest_magazine_slug()
     data["fuel_ambition_link"] = f"/magazine/{latest_slug}" if latest_slug else "/magazine_page"
 
-    return templates.TemplateResponse("service.html", {"request": request, "data": data, "navbar": navbar})
+    return templates.TemplateResponse(request=request, name="service.html", context={"request": request, "data": data, "navbar": navbar})

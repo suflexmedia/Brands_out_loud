@@ -115,8 +115,9 @@ async def serve_magazine_page(request: Request, pdf_name: str):
 
     print(f"Magazine Page | PDF Name: {pdf_name} | Full URL: {pdf_url} | Slug: {current_slug}")
     return templates.TemplateResponse(
-        "magazine-page.html",
-        {
+        request=request,
+        name="magazine-page.html",
+        context={
             "request": request,
             "data": data,
             "navbar": navbar,
