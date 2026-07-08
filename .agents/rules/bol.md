@@ -24,7 +24,7 @@ Please adhere strictly to our established project architecture and coding guidel
 
 - Use viewport units (`vw` and `vh`) for major spacing, section padding, margins, and key element dimensions so the design scales fluidly. Avoid `px` and `rem` where possible as they might break with screen sizes.
 - Convert absolute pixel coordinates from the Figma CSS to responsive flexbox/grid containers.
-- First focus on creating the desktop version properly. The mobile screen menu and mobile CSS will be added in a separate phase without changing the desktop implementation.
+- Focus on creating and refining the mobile design. Ensure any changes, including media queries and mobile CSS, do not hamper or break the existing desktop implementation.
 
 ### 3. SVG & Logo Handling
 
@@ -51,7 +51,7 @@ Please adhere strictly to our established project architecture and coding guidel
 - Map the provided Figma visual design (`image.png`) and Figma CSS (`figma.css`) into modular HTML sections.
 - Ensure the `/remaster` route is appropriately registered in the FastAPI app.
 
-### Phase 2: Desktop Layout & Structure (Current Focus)
+### Phase 2: Desktop Layout & Structure (Completed)
 - Create the HTML skeleton in `homepage_remaster.html`.
 - Create a dedicated CSS file (e.g., `homepage_remaster.css`) and link it.
 - Convert Figma's absolute positioning and pixel units into a responsive Flexbox/Grid layout utilizing `vw` and `vh`.
@@ -59,6 +59,6 @@ Please adhere strictly to our established project architecture and coding guidel
 - Integrate dynamic data slots (using Jinja2 syntax) if required by the design, or prepare the structure with static placeholders initially.
 - Use Picsum for any new placeholder images.
 
-### Phase 3: Mobile Responsiveness (Next Phase)
-- To be executed only after the desktop version is finalized.
-- Add media queries and a mobile menu layout without breaking the desktop design.
+### Phase 3: Mobile Responsiveness (Current Focus)
+- Update the mobile design without hampering the desktop version.
+- Add media queries and a mobile menu layout, ensuring the desktop implementation remains strictly unaffected.
