@@ -20,7 +20,7 @@
     <div class="page-wrapper">
       <nav class="remaster-navbar">
         <div class="remaster-nav-left">
-          <i class="ph ph-list mobile-menu-icon"></i>
+          <i class="ph ph-list mobile-menu-icon" id="mobileMenuIcon" onclick="toggleMobileMenu()"></i>
           <a href="/"
             ><img
               src="/static/images/header_logo.png"
@@ -37,6 +37,12 @@
           <a href="#" class="btn-primary remaster-nav-book">Book a Call →</a>
         </div>
       </nav>
+
+      <div class="mobile-menu-dropdown" id="mobileMenu">
+        <a href="/blog" class="mobile-menu-link">Blog</a>
+        <a href="/magazine" class="mobile-menu-link">Magazine</a>
+        <a href="/contact" class="mobile-menu-contact">Contact</a>
+      </div>
 
       <section class="hero-remaster">
         <video class="hero-remaster-video" autoplay loop muted playsinline>
@@ -580,5 +586,20 @@
         </div>
       </footer>
     </div>
+    <script>
+      function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.getElementById('mobileMenuIcon');
+        if (menu.classList.contains('active')) {
+          menu.classList.remove('active');
+          icon.classList.remove('ph-x');
+          icon.classList.add('ph-list');
+        } else {
+          menu.classList.add('active');
+          icon.classList.remove('ph-list');
+          icon.classList.add('ph-x');
+        }
+      }
+    </script>
   </body>
 </html>
