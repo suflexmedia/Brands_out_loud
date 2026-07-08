@@ -1,0 +1,6006 @@
+/* BOL - Homepage */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: relative;
+width: 1440px;
+height: 7588px;
+
+background: #fafaf6;
+
+/* Frame 11 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+width: 1440px;
+height: 729px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 180px 120px;
+
+width: 1440px;
+height: 729px;
+
+background:
+  linear-gradient(0deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.48)),
+  url(349317.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 32px;
+
+width: 808px;
+height: 369px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Turn your expertise into a published book. */
+
+width: 808px;
+height: 192px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 80px;
+line-height: 120%;
+/* or 96px */
+text-align: center;
+letter-spacing: -3.84px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* We publish exclusively with the top 5% of corporat */
+
+width: 808px;
+height: 58px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 29px;
+/* or 160% */
+text-align: center;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 24px;
+gap: 10px;
+
+width: 345px;
+height: 55px;
+
+background: linear-gradient(
+  91.39deg,
+  #1d4896 0%,
+  #1755c6 48.01%,
+  #1d4896 100.69%
+);
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Become the voice of your industry */
+
+width: 268px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 19px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 15px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* → */
+
+width: 15px;
+height: 18px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 34 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px 96px;
+gap: 10px;
+
+position: absolute;
+width: 1440px;
+height: 117px;
+left: 0px;
+top: 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 12px 64px;
+
+width: 1248px;
+height: 85px;
+
+background: rgba(250, 250, 246, 0.48);
+border: 1px solid #ffffff;
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* BOL Logo 1 */
+
+width: 48px;
+height: 48px;
+
+background: url(BOL Logo.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Links */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 8px;
+gap: 16px;
+
+width: 325px;
+height: 59px;
+
+border: 1px solid #e5e2d8;
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 10px 18px;
+
+width: 112px;
+height: 39px;
+
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Magazine */
+
+width: 76px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+line-height: 19px;
+
+color: #0d1b4b;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 10px 18px;
+
+width: 71px;
+height: 39px;
+
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Blog */
+
+width: 35px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+line-height: 19px;
+
+color: #0d1b4b;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 16px;
+
+width: 94px;
+height: 43px;
+
+background: #0d1b4b;
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Contact */
+
+width: 62px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+line-height: 19px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 24px;
+gap: 10px;
+
+width: 164px;
+height: 55px;
+
+background: linear-gradient(
+  91.39deg,
+  #1d4896 0%,
+  #1755c6 48.01%,
+  #1d4896 100.69%
+);
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Book a Call */
+
+width: 87px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 19px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 15px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* → */
+
+width: 15px;
+height: 18px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 20px 48px;
+gap: 80px;
+
+width: 3036px;
+height: 67px;
+
+background: #050513;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 233px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* newsstand */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* newsstand */
+
+position: absolute;
+left: 0.86%;
+right: 90.56%;
+top: 16.67%;
+bottom: 16.67%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 197px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Multiple Bestsellers Published */
+
+width: 197px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 247px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* book_ribbon */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* book_ribbon */
+
+position: absolute;
+left: 0.4%;
+right: 90.69%;
+top: 8.33%;
+bottom: 16.67%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 211px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Thousands of Readers Impacted */
+
+width: 211px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 208px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* star_shine */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* star_shine */
+
+position: absolute;
+left: 0.63%;
+right: 89.09%;
+top: 8.33%;
+bottom: 12.5%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 172px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* 4.9 Average Author Rating */
+
+width: 172px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 180px;
+height: 27px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* date_range */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 1.5px;
+
+background: #d9d9d9;
+
+/* date_range */
+
+position: absolute;
+left: 1.67%;
+right: 88.33%;
+top: 12.96%;
+bottom: 12.96%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 144px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Publishing Since 2018 */
+
+width: 144px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 242px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* ink_pen */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* ink_pen */
+
+position: absolute;
+left: 1.24%;
+right: 91.32%;
+top: 12.5%;
+bottom: 12.5%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 206px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Growing Community of Authors */
+
+width: 206px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 233px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* newsstand */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* newsstand */
+
+position: absolute;
+left: 0.86%;
+right: 90.56%;
+top: 16.67%;
+bottom: 16.67%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 197px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Multiple Bestsellers Published */
+
+width: 197px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 247px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+flex-grow: 0;
+
+/* book_ribbon */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* book_ribbon */
+
+position: absolute;
+left: 0.4%;
+right: 90.69%;
+top: 8.33%;
+bottom: 16.67%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 211px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Thousands of Readers Impacted */
+
+width: 211px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 208px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+flex-grow: 0;
+
+/* star_shine */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* star_shine */
+
+position: absolute;
+left: 0.62%;
+right: 89.09%;
+top: 8.33%;
+bottom: 12.5%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 172px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* 4.9 Average Author Rating */
+
+width: 172px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 180px;
+height: 27px;
+
+/* Inside auto layout */
+flex: none;
+order: 8;
+flex-grow: 0;
+
+/* date_range */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 1.5px;
+
+background: #d9d9d9;
+
+/* date_range */
+
+position: absolute;
+left: 1.67%;
+right: 88.33%;
+top: 12.96%;
+bottom: 12.96%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 144px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Publishing Since 2018 */
+
+width: 144px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 242px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 9;
+flex-grow: 0;
+
+/* ink_pen */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: 0px;
+
+background: #d9d9d9;
+
+/* ink_pen */
+
+position: absolute;
+left: 1.24%;
+right: 91.32%;
+top: 12.5%;
+bottom: 12.5%;
+
+background: #ffffff;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 206px;
+height: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Growing Community of Authors */
+
+width: 206px;
+height: 16px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 16px;
+/* identical to box height */
+letter-spacing: 0.26px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 80px 120px;
+gap: 80px;
+isolation: isolate;
+
+width: 1440px;
+height: 576px;
+
+background: linear-gradient(
+  180deg,
+  #0d1b4b 43.84%,
+  #1d3173 75.8%,
+  #0d1b4b 100.01%
+);
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+width: 679px;
+height: 674px;
+left: 761px;
+top: 0.04px;
+
+transform: rotate(180deg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* We help experts become the name their industry trusts. */
+
+width: 736px;
+height: 120px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 48px;
+line-height: 60px;
+/* or 125% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 20px;
+
+width: 1200px;
+height: 216px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+z-index: 2;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 216px;
+
+background: rgba(255, 243, 184, 0.28);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 233;
+
+/* identity_platform */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 36px;
+height: 36px;
+left: 24px;
+top: 24px;
+
+background: #ffffff;
+
+/* identity_platform */
+
+position: absolute;
+height: 29.74px;
+left: 13.06%;
+right: 75.56%;
+top: calc(50% - 29.74px / 2 - 66px);
+
+background: #ffffff;
+
+/* Author Mentorship */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Authors report significant increases in inbound le */
+
+width: 176px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 216px;
+
+background: rgba(212, 232, 220, 0.28);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 233;
+
+/* format_image_left */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 36px;
+height: 36px;
+left: 24px;
+top: 24px;
+
+background: #ffffff;
+
+/* format_image_left */
+
+position: absolute;
+left: 13.06%;
+right: 75.56%;
+top: 13.54%;
+bottom: 74.65%;
+
+background: #ffffff;
+
+/* Professional Publishing */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* A published book signals authority instantly. Our  */
+
+width: 176px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 216px;
+
+background: rgba(255, 232, 217, 0.28);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 233;
+
+/* brand_family */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 36px;
+height: 36px;
+left: 24px;
+top: 24px;
+
+background: #ffffff;
+
+/* brand_family */
+
+position: absolute;
+left: 12.56%;
+right: 75.39%;
+top: 13.03%;
+bottom: 74.15%;
+
+background: #ffffff;
+
+/* Personal Branding */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Multiple authors have parlayed their books into ke */
+
+width: 176px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 216px;
+
+background: rgba(230, 222, 245, 0.28);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 233;
+
+/* local_police */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 36px;
+height: 36px;
+left: 24px;
+top: 24px;
+
+background: #ffffff;
+
+/* local_police */
+
+position: absolute;
+left: 13.73%;
+right: 76.23%;
+top: 12.87%;
+bottom: 73.97%;
+
+background: #ffffff;
+
+/* Authority Positioning */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* From board seats to advisory roles, a BOL-publishe */
+
+width: 176px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 216px;
+
+background: rgba(250, 250, 246, 0.28);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 233;
+
+/* altitude */
+
+width: 36px;
+height: 36px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 36px;
+height: 36px;
+left: 24px;
+top: 24px;
+
+background: #ffffff;
+
+/* altitude */
+
+position: absolute;
+left: 12.02%;
+right: 74.12%;
+top: 14.31%;
+bottom: 74.25%;
+
+background: #ffffff;
+
+/* Visibility & Growth */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* The ideas and lessons our authors have built over  */
+
+width: 176px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 80px 120px;
+gap: 64px;
+
+width: 1440px;
+height: 728px;
+
+background: #f6f6fa;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 48px;
+
+width: 1200px;
+height: 224px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Real People. Real Books. Real Impact. */
+
+width: 577px;
+height: 120px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 48px;
+line-height: 60px;
+/* or 125% */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-end;
+padding: 0px;
+gap: 16px;
+
+width: 1200px;
+height: 56px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Our authors have built credibility, expanded their */
+
+margin: 0 auto;
+width: 605px;
+height: 56px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 28px;
+/* or 175% */
+
+color: #0b0e66;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 24px;
+gap: 10px;
+
+margin: 0 auto;
+width: 323px;
+height: 55px;
+
+background: linear-gradient(
+  91.39deg,
+  #1d4896 0%,
+  #1755c6 48.01%,
+  #1d4896 100.69%
+);
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Become our next success story */
+
+width: 246px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 19px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 15px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* → */
+
+width: 15px;
+height: 18px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 20px;
+
+width: 1200px;
+height: 280px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 280px;
+
+background: url(vecteezy_close-up-hand-of-business-man-using-smartphone-and-laptop_7520383.png);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 233;
+
+/* Increased business visibility */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 280px;
+
+background: url(vecteezy_brunei-chalk-text-animation-writing-on-blackboard_75613699.png);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 233;
+
+/* Built stronger personal brands */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 280px;
+
+background: url(vecteezy_kyiv-ukraine-2-may-2024-male-announcer-with-microphone-on_55074883.png);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 233;
+
+/* Landed speaking engagements */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 280px;
+
+background: url(vecteezy_female-content-creator-is-being-streamed-live-in-her-home_7432370.png);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 233;
+
+/* Expand professional influence */
+
+width: 181px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 24px;
+gap: 20px;
+
+width: 224px;
+min-width: 1px;
+height: 280px;
+
+background: url(vecteezy_a-man-showcases-confidence-while-strolling-through-a_53665470.png);
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 233;
+
+/* Created meaningful legacies */
+
+width: 176px;
+height: 44px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 22px;
+/* or 120% */
+letter-spacing: -0.09px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 69 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 80px 120px;
+gap: 64px;
+isolation: isolate;
+
+width: 1440px;
+height: 636px;
+
+background: #0d0d0d;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Our authors were featured in */
+
+width: 689px;
+height: 60px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 48px;
+line-height: 60px;
+/* identical to box height, or 125% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Frame 233 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 80px;
+
+width: 1200px;
+height: 352px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+z-index: 1;
+
+/* Frame 245 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 96px;
+
+width: 1032px;
+height: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* image 17 */
+
+width: 461px;
+height: 64px;
+
+background: url(image.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* image 13 */
+
+width: 184px;
+height: 64px;
+
+background: url(image.png);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* image 15 */
+
+width: 195px;
+height: 48px;
+
+background: url(bg_removal [Background removed].png);
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Frame 246 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 96px;
+
+width: 1156px;
+height: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* image 19 */
+
+width: 228px;
+height: 64px;
+
+background: url(image.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* image 16 */
+
+width: 346px;
+height: 48px;
+
+background: url(image.png);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* image 18 */
+
+width: 390px;
+height: 48px;
+
+background: url(image.png);
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Frame 244 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 96px;
+
+width: 476px;
+height: 64px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* image 9 */
+
+width: 250px;
+height: 64px;
+
+background: url(image.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* image 8 */
+
+width: 130px;
+height: 56px;
+
+background: url(image.png);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* E */
+
+position: absolute;
+width: 20px;
+height: 36px;
+left: 1041px;
+top: 225px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 32px;
+line-height: 36px;
+/* identical to box height, or 112% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+z-index: 2;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 80px 120px;
+gap: 64px;
+
+width: 1440px;
+height: 778px;
+
+background: #f6f6fa;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 48px;
+
+width: 284px;
+height: 240px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* From Expert to Author. */
+
+width: 284px;
+height: 120px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 48px;
+line-height: 60px;
+/* or 125% */
+letter-spacing: -1.6px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Anyone can write a book. Few write one that change */
+
+width: 284px;
+height: 72px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #525256;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 852px;
+height: 618px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 852px;
+height: 301px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 24px;
+gap: 20px;
+
+width: 273.33px;
+height: 301px;
+
+background: #ffffff;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 404;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 56px;
+height: 56px;
+
+background: #fff3b8;
+border-radius: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* book_ribbon */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 16px;
+
+background: #d9d9d9;
+
+/* book_ribbon */
+
+position: absolute;
+left: 30.36%;
+right: 30.36%;
+top: 32.14%;
+bottom: 35.71%;
+
+background: #0f1f1a;
+
+/* A professionally published book */
+
+width: 225.33px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* or 120% */
+letter-spacing: -0.1px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Carrying your name on shelves and in the hands of  */
+
+width: 225.33px;
+height: 93px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+/* or 144% */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 24px;
+gap: 20px;
+
+width: 273.34px;
+height: 301px;
+
+background: #ffffff;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 404;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 56px;
+height: 56px;
+
+background: #d4e8dc;
+border-radius: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* license */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 16px;
+
+background: #d9d9d9;
+
+/* license */
+
+position: absolute;
+left: 35.71%;
+right: 35.71%;
+top: 32.14%;
+bottom: 30.36%;
+
+background: #0f1f1a;
+
+/* Greater credibility */
+
+width: 225.34px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* or 120% */
+letter-spacing: -0.1px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* With clients, investors, and audiences who immedia */
+
+width: 225.34px;
+height: 93px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+/* or 144% */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 24px;
+gap: 20px;
+
+width: 273.34px;
+height: 301px;
+
+background: #ffffff;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 404;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 56px;
+height: 56px;
+
+background: #ffe8d9;
+border-radius: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* mic_external_on */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 16px;
+
+background: #d9d9d9;
+
+/* mic_external_on */
+
+position: absolute;
+left: 35.71%;
+right: 35.71%;
+top: 32.14%;
+bottom: 32.14%;
+
+background: #0f1f1a;
+
+/* Speaking opportunities */
+
+width: 225.34px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* or 120% */
+letter-spacing: -0.1px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* And media visibility that position you as the go-t */
+
+width: 225.34px;
+height: 93px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+/* or 144% */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 852px;
+height: 301px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 24px;
+gap: 20px;
+
+width: 273.33px;
+height: 301px;
+
+background: #ffffff;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 404;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 56px;
+height: 56px;
+
+background: #e6def5;
+border-radius: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* brand_family */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 16px;
+
+background: #d9d9d9;
+
+/* brand_family */
+
+position: absolute;
+left: 32.14%;
+right: 33.04%;
+top: 32.14%;
+bottom: 32.14%;
+
+background: #0f1f1a;
+
+/* A stronger personal brand */
+
+width: 225.33px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* or 120% */
+letter-spacing: -0.1px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* That attracts the right opportunities, commands pr */
+
+width: 225.33px;
+height: 93px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+/* or 144% */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 24px;
+gap: 20px;
+
+width: 273.34px;
+height: 301px;
+
+background: #ffffff;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 404;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 56px;
+height: 56px;
+
+background: #ffd9b8;
+border-radius: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* garage_home */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 16px;
+
+background: #d9d9d9;
+
+/* garage_home */
+
+position: absolute;
+left: 35.71%;
+right: 35.71%;
+top: 33.93%;
+bottom: 33.93%;
+
+background: #0f1f1a;
+
+/* A powerful legacy */
+
+width: 225.34px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* or 120% */
+letter-spacing: -0.1px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* That outlives your title and ensures the ideas and */
+
+width: 225.34px;
+height: 93px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+/* or 144% */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 24px;
+gap: 20px;
+
+width: 273.34px;
+height: 301px;
+
+background: #ffffff;
+border-radius: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 404;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 56px;
+height: 56px;
+
+background: #b8d4c2;
+border-radius: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* podium */
+
+width: 24px;
+height: 24px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Bounding box */
+
+position: absolute;
+width: 24px;
+height: 24px;
+left: 16px;
+top: 16px;
+
+background: #d9d9d9;
+
+/* podium */
+
+position: absolute;
+left: 33.93%;
+right: 33.93%;
+top: 33.04%;
+bottom: 33.93%;
+
+background: #0f1f1a;
+
+/* A platform that attracts */
+
+width: 225.34px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 24px;
+/* or 120% */
+letter-spacing: -0.1px;
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Opportunities instead of chasing them. This is wha */
+
+width: 225.34px;
+height: 93px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 23px;
+/* or 144% */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Frame 21 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+width: 1440px;
+height: 518px;
+
+background: #f8faff;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+align-self: stretch;
+flex-grow: 0;
+
+/* unsplash:Sk9JF1KDz6M */
+
+position: absolute;
+width: 1440px;
+height: 960px;
+left: 0px;
+top: -0.46px;
+
+background:
+  linear-gradient(0deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), url(.jpg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 80px 120px;
+
+width: 1440px;
+height: 518px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 80px;
+
+width: 1200px;
+height: 358px;
+
+background: radial-gradient(
+    22.19% 57.02% at 85.42% 60.93%,
+    #2f46a4 0%,
+    #162666 100%
+  )
+  /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.24);
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 64px;
+gap: 24px;
+
+width: 752px;
+height: 350px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 614px;
+height: 144px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Your book is waiting. */
+
+width: 614px;
+height: 72px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 800;
+font-size: 64px;
+line-height: 72px;
+/* identical to box height, or 112% */
+letter-spacing: -2.16px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Let's make it real. */
+
+width: 507px;
+height: 72px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 800;
+font-size: 64px;
+line-height: 72px;
+/* identical to box height, or 112% */
+letter-spacing: -2.16px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 18px 28px;
+gap: 10px;
+
+width: 333.07px;
+height: 54px;
+
+background: #ff6b3d;
+box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 253px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Schedule Your Strategy Call Today */
+
+width: 253px;
+height: 18px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 15px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* → */
+
+width: 15px;
+height: 18px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 22 */
+
+width: 360px;
+height: 350px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+isolation: isolate;
+
+position: absolute;
+width: 510.94px;
+height: 329.57px;
+left: 32px;
+top: 52px;
+
+/* Container:transform */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+position: absolute;
+left: 2.36%;
+right: 2.36%;
+top: 8.09%;
+bottom: 8.09%;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+position: absolute;
+left: -2.48%;
+right: 2.39%;
+top: -9.66%;
+bottom: 9.73%;
+
+transform: matrix(0.99, 0.11, -0.1, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 18px 14px;
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #ff6b3d;
+box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.3);
+border-radius: 6px;
+transform: matrix(0.99, 0.11, -0.1, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+width: 24px;
+height: 2px;
+
+background: #ffffff;
+transform: matrix(0.99, 0.11, -0.1, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+width: 1px;
+height: 24px;
+
+transform: matrix(0.99, 0.11, -0.1, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Your */
+
+width: 51px;
+height: 22px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 22px;
+line-height: 22px;
+/* identical to box height, or 100% */
+letter-spacing: -0.22px;
+
+color: #ffffff;
+
+transform: matrix(0.99, 0.11, -0.1, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* story. */
+
+width: 64px;
+height: 22px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 22px;
+line-height: 22px;
+/* identical to box height, or 100% */
+letter-spacing: -0.22px;
+
+color: #ffffff;
+
+transform: matrix(0.99, 0.11, -0.1, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+isolation: isolate;
+
+position: absolute;
+width: 503.52px;
+height: 312.16px;
+left: 119px;
+top: 134px;
+
+/* Container:transform */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+position: absolute;
+left: 1.66%;
+right: 1.66%;
+top: 5.76%;
+bottom: 5.76%;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+position: absolute;
+left: -1.71%;
+right: 1.67%;
+top: -6.51%;
+bottom: 6.54%;
+
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 18px 14px;
+isolation: isolate;
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #fff3b8;
+box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.3);
+border-radius: 6px;
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Placeholder for App */
+
+width: 24px;
+height: 2px;
+
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Placeholder for App */
+
+width: 1px;
+height: 24px;
+
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Placeholder for App */
+
+width: 1px;
+height: 80px;
+
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+z-index: 2;
+
+/* BOL · 2026 */
+
+width: 54px;
+height: 10px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 8px;
+line-height: 10px;
+/* identical to box height */
+letter-spacing: 1.12px;
+
+color: #0f1f1a;
+
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+z-index: 3;
+
+/* Container */
+
+position: absolute;
+left: 4%;
+right: 89.68%;
+top: 20.91%;
+bottom: 78.09%;
+
+background: #0f1f1a;
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+z-index: 4;
+
+/* In print. */
+
+position: absolute;
+left: 4.48%;
+right: 73.41%;
+top: 31.79%;
+bottom: 57.21%;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 22px;
+line-height: 22px;
+/* or 100% */
+letter-spacing: -0.22px;
+
+color: #0f1f1a;
+
+transform: matrix(1, -0.08, 0.06, 1, 0, 0);
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+z-index: 5;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 80px 120px;
+gap: 64px;
+
+width: 1440px;
+height: 2678px;
+
+background: linear-gradient(
+  180deg,
+  #000000 0%,
+  #121038 50.19%,
+  #19244a 67.79%,
+  #1c2648 78.53%,
+  #0d1b4b 89.28%
+);
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+
+width: 1200px;
+height: 302px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container:margin */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 32px;
+
+width: 163px;
+height: 70px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 8px 16px;
+gap: 8px;
+
+width: 163px;
+height: 38px;
+
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Text */
+
+width: 8px;
+height: 8px;
+
+background: #fe9a00;
+opacity: 0.86;
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Text */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+
+width: 113px;
+height: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* The Process */
+
+width: 113px;
+height: 20px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+text-align: center;
+letter-spacing: 1.4px;
+text-transform: uppercase;
+
+color: #d4d4d4;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Heading 2:margin */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 32px;
+
+width: 740.37px;
+height: 176px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Heading 2 */
+
+width: 740.37px;
+height: 144px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* The BOL
+ */
+
+position: absolute;
+width: 280px;
+height: 144px;
+left: 230.34px;
+top: 0px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 72px;
+line-height: 72px;
+/* or 100% */
+text-align: center;
+letter-spacing: -3.6px;
+
+color: #ffffff;
+
+/* Authority Accelerator */
+
+position: absolute;
+width: 721px;
+height: 72px;
+left: 10px;
+top: 72px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 72px;
+line-height: 72px;
+/* identical to box height, or 100% */
+text-align: center;
+letter-spacing: -3.6px;
+
+background: linear-gradient(90deg, #fee685 0%, #ffb900 50%, #ff6900 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+/* Button */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 32px;
+gap: 12px;
+
+width: 307px;
+height: 56px;
+
+background: #ffffff;
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Get the publishing timeline */
+
+width: 211px;
+height: 24px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+text-align: center;
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Icon */
+
+width: 20px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 20.83%;
+right: 20.83%;
+top: 50%;
+bottom: 50%;
+
+border: 1.5px solid #000000;
+
+/* Vector */
+
+position: absolute;
+left: 50%;
+right: 20.83%;
+top: 20.83%;
+bottom: 20.83%;
+
+border: 1.5px solid #000000;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 48px;
+
+width: 1024px;
+height: 2152px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+box-sizing: border-box;
+
+width: 1024px;
+height: 502px;
+
+background: #0f0f11;
+border: 1px solid rgba(255, 255, 255, 0.05);
+box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+border-radius: 40px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+position: absolute;
+width: 1022px;
+height: 500px;
+left: 1px;
+top: 1px;
+
+background: linear-gradient(
+  135deg,
+  rgba(254, 154, 0, 0.2) 0%,
+  rgba(0, 0, 0, 0) 100%
+);
+opacity: 0.3;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 1022px;
+height: 500px;
+min-height: 500px;
+left: 1px;
+top: 1px;
+
+/* Container */
+
+width: 511px;
+height: 500px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 01 */
+
+position: absolute;
+width: 159px;
+height: 128px;
+left: 32px;
+top: 32px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 128px;
+line-height: 128px;
+/* identical to box height, or 100% */
+
+color: rgba(255, 255, 255, 0.03);
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 383px;
+height: 298px;
+left: 64px;
+top: 115.75px;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 64px;
+height: 64px;
+
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Icon */
+
+width: 28px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 8.33%;
+right: 8.33%;
+top: 8.33%;
+bottom: 8.33%;
+
+border: 1.75px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 25%;
+right: 25%;
+top: 25%;
+bottom: 25%;
+
+border: 1.75px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 41.67%;
+right: 41.67%;
+top: 41.67%;
+bottom: 41.67%;
+
+border: 1.75px solid #ffffff;
+
+/* Heading 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 0px 0px;
+
+width: 383px;
+height: 122px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Discover your signature message */
+
+width: 383px;
+height: 90px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 45px;
+/* or 125% */
+letter-spacing: -0.9px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px 0px 0px;
+
+width: 383px;
+height: 112px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* We help uncover the ideas, experiences, and insigh */
+
+width: 383px;
+height: 88px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 29px;
+/* or 162% */
+
+color: #a1a1a1;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+width: 511px;
+height: 500px;
+
+background: rgba(0, 0, 0, 0.5);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Image (Discover your signature message) */
+
+width: 511px;
+height: 500px;
+
+background: url(vecteezy_a-lawyer-writing-in-a-notebook-with-a-pen-and-a-scale-of_72737624.png);
+opacity: 0.8;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+position: absolute;
+width: 511px;
+height: 500px;
+left: 0px;
+top: 0px;
+
+background: linear-gradient(
+  270deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0.25) 25%,
+  rgba(2, 2, 2, 0.5) 50%,
+  rgba(7, 7, 8, 0.75) 75%,
+  #0f0f11 100%
+);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+box-sizing: border-box;
+
+width: 1024px;
+height: 502px;
+
+background: #151518;
+border: 1px solid rgba(255, 255, 255, 0.05);
+box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+border-radius: 40px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+position: absolute;
+width: 1022px;
+height: 500px;
+left: 1px;
+top: 1px;
+
+background: linear-gradient(
+  135deg,
+  rgba(255, 105, 0, 0.2) 0%,
+  rgba(0, 0, 0, 0) 100%
+);
+opacity: 0.3;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 1022px;
+height: 500px;
+min-height: 500px;
+left: 1px;
+top: 1px;
+
+/* Container */
+
+width: 511px;
+height: 500px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 02 */
+
+position: absolute;
+width: 177px;
+height: 128px;
+left: 32px;
+top: 32px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 128px;
+line-height: 128px;
+/* identical to box height, or 100% */
+
+color: rgba(255, 255, 255, 0.03);
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 383px;
+height: 282px;
+left: 64px;
+top: 109px;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 64px;
+height: 64px;
+
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Icon */
+
+width: 28px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 50%;
+right: 12.5%;
+top: 83.33%;
+bottom: 16.67%;
+
+border: 1.75px solid #ffffff;
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 16.67%;
+top: 12.5%;
+bottom: 16.67%;
+
+border: 1.75px solid #ffffff;
+
+/* Heading 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 0px 0px;
+
+width: 383px;
+height: 77px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Refine your manuscript */
+
+width: 392px;
+height: 45px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 45px;
+/* identical to box height, or 125% */
+letter-spacing: -0.9px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px 0px 0px;
+
+width: 383px;
+height: 141px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* You bring the ideas. We help shape them into a com */
+
+width: 383px;
+height: 117px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 29px;
+/* or 162% */
+
+color: #a1a1a1;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+width: 511px;
+height: 500px;
+
+background: rgba(0, 0, 0, 0.5);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Image (Discover your signature message) */
+
+width: 511px;
+height: 500px;
+
+background: url(vecteezy_a-stack-of-books-on-a-chair-in-front-of-a-lamp_73940421.png);
+opacity: 0.8;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+position: absolute;
+width: 511px;
+height: 500px;
+left: 0px;
+top: 0px;
+
+background: linear-gradient(
+  270deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0.25) 25%,
+  rgba(2, 2, 2, 0.5) 50%,
+  rgba(7, 7, 8, 0.75) 75%,
+  #0f0f11 100%
+);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+box-sizing: border-box;
+
+width: 1024px;
+height: 502px;
+
+background: #151518;
+border: 1px solid rgba(255, 255, 255, 0.05);
+box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+border-radius: 40px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Container */
+
+position: absolute;
+width: 1022px;
+height: 500px;
+left: 1px;
+top: 1px;
+
+background: linear-gradient(
+  135deg,
+  rgba(173, 70, 255, 0.2) 0%,
+  rgba(0, 0, 0, 0) 100%
+);
+opacity: 0.3;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 1022px;
+height: 500px;
+min-height: 500px;
+left: 1px;
+top: 1px;
+
+/* Container */
+
+width: 511px;
+height: 500px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 03 */
+
+position: absolute;
+width: 180px;
+height: 128px;
+left: 32px;
+top: 32px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 128px;
+line-height: 128px;
+/* identical to box height, or 100% */
+
+color: rgba(255, 255, 255, 0.03);
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 383px;
+height: 327px;
+left: 64px;
+top: 86.5px;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 64px;
+height: 64px;
+
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Icon */
+
+width: 28px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 16.67%;
+top: 8.33%;
+bottom: 8.33%;
+
+border: 1.75px solid #ffffff;
+
+/* Heading 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 0px 0px;
+
+width: 383px;
+height: 122px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Publish & showcase your book */
+
+width: 383px;
+height: 90px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 45px;
+/* or 125% */
+letter-spacing: -0.9px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px 0px 0px;
+
+width: 383px;
+height: 141px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* We handle the entire publishing process and help p */
+
+width: 383px;
+height: 117px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 29px;
+/* or 162% */
+
+color: #a1a1a1;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+width: 511px;
+height: 500px;
+
+background: rgba(0, 0, 0, 0.5);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Image (Publish & showcase your book) */
+
+width: 511px;
+height: 500px;
+
+background: url(vecteezy_exploring-old-books-in-a-large-library-while-looking-for_76347160.png);
+opacity: 0.8;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+position: absolute;
+width: 511px;
+height: 500px;
+left: 0px;
+top: 0px;
+
+background: linear-gradient(
+  270deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0.25) 25%,
+  rgba(2, 2, 2, 0.5) 50%,
+  rgba(7, 7, 8, 0.75) 75%,
+  #0f0f11 100%
+);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+box-sizing: border-box;
+
+width: 1024px;
+height: 502px;
+
+background: #151518;
+border: 1px solid rgba(255, 255, 255, 0.05);
+box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+border-radius: 40px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Container */
+
+position: absolute;
+width: 1022px;
+height: 500px;
+left: 1px;
+top: 1px;
+
+background: linear-gradient(
+  135deg,
+  rgba(0, 187, 167, 0.2) 0%,
+  rgba(0, 0, 0, 0) 100%
+);
+opacity: 0.3;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 1022px;
+height: 500px;
+min-height: 500px;
+left: 1px;
+top: 1px;
+
+/* Container */
+
+width: 511px;
+height: 500px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* 04 */
+
+position: absolute;
+width: 184px;
+height: 128px;
+left: 32px;
+top: 32px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 128px;
+line-height: 128px;
+/* identical to box height, or 100% */
+
+color: rgba(255, 255, 255, 0.03);
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+position: absolute;
+width: 383px;
+height: 282px;
+left: 64px;
+top: 109px;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 64px;
+height: 64px;
+
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 1.67772e7px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Icon */
+
+width: 28px;
+height: 28px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Vector */
+
+position: absolute;
+left: 12.49%;
+right: 12.49%;
+top: 8.32%;
+bottom: 8.32%;
+
+border: 1.75px solid #ffffff;
+
+/* Heading 3 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 0px 0px;
+
+width: 383px;
+height: 77px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Amplify your influence */
+
+width: 380px;
+height: 45px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 45px;
+/* identical to box height, or 125% */
+letter-spacing: -0.9px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 24px 0px 0px;
+
+width: 383px;
+height: 141px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+/* Leverage your published book for high-ticket speak */
+
+width: 383px;
+height: 117px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 29px;
+/* or 162% */
+
+color: #a1a1a1;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+isolation: isolate;
+
+width: 511px;
+height: 500px;
+
+background: rgba(0, 0, 0, 0.5);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* Image (Amplify your influence) */
+
+width: 511px;
+height: 500px;
+
+background: url(vecteezy_businessman-presenting-to-corporate-audience-in-modern_79842574.png);
+opacity: 0.8;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+position: absolute;
+width: 511px;
+height: 500px;
+left: 0px;
+top: 0px;
+
+background: linear-gradient(
+  270deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0.25) 25%,
+  rgba(2, 2, 2, 0.5) 50%,
+  rgba(7, 7, 8, 0.75) 75%,
+  #0f0f11 100%
+);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 80px 120px;
+gap: 24px;
+isolation: isolate;
+
+width: 1440px;
+height: 479px;
+
+background: #f6f6fa;
+
+/* Inside auto layout */
+flex: none;
+order: 8;
+flex-grow: 0;
+
+/* unsplash:P4KX6qSaBcY */
+
+position: absolute;
+width: 1440px;
+height: 480px;
+left: 0px;
+top: -1px;
+
+background:
+  linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 22.38%),
+  url(.jpg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 48px;
+gap: 48px;
+
+width: 1200px;
+height: 319px;
+
+background: #000000;
+box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.24);
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+z-index: 1;
+
+/* Frame 14 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 48px;
+
+width: 622px;
+height: 223px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+/* Great Work Deserves Greater Visibility. */
+
+width: 486px;
+height: 120px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 900;
+font-size: 48px;
+line-height: 60px;
+/* or 125% */
+letter-spacing: -1.5px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 291px;
+height: 55px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 16px 24px;
+gap: 10px;
+
+width: 291px;
+height: 55px;
+
+background: linear-gradient(
+  91.39deg,
+  #1d4896 0%,
+  #1755c6 48.01%,
+  #1d4896 100.69%
+);
+border-radius: 99px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Become a published author */
+
+width: 214px;
+height: 19px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 19px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Paragraph */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 15px;
+height: 18px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* → */
+
+width: 15px;
+height: 18px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Frame 243 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 434px;
+height: 120px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* “ */
+
+width: 42px;
+height: 120px;
+
+font-family: "Fraunces";
+font-style: normal;
+font-weight: 300;
+font-size: 180px;
+line-height: 80%;
+/* or 144px */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Our authors come from diverse industries, but they */
+
+width: 334px;
+height: 72px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* or 150% */
+
+color: #ffffff;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* “ */
+
+width: 42px;
+height: 120px;
+
+font-family: "Fraunces";
+font-style: normal;
+font-weight: 300;
+font-size: 180px;
+line-height: 80%;
+/* or 144px */
+
+color: #ffffff;
+
+transform: rotate(180deg);
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 64px 120px;
+gap: 48px;
+
+width: 1440px;
+height: 399px;
+
+background: #f8faff;
+
+/* Inside auto layout */
+flex: none;
+order: 9;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+
+width: 1200px;
+height: 159px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 380px;
+height: 152px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* BOL Logo 1 */
+
+width: 80px;
+height: 80px;
+
+background: url(BOL Logo.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Where Expertise Becomes Influence. India's boutiqu */
+
+width: 192px;
+height: 48px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 24px;
+/* or 119% */
+
+color: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 0px;
+gap: 48px;
+
+width: 516px;
+height: 159px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+width: 140px;
+height: 128px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* DISCOVER */
+
+width: 84px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+letter-spacing: 1.54px;
+
+color: #ff6b3d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+width: 1px;
+height: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Blog */
+
+width: 30px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Magazine */
+
+width: 65px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Contact */
+
+width: 54px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+width: 140px;
+height: 159px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* COMPANY */
+
+width: 83px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+letter-spacing: 1.54px;
+
+color: #ff6b3d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+width: 1px;
+height: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* About */
+
+width: 41px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* Return Policy */
+
+width: 89px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* Privacy */
+
+width: 50px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* Terms & Conditions */
+
+width: 131px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Container */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 14px;
+
+width: 140px;
+height: 159px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* CONNECT */
+
+width: 80px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+letter-spacing: 1.54px;
+
+color: #ff6b3d;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+/* Container */
+
+width: 1px;
+height: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+/* Instagram */
+
+width: 68px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+/* LinkedIn */
+
+width: 57px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+/* X (Twitter) */
+
+width: 71px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+/* YouTube */
+
+width: 58px;
+height: 17px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #0f1f1a;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+/* Container */
+
+width: 1200px;
+height: 1px;
+
+background: #e5e2d8;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+/* © 2026 Brands Out Loud */
+
+width: 144px;
+height: 15px;
+
+font-family: "Inter";
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 15px;
+/* identical to box height */
+
+color: #6b7670;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;

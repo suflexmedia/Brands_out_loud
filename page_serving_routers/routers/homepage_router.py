@@ -176,3 +176,11 @@ async def serve_homepage(request: Request):
     data = await get_homepage_data()
     navbar = await get_navbar_data()
     return templates.TemplateResponse(request=request, name="homepage.html", context={"request": request, "data": data, "navbar": navbar})
+
+
+@router.get("/remaster", tags=["Pages"])
+async def serve_homepage_remaster(request: Request):
+    """Serves the remastered static homepage HTML page."""
+    data = await get_homepage_data()
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse(request=request, name="homepage_remaster.html", context={"request": request, "data": data, "navbar": navbar})
