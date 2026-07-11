@@ -72,6 +72,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    const acceleratorCta = document.querySelector('.accelerator-cta');
+    const acceleratorCards = document.querySelectorAll('.accelerator-steps .step-card');
+    if (acceleratorCta && acceleratorCards.length > 0) {
+        const lastCard = acceleratorCards[acceleratorCards.length - 1];
+        const ctaObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    acceleratorCta.classList.remove('hidden');
+                } else {
+                    acceleratorCta.classList.add('hidden');
+                }
+            });
+        }, { threshold: 0 });
+        ctaObserver.observe(lastCard);
+    }
+
     const stripSection = document.querySelector('.strip-section');
     if (stripSection) {
         const stripContent = stripSection.querySelector('.marquee-track');

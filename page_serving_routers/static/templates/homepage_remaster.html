@@ -241,7 +241,8 @@
                             loop
                             muted
                             playsinline
-                        />
+                            preload="metadata"
+                        ></video>
                         <div class="impact-card-overlay">
                             <p class="impact-card-text">
                                 Built stronger personal<br
@@ -474,6 +475,8 @@
                     <h2 class="accelerator-title">
                         The BOL<br /><span>Authority Accelerator</span>
                     </h2>
+                </div>
+                <div class="accelerator-cta">
                     <a href="#" class="btn-white"
                         >Get the publishing timeline →</a
                     >
@@ -692,6 +695,31 @@
                     icon.classList.add("ph-x");
                 }
             }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const cta = document.querySelector(".accelerator-cta");
+                const cards = document.querySelectorAll(".step-card");
+
+                if (cta && cards.length > 0) {
+                    const lastCard = cards[cards.length - 1];
+                    let stickyTop = parseFloat(window.getComputedStyle(lastCard).top);
+
+                    // Update stickyTop on window resize
+                    window.addEventListener("resize", function() {
+                        stickyTop = parseFloat(window.getComputedStyle(lastCard).top);
+                    });
+
+                    window.addEventListener("scroll", function () {
+                        const rect = lastCard.getBoundingClientRect();
+                        // Hide CTA exactly when the last card reaches its sticky position (meaning it covers the other cards)
+                        if (rect.top <= stickyTop + 2) {
+                            cta.classList.add("hidden");
+                        } else {
+                            cta.classList.remove("hidden");
+                        }
+                    });
+                }
+            });
         </script>
     </body>
 </html>

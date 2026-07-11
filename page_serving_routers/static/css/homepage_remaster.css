@@ -635,6 +635,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 4.16vw;
+  position: relative;
+  z-index: 1;
 }
 
 .accelerator-header {
@@ -704,6 +706,23 @@ body {
   font-size: 1.11vw;
 }
 
+.accelerator-cta {
+  position: sticky;
+  top: 6vw;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  margin-top: 4vw;
+  margin-bottom: 4vw;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.accelerator-cta.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .accelerator-steps {
   display: block;
   width: 100%;
@@ -724,19 +743,19 @@ body {
 }
 
 .step-card:nth-child(1) {
-  top: 8vw;
+  top: 16vw;
   z-index: 11;
 }
 .step-card:nth-child(2) {
-  top: 9.5vw;
+  top: 18vw;
   z-index: 12;
 }
 .step-card:nth-child(3) {
-  top: 11vw;
+  top: 20vw;
   z-index: 13;
 }
 .step-card:nth-child(4) {
-  top: 12.5vw;
+  top: 22vw;
   z-index: 14;
 }
 
@@ -1005,7 +1024,7 @@ body {
     padding: 2vw 4vw;
   }
   .remaster-nav-logo {
-    height: 8vw;
+    height: 12vw;
   }
   .mobile-menu-dropdown.active {
     display: flex;
@@ -1076,7 +1095,7 @@ body {
     font-size: 4vw;
   }
   .btn-primary {
-    font-size: 4vw;
+    font-size: 2.5vw;
     padding: 3vw 5vw;
     border-radius: 99vw;
   }
@@ -1242,10 +1261,16 @@ body {
   }
   .accelerator-title {
     font-size: 8vw;
+    margin-top: 3vw;
   }
   .btn-white {
     font-size: 4vw;
     padding: 3vw 6vw;
+  }
+  .accelerator-cta {
+    top: 16vw;
+    margin-top: 6vw;
+    margin-bottom: 4vw;
   }
   .step-card {
     flex-direction: column;
@@ -1254,10 +1279,22 @@ body {
     position: sticky;
     border-radius: 6vw;
   }
-  .step-card:nth-child(1) { top: 24vw; z-index: 11; }
-  .step-card:nth-child(2) { top: 28vw; z-index: 12; }
-  .step-card:nth-child(3) { top: 32vw; z-index: 13; }
-  .step-card:nth-child(4) { top: 36vw; z-index: 14; }
+  .step-card:nth-child(1) {
+    top: 34vw;
+    z-index: 11;
+  }
+  .step-card:nth-child(2) {
+    top: 39vw;
+    z-index: 12;
+  }
+  .step-card:nth-child(3) {
+    top: 44vw;
+    z-index: 13;
+  }
+  .step-card:nth-child(4) {
+    top: 49vw;
+    z-index: 14;
+  }
   .step-card-content {
     padding: 8vw 6vw 4vw 6vw;
     gap: 4vw;
@@ -1312,7 +1349,8 @@ body {
     font-size: 25vw;
   }
   .quote-text {
-    font-size: 4vw;
+    font-size: 3.5vw;
+    text-align: center;
   }
   .remaster-footer {
     padding: 10vw 4vw 6vw 4vw;
