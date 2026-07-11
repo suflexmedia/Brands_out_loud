@@ -45,6 +45,10 @@ body {
   color: #ffffff;
 }
 
+.mobile-break {
+  display: none;
+}
+
 /* NAVBAR REMASTER */
 .remaster-navbar {
   position: absolute;
@@ -92,7 +96,9 @@ body {
   font-weight: 600;
   font-size: 1.11vw; /* 16px */
   padding: 0.55vw 1.66vw;
-  transition: opacity 0.3s, background 0.3s;
+  transition:
+    opacity 0.3s,
+    background 0.3s;
   border-radius: 6.87vw;
 }
 .remaster-nav-link:hover {
@@ -1024,7 +1030,9 @@ body {
     text-decoration: none;
     font-weight: 700;
     font-size: 6vw;
-    transition: color 0.3s, opacity 0.3s;
+    transition:
+      color 0.3s,
+      opacity 0.3s;
   }
   .mobile-menu-link:hover {
     opacity: 0.7;
@@ -1041,7 +1049,10 @@ body {
     padding: 3vw 6vw;
     border-radius: 99vw;
     width: max-content;
-    transition: background 0.3s, transform 0.3s, opacity 0.3s;
+    transition:
+      background 0.3s,
+      transform 0.3s,
+      opacity 0.3s;
   }
   .mobile-menu-contact:hover {
     opacity: 0.9;
@@ -1121,12 +1132,23 @@ body {
     gap: 4vw;
   }
   .impact-card {
+    flex: none;
     width: 100%;
-    height: 60vw;
+    height: 85vw;
+    min-height: 85vw;
     border-radius: 4vw;
   }
+  .impact-card-overlay {
+    padding: 8vw 4vw 6vw 4vw;
+    text-align: center;
+  }
   .impact-card-text {
-    font-size: 4vw;
+    font-size: 5.5vw;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .mobile-break {
+    display: block;
   }
   .featured-in-section {
     padding: 10vw 4vw;
@@ -1227,28 +1249,32 @@ body {
   }
   .step-card {
     flex-direction: column;
-    height: auto;
-    margin-bottom: 10vw;
-    position: relative;
-    top: auto !important;
-    z-index: 1 !important;
+    height: 150vw;
+    margin-bottom: 30vh;
+    position: sticky;
+    border-radius: 6vw;
   }
+  .step-card:nth-child(1) { top: 24vw; z-index: 11; }
+  .step-card:nth-child(2) { top: 28vw; z-index: 12; }
+  .step-card:nth-child(3) { top: 32vw; z-index: 13; }
+  .step-card:nth-child(4) { top: 36vw; z-index: 14; }
   .step-card-content {
-    padding: 6vw;
+    padding: 8vw 6vw 4vw 6vw;
     gap: 4vw;
   }
   .step-number {
-    font-size: 15vw;
-    top: 4vw;
+    font-size: 22vw;
+    top: 2vw;
     left: 4vw;
   }
   .step-icon {
-    width: 12vw;
-    height: 12vw;
+    width: 8vw;
+    height: 8vw;
+    margin-top: 6vw;
   }
   .step-title {
     width: 100%;
-    font-size: 6vw;
+    font-size: 6.5vw;
   }
   .step-desc {
     width: 100%;
@@ -1256,12 +1282,12 @@ body {
   }
   .step-card-image {
     width: 100%;
-    height: 60vw;
-    mask-image: none;
-    -webkit-mask-image: none;
+    flex: 1;
+    mask-image: linear-gradient(to bottom, transparent, black 25%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 25%);
   }
   .final-cta-section {
-    margin-top: 0;
+    margin-top: -30vh;
     padding-top: 10vw;
   }
   .final-cta-container {
