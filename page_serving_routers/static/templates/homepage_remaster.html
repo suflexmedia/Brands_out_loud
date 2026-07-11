@@ -1,605 +1,697 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Brands Out Loud - Remaster</title>
-    <link rel="icon" type="image/png" href="static/icon/website_icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=IBM+Plex+Sans:wght@600&family=Inter:wght@500;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Roboto:wght@500&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="stylesheet" href="/static/css/homepage_remaster.css?v=2" />
-    <link rel="stylesheet" href="/static/css/homepage.css?v=2" />
-  </head>
-  <body>
-    <div class="page-wrapper">
-      <nav class="remaster-navbar">
-        <div class="remaster-nav-left">
-          <i class="ph ph-list mobile-menu-icon" id="mobileMenuIcon" onclick="toggleMobileMenu()"></i>
-          <a href="/"
-            ><img
-              src="/static/images/header_logo.png"
-              alt="Logo"
-              class="remaster-nav-logo"
-          /></a>
-        </div>
-        <div class="remaster-nav-center">
-          <a href="/magazine" class="remaster-nav-link">Magazine</a>
-          <a href="/blog" class="remaster-nav-link">Blog</a>
-          <a href="/contact" class="remaster-nav-contact">Contact</a>
-        </div>
-        <div class="remaster-nav-right">
-          <a href="#" class="btn-primary remaster-nav-book">Book a Call →</a>
-        </div>
-      </nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Brands Out Loud - Remaster</title>
+        <link rel="icon" type="image/png" href="static/icon/website_icon.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=IBM+Plex+Sans:wght@600&family=Inter:wght@500;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Roboto:wght@500&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <link rel="stylesheet" href="/static/css/homepage_remaster.css?v=2" />
+        <link rel="stylesheet" href="/static/css/homepage.css?v=2" />
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <nav class="remaster-navbar">
+                <div class="remaster-nav-left">
+                    <i
+                        class="ph ph-list mobile-menu-icon"
+                        id="mobileMenuIcon"
+                        onclick="toggleMobileMenu()"
+                    ></i>
+                    <a href="/"
+                        ><img
+                            src="/static/images/header_logo.png"
+                            alt="Logo"
+                            class="remaster-nav-logo"
+                    /></a>
+                </div>
+                <div class="remaster-nav-center">
+                    <a href="/magazine" class="remaster-nav-link">Magazine</a>
+                    <a href="/blog" class="remaster-nav-link">Blog</a>
+                    <a href="/contact" class="remaster-nav-contact">Contact</a>
+                </div>
+                <div class="remaster-nav-right">
+                    <a href="#" class="btn-primary remaster-nav-book"
+                        >Book a Call →</a
+                    >
+                </div>
+            </nav>
 
-      <div class="mobile-menu-dropdown" id="mobileMenu">
-        <a href="/blog" class="mobile-menu-link">Blog</a>
-        <a href="/magazine" class="mobile-menu-link">Magazine</a>
-        <a href="/contact" class="mobile-menu-contact">Contact</a>
-      </div>
+            <div class="mobile-menu-dropdown" id="mobileMenu">
+                <a href="/blog" class="mobile-menu-link">Blog</a>
+                <a href="/magazine" class="mobile-menu-link">Magazine</a>
+                <a href="/contact" class="mobile-menu-contact">Contact</a>
+            </div>
 
-      <section class="hero-remaster">
-        <video class="hero-remaster-video" autoplay loop muted playsinline>
-          <source
-            src="/static/images/remaster-homepage/hero-background/hero-bg.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="hero-remaster-content">
-          <h1 class="hero-remaster-title">
-            Turn your expertise into a published book.
-          </h1>
-          <p class="hero-remaster-subtitle">
-            We publish exclusively with the top 5% of corporate professionals,
-            doctors and founders who want to build their credibility,
-            visibility, and influence.
-          </p>
-          <a href="#" class="btn-primary">
-            <span>Become the voice of your industry</span>
-            <span>→</span>
-          </a>
-        </div>
-        <div class="hero-stats-bar-wrapper">
-          <div class="hero-stats-bar">
-            <!-- Set 1 -->
-            <div class="hero-stat-item">
-              <i class="ph ph-chart-bar hero-stat-icon"></i>
-              <span>Multiple Bestsellers Published</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-book-open hero-stat-icon"></i>
-              <span>Thousands of Readers Impacted</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-star hero-stat-icon"></i>
-              <span>4.9 Average Author Rating</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-calendar-blank hero-stat-icon"></i>
-              <span>Publishing Since 2018</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-pen-nib hero-stat-icon"></i>
-              <span>Growing Community of Authors</span>
-            </div>
-            <!-- Set 2 -->
-            <div class="hero-stat-item">
-              <i class="ph ph-chart-bar hero-stat-icon"></i>
-              <span>Multiple Bestsellers Published</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-book-open hero-stat-icon"></i>
-              <span>Thousands of Readers Impacted</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-star hero-stat-icon"></i>
-              <span>4.9 Average Author Rating</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-calendar-blank hero-stat-icon"></i>
-              <span>Publishing Since 2018</span>
-            </div>
-            <div class="hero-stat-item">
-              <i class="ph ph-pen-nib hero-stat-icon"></i>
-              <span>Growing Community of Authors</span>
-            </div>
-          </div>
-        </div>
-      </section>
+            <section class="hero-remaster">
+                <video
+                    class="hero-remaster-video"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                >
+                    <source
+                        src="/static/images/remaster-homepage/hero-background/hero-bg.mp4"
+                        type="video/mp4"
+                    />
+                </video>
+                <div class="hero-remaster-content">
+                    <h1 class="hero-remaster-title">
+                        Turn your expertise into a published book.
+                    </h1>
+                    <p class="hero-remaster-subtitle">
+                        We publish exclusively with the top 5% of corporate
+                        professionals, doctors and founders who want to build
+                        their credibility, visibility, and influence.
+                    </p>
+                    <a href="#" class="btn-primary">
+                        <span>Become the voice of your industry</span>
+                        <span>→</span>
+                    </a>
+                </div>
+                <div class="hero-stats-bar-wrapper">
+                    <div class="hero-stats-bar">
+                        <!-- Set 1 -->
+                        <div class="hero-stat-item">
+                            <i class="ph ph-chart-bar hero-stat-icon"></i>
+                            <span>Multiple Bestsellers Published</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-book-open hero-stat-icon"></i>
+                            <span>Thousands of Readers Impacted</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-star hero-stat-icon"></i>
+                            <span>4.9 Average Author Rating</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-calendar-blank hero-stat-icon"></i>
+                            <span>Publishing Since 2018</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-pen-nib hero-stat-icon"></i>
+                            <span>Growing Community of Authors</span>
+                        </div>
+                        <!-- Set 2 -->
+                        <div class="hero-stat-item">
+                            <i class="ph ph-chart-bar hero-stat-icon"></i>
+                            <span>Multiple Bestsellers Published</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-book-open hero-stat-icon"></i>
+                            <span>Thousands of Readers Impacted</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-star hero-stat-icon"></i>
+                            <span>4.9 Average Author Rating</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-calendar-blank hero-stat-icon"></i>
+                            <span>Publishing Since 2018</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <i class="ph ph-pen-nib hero-stat-icon"></i>
+                            <span>Growing Community of Authors</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-      <section class="expertise-section section-container">
-        <h2 class="expertise-title">
-          We help experts become the name their industry trusts.
-        </h2>
-        <div class="expertise-grid">
-          <div class="expertise-card">
-            <img
-              src="../../static/images/remaster-homepage/icons/help-icon-1.svg"
-              alt="Icon"
-              class="expertise-card-icon"
-              style="border-radius: 50%"
-            />
-            <h3 class="expertise-card-title">Author Mentorship</h3>
-            <p class="expertise-card-desc">
-              Expert guidance from idea to publication.
-            </p>
-          </div>
-          <div class="expertise-card">
-            <img
-              src="../../static/images/remaster-homepage/icons/help-icon-2.svg"
-              alt="Icon"
-              class="expertise-card-icon"
-              style="border-radius: 50%"
-            />
-            <h3 class="expertise-card-title">Professional Publishing</h3>
-            <p class="expertise-card-desc">
-              Editing, production & distribution.
-            </p>
-          </div>
-          <div class="expertise-card">
-            <img
-              src="../../static/images/remaster-homepage/icons/help-icon-3.svg"
-              alt="Icon"
-              class="expertise-card-icon"
-              style="border-radius: 50%"
-            />
-            <h3 class="expertise-card-title">Personal Branding</h3>
-            <p class="expertise-card-desc">Build a recognisable identity.</p>
-          </div>
-          <div class="expertise-card">
-            <img
-              src="../../static/images/remaster-homepage/icons/help-icon-4.svg"
-              alt="Icon"
-              class="expertise-card-icon"
-              style="border-radius: 50%"
-            />
-            <h3 class="expertise-card-title">Authority Positioning</h3>
-            <p class="expertise-card-desc">
-              Become the trusted voice in your field.
-            </p>
-          </div>
-          <div class="expertise-card">
-            <img
-              src="../../static/images/remaster-homepage/icons/help-icon-5.svg"
-              alt="Icon"
-              class="expertise-card-icon"
-              style="border-radius: 50%"
-            />
-            <h3 class="expertise-card-title">Visibility & Growth</h3>
-            <p class="expertise-card-desc">
-              Turn your expertise into opportunities.
-            </p>
-          </div>
-        </div>
-      </section>
+            <section class="expertise-section section-container">
+                <h2 class="expertise-title">
+                    We help experts become the name their industry trusts.
+                </h2>
+                <div class="expertise-grid">
+                    <div class="expertise-card">
+                        <img
+                            src="../../static/images/remaster-homepage/icons/help-icon-1.svg"
+                            alt="Icon"
+                            class="expertise-card-icon"
+                            style="border-radius: 50%"
+                        />
+                        <h3 class="expertise-card-title">Author Mentorship</h3>
+                        <p class="expertise-card-desc">
+                            Expert guidance from idea to publication.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <img
+                            src="../../static/images/remaster-homepage/icons/help-icon-2.svg"
+                            alt="Icon"
+                            class="expertise-card-icon"
+                            style="border-radius: 50%"
+                        />
+                        <h3 class="expertise-card-title">
+                            Professional Publishing
+                        </h3>
+                        <p class="expertise-card-desc">
+                            Editing, production & distribution.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <img
+                            src="../../static/images/remaster-homepage/icons/help-icon-3.svg"
+                            alt="Icon"
+                            class="expertise-card-icon"
+                            style="border-radius: 50%"
+                        />
+                        <h3 class="expertise-card-title">Personal Branding</h3>
+                        <p class="expertise-card-desc">
+                            Build a recognisable identity.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <img
+                            src="../../static/images/remaster-homepage/icons/help-icon-4.svg"
+                            alt="Icon"
+                            class="expertise-card-icon"
+                            style="border-radius: 50%"
+                        />
+                        <h3 class="expertise-card-title">
+                            Authority Positioning
+                        </h3>
+                        <p class="expertise-card-desc">
+                            Become the trusted voice in your field.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <img
+                            src="../../static/images/remaster-homepage/icons/help-icon-5.svg"
+                            alt="Icon"
+                            class="expertise-card-icon"
+                            style="border-radius: 50%"
+                        />
+                        <h3 class="expertise-card-title">
+                            Visibility & Growth
+                        </h3>
+                        <p class="expertise-card-desc">
+                            Turn your expertise into opportunities.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-      <section class="impact-section section-container">
-        <div class="impact-header">
-          <div class="impact-title-box">
-            <h2 class="impact-title">
-              Real People. Real Books.<br />Real Impact.
-            </h2>
-            <p class="impact-subtitle">
-              Our authors have built credibility, expanded their influence, and
-              created lasting legacies through the power of a published book.
-              Here's what they've achieved.
-            </p>
-          </div>
-          <a href="#" class="btn-primary">
-            <span>Become our next success story</span>
-            <span>→</span>
-          </a>
-        </div>
-        <div class="impact-grid">
-          <div class="impact-card">
-            <img
-              src="../../static/images/remaster-homepage/gif/gif-1.gif"
-              alt="Impact"
-              class="impact-card-img"
-            />
-            <div class="impact-card-overlay">
-              <p class="impact-card-text">Increased business<br class="mobile-break" />visibility</p>
-            </div>
-          </div>
-          <div class="impact-card">
-            <img
-              src="../../static/images/remaster-homepage/gif/gif-2.gif"
-              alt="Impact"
-              class="impact-card-img"
-            />
-            <div class="impact-card-overlay">
-              <p class="impact-card-text">Built stronger personal<br class="mobile-break" />brands</p>
-            </div>
-          </div>
-          <div class="impact-card">
-            <img
-              src="../../static/images/remaster-homepage/gif/gif-3.gif"
-              alt="Impact"
-              class="impact-card-img"
-            />
-            <div class="impact-card-overlay">
-              <p class="impact-card-text">Landed speaking<br class="mobile-break" />engagements</p>
-            </div>
-          </div>
-          <div class="impact-card">
-            <img
-              src="../../static/images/remaster-homepage/gif/gif-4.gif"
-              alt="Impact"
-              class="impact-card-img"
-            />
-            <div class="impact-card-overlay">
-              <p class="impact-card-text">Expand professional<br class="mobile-break" />influence</p>
-            </div>
-          </div>
-          <div class="impact-card">
-            <img
-              src="../../static/images/remaster-homepage/gif/gif-5.gif"
-              alt="Impact"
-              class="impact-card-img"
-            />
-            <div class="impact-card-overlay">
-              <p class="impact-card-text">Created meaningful<br class="mobile-break" />legacies</p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <section class="impact-section section-container">
+                <div class="impact-header">
+                    <div class="impact-title-box">
+                        <h2 class="impact-title">
+                            Real People. Real Books.<br />Real Impact.
+                        </h2>
+                        <p class="impact-subtitle">
+                            Our authors have built credibility, expanded their
+                            influence, and created lasting legacies through the
+                            power of a published book. Here's what they've
+                            achieved.
+                        </p>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <span>Become our next success story</span>
+                        <span>→</span>
+                    </a>
+                </div>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <img
+                            src="../../static/images/remaster-homepage/gif/gif-1.gif"
+                            alt="Impact"
+                            class="impact-card-img"
+                        />
+                        <div class="impact-card-overlay">
+                            <p class="impact-card-text">
+                                Increased business<br
+                                    class="mobile-break"
+                                />visibility
+                            </p>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <video
+                            src="../../static/images/remaster-homepage/gif/gif-2.mp4"
+                            aria-label="Impact"
+                            class="impact-card-img"
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                        />
+                        <div class="impact-card-overlay">
+                            <p class="impact-card-text">
+                                Built stronger personal<br
+                                    class="mobile-break"
+                                />brands
+                            </p>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <img
+                            src="../../static/images/remaster-homepage/gif/gif-3.gif"
+                            alt="Impact"
+                            class="impact-card-img"
+                        />
+                        <div class="impact-card-overlay">
+                            <p class="impact-card-text">
+                                Landed speaking<br
+                                    class="mobile-break"
+                                />engagements
+                            </p>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <img
+                            src="../../static/images/remaster-homepage/gif/gif-4.gif"
+                            alt="Impact"
+                            class="impact-card-img"
+                        />
+                        <div class="impact-card-overlay">
+                            <p class="impact-card-text">
+                                Expand professional<br
+                                    class="mobile-break"
+                                />influence
+                            </p>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <img
+                            src="../../static/images/remaster-homepage/gif/gif-5.gif"
+                            alt="Impact"
+                            class="impact-card-img"
+                        />
+                        <div class="impact-card-overlay">
+                            <p class="impact-card-text">
+                                Created meaningful<br
+                                    class="mobile-break"
+                                />legacies
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-      <section class="featured-in-section">
-        <h2 class="featured-in-title">Our authors were featured in</h2>
-        <div class="featured-logos">
-          <img
-            src="../../static/images/remaster-homepage/icons/britishcolumbia_times.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/the_techOutlook.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/helloEntrepreneurs.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/ani.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/ahmedabadMirror.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/BusinessStandard.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/EntrepreneurStreet.svg"
-            alt="Logo"
-            class="featured-logo"
-          />
-          <img
-            src="../../static/images/remaster-homepage/icons/Forbes.svg"
-            alt="Logo"
-            class="featured-logo"
-            style="filter: invert(1); mix-blend-mode: screen"
-          />
-        </div>
-      </section>
+            <section class="featured-in-section">
+                <h2 class="featured-in-title">Our authors were featured in</h2>
+                <div class="featured-logos">
+                    <img
+                        src="../../static/images/remaster-homepage/icons/britishcolumbia_times.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/the_techOutlook.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/helloEntrepreneurs.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/ani.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/ahmedabadMirror.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/BusinessStandard.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/EntrepreneurStreet.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                    />
+                    <img
+                        src="../../static/images/remaster-homepage/icons/Forbes.svg"
+                        alt="Logo"
+                        class="featured-logo"
+                        style="filter: invert(1); mix-blend-mode: screen"
+                    />
+                </div>
+            </section>
 
-      <section class="expert-author-section section-container">
-        <div class="expert-author-left">
-          <h2 class="expert-author-title">
-            From Expert<br />to <span>Author.</span>
-          </h2>
-          <p class="expert-author-desc">
-            Anyone can write a book. Few write one that changes how they're
-            perceived. Imagine having:
-          </p>
-        </div>
-        <div class="expert-author-grid">
-          <div class="expert-feature-card">
-            <div class="expert-feature-icon">
-              <img
-                src="../../static/images/remaster-homepage/icons/author-1.svg"
-                alt="Icon"
-              />
-            </div>
-            <h3 class="expert-feature-title">
-              A professionally published book
-            </h3>
-            <p class="expert-feature-desc">
-              Carrying your name on shelves and in the hands of clients,
-              investors, and industry peers.
-            </p>
-          </div>
-          <div class="expert-feature-card">
-            <div class="expert-feature-icon">
-              <img
-                src="../../static/images/remaster-homepage/icons/author-2.svg"
-                alt="Icon"
-              />
-            </div>
-            <h3 class="expert-feature-title">Greater credibility</h3>
-            <p class="expert-feature-desc">
-              With clients, investors and audiences who immediately understand
-              what you've built and what you stand for.
-            </p>
-          </div>
-          <div class="expert-feature-card">
-            <div class="expert-feature-icon">
-              <img
-                src="../../static/images/remaster-homepage/icons/author-3.svg"
-                alt="Icon"
-              />
-            </div>
-            <h3 class="expert-feature-title">Speaking opportunities</h3>
-            <p class="expert-feature-desc">
-              And media visibility that position you as the go-to voice in your
-              field before you even walk into the room.
-            </p>
-          </div>
-          <div class="expert-feature-card">
-            <div class="expert-feature-icon">
-              <img
-                src="../../static/images/remaster-homepage/icons/author-4.svg"
-                alt="Icon"
-              />
-            </div>
-            <h3 class="expert-feature-title">A stronger personal brand</h3>
-            <p class="expert-feature-desc">
-              That attracts the right opportunities, commands premium fees and
-              outlasts any algorithm or trend.
-            </p>
-          </div>
-          <div class="expert-feature-card">
-            <div class="expert-feature-icon">
-              <img
-                src="../../static/images/remaster-homepage/icons/author-5.svg"
-                alt="Icon"
-              />
-            </div>
-            <h3 class="expert-feature-title">A powerful legacy</h3>
-            <p class="expert-feature-desc">
-              That outlives your title & ensures the ideas & lessons you've
-              built over decades continue to inspire.
-            </p>
-          </div>
-          <div class="expert-feature-card">
-            <div class="expert-feature-icon">
-              <img
-                src="../../static/images/remaster-homepage/icons/author-6.svg"
-                alt="Icon"
-              />
-            </div>
-            <h3 class="expert-feature-title">A platform that attracts</h3>
-            <p class="expert-feature-desc">
-              Opportunities instead of chasing them. This is what we help
-              create, end-to-end, for every author we take on.
-            </p>
-          </div>
-        </div>
-      </section>
+            <section class="expert-author-section section-container">
+                <div class="expert-author-left">
+                    <h2 class="expert-author-title">
+                        From Expert<br />to <span>Author.</span>
+                    </h2>
+                    <p class="expert-author-desc">
+                        Anyone can write a book. Few write one that changes how
+                        they're perceived. Imagine having:
+                    </p>
+                </div>
+                <div class="expert-author-grid">
+                    <div class="expert-feature-card">
+                        <div class="expert-feature-icon">
+                            <img
+                                src="../../static/images/remaster-homepage/icons/author-1.svg"
+                                alt="Icon"
+                            />
+                        </div>
+                        <h3 class="expert-feature-title">
+                            A professionally published book
+                        </h3>
+                        <p class="expert-feature-desc">
+                            Carrying your name on shelves and in the hands of
+                            clients, investors, and industry peers.
+                        </p>
+                    </div>
+                    <div class="expert-feature-card">
+                        <div class="expert-feature-icon">
+                            <img
+                                src="../../static/images/remaster-homepage/icons/author-2.svg"
+                                alt="Icon"
+                            />
+                        </div>
+                        <h3 class="expert-feature-title">
+                            Greater credibility
+                        </h3>
+                        <p class="expert-feature-desc">
+                            With clients, investors and audiences who
+                            immediately understand what you've built and what
+                            you stand for.
+                        </p>
+                    </div>
+                    <div class="expert-feature-card">
+                        <div class="expert-feature-icon">
+                            <img
+                                src="../../static/images/remaster-homepage/icons/author-3.svg"
+                                alt="Icon"
+                            />
+                        </div>
+                        <h3 class="expert-feature-title">
+                            Speaking opportunities
+                        </h3>
+                        <p class="expert-feature-desc">
+                            And media visibility that position you as the go-to
+                            voice in your field before you even walk into the
+                            room.
+                        </p>
+                    </div>
+                    <div class="expert-feature-card">
+                        <div class="expert-feature-icon">
+                            <img
+                                src="../../static/images/remaster-homepage/icons/author-4.svg"
+                                alt="Icon"
+                            />
+                        </div>
+                        <h3 class="expert-feature-title">
+                            A stronger personal brand
+                        </h3>
+                        <p class="expert-feature-desc">
+                            That attracts the right opportunities, commands
+                            premium fees and outlasts any algorithm or trend.
+                        </p>
+                    </div>
+                    <div class="expert-feature-card">
+                        <div class="expert-feature-icon">
+                            <img
+                                src="../../static/images/remaster-homepage/icons/author-5.svg"
+                                alt="Icon"
+                            />
+                        </div>
+                        <h3 class="expert-feature-title">A powerful legacy</h3>
+                        <p class="expert-feature-desc">
+                            That outlives your title & ensures the ideas &
+                            lessons you've built over decades continue to
+                            inspire.
+                        </p>
+                    </div>
+                    <div class="expert-feature-card">
+                        <div class="expert-feature-icon">
+                            <img
+                                src="../../static/images/remaster-homepage/icons/author-6.svg"
+                                alt="Icon"
+                            />
+                        </div>
+                        <h3 class="expert-feature-title">
+                            A platform that attracts
+                        </h3>
+                        <p class="expert-feature-desc">
+                            Opportunities instead of chasing them. This is what
+                            we help create, end-to-end, for every author we take
+                            on.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-      <section class="mid-cta-section section-container">
-        <div class="mid-cta-container">
-          <div class="mid-cta-left">
-            <h2 class="mid-cta-title">
-              Your book is waiting.<br />Let's make it real.
-            </h2>
-            <a href="#" class="btn-orange"
-              >Schedule Your Strategy Call Today →</a
-            >
-          </div>
-          <div class="mid-cta-right">
-            <img
-              src="/static/images/remaster-homepage/images/book-banner.png"
-              alt="Book Banner"
-              style="width: 100%; height: 100%; display: block"
-            />
-          </div>
-        </div>
-      </section>
+            <section class="mid-cta-section section-container">
+                <div class="mid-cta-container">
+                    <div class="mid-cta-left">
+                        <h2 class="mid-cta-title">
+                            Your book is waiting.<br />Let's make it real.
+                        </h2>
+                        <a href="#" class="btn-orange"
+                            >Schedule Your Strategy Call Today →</a
+                        >
+                    </div>
+                    <div class="mid-cta-right">
+                        <img
+                            src="/static/images/remaster-homepage/images/book-banner.png"
+                            alt="Book Banner"
+                            style="width: 100%; height: 100%; display: block"
+                        />
+                    </div>
+                </div>
+            </section>
 
-      <section class="accelerator-section section-container">
-        <div class="accelerator-header">
-          <p class="accelerator-eyebrow">THE PROCESS</p>
-          <h2 class="accelerator-title">
-            The BOL<br /><span>Authority Accelerator</span>
-          </h2>
-          <a href="#" class="btn-white">Get the publishing timeline →</a>
-        </div>
-        <div class="accelerator-steps">
-          <div class="step-card">
-            <div class="step-number">01</div>
-            <div class="step-card-content">
-              <div class="step-icon">
-                <img
-                  src="../../static/images/remaster-homepage/icons/authority-acc-1.svg"
-                  alt="Icon"
-                />
-              </div>
-              <h3 class="step-title">Discover your signature message</h3>
-              <p class="step-desc">
-                We help uncover the ideas, experiences, and insights that
-                deserve to become your book.
-              </p>
-            </div>
-            <video
-              class="step-card-image"
-              src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-1_compressed.mp4"
-              autoplay
-              loop
-              muted
-              playsinline
-              style="object-fit: cover"
-            ></video>
-          </div>
-          <div class="step-card">
-            <div class="step-number">02</div>
-            <div class="step-card-content">
-              <div class="step-icon">
-                <img
-                  src="../../static/images/remaster-homepage/icons/authority-acc-2.svg"
-                  alt="Icon"
-                />
-              </div>
-              <h3 class="step-title">Refine your manuscript</h3>
-              <p class="step-desc">
-                Our editors, designers, and publishing experts transform your
-                manuscript into a world-class book, ensuring every detail meets
-                traditional publishing standards.
-              </p>
-            </div>
-            <video
-              class="step-card-image"
-              src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-2_compressed.mp4"
-              autoplay
-              loop
-              muted
-              playsinline
-              style="object-fit: cover"
-            ></video>
-          </div>
-          <div class="step-card">
-            <div class="step-number">03</div>
-            <div class="step-card-content">
-              <div class="step-icon">
-                <img
-                  src="../../static/images/remaster-homepage/icons/authority-acc-3.svg"
-                  alt="Icon"
-                />
-              </div>
-              <h3 class="step-title">Publish & showcase your book</h3>
-              <p class="step-desc">
-                We handle the entire publishing process and help place your book
-                where readers, clients, industry peers, and opportunities can
-                easily discover it.
-              </p>
-            </div>
-            <video
-              class="step-card-image"
-              src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-3_compressed.mp4"
-              autoplay
-              loop
-              muted
-              playsinline
-              style="object-fit: cover"
-            ></video>
-          </div>
-          <div class="step-card">
-            <div class="step-number">04</div>
-            <div class="step-card-content">
-              <div class="step-icon">
-                <img
-                  src="../../static/images/remaster-homepage/icons/authority-acc-4.svg"
-                  alt="Icon"
-                />
-              </div>
-              <h3 class="step-title">Amplify your influence</h3>
-              <p class="step-desc">
-                Leverage your published book for high-ticket speaking
-                engagements, top-tier media opportunities, business growth, and
-                thought leadership.
-              </p>
-            </div>
-            <video
-              class="step-card-image"
-              src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-4_compressed.mp4"
-              autoplay
-              loop
-              muted
-              playsinline
-              style="object-fit: cover"
-            ></video>
-          </div>
-        </div>
-      </section>
+            <section class="accelerator-section section-container">
+                <div class="accelerator-header">
+                    <p class="accelerator-eyebrow">THE PROCESS</p>
+                    <h2 class="accelerator-title">
+                        The BOL<br /><span>Authority Accelerator</span>
+                    </h2>
+                    <a href="#" class="btn-white"
+                        >Get the publishing timeline →</a
+                    >
+                </div>
+                <div class="accelerator-steps">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-card-content">
+                            <div class="step-icon">
+                                <img
+                                    src="../../static/images/remaster-homepage/icons/authority-acc-1.svg"
+                                    alt="Icon"
+                                />
+                            </div>
+                            <h3 class="step-title">
+                                Discover your signature message
+                            </h3>
+                            <p class="step-desc">
+                                We help uncover the ideas, experiences, and
+                                insights that deserve to become your book.
+                            </p>
+                        </div>
+                        <video
+                            class="step-card-image"
+                            src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-1_compressed.mp4"
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                            style="object-fit: cover"
+                        ></video>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-card-content">
+                            <div class="step-icon">
+                                <img
+                                    src="../../static/images/remaster-homepage/icons/authority-acc-2.svg"
+                                    alt="Icon"
+                                />
+                            </div>
+                            <h3 class="step-title">Refine your manuscript</h3>
+                            <p class="step-desc">
+                                Our editors, designers, and publishing experts
+                                transform your manuscript into a world-class
+                                book, ensuring every detail meets traditional
+                                publishing standards.
+                            </p>
+                        </div>
+                        <video
+                            class="step-card-image"
+                            src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-2_compressed.mp4"
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                            style="object-fit: cover"
+                        ></video>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-card-content">
+                            <div class="step-icon">
+                                <img
+                                    src="../../static/images/remaster-homepage/icons/authority-acc-3.svg"
+                                    alt="Icon"
+                                />
+                            </div>
+                            <h3 class="step-title">
+                                Publish & showcase your book
+                            </h3>
+                            <p class="step-desc">
+                                We handle the entire publishing process and help
+                                place your book where readers, clients, industry
+                                peers, and opportunities can easily discover it.
+                            </p>
+                        </div>
+                        <video
+                            class="step-card-image"
+                            src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-3_compressed.mp4"
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                            style="object-fit: cover"
+                        ></video>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">04</div>
+                        <div class="step-card-content">
+                            <div class="step-icon">
+                                <img
+                                    src="../../static/images/remaster-homepage/icons/authority-acc-4.svg"
+                                    alt="Icon"
+                                />
+                            </div>
+                            <h3 class="step-title">Amplify your influence</h3>
+                            <p class="step-desc">
+                                Leverage your published book for high-ticket
+                                speaking engagements, top-tier media
+                                opportunities, business growth, and thought
+                                leadership.
+                            </p>
+                        </div>
+                        <video
+                            class="step-card-image"
+                            src="../../static/images/remaster-homepage/authority-video/auth-acc-hero-4_compressed.mp4"
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                            style="object-fit: cover"
+                        ></video>
+                    </div>
+                </div>
+            </section>
 
-      <section class="final-cta-section section-container">
-        <div class="final-cta-container">
-          <div class="final-cta-left">
-            <h2 class="final-cta-title">
-              Great Work Deserves Greater Visibility.
-            </h2>
-            <a href="#" class="btn-primary" style="width: max-content"
-              >Become a published author →</a
-            >
-          </div>
-          <div class="final-cta-quote-block">
-            <span class="quote-mark-open">“</span>
-            <p class="quote-text">
-              Expertise creates value. Authority creates opportunities. The most
-              successful leaders know how to turn one into the other.
-            </p>
-            <span class="quote-mark-close">“</span>
-          </div>
-        </div>
-      </section>
+            <section class="final-cta-section section-container">
+                <div class="final-cta-container">
+                    <div class="final-cta-left">
+                        <h2 class="final-cta-title">
+                            Great Work Deserves Greater Visibility.
+                        </h2>
+                        <a
+                            href="#"
+                            class="btn-primary"
+                            style="width: max-content"
+                            >Become a published author →</a
+                        >
+                    </div>
+                    <div class="final-cta-quote-block">
+                        <span class="quote-mark-open">“</span>
+                        <p class="quote-text">
+                            Expertise creates value. Authority creates
+                            opportunities. The most successful leaders know how
+                            to turn one into the other.
+                        </p>
+                        <span class="quote-mark-close">“</span>
+                    </div>
+                </div>
+            </section>
 
-      <footer class="remaster-footer section-container">
-        <div class="remaster-footer-top">
-          <div class="remaster-footer-brand">
-            <div class="remaster-footer-logo-box">
-              <img src="/static/images/header_logo.png" alt="Brands Out Loud" />
-            </div>
-            <h2 class="remaster-footer-tagline">
-              Where Expertise<br />Becomes Influence.
-            </h2>
-          </div>
-          <div class="remaster-footer-links-container">
-            <div class="remaster-footer-col">
-              <div class="remaster-footer-col-title">DISCOVER</div>
-              <a href="/blog" class="remaster-footer-link">Blog</a>
-              <a href="/magazine" class="remaster-footer-link">Magazine</a>
-              <a href="/contact" class="remaster-footer-link">Contact</a>
-            </div>
-            <div class="remaster-footer-col">
-              <div class="remaster-footer-col-title">COMPANY</div>
-              <a href="#" class="remaster-footer-link">About</a>
-              <a href="#" class="remaster-footer-link">Return Policy</a>
-              <a href="#" class="remaster-footer-link">Privacy</a>
-              <a href="#" class="remaster-footer-link">Terms & Conditions</a>
-            </div>
-            <div class="remaster-footer-col">
-              <div class="remaster-footer-col-title">CONNECT</div>
-              <a href="#" class="remaster-footer-link">Instagram</a>
-              <a href="#" class="remaster-footer-link">LinkedIn</a>
-              <a href="#" class="remaster-footer-link">X (Twitter)</a>
-              <a href="#" class="remaster-footer-link">YouTube</a>
-            </div>
-          </div>
+            <footer class="remaster-footer section-container">
+                <div class="remaster-footer-top">
+                    <div class="remaster-footer-brand">
+                        <div class="remaster-footer-logo-box">
+                            <img
+                                src="/static/images/header_logo.png"
+                                alt="Brands Out Loud"
+                            />
+                        </div>
+                        <h2 class="remaster-footer-tagline">
+                            Where Expertise<br />Becomes Influence.
+                        </h2>
+                    </div>
+                    <div class="remaster-footer-links-container">
+                        <div class="remaster-footer-col">
+                            <div class="remaster-footer-col-title">
+                                DISCOVER
+                            </div>
+                            <a href="/blog" class="remaster-footer-link"
+                                >Blog</a
+                            >
+                            <a href="/magazine" class="remaster-footer-link"
+                                >Magazine</a
+                            >
+                            <a href="/contact" class="remaster-footer-link"
+                                >Contact</a
+                            >
+                        </div>
+                        <div class="remaster-footer-col">
+                            <div class="remaster-footer-col-title">COMPANY</div>
+                            <a href="#" class="remaster-footer-link">About</a>
+                            <a href="#" class="remaster-footer-link"
+                                >Return Policy</a
+                            >
+                            <a href="#" class="remaster-footer-link">Privacy</a>
+                            <a href="#" class="remaster-footer-link"
+                                >Terms & Conditions</a
+                            >
+                        </div>
+                        <div class="remaster-footer-col">
+                            <div class="remaster-footer-col-title">CONNECT</div>
+                            <a href="#" class="remaster-footer-link"
+                                >Instagram</a
+                            >
+                            <a href="#" class="remaster-footer-link"
+                                >LinkedIn</a
+                            >
+                            <a href="#" class="remaster-footer-link"
+                                >X (Twitter)</a
+                            >
+                            <a href="#" class="remaster-footer-link">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="remaster-footer-divider"></div>
+                <div class="remaster-footer-bottom">
+                    <div class="remaster-footer-copyright">
+                        © 2026 Brands Out Loud
+                    </div>
+                </div>
+            </footer>
         </div>
-        <div class="remaster-footer-divider"></div>
-        <div class="remaster-footer-bottom">
-          <div class="remaster-footer-copyright">© 2026 Brands Out Loud</div>
-        </div>
-      </footer>
-    </div>
-    <script>
-      function toggleMobileMenu() {
-        const menu = document.getElementById('mobileMenu');
-        const icon = document.getElementById('mobileMenuIcon');
-        if (menu.classList.contains('active')) {
-          menu.classList.remove('active');
-          icon.classList.remove('ph-x');
-          icon.classList.add('ph-list');
-        } else {
-          menu.classList.add('active');
-          icon.classList.remove('ph-list');
-          icon.classList.add('ph-x');
-        }
-      }
-    </script>
-  </body>
+        <script>
+            function toggleMobileMenu() {
+                const menu = document.getElementById("mobileMenu");
+                const icon = document.getElementById("mobileMenuIcon");
+                if (menu.classList.contains("active")) {
+                    menu.classList.remove("active");
+                    icon.classList.remove("ph-x");
+                    icon.classList.add("ph-list");
+                } else {
+                    menu.classList.add("active");
+                    icon.classList.remove("ph-list");
+                    icon.classList.add("ph-x");
+                }
+            }
+        </script>
+    </body>
 </html>
