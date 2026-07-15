@@ -56,7 +56,7 @@ def verify_jwt_token(token: str) -> dict:
 async def serve_login_page(request: Request):
     from page_serving_routers.routers.navbar_fetcher import get_navbar_data
     navbar = await get_navbar_data()
-    return templates.TemplateResponse(request=request, name="login.html", context={"request": request, "navbar": navbar})
+    return templates.TemplateResponse(request, "login.html", {"navbar": navbar})
 
 
 @router.post("/api/auth/register", tags=["Auth"])

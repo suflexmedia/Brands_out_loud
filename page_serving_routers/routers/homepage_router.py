@@ -172,15 +172,21 @@ async def get_homepage_data():
 
 @router.get("/", tags=["Pages"])
 async def serve_homepage(request: Request):
-    """Serves the static homepage HTML page."""
+    """Serves the remastered homepage as the default."""
     data = await get_homepage_data()
     navbar = await get_navbar_data()
-    return templates.TemplateResponse(request=request, name="homepage.html", context={"request": request, "data": data, "navbar": navbar})
+    return templates.TemplateResponse(request, "homepage_remaster.html", {
+        "data": data,
+        "navbar": navbar,
+    })
 
 
-@router.get("/remaster", tags=["Pages"])
-async def serve_homepage_remaster(request: Request):
-    """Serves the remastered static homepage HTML page."""
+@router.get("/homepage", tags=["Pages"])
+async def serve_homepage_original(request: Request):
+    """Serves the original homepage HTML page."""
     data = await get_homepage_data()
     navbar = await get_navbar_data()
-    return templates.TemplateResponse(request=request, name="homepage_remaster.html", context={"request": request, "data": data, "navbar": navbar})
+    return templates.TemplateResponse(request, "homepage.html", {
+        "data": data,
+        "navbar": navbar,
+    })

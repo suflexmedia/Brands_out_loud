@@ -48,4 +48,7 @@ async def serve_magazine_homepage(request: Request):
     """Serves the magazine homepage HTML page."""
     data = await get_magazine_homepage_data()
     navbar = await get_navbar_data()
-    return templates.TemplateResponse(request=request, name="magazine-homepage.html", context={"request": request, "data": data, "navbar": navbar})
+    return templates.TemplateResponse(request, "magazine-homepage.html", {
+        "data": data,
+        "navbar": navbar,
+    })
