@@ -529,8 +529,7 @@ async def preview_homepage(request: Request):
     from page_serving_routers.routers.navbar_fetcher import get_navbar_data
     navbar = await get_navbar_data()
 
-    html = _templates.TemplateResponse("homepage.html", {
-        "request": request,
+    html = _templates.TemplateResponse(request, "homepage.html", {
         "data": data,
         "navbar": navbar,
     })

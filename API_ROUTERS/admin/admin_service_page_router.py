@@ -367,5 +367,5 @@ async def preview_service_page(request: Request, category: str):
     navbar = await get_navbar_data()
 
     return _templates.TemplateResponse(
-        "service.html", {"request": request, "data": data, "navbar": navbar}
+        request, "service.html", {"data": data, "navbar": navbar}
     )

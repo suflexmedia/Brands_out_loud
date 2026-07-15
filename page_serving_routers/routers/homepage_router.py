@@ -175,4 +175,4 @@ async def serve_homepage(request: Request):
     """Serves the static homepage HTML page."""
     data = await get_homepage_data()
     navbar = await get_navbar_data()
-    return templates.TemplateResponse("homepage.html", {"request": request, "data": data, "navbar": navbar})
+    return templates.TemplateResponse(request, "homepage.html", {"data": data, "navbar": navbar})
