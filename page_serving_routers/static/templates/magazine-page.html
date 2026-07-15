@@ -674,7 +674,23 @@
         let hasBlankStart = !(getEffectiveWidth() <= 768);
         const renderedPages = new Set();
         const pageShells = {};
-        const INITIAL_LOAD_PERCENT = 0.4;
+
+        const IS_IOS = (function () {
+            try {
+                return /iP(ad|hone|od)/.test(navigator.platform) ||
+                    (navigator.userAgent.includes(&#39;Mac&#39;) &amp;&amp; &#39;ontouchend&#39; in document) ||
+                    /iPad|iPhone|iPod/.test(navigator.userAgent);
+            } catch (e) { return false; }
+        })();
+        const DEVICE_MEM = (function () {
+            try { return navigator.deviceMemory || 0; } catch (e) { return 0; }
+        })();
+        const LOW_MEMORY = IS_IOS || (DEVICE_MEM > 0 &amp;&amp; DEVICE_MEM <= 4);
+
+        const RENDER_WINDOW = LOW_MEMORY ? 2 : 4;
+        const MAX_CANVAS_SIDE = LOW_MEMORY ? 1600 : 2600;
+        const EFFECTIVE_DPR = Math.min(window.devicePixelRatio || 1, LOW_MEMORY ? 1.5 : 2);
+        const INITIAL_RENDER_COUNT = 4;
 
         const PDFJS_VERSION = &#39;3.11.174&#39;;
         const CMAP_URL = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/cmaps/`;
@@ -697,7 +713,41 @@
             return Math.max(window.devicePixelRatio, 1) * 0.9;
         }
         function getHighScale() {
-            return (isFullscreen ? 2.0 : 1.8) * window.devicePixelRatio;
+            return (isFullscreen ? 2.0 : 1.8) * EFFECTIVE_DPR;
+        }
+
+        function clampCanvasSide(px) {
+            if (!px || px < 1) return 1;
+            return Math.min(px, MAX_CANVAS_SIDE);
+        }
+
+        function releasePage(pageNum) {
+            const shell = pageShells[pageNum];
+            if (shell &amp;&amp; shell.canvas) {
+                const ctx = shell.canvas.getContext(&#39;2d&#39;);
+                if (ctx) ctx.clearRect(0, 0, shell.canvas.width, shell.canvas.height);
+                shell.canvas.width = 0;
+                shell.canvas.height = 0;
+                shell.content.querySelectorAll(&#39;.url-overlay&#39;).forEach((el) => el.remove());
+                if (!shell.content.querySelector(&#39;.page-placeholder&#39;)) {
+                    const placeholder = document.createElement(&#39;div&#39;);
+                    placeholder.className = &#39;page-placeholder&#39;;
+                    const pSpinner = document.createElement(&#39;div&#39;);
+                    pSpinner.className = &#39;placeholder-spinner&#39;;
+                    placeholder.appendChild(pSpinner);
+                    shell.content.appendChild(placeholder);
+                }
+            }
+            delete pagesCache[pageNum];
+            renderedPages.delete(pageNum);
+        }
+
+        function evictOutsideWindow(centerPage, radius) {
+            const keepFrom = Math.max(1, centerPage - radius);
+            const keepTo = Math.min(totalPages, centerPage + radius);
+            renderedPages.forEach((p) => {
+                if (p < keepFrom || p > keepTo) releasePage(p);
+            });
         }
 
         function calculatePageDimensions() {
@@ -766,8 +816,8 @@
                 let desiredScale;
                 const pageCanvasEl = document.querySelector(`.page[data-page=&quot;${pageNum}&quot;] canvas`);
                 if (pageCanvasEl &amp;&amp; baseViewport) {
-                    const targetPxW = pageCanvasEl.width || Math.floor(pageCanvasEl.clientWidth * window.devicePixelRatio);
-                    const targetPxH = pageCanvasEl.height || Math.floor(pageCanvasEl.clientHeight * window.devicePixelRatio);
+                    const targetPxW = pageCanvasEl.width || Math.floor(pageCanvasEl.clientWidth * EFFECTIVE_DPR);
+                    const targetPxH = pageCanvasEl.height || Math.floor(pageCanvasEl.clientHeight * EFFECTIVE_DPR);
                     const scaleW = targetPxW / baseViewport.width;
                     const scaleH = targetPxH / baseViewport.height;
                     const displayScale = Math.min(scaleW, scaleH);
@@ -778,15 +828,24 @@
                 }
                 const renderViewport = page.getViewport({ scale: desiredScale });
 
+                const maxSide = Math.max(renderViewport.width, renderViewport.height);
+                let finalViewport = renderViewport;
+                if (maxSide > MAX_CANVAS_SIDE) {
+                    const shrink = MAX_CANVAS_SIDE / maxSide;
+                    finalViewport = page.getViewport({ scale: desiredScale * shrink });
+                }
+
                 const canvas = document.createElement(&#39;canvas&#39;);
                 const context = canvas.getContext(&#39;2d&#39;, { alpha: false });
-                canvas.height = renderViewport.height;
-                canvas.width = renderViewport.width;
+                canvas.height = finalViewport.height;
+                canvas.width = finalViewport.width;
 
                 await page.render({
                     canvasContext: context,
-                    viewport: renderViewport
+                    viewport: finalViewport
                 }).promise;
+
+                try { page.cleanup(); } catch (e) {}
 
                 pagesCache[pageNum] = {
                     ...(cache || {}),
@@ -795,6 +854,10 @@
                     lowCanvas: quality === &#39;low&#39; ? canvas : (cache ? cache.lowCanvas : null),
                     highCanvas: quality === &#39;high&#39; ? canvas : (cache ? cache.highCanvas : null),
                 };
+
+                if (quality === &#39;high&#39; &amp;&amp; pagesCache[pageNum].lowCanvas) {
+                    pagesCache[pageNum].lowCanvas = null;
+                }
 
                 return pagesCache[pageNum];
             } catch (error) {
@@ -838,9 +901,9 @@
             content.style.height = &#39;100%&#39;;
 
             const canvas = document.createElement(&#39;canvas&#39;);
-            const mult = (isFullscreen ? 3.0 : 2.0) * QUALITY_FACTOR;
-            canvas.width = Math.floor(dimensions.width * window.devicePixelRatio * mult);
-            canvas.height = Math.floor(dimensions.height * window.devicePixelRatio * mult);
+            const mult = (isFullscreen ? 2.0 : 1.5) * QUALITY_FACTOR;
+            canvas.width = clampCanvasSide(Math.floor(dimensions.width * EFFECTIVE_DPR * mult));
+            canvas.height = clampCanvasSide(Math.floor(dimensions.height * EFFECTIVE_DPR * mult));
             canvas.style.width = &#39;100%&#39;;
             canvas.style.height = &#39;100%&#39;;
 
@@ -901,10 +964,10 @@
                 if (pageEl.dataset.blank === &#39;true&#39;) return;
                 const canvas = pageEl.querySelector(&#39;canvas&#39;);
                 if (!canvas) return;
-                const dpr = window.devicePixelRatio || 1;
-                const mult = (isFullscreen ? 3.0 : 2.0) * QUALITY_FACTOR;
-                const targetW = Math.floor(dims.width * dpr * mult);
-                const targetH = Math.floor(dims.height * dpr * mult);
+                const dpr = EFFECTIVE_DPR;
+                const mult = (isFullscreen ? 2.0 : 1.5) * QUALITY_FACTOR;
+                const targetW = clampCanvasSide(Math.floor(dims.width * dpr * mult));
+                const targetH = clampCanvasSide(Math.floor(dims.height * dpr * mult));
                 if (canvas.width === targetW &amp;&amp; canvas.height === targetH) return;
                 canvas.width = targetW;
                 canvas.height = targetH;
@@ -1303,7 +1366,8 @@
                             totalPages: totalPages
                         }, &#39;*&#39;);
                     }
-                    ensureNearbyPagesRendered(currentPage, 4);
+                    ensureNearbyPagesRendered(currentPage, RENDER_WINDOW);
+                    evictOutsideWindow(currentPage, RENDER_WINDOW + 1);
                     const dims = calculatePageDimensions();
                     const leftPage = currentPage % 2 === 0 ? currentPage : Math.max(1, currentPage - 1);
                     const rightPage = Math.min(totalPages, leftPage + 1);
@@ -1314,14 +1378,14 @@
                 currentPage = 1;
                 updateControls();
 
-                const initialCount = Math.max(4, Math.ceil(totalPages * INITIAL_LOAD_PERCENT));
+                const initialCount = Math.min(INITIAL_RENDER_COUNT, totalPages);
                 const loaderEl = document.getElementById(&#39;globalLoading&#39;);
                 const loaderText = loaderEl ? loaderEl.querySelector(&#39;.text&#39;) : null;
 
-                for (let i = 1; i <= Math.min(initialCount, totalPages); i++) {
+                for (let i = 1; i <= initialCount; i++) {
                     await renderAndDisplayPage(i, i <= 2 ? &#39;high&#39; : &#39;low&#39;);
                     if (loaderText) {
-                        const pct = Math.round((i / Math.min(initialCount, totalPages)) * 100);
+                        const pct = Math.round((i / initialCount) * 100);
                         loaderText.textContent = `Rendering pages: ${pct}%`;
                     }
                 }
@@ -1329,7 +1393,7 @@
                 if (loaderEl) loaderEl.style.display = &#39;none&#39;;
                 document.body.classList.remove(&#39;loading&#39;);
 
-                ensureNearbyPagesRendered(Math.min(initialCount, totalPages), 6);
+                ensureNearbyPagesRendered(1, RENDER_WINDOW);
 
                 if (window.parent !== window) {
                     window.parent.postMessage({
@@ -1352,6 +1416,12 @@
             if (renderedPages.has(pageNum)) return;
             const shell = pageShells[pageNum];
             if (!shell) return;
+            if (shell.canvas.width === 0 || shell.canvas.height === 0) {
+                const dims = calculatePageDimensions();
+                const mult = (isFullscreen ? 2.0 : 1.5) * QUALITY_FACTOR;
+                shell.canvas.width = clampCanvasSide(Math.floor(dims.width * EFFECTIVE_DPR * mult));
+                shell.canvas.height = clampCanvasSide(Math.floor(dims.height * EFFECTIVE_DPR * mult));
+            }
             const q = quality || &#39;low&#39;;
             const data = await renderPage(pageNum, q);
             if (!data) return;
