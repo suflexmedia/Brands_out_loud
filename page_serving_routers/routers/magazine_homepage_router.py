@@ -1,8 +1,4 @@
-"""Serves the magazine homepage with cached data from MongoDB.
-
-Reads from the magazine_homepage_config collection (new schema) and resolves
-magazine slugs to cover data. Falls back gracefully if no config exists yet.
-"""
+"""Serves the magazine homepage and remaster pages with cached data from MongoDB."""
 
 import os
 from fastapi import APIRouter, Request
@@ -19,13 +15,7 @@ templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 
 async def _fetch_magazine_homepage_from_db():
-    """Build the magazine homepage data dict that magazine-homepage.html expects.
-
-    1. Read magazine_homepage_config (new slug-based schema).
-    2. Resolve magazine cover slug to full magazine data.
-    3. Get latest magazine for the fuel ambition button.
-    4. If no config exists, return empty defaults for graceful fallback.
-    """
+    """Build the magazine homepage data dict that magazine-homepage.html expects."""
     from API_ROUTERS.admin.admin_magazine_homepage_router import (
         _get_magazine_homepage_config,
         resolve_config_to_template_data,
@@ -36,10 +26,7 @@ async def _fetch_magazine_homepage_from_db():
 
 
 async def get_magazine_homepage_data():
-    """
-    Returns magazine homepage data using the centralized cache manager.
-    Fixed 5-minute absolute expiry with stale-while-revalidate.
-    """
+    """Returns magazine homepage data using the centralized cache manager."""
     return await cache_manager.get("magazine_homepage", _fetch_magazine_homepage_from_db)
 
 
@@ -49,6 +36,17 @@ async def serve_magazine_homepage(request: Request):
     data = await get_magazine_homepage_data()
     navbar = await get_navbar_data()
     return templates.TemplateResponse(request, "magazine-homepage.html", {
+        "data": data,
+        "navbar": navbar,
+    })
+
+
+@router.get("/magazine_remaster", tags=["Pages"])
+async def serve_magazine_remaster(request: Request):
+    """Serves the remastered magazine page HTML."""
+    data = await get_magazine_homepage_data()
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse(request, "magazine_remaster.html", {
         "data": data,
         "navbar": navbar,
     })
