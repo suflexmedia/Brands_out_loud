@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request, HTTPException, Query
+from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from typing import Optional
 import json
@@ -9,6 +10,10 @@ from page_serving_routers.routers.navbar_fetcher import get_navbar_data
 from cache_manager import cache_manager
 
 router = APIRouter()
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES_DIR = os.path.join(BASE_DIR, "static", "templates")
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 
 async def getHeader():
@@ -2635,6 +2640,19 @@ async def get_blog(slug: str):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@router.get("/blog_remaster", tags=["Pages"])
+async def serve_blog_remaster(request: Request):
+    """Serves the remastered blog page HTML."""
+    all_blogs = await get_all_blogs()
+    blogs_list = list(all_blogs.values()) if isinstance(all_blogs, dict) else []
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse(request, "blog_remaster.html", {
+        "blogs": blogs_list,
+        "navbar": navbar,
+    })
+
 
 
 # @router.post("/api/admin_blog_preview", tags=["Admin"])

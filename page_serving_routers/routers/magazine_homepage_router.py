@@ -50,3 +50,15 @@ async def serve_magazine_remaster(request: Request):
         "data": data,
         "navbar": navbar,
     })
+
+
+@router.get("/magazine-book", tags=["Pages"])
+async def serve_magazine_book(request: Request):
+    """Serves the magazine book HTML page."""
+    data = await get_magazine_homepage_data()
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse(request, "magazine-book.html", {
+        "data": data,
+        "navbar": navbar,
+    })
+

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Blog Remaster - Brands Out Loud</title>
+        <link rel="icon" type="image/png" href="/static/icon/website_icon.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=IBM+Plex+Sans:wght@600&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Roboto:wght@500&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <link rel="stylesheet" href="/static/css/homepage_remaster.css?v=2" />
+        <link rel="stylesheet" href="/static/css/homepage.css?v=2" />
+        <link rel="stylesheet" href="/static/css/blog_remaster.css?v=1" />
+    </head>
+    <body>
+        <div class="blog-page-wrapper">
+            <nav class="remaster-navbar">
+                <div class="remaster-nav-left">
+                    <i
+                        class="ph ph-list mobile-menu-icon"
+                        id="mobileMenuIcon"
+                        onclick="toggleMobileMenu()"
+                    ></i>
+                    <a href="/"
+                        ><img
+                            src="/static/images/header_logo.png"
+                            alt="Logo"
+                            class="remaster-nav-logo"
+                    /></a>
+                </div>
+                <div class="remaster-nav-center">
+                    <a href="/magazine" class="remaster-nav-link">Magazine</a>
+                    <a href="/blog_remaster" class="remaster-nav-link active">Blog</a>
+                    <a href="/contact" class="remaster-nav-link">Contact</a>
+                </div>
+                <div class="remaster-nav-right">
+                    <a href="/contact" class="btn-primary remaster-nav-book"
+                        >Book a Call →</a
+                    >
+                </div>
+            </nav>
+
+            <div class="mobile-menu-dropdown" id="mobileMenu">
+                <a href="/blog_remaster" class="mobile-menu-link">Blog</a>
+                <a href="/magazine" class="mobile-menu-link">Magazine</a>
+                <a href="/contact" class="mobile-menu-contact">Contact</a>
+            </div>
+
+            <section class="blog-hero">
+                <div class="blog-hero-header">
+                    <h1 class="blog-hero-title">Ideas that shape the next generation of authors.</h1>
+                    <p class="blog-hero-subtitle">We publish exclusively with the top 5% of corporate leaders, venture partners, and operators.</p>
+                </div>
+
+                <div class="blog-featured-card">
+                    <div class="featured-card-image-wrap">
+                        <img src="https://picsum.photos/800/600?random=hero_blog" class="featured-card-img" alt="Featured Article Cover" />
+                        <span class="badge-featured">FEATURED</span>
+                    </div>
+                    <div class="featured-card-content">
+                        <div class="featured-tag">PUBLISHING • 8 MIN READ</div>
+                        <h2 class="featured-title">Why Every Founder Should Publish a Book Before Their Next Funding Round</h2>
+                        <p class="featured-excerpt">A published book compresses years of credibility-building into a single artifact. Here's how BOL authors have used their books to close investors, land board seats, and win the room before walking in.</p>
+                        <div class="featured-author-row">
+                            <img src="https://picsum.photos/80/80?random=rhea" alt="Rhea Kapoor" class="author-avatar" />
+                            <div class="author-details">
+                                <span class="author-name">By Rhea Kapoor</span>
+                                <span class="author-info">12 July 2026 · Editor-in-Chief</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="blog-must-read">
+                <div class="blog-section-header">
+                    <h2 class="must-read-heading">This week’s must-read</h2>
+                </div>
+                <div class="must-read-flex">
+                    <div class="must-read-main-card">
+                        <div class="must-read-cover-wrap">
+                            <img src="https://picsum.photos/700/350?random=must1" class="must-read-cover-img" alt="Must Read Cover" />
+                            <span class="category-chip">AUTHORITY</span>
+                        </div>
+                        <div class="must-read-body">
+                            <h3 class="must-read-title">Why your credibility ceiling has nothing to do with your resume.</h3>
+                            <p class="must-read-excerpt">Most experts spend a decade collecting titles, then wonder why the phone still doesn't ring. The people who leap the queue don't out-credential the room — they publish a point of view the room can't argue with.</p>
+                            <div class="must-read-meta">
+                                <img src="https://picsum.photos/80/80?random=rohan" alt="Rohan Mehta" class="author-avatar" />
+                                <span class="meta-text">Rohan Mehta • 12 min read • 4 Jul 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="must-read-trending-column">
+                        <div class="trending-card">
+                            <img src="https://picsum.photos/280/280?random=trend1" alt="Trending Thumbnail" class="trending-thumb" />
+                            <div class="trending-content">
+                                <span class="trending-category">PUBLISHING</span>
+                                <h4 class="trending-title">The five-chapter test: how to know your idea is book-shaped.</h4>
+                                <span class="trending-meta">Priya Kapoor • 1 Jul 2026 • 8 min</span>
+                            </div>
+                        </div>
+                        <div class="trending-card">
+                            <img src="https://picsum.photos/280/280?random=trend2" alt="Trending Thumbnail" class="trending-thumb" />
+                            <div class="trending-content">
+                                <span class="trending-category">SPEAKING</span>
+                                <h4 class="trending-title">What keynote bookers actually check before they say yes.</h4>
+                                <span class="trending-meta">James Whitmore • 27 Jun 2026 • 6 min</span>
+                            </div>
+                        </div>
+                        <div class="trending-card">
+                            <img src="https://picsum.photos/280/280?random=trend3" alt="Trending Thumbnail" class="trending-thumb" />
+                            <div class="trending-content">
+                                <span class="trending-category">LEGACY</span>
+                                <h4 class="trending-title">What your grandchildren will remember. Hint: it's not the LinkedIn post.</h4>
+                                <span class="trending-meta">Sara Bhattacharya • 15 Jun 2026 • 10 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="blog-latest">
+                <div class="latest-header-row">
+                    <h2 class="latest-heading">Fresh off the page.</h2>
+                    <div class="category-filters">
+                        <button class="filter-pill active" onclick="filterCategory('All', this)">All</button>
+                        <button class="filter-pill" onclick="filterCategory('Authority', this)">Authority</button>
+                        <button class="filter-pill" onclick="filterCategory('Publishing', this)">Publishing</button>
+                        <button class="filter-pill" onclick="filterCategory('Branding', this)">Branding</button>
+                        <button class="filter-pill" onclick="filterCategory('Speaking', this)">Speaking</button>
+                        <button class="filter-pill" onclick="filterCategory('Legacy', this)">Legacy</button>
+                    </div>
+                </div>
+
+                <div class="latest-grid" id="latestGrid">
+                    <div class="grid-card" data-category="Branding">
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=grid1" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">BRANDING</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">Your bio is doing more work than your book. Fix it in three lines.</h3>
+                            <span class="grid-card-meta">Rohan Mehta • 8 Jul 2026 • 5 min</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-card" data-category="Publishing">
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=grid2" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">PUBLISHING</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">The manuscript stress test every serious author runs before submitting.</h3>
+                            <span class="grid-card-meta">Priya Kapoor • 10 Jul 2026 • 9 min</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-card" data-category="Authority">
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=grid3" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">AUTHORITY</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">How to answer the question every panel host asks first.</h3>
+                            <span class="grid-card-meta">Aditi Rao • 6 Jul 2026 • 7 min</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-card" data-category="Speaking">
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=grid4" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">SPEAKING</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">One story, three stages: the reusable keynote spine.</h3>
+                            <span class="grid-card-meta">James Whitmore • 3 Jul 2026 • 11 min</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-card" data-category="Legacy">
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=grid5" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">LEGACY</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">What your grandchildren will remember. Hint: it's not the LinkedIn post.</h3>
+                            <span class="grid-card-meta">Sara Bhattacharya • 1 Jul 2026 • 6 min</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-card" data-category="Publishing">
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=grid6" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">PUBLISHING</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">Why traditional publishers still matter — and when they don't.</h3>
+                            <span class="grid-card-meta">Priya Kapoor • 28 Jun 2026 • 10 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="latest-load-row">
+                    <button class="btn-load-more" onclick="loadMoreArticles()">
+                        <span>Load more essays</span>
+                        <span class="down-arrow">↓</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="blog-deep-dive">
+                <div class="deep-dive-header">
+                    <h2 class="deep-dive-heading">Long reads for the boredom.</h2>
+                </div>
+
+                <div class="deep-dive-flex">
+                    <div class="deep-dive-featured-card">
+                        <div class="deep-dive-badge-row">
+                            <span class="badge-deep-dive">DEEP DIVE</span>
+                            <span class="deep-dive-readtime">18 MIN READ</span>
+                        </div>
+                        <blockquote class="deep-dive-quote">“The book is the artifact. The authority is what it earns you in every room you'll never speak in.”</blockquote>
+                        <div class="deep-dive-read-title">Read: What compounds when you publish — a decade with 41 BOL authors</div>
+                        <div class="deep-dive-author-row">
+                            <img src="https://picsum.photos/80/80?random=aditi" alt="Aditi Rao" class="author-avatar" />
+                            <span class="author-text">Aditi Rao • Editor in Chief • 15 Jun 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="deep-dive-list-column">
+                        <div class="deep-dive-item">
+                            <span class="item-number">01</span>
+                            <div class="item-body">
+                                <span class="item-category">AUTHORITY</span>
+                                <h3 class="item-title">The three questions that separate a thought leader from a talker.</h3>
+                                <span class="item-meta">Rohan Mehta • 7 min</span>
+                            </div>
+                        </div>
+                        <div class="item-divider"></div>
+                        <div class="deep-dive-item">
+                            <span class="item-number">02</span>
+                            <div class="item-body">
+                                <span class="item-category">BRANDING</span>
+                                <h3 class="item-title">Naming your book: how to test titles without focus groups.</h3>
+                                <span class="item-meta">Priya Kapoor • 5 min</span>
+                            </div>
+                        </div>
+                        <div class="item-divider"></div>
+                        <div class="deep-dive-item">
+                            <span class="item-number">03</span>
+                            <div class="item-body">
+                                <span class="item-category">SPEAKING</span>
+                                <h3 class="item-title">Fee ladders, explained: from $0 to $50k without a bureau.</h3>
+                                <span class="item-meta">James Whitmore • 9 min</span>
+                            </div>
+                        </div>
+                        <div class="item-divider"></div>
+                        <div class="deep-dive-item">
+                            <span class="item-number">04</span>
+                            <div class="item-body">
+                                <span class="item-category">LEGACY</span>
+                                <h3 class="item-title">What to keep, what to cut when your manuscript hits 90k words.</h3>
+                                <span class="item-meta">Sara Bhattacharya • 6 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="blog-cta-banner">
+                <div class="cta-banner-card">
+                    <div class="cta-banner-left">
+                        <h2 class="cta-banner-title">Your book is waiting.<br />Let's make it real.</h2>
+                        <a href="/contact" class="btn-cta-call">
+                            <span>Schedule Your Strategy Call Today</span>
+                            <span class="cta-arrow">→</span>
+                        </a>
+                    </div>
+                    <div class="cta-banner-right">
+                        <div class="cta-card-stack">
+                            <div class="tilted-card card-back">
+                                <span class="card-back-text">Your story.</span>
+                            </div>
+                            <div class="tilted-card card-front">
+                                <span class="card-front-title">BOL · 2026</span>
+                                <span class="card-front-tag">In print.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="remaster-footer section-container">
+                <div class="remaster-footer-top">
+                    <div class="remaster-footer-brand">
+                        <div class="remaster-footer-logo-box">
+                            <img
+                                src="/static/images/header_logo.png"
+                                alt="Brands Out Loud"
+                            />
+                        </div>
+                        <h2 class="remaster-footer-tagline">
+                            Where Expertise<br />Becomes Influence.
+                        </h2>
+                    </div>
+                    <div class="remaster-footer-links-container">
+                        <div class="remaster-footer-col">
+                            <div class="remaster-footer-col-title">
+                                DISCOVER
+                            </div>
+                            <a href="/blog_remaster" class="remaster-footer-link"
+                                >Blog</a
+                            >
+                            <a href="/magazine" class="remaster-footer-link"
+                                >Magazine</a
+                            >
+                            <a href="/contact" class="remaster-footer-link"
+                                >Contact</a
+                            >
+                        </div>
+                        <div class="remaster-footer-col">
+                            <div class="remaster-footer-col-title">COMPANY</div>
+                            <a href="#" class="remaster-footer-link">About</a>
+                            <a href="#" class="remaster-footer-link"
+                                >Return Policy</a
+                            >
+                            <a href="#" class="remaster-footer-link">Privacy</a>
+                            <a href="#" class="remaster-footer-link"
+                                >Terms & Conditions</a
+                            >
+                        </div>
+                        <div class="remaster-footer-col">
+                            <div class="remaster-footer-col-title">CONNECT</div>
+                            <a href="#" class="remaster-footer-link"
+                                >Instagram</a
+                            >
+                            <a href="#" class="remaster-footer-link"
+                                >LinkedIn</a
+                            >
+                            <a href="#" class="remaster-footer-link"
+                                >X (Twitter)</a
+                            >
+                            <a href="#" class="remaster-footer-link">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="remaster-footer-divider"></div>
+                <div class="remaster-footer-bottom">
+                    <div class="remaster-footer-copyright">
+                        © 2026 Brands Out Loud
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            function toggleMobileMenu() {
+                const menu = document.getElementById("mobileMenu");
+                const icon = document.getElementById("mobileMenuIcon");
+                if (menu.classList.contains("active")) {
+                    menu.classList.remove("active");
+                    icon.classList.remove("ph-x");
+                    icon.classList.add("ph-list");
+                } else {
+                    menu.classList.add("active");
+                    icon.classList.remove("ph-list");
+                    icon.classList.add("ph-x");
+                }
+            }
+
+            function filterCategory(category, buttonEl) {
+                const buttons = document.querySelectorAll(".filter-pill");
+                buttons.forEach(btn => btn.classList.remove("active"));
+                buttonEl.classList.add("active");
+
+                const cards = document.querySelectorAll("#latestGrid .grid-card");
+                cards.forEach(card => {
+                    const cardCat = card.getAttribute("data-category");
+                    if (category === "All" || cardCat === category) {
+                        card.style.display = "flex";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            }
+
+            function loadMoreArticles() {
+                const grid = document.getElementById("latestGrid");
+                const categories = ["Authority", "Publishing", "Branding", "Speaking", "Legacy"];
+                const titles = [
+                    "How to negotiate your manuscript rights like a seasoned founder.",
+                    "The distribution channel every non-fiction author ignores.",
+                    "Positioning your personal brand for international translation deals."
+                ];
+                
+                for (let i = 0; i < 3; i++) {
+                    const cat = categories[Math.floor(Math.random() * categories.length)];
+                    const title = titles[i % titles.length];
+                    const seed = Math.floor(Math.random() * 1000);
+                    
+                    const card = document.createElement("div");
+                    card.className = "grid-card";
+                    card.setAttribute("data-category", cat);
+                    card.innerHTML = `
+                        <div class="grid-card-thumb">
+                            <img src="https://picsum.photos/600/400?random=${seed}" alt="Article Thumbnail" class="grid-thumb-img" />
+                            <span class="grid-category-chip">${cat.toUpperCase()}</span>
+                        </div>
+                        <div class="grid-card-body">
+                            <h3 class="grid-card-title">${title}</h3>
+                            <span class="grid-card-meta">BOL Editorial • 4 min</span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            }
+        </script>
+    </body>
+</html>
