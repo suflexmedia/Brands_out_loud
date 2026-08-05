@@ -886,55 +886,91 @@
 
 @media (max-width: 768px) {
   .remaster-navbar {
-    width: 92vw;
-    top: 3vw;
-    padding: 8px 14px;
+    width: 95vw;
+    top: 4vw;
+    padding: 2vw;
+    border-radius: 99vw;
   }
 
-  .remaster-nav-center,
+  .remaster-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 4vw;
+  }
+
+  .remaster-nav-logo {
+    height: 12vw;
+  }
+
+  .remaster-nav-center {
+    display: none;
+  }
+
   .remaster-nav-right {
     display: none;
   }
 
+  .remaster-nav-book {
+    font-size: 3vw;
+    padding: 2vw 4vw;
+  }
+
   .mobile-menu-icon {
     display: block;
-    font-size: 22px;
+    font-size: 6vw;
     color: #0d1b4b;
     cursor: pointer;
   }
 
   .mobile-menu-dropdown {
-    position: absolute;
-    top: 14vw;
-    left: 4vw;
-    width: 92vw;
-    background: #ffffff;
-    border: 1px solid rgba(13, 27, 75, 0.1);
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    z-index: 49;
+    display: none;
   }
 
-  .mobile-menu-link,
-  .mobile-menu-contact {
+  .mobile-menu-dropdown.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 20vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95vw;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 6vw;
+    padding: 6vw;
+    gap: 4vw;
+    z-index: 49;
+    box-sizing: border-box;
+    box-shadow: 0 2vw 6vw rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-menu-link {
     color: #0d1b4b;
     text-decoration: none;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 10px 14px;
-    display: block;
+    font-weight: 700;
+    font-size: 6vw;
+    transition: color 0.3s, opacity 0.3s;
+  }
+
+  .mobile-menu-link:hover {
+    opacity: 0.7;
+  }
+
+  .mobile-menu-link.active {
+    color: #f4722b;
   }
 }
 
 @media (max-width: 600px) {
   .hero-magazine {
-    padding: 10vh 5vw 6vh;
+    padding: 30vw 5vw 10vw;
   }
 
   .hero-watermark {
     font-size: 24vw;
-    top: 15vh;
+    top: 30vw;
   }
 
   .hero-magazine-title {
@@ -956,7 +992,7 @@
   .btn-read-online,
   .btn-order-print {
     font-size: 3.5vw;
-    padding: 1.5vh 5vw;
+    padding: 3vw 5vw;
     width: 100%;
     justify-content: center;
   }
@@ -987,13 +1023,13 @@
   .from-this-issue,
   .past-editions,
   .fuel-ambitions-section {
-    padding: 6vh 5vw;
+    padding: 10vw 5vw;
   }
 
   .section-header-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 2vh;
+    gap: 4vw;
   }
 
   .section-title {
@@ -1007,7 +1043,7 @@
 
   .articles-grid {
     grid-template-columns: 1fr;
-    gap: 5vh;
+    gap: 5vw;
   }
 
   .article-cover {
@@ -1028,7 +1064,7 @@
 
   .editions-grid {
     grid-template-columns: 1fr;
-    gap: 4vh;
+    gap: 4vw;
   }
 
   .edition-cover {
@@ -1066,7 +1102,7 @@
 
   .fuel-ambitions-card {
     padding: 8vw 5vw;
-    border-radius: 20px;
+    border-radius: 5vw;
   }
 
   .fuel-ambitions-title {
@@ -1079,7 +1115,7 @@
 
   .btn-fuel-cta {
     font-size: 3.5vw;
-    padding: 1.5vh 5vw;
+    padding: 3vw 5vw;
     width: 100%;
     justify-content: center;
   }

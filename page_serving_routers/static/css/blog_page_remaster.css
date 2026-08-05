@@ -789,51 +789,74 @@
 
 @media (max-width: 768px) {
     .blog-hero-section {
-        padding-top: 4vw;
+        padding-top: 24vw;
         gap: 4vw;
+        width: 92vw;
+        max-width: 92vw;
     }
     
     .blog-breadcrumb-row {
         font-size: 3.2vw;
         gap: 1.5vw;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb-separator {
+        font-size: 2.8vw;
     }
     
     .blog-hero-image-wrap {
         height: 52vw;
+        max-height: unset;
         border-radius: 4vw;
+        border-width: 1px;
     }
     
     .blog-hero-title {
-        font-size: 6vw;
+        font-size: 6.5vw;
+        line-height: 1.25;
+        width: 100%;
     }
     
     .blog-hero-meta {
         font-size: 3.2vw;
-        flex-direction: column;
-        gap: 1vw;
+        flex-direction: row;
+        gap: 3vw;
+        justify-content: center;
     }
     
     .blog-lead-summary {
-        font-size: 3.5vw;
+        font-size: 3.6vw;
+        line-height: 1.6;
+        width: 92vw;
+        text-align: left;
     }
     
+    .blog-body-divider {
+        width: 92vw;
+    }
+
     .blog-two-column {
         flex-direction: column;
         gap: 6vw;
+        width: 92vw;
     }
     
     .blog-article-content {
         width: 100%;
+        gap: 5vw;
     }
     
     .blog-sidebar {
         width: 100%;
         position: static;
+        gap: 4vw;
     }
     
     .blog-toc-card {
         padding: 4vw;
         border-radius: 3vw;
+        gap: 3vw;
     }
     
     .blog-toc-title {
@@ -847,6 +870,10 @@
     
     .toc-sub-link {
         font-size: 3.2vw;
+    }
+
+    .sidebar-pill-row {
+        gap: 3vw;
     }
     
     .btn-download-pill, .btn-share-pill {
@@ -867,11 +894,11 @@
     }
     
     .blog-h2-title {
-        font-size: 5.2vw;
+        font-size: 5.5vw;
     }
     
     .blog-h3-title {
-        font-size: 4.2vw;
+        font-size: 4.5vw;
     }
     
     .blog-paragraph {
@@ -883,6 +910,7 @@
         padding: 4vw;
         border-radius: 2vw;
         border-left-width: 1vw;
+        gap: 3vw;
     }
     
     .quote-icon {
@@ -898,14 +926,21 @@
         height: 48vw;
         border-radius: 3.5vw;
     }
+
+    .blog-related-section {
+        padding: 10vw 4vw;
+        gap: 6vw;
+    }
     
     .related-section-title, .faq-main-title {
-        font-size: 5.5vw;
+        font-size: 6.5vw;
+        text-align: center;
     }
     
     .related-grid {
         grid-template-columns: 1fr;
         gap: 5vw;
+        width: 92vw;
     }
     
     .related-card-img-wrap {
@@ -913,16 +948,39 @@
     }
     
     .related-card-title {
-        font-size: 4.2vw;
+        font-size: 4.5vw;
+        line-height: 1.35;
+        text-align: left;
     }
     
     .related-card-excerpt {
         font-size: 3.4vw;
+        line-height: 1.55;
+        text-align: left;
+    }
+
+    .related-card-body {
+        padding: 4vw;
+        gap: 2.5vw;
+        align-items: flex-start;
     }
     
     .btn-see-more-pill, .btn-faq-cta {
         font-size: 3.8vw;
         padding: 3vw 6vw;
+    }
+    
+    .faq-inner-container {
+        width: 92vw;
+        flex-direction: column;
+        gap: 6vw;
+    }
+
+    .faq-left-col {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        gap: 3vw;
     }
     
     .faq-q-btn {
@@ -931,5 +989,87 @@
     
     .faq-a-text {
         font-size: 3.4vw;
+    }
+
+    .faq-main-desc {
+        font-size: 3.5vw;
+        text-align: center;
+    }
+
+    .faq-right-col {
+        width: 100%;
+        padding: 5vw;
+        border-radius: 4vw;
+    }
+
+    .social-icon-box i {
+        font-size: 5vw !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-hero-section {
+        padding-top: 28vw;
+    }
+
+    .blog-hero-title {
+        font-size: 7.5vw;
+    }
+
+    .blog-hero-meta {
+        font-size: 3.6vw;
+    }
+
+    .blog-lead-summary {
+        font-size: 4vw;
+    }
+
+    .blog-h2-title {
+        font-size: 6vw;
+    }
+
+    .blog-h3-title {
+        font-size: 4.8vw;
+    }
+
+    .blog-paragraph {
+        font-size: 4vw;
+    }
+
+    .related-section-title, .faq-main-title {
+        font-size: 7.5vw;
+    }
+
+    .related-card-title {
+        font-size: 5vw;
+    }
+
+    .related-card-excerpt {
+        font-size: 3.8vw;
+    }
+
+    .btn-see-more-pill, .btn-faq-cta {
+        font-size: 4vw;
+        padding: 3.5vw 7vw;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-download-pill, .btn-share-pill {
+        height: 13vw;
+        font-size: 4vw;
+    }
+
+    .social-icon-box {
+        width: 13vw;
+        height: 13vw;
+    }
+
+    .faq-q-btn {
+        font-size: 4vw;
+    }
+
+    .faq-a-text {
+        font-size: 3.6vw;
     }
 }

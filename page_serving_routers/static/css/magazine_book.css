@@ -1142,60 +1142,596 @@ body {
 }
 
 @media (max-width: 1024px) {
+    .book-hero-section {
+        padding: 12vw 5vw 5vw 5vw;
+    }
+
     .book-hero-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 5vw;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 4vw;
+        max-width: 90vw;
     }
 
     .book-cover-wrapper {
-        width: 60vw;
-        height: 90vw;
+        width: 38vw;
+        height: 57vw;
+        min-width: unset;
+        min-height: unset;
+        border-radius: 1.2vw;
+        padding: 3vw 2.5vw;
+    }
+
+    .book-cover-brand {
+        font-size: 1.2vw;
+        line-height: 1.5vw;
+        letter-spacing: 0.15vw;
+    }
+
+    .book-cover-divider {
+        width: 2.5vw;
+        height: 0.2vw;
+    }
+
+    .book-cover-graphics {
+        height: 16vw;
+        top: 8vw;
+    }
+
+    .book-cover-circle-1,
+    .book-cover-circle-2 {
+        width: 16vw;
+        height: 16vw;
+    }
+
+    .book-cover-circle-1 {
+        left: 5vw;
+    }
+
+    .book-cover-circle-2 {
+        left: 14vw;
+    }
+
+    .book-cover-circle-3 {
+        width: 6.5vw;
+        height: 6.5vw;
+        left: 14.5vw;
+        top: 5vw;
+    }
+
+    .book-cover-main {
+        margin-top: 20vw;
+    }
+
+    .book-cover-title {
+        font-size: 4.2vw;
+        line-height: 4.6vw;
+    }
+
+    .book-cover-subtitle {
+        font-size: 1.4vw;
+        line-height: 2vw;
+    }
+
+    .book-cover-author {
+        font-size: 1vw;
+        letter-spacing: 0.15vw;
+    }
+
+    .book-purchase-card {
+        flex: 1;
+        gap: 2vw;
+    }
+
+    .book-title-header {
+        gap: 0.6vw;
+    }
+
+    .book-main-title {
+        font-size: 4.8vw;
+        line-height: 5.5vw;
+    }
+
+    .book-main-subtitle {
+        font-size: 2vw;
+        line-height: 2.8vw;
+    }
+
+    .book-author-avatar {
+        width: 3.5vw;
+        height: 3.5vw;
+        min-width: unset;
+        min-height: unset;
+    }
+
+    .book-author-label {
+        font-size: 1vw;
+    }
+
+    .book-author-name {
+        font-size: 1.4vw;
+    }
+
+    .book-stars {
+        font-size: 1.6vw;
+    }
+
+    .book-rating-score {
+        font-size: 1.2vw;
+    }
+
+    .book-description-text {
+        font-size: 1.4vw;
+        line-height: 2.2vw;
+    }
+
+    .book-badge {
+        font-size: 1vw;
+        padding: 0.6vw 1.2vw;
+    }
+
+    .book-discount-tag {
+        font-size: 1.1vw;
+    }
+
+    .book-current-price {
+        font-size: 4vw;
+        line-height: 4.5vw;
+    }
+
+    .book-original-price {
+        font-size: 1.6vw;
+    }
+
+    .btn-purchase-now,
+    .btn-read-sample {
+        font-size: 1.4vw;
+        padding: 1.2vw 2.5vw;
+    }
+
+    .about-book-section {
+        padding: 5vw 5vw;
+    }
+
+    .about-book-container {
+        flex-direction: row;
+        gap: 5vw;
+        max-width: 90vw;
+    }
+
+    .about-book-left {
+        width: 35vw;
+    }
+
+    .about-book-right {
+        flex: 1;
+    }
+
+    .about-section-heading {
+        font-size: 3.8vw;
+        line-height: 4.5vw;
+    }
+
+    .about-quote-mark {
+        font-size: 10vw;
+    }
+
+    .about-quote-text {
+        font-size: 1.8vw;
+        line-height: 2.8vw;
+    }
+
+    .about-paragraph {
+        font-size: 1.4vw;
+        line-height: 2.4vw;
+    }
+
+    .covers-section {
+        padding: 5vw 5vw;
+    }
+
+    .covers-container {
+        max-width: 90vw;
+        gap: 3.5vw;
+    }
+
+    .covers-title {
+        font-size: 3.8vw;
+        line-height: 4.5vw;
+    }
+
+    .covers-subtitle {
+        font-size: 1.3vw;
+        line-height: 2.2vw;
+    }
+
+    .covers-row {
+        flex-direction: row;
+    }
+
+    .covers-row-4 .cover-card {
+        min-height: 22vw;
+    }
+
+    .covers-row-3 .cover-card {
+        min-height: 20vw;
+    }
+
+    .cover-card {
+        padding: 2.5vw;
+        border-radius: 1.5vw;
+        gap: 1.2vw;
+    }
+
+    .cover-card-num {
+        font-size: 2.8vw;
+        line-height: 3.2vw;
+    }
+
+    .cover-card-title {
+        font-size: 1.6vw;
+        line-height: 2.2vw;
+    }
+
+    .cover-card-desc {
+        font-size: 1.2vw;
+        line-height: 1.8vw;
+    }
+
+    .highlights-section {
+        padding: 5vw 5vw;
+    }
+
+    .highlights-container {
+        max-width: 90vw;
+        gap: 3.5vw;
+    }
+
+    .highlights-row {
+        flex-direction: row;
+        padding: 0;
+    }
+
+    .highlights-row-2 {
+        padding: 0 8vw;
+    }
+
+    .highlight-card {
+        padding: 2.5vw;
+        border-radius: 1.5vw;
+        min-height: 16vw;
+    }
+
+    .highlight-card-num {
+        font-size: 3.8vw;
+        line-height: 4.5vw;
+    }
+
+    .highlight-card-text {
+        font-size: 1.5vw;
+        line-height: 2.4vw;
+    }
+
+    .target-audience-section {
+        padding: 5vw 5vw;
+    }
+
+    .target-audience-container {
+        max-width: 90vw;
+        gap: 3.5vw;
+    }
+
+    .audience-section-title {
+        font-size: 3.8vw;
+        line-height: 4.5vw;
+    }
+
+    .audience-section-subtitle {
+        font-size: 1.3vw;
+        line-height: 2.2vw;
+    }
+
+    .audience-grid-row {
+        flex-wrap: wrap;
+        gap: 1.2vw;
+    }
+
+    .audience-card {
+        font-size: 1.5vw;
+        padding: 1.2vw 2.5vw;
+    }
+
+    .cta-banner-section {
+        padding: 5vw 5vw;
+    }
+
+    .cta-banner-card {
+        max-width: 90vw;
+        padding: 0 3vw;
+        border-radius: 2vw;
+        gap: 4vw;
+    }
+
+    .cta-banner-left {
+        gap: 2vw;
+    }
+
+    .cta-banner-title {
+        font-size: 4.8vw;
+        line-height: 5.5vw;
+    }
+
+    .cta-banner-desc {
+        font-size: 1.3vw;
+        line-height: 2.2vw;
+    }
+
+    .btn-cta-purchase {
+        font-size: 1.3vw;
+        padding: 1.2vw 2.5vw;
+    }
+
+    .cta-3d-cards-wrapper {
+        width: 22vw;
+        max-width: 320px;
+        margin-right: -1.5vw;
+    }
+
+    .more-books-section {
+        padding: 5vw 5vw;
+    }
+
+    .more-books-container {
+        max-width: 90vw;
+        gap: 3.5vw;
+    }
+
+    .more-books-title {
+        font-size: 3.8vw;
+        line-height: 4.5vw;
+    }
+
+    .btn-browse-all {
+        font-size: 1.3vw;
+        padding: 0.8vw 1.8vw;
+    }
+
+    .more-books-grid {
+        display: flex;
+        flex-direction: row;
+        gap: 2vw;
+    }
+
+    .book-item-cover {
+        height: 28vw;
+        padding: 1.5vw;
+        border-radius: 0.8vw;
+    }
+
+    .book-item-brand {
+        font-size: 1.4vw;
+    }
+
+    .book-item-tag {
+        font-size: 0.8vw;
+    }
+
+    .book-item-cover-title {
+        font-size: 2.5vw;
+        line-height: 2.8vw;
+    }
+
+    .book-item-bg-num {
+        font-size: 8vw;
+        line-height: 8vw;
+    }
+
+    .book-item-info {
+        gap: 0.8vw;
+    }
+
+    .book-item-cat {
+        font-size: 1vw;
+    }
+
+    .book-item-dot {
+        font-size: 0.8vw;
+    }
+
+    .book-item-pages {
+        font-size: 0.8vw;
+    }
+
+    .book-item-title {
+        font-size: 1.6vw;
+        line-height: 2.2vw;
+    }
+
+    .book-item-author {
+        font-size: 1.1vw;
+    }
+
+    .book-item-price {
+        font-size: 1.8vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .book-hero-section {
+        padding: 22vw 5vw 8vw 5vw;
+    }
+
+    .book-hero-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 6vw;
+        max-width: 100%;
+    }
+
+    .book-cover-wrapper {
+        width: 65vw;
+        height: 97vw;
+        min-width: unset;
+        min-height: unset;
+        border-radius: 2.5vw;
+        padding: 5vw 4vw;
+    }
+
+    .book-cover-graphics {
+        height: 22vw;
+        top: 12vw;
+    }
+
+    .book-cover-circle-1,
+    .book-cover-circle-2 {
+        width: 22vw;
+        height: 22vw;
+    }
+
+    .book-cover-circle-1 {
+        left: 8vw;
+    }
+
+    .book-cover-circle-2 {
+        left: 20vw;
+    }
+
+    .book-cover-circle-3 {
+        width: 9vw;
+        height: 9vw;
+        left: 20vw;
+        top: 6.5vw;
+    }
+
+    .book-cover-main {
+        margin-top: 26vw;
+    }
+
+    .book-cover-title {
+        font-size: 7vw;
+        line-height: 7.8vw;
+    }
+
+    .book-cover-subtitle {
+        font-size: 2.5vw;
+        line-height: 3.5vw;
     }
 
     .book-cover-brand {
         font-size: 2vw;
+        line-height: 2.5vw;
+        letter-spacing: 0.25vw;
     }
-    .book-cover-title {
-        font-size: 7vw;
-        line-height: 8vw;
+
+    .book-cover-divider {
+        width: 3.5vw;
+        height: 0.35vw;
     }
-    .book-cover-subtitle {
-        font-size: 2.5vw;
-    }
+
     .book-cover-author {
-        font-size: 2vw;
+        font-size: 1.8vw;
+        letter-spacing: 0.25vw;
     }
 
     .book-purchase-card {
-        width: 100%;
+        width: 90vw;
+        gap: 4vw;
+    }
+
+    .book-title-header {
+        gap: 1vw;
     }
 
     .book-main-title {
-        font-size: 7vw;
-        line-height: 8vw;
+        font-size: 7.5vw;
+        line-height: 8.5vw;
     }
+
     .book-main-subtitle {
+        font-size: 3.8vw;
+        line-height: 5vw;
+    }
+
+    .book-meta-row {
+        gap: 3vw;
+    }
+
+    .book-author-avatar {
+        width: 7vw;
+        height: 7vw;
+        min-width: unset;
+        min-height: unset;
+    }
+
+    .book-author-label {
+        font-size: 2.2vw;
+    }
+
+    .book-author-name {
         font-size: 3.2vw;
-        line-height: 4vw;
     }
-    .book-description-text {
+
+    .book-stars {
+        font-size: 3.5vw;
+    }
+
+    .book-rating-score {
         font-size: 2.8vw;
-        line-height: 4vw;
     }
+
+    .book-description-text {
+        font-size: 3.2vw;
+        line-height: 5vw;
+    }
+
+    .book-badges-row {
+        gap: 1.5vw;
+    }
+
+    .book-badge {
+        font-size: 2.5vw;
+        padding: 1.2vw 2.5vw;
+        border-radius: 5vw;
+    }
+
+    .book-divider-line {
+        margin: 1vw 0;
+    }
+
+    .book-discount-tag {
+        font-size: 2.8vw;
+    }
+
     .book-current-price {
-        font-size: 7vw;
-        line-height: 8vw;
+        font-size: 8vw;
+        line-height: 9vw;
     }
+
+    .book-original-price {
+        font-size: 3.5vw;
+    }
+
+    .book-action-buttons {
+        flex-direction: column;
+        gap: 2.5vw;
+    }
+
     .btn-purchase-now,
     .btn-read-sample {
-        font-size: 2.8vw;
-        padding: 2vw 4vw;
+        font-size: 3.5vw;
+        padding: 3vw 5vw;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .about-book-section {
+        padding: 8vw 5vw;
     }
 
     .about-book-container {
         flex-direction: column;
         gap: 5vw;
+        max-width: 100%;
     }
 
     .about-book-left,
@@ -1204,96 +1740,209 @@ body {
     }
 
     .about-section-heading {
-        font-size: 6vw;
-        line-height: 7vw;
+        font-size: 6.5vw;
+        line-height: 7.5vw;
     }
+
+    .about-quote-box {
+        gap: 1vw;
+    }
+
     .about-quote-mark {
         font-size: 14vw;
     }
+
     .about-quote-text {
         font-size: 3.5vw;
+        line-height: 5.5vw;
+    }
+
+    .about-paragraph {
+        font-size: 3.2vw;
         line-height: 5vw;
     }
-    .about-paragraph {
-        font-size: 2.5vw;
-        line-height: 4vw;
+
+    .covers-section {
+        padding: 8vw 5vw;
+    }
+
+    .covers-container {
+        max-width: 100%;
+        gap: 4vw;
+    }
+
+    .covers-title {
+        font-size: 6.5vw;
+        line-height: 7.5vw;
+    }
+
+    .covers-subtitle {
+        font-size: 3.2vw;
+        line-height: 5vw;
     }
 
     .covers-row {
         flex-direction: column;
+        gap: 3vw;
     }
 
-    .covers-title {
-        font-size: 6vw;
-        line-height: 7vw;
+    .covers-row-4 .cover-card,
+    .covers-row-3 .cover-card {
+        min-height: unset;
     }
-    .covers-subtitle {
-        font-size: 2.5vw;
-        line-height: 4vw;
+
+    .cover-card {
+        padding: 5vw;
+        border-radius: 3vw;
+        gap: 2vw;
     }
+
     .cover-card-num {
-        font-size: 5vw;
+        font-size: 5.5vw;
+        line-height: 6.5vw;
     }
+
     .cover-card-title {
-        font-size: 3.5vw;
-        line-height: 4.5vw;
+        font-size: 4.2vw;
+        line-height: 5.5vw;
     }
+
     .cover-card-desc {
-        font-size: 2.5vw;
-        line-height: 3.5vw;
+        font-size: 3.2vw;
+        line-height: 4.8vw;
+    }
+
+    .highlights-section {
+        padding: 8vw 5vw;
+    }
+
+    .highlights-container {
+        max-width: 100%;
+        gap: 4vw;
+    }
+
+    .highlights-layout {
+        gap: 3vw;
     }
 
     .highlights-row {
         flex-direction: column;
         padding: 0;
+        gap: 3vw;
+    }
+
+    .highlight-card {
+        padding: 5vw;
+        border-radius: 3vw;
+        min-height: unset;
+        gap: 1.5vw;
     }
 
     .highlight-card-num {
         font-size: 8vw;
         line-height: 9vw;
     }
+
     .highlight-card-text {
-        font-size: 3vw;
-        line-height: 4.5vw;
+        font-size: 3.5vw;
+        line-height: 5.5vw;
+    }
+
+    .target-audience-section {
+        padding: 8vw 5vw;
+    }
+
+    .target-audience-container {
+        max-width: 100%;
+        gap: 4vw;
     }
 
     .audience-section-title {
-        font-size: 6vw;
-        line-height: 7vw;
+        font-size: 6.5vw;
+        line-height: 7.5vw;
     }
+
+    .audience-section-subtitle {
+        font-size: 3.2vw;
+        line-height: 5vw;
+    }
+
     .audience-grid-row {
         flex-wrap: wrap;
+        justify-content: center;
+        gap: 2vw;
     }
+
     .audience-card {
-        font-size: 2.8vw;
-        padding: 2vw 4vw;
+        font-size: 3.2vw;
+        padding: 2.2vw 4.5vw;
+    }
+
+    .cta-banner-section {
+        padding: 8vw 5vw;
     }
 
     .cta-banner-card {
         flex-direction: column;
-        align-items: flex-start;
-        overflow: visible;
+        align-items: center;
+        padding: 6vw 5vw;
+        border-radius: 3.5vw;
+        gap: 5vw;
+        max-width: 100%;
+    }
+
+    .cta-banner-left {
+        gap: 2.5vw;
+        align-items: center;
+        text-align: center;
     }
 
     .cta-banner-title {
         font-size: 7vw;
         line-height: 8vw;
     }
+
     .cta-banner-desc {
-        font-size: 2.8vw;
-        line-height: 4vw;
+        font-size: 3.2vw;
+        line-height: 5vw;
     }
+
     .btn-cta-purchase {
-        font-size: 2.5vw;
-        padding: 2.5vw 4vw;
+        font-size: 3.5vw;
+        padding: 2.8vw 5.5vw;
+        align-self: center;
     }
 
     .cta-3d-cards-wrapper {
         width: 55vw;
-        max-width: 320px;
-        align-self: center;
+        max-width: unset;
         margin-right: 0;
-        margin-bottom: -4vw;
+        margin-bottom: -3vw;
+    }
+
+    .more-books-section {
+        padding: 8vw 5vw;
+    }
+
+    .more-books-container {
+        max-width: 100%;
+        gap: 4vw;
+    }
+
+    .more-books-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2.5vw;
+    }
+
+    .more-books-title {
+        font-size: 6.5vw;
+        line-height: 7.5vw;
+    }
+
+    .btn-browse-all {
+        font-size: 3.2vw;
+        padding: 2vw 4.5vw;
     }
 
     .more-books-grid {
@@ -1302,54 +1951,184 @@ body {
         gap: 4vw;
     }
 
-    .more-books-title {
-        font-size: 6vw;
-        line-height: 7vw;
+    .book-item-card {
+        gap: 2vw;
     }
-    .btn-browse-all {
-        font-size: 2.5vw;
-    }
+
     .book-item-cover {
-        height: 50vw;
+        height: 55vw;
         padding: 3vw;
+        border-radius: 2vw;
     }
+
     .book-item-brand {
         font-size: 3vw;
     }
+
     .book-item-tag {
         font-size: 1.8vw;
     }
+
+    .book-item-line {
+        margin-top: 1vw;
+    }
+
     .book-item-cover-title {
-        font-size: 5vw;
-        line-height: 5.5vw;
+        font-size: 4.5vw;
+        line-height: 5vw;
+        margin-top: 1.5vw;
     }
+
     .book-item-bg-num {
-        font-size: 16vw;
-        line-height: 16vw;
+        font-size: 13vw;
+        line-height: 13vw;
     }
+
+    .book-item-info {
+        gap: 1.5vw;
+    }
+
     .book-item-cat {
         font-size: 2vw;
+        letter-spacing: 0.8px;
     }
+
+    .book-item-dot {
+        font-size: 1.5vw;
+    }
+
+    .book-item-pages {
+        font-size: 1.5vw;
+    }
+
     .book-item-title {
-        font-size: 3vw;
-        line-height: 4vw;
+        font-size: 3.2vw;
+        line-height: 4.5vw;
     }
+
     .book-item-author {
-        font-size: 2.2vw;
+        font-size: 2.5vw;
     }
+
     .book-item-price {
-        font-size: 3.5vw;
+        font-size: 3.8vw;
     }
 }
 
-@media (max-width: 640px) {
-    .book-cover-wrapper {
-        width: 80vw;
-        height: 120vw;
+@media (max-width: 480px) {
+    .book-hero-section {
+        padding: 24vw 4vw 8vw 4vw;
     }
 
-    .more-books-grid {
-        grid-template-columns: 1fr;
+    .book-hero-container {
+        gap: 5vw;
+    }
+
+    .book-cover-wrapper {
+        width: 78vw;
+        height: 117vw;
+        padding: 6vw 5vw;
+        border-radius: 3vw;
+    }
+
+    .book-cover-graphics {
+        height: 26vw;
+        top: 14vw;
+    }
+
+    .book-cover-circle-1,
+    .book-cover-circle-2 {
+        width: 26vw;
+        height: 26vw;
+    }
+
+    .book-cover-circle-1 {
+        left: 10vw;
+    }
+
+    .book-cover-circle-2 {
+        left: 24vw;
+    }
+
+    .book-cover-circle-3 {
+        width: 10vw;
+        height: 10vw;
+        left: 24vw;
+        top: 8vw;
+    }
+
+    .book-cover-main {
+        margin-top: 30vw;
+    }
+
+    .book-cover-title {
+        font-size: 8.5vw;
+        line-height: 9.5vw;
+    }
+
+    .book-cover-subtitle {
+        font-size: 3vw;
+        line-height: 4.2vw;
+    }
+
+    .book-cover-brand {
+        font-size: 2.5vw;
+        letter-spacing: 0.3vw;
+    }
+
+    .book-cover-divider {
+        width: 4vw;
+        height: 0.4vw;
+    }
+
+    .book-cover-author {
+        font-size: 2.2vw;
+        letter-spacing: 0.3vw;
+    }
+
+    .book-purchase-card {
+        width: 92vw;
+        gap: 4.5vw;
+    }
+
+    .book-main-title {
+        font-size: 8.5vw;
+        line-height: 9.5vw;
+    }
+
+    .book-main-subtitle {
+        font-size: 4.2vw;
+        line-height: 5.5vw;
+    }
+
+    .book-author-avatar {
+        width: 8vw;
+        height: 8vw;
+    }
+
+    .book-author-label {
+        font-size: 2.5vw;
+    }
+
+    .book-author-name {
+        font-size: 3.5vw;
+    }
+
+    .book-stars {
+        font-size: 4vw;
+    }
+
+    .book-rating-score {
+        font-size: 3.2vw;
+    }
+
+    .book-description-text {
+        font-size: 3.5vw;
+        line-height: 5.5vw;
+    }
+
+    .book-badges-row {
+        gap: 1.5vw;
     }
 
     .book-badge {
@@ -1359,20 +2138,207 @@ body {
 
     .book-current-price {
         font-size: 9vw;
+        line-height: 10vw;
+    }
+
+    .book-original-price {
+        font-size: 4vw;
     }
 
     .btn-purchase-now,
     .btn-read-sample {
         font-size: 3.8vw;
-        padding: 3.5vw 6vw;
+        padding: 3.5vw 5vw;
+    }
+
+    .about-section-heading {
+        font-size: 7.5vw;
+        line-height: 8.5vw;
+    }
+
+    .about-quote-mark {
+        font-size: 16vw;
+    }
+
+    .about-quote-text {
+        font-size: 3.8vw;
+        line-height: 6vw;
+    }
+
+    .about-paragraph {
+        font-size: 3.5vw;
+        line-height: 5.5vw;
+    }
+
+    .covers-section {
+        padding: 8vw 4vw;
+    }
+
+    .covers-title {
+        font-size: 7.5vw;
+        line-height: 8.5vw;
+    }
+
+    .covers-subtitle {
+        font-size: 3.5vw;
+        line-height: 5.5vw;
+    }
+
+    .cover-card {
+        padding: 5vw;
+        border-radius: 3.5vw;
+    }
+
+    .cover-card-num {
+        font-size: 6vw;
+        line-height: 7vw;
+    }
+
+    .cover-card-title {
+        font-size: 4.5vw;
+        line-height: 6vw;
+    }
+
+    .cover-card-desc {
+        font-size: 3.5vw;
+        line-height: 5.2vw;
+    }
+
+    .highlights-section {
+        padding: 8vw 4vw;
+    }
+
+    .highlight-card {
+        padding: 6vw;
+        border-radius: 3.5vw;
+    }
+
+    .highlight-card-num {
+        font-size: 9vw;
+        line-height: 10vw;
+    }
+
+    .highlight-card-text {
+        font-size: 3.8vw;
+        line-height: 5.8vw;
+    }
+
+    .target-audience-section {
+        padding: 8vw 4vw;
+    }
+
+    .audience-section-title {
+        font-size: 7.5vw;
+        line-height: 8.5vw;
+    }
+
+    .audience-grid-row {
+        gap: 2vw;
+    }
+
+    .audience-card {
+        font-size: 3.5vw;
+        padding: 2.5vw 4.5vw;
+    }
+
+    .cta-banner-section {
+        padding: 8vw 4vw;
+    }
+
+    .cta-banner-card {
+        padding: 6vw 4vw;
+        border-radius: 4vw;
+    }
+
+    .cta-banner-title {
+        font-size: 7.5vw;
+        line-height: 8.5vw;
+    }
+
+    .cta-banner-desc {
+        font-size: 3.5vw;
+        line-height: 5.5vw;
+    }
+
+    .btn-cta-purchase {
+        font-size: 3.8vw;
+        padding: 3vw 6vw;
     }
 
     .cta-3d-cards-wrapper {
-        width: 80vw;
-        max-width: 280px;
+        width: 65vw;
+    }
+
+    .more-books-section {
+        padding: 8vw 4vw;
+    }
+
+    .more-books-title {
+        font-size: 7.5vw;
+        line-height: 8.5vw;
+    }
+
+    .btn-browse-all {
+        font-size: 3.5vw;
+        padding: 2.5vw 5vw;
+    }
+
+    .more-books-grid {
+        grid-template-columns: 1fr;
+        gap: 6vw;
     }
 
     .book-item-cover {
-        height: 75vw;
+        height: 65vw;
+        padding: 4vw;
+        border-radius: 2.5vw;
+    }
+
+    .book-item-brand {
+        font-size: 3.8vw;
+    }
+
+    .book-item-tag {
+        font-size: 2.2vw;
+    }
+
+    .book-item-cover-title {
+        font-size: 6vw;
+        line-height: 7vw;
+        margin-top: 2vw;
+    }
+
+    .book-item-bg-num {
+        font-size: 16vw;
+        line-height: 16vw;
+    }
+
+    .book-item-info {
+        gap: 1.8vw;
+    }
+
+    .book-item-cat {
+        font-size: 2.5vw;
+    }
+
+    .book-item-dot {
+        font-size: 2vw;
+    }
+
+    .book-item-pages {
+        font-size: 2vw;
+    }
+
+    .book-item-title {
+        font-size: 4.2vw;
+        line-height: 5.5vw;
+    }
+
+    .book-item-author {
+        font-size: 3vw;
+    }
+
+    .book-item-price {
+        font-size: 4.5vw;
     }
 }

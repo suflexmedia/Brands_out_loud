@@ -1034,3 +1034,347 @@ body {
         height: 30vw;
     }
 }
+
+@media (max-width: 768px) {
+    .blog-hero {
+        padding: 30vw 4vw 10vw 4vw;
+    }
+
+    .blog-hero-bg-overlay {
+        height: 200vw;
+    }
+
+    .blog-hero-header {
+        max-width: 100%;
+        gap: 4vw;
+        margin-bottom: 6vw;
+    }
+
+    .blog-hero-title {
+        font-size: 9vw;
+    }
+
+    .blog-hero-subtitle {
+        font-size: 3.5vw;
+        max-width: 100%;
+    }
+
+    .blog-featured-card {
+        flex-direction: column;
+        max-width: 92vw;
+        width: 92vw;
+        padding: 3vw;
+        gap: 4vw;
+        border-radius: 4vw;
+    }
+
+    .featured-card-image-wrap {
+        width: 100%;
+        height: 55vw;
+        border-radius: 3vw;
+    }
+
+    .featured-card-content {
+        width: 100%;
+        padding: 2vw 0;
+        gap: 3vw;
+    }
+
+    .featured-tag {
+        font-size: 3vw;
+    }
+
+    .featured-title {
+        font-size: 6vw;
+    }
+
+    .featured-excerpt {
+        font-size: 3.5vw;
+    }
+
+    .badge-featured {
+        font-size: 2.5vw;
+        padding: 1.5vw 3vw;
+    }
+
+    .author-avatar {
+        width: 8vw;
+        height: 8vw;
+    }
+
+    .author-name {
+        font-size: 3.5vw;
+    }
+
+    .author-info {
+        font-size: 3vw;
+    }
+
+    .featured-author-row {
+        gap: 2.5vw;
+    }
+
+    .blog-must-read {
+        padding: 10vw 4vw;
+    }
+
+    .blog-section-header {
+        max-width: 100%;
+    }
+
+    .must-read-heading {
+        font-size: 8vw;
+    }
+
+    .must-read-flex {
+        flex-direction: column;
+        max-width: 100%;
+        gap: 4vw;
+    }
+
+    .must-read-main-card {
+        width: 100%;
+        border-radius: 4vw;
+    }
+
+    .must-read-cover-wrap {
+        height: 55vw;
+    }
+
+    .must-read-title {
+        font-size: 5.5vw;
+    }
+
+    .must-read-excerpt {
+        font-size: 3.5vw;
+    }
+
+    .category-chip {
+        font-size: 2.5vw;
+        padding: 1vw 3vw;
+    }
+
+    .must-read-body {
+        padding: 4vw;
+        gap: 3vw;
+    }
+
+    .meta-text {
+        font-size: 3vw;
+    }
+
+    .must-read-trending-column {
+        width: 100%;
+        gap: 3vw;
+    }
+
+    .trending-card {
+        padding: 3vw;
+        gap: 3vw;
+        border-radius: 3vw;
+    }
+
+    .trending-thumb {
+        width: 22vw;
+        height: 22vw;
+        border-radius: 2vw;
+    }
+
+    .trending-category {
+        font-size: 2.5vw;
+    }
+
+    .trending-title {
+        font-size: 4vw;
+    }
+
+    .trending-meta {
+        font-size: 2.8vw;
+    }
+
+    .blog-latest {
+        padding: 10vw 4vw;
+    }
+
+    .latest-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4vw;
+        max-width: 100%;
+    }
+
+    .latest-heading {
+        font-size: 8vw;
+    }
+
+    .category-filters {
+        flex-wrap: wrap;
+        gap: 2vw;
+    }
+
+    .filter-pill {
+        padding: 2vw 4vw;
+        font-size: 3.5vw;
+    }
+
+    .latest-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        gap: 4vw;
+    }
+
+    .grid-card {
+        border-radius: 4vw;
+    }
+
+    .grid-card-thumb {
+        height: 55vw;
+    }
+
+    .grid-category-chip {
+        font-size: 2.5vw;
+        padding: 1vw 2.5vw;
+    }
+
+    .grid-card-body {
+        padding: 4vw;
+        gap: 2vw;
+    }
+
+    .grid-card-title {
+        font-size: 4.5vw;
+    }
+
+    .grid-card-meta {
+        font-size: 3vw;
+    }
+
+    .btn-load-more {
+        font-size: 4vw;
+        padding: 3vw 6vw;
+        border-radius: 99vw;
+    }
+
+    .down-arrow {
+        font-size: 4vw;
+    }
+
+    .blog-deep-dive {
+        padding: 10vw 4vw;
+    }
+
+    .deep-dive-header {
+        max-width: 100%;
+    }
+
+    .deep-dive-heading {
+        font-size: 8vw;
+    }
+
+    .deep-dive-flex {
+        flex-direction: column;
+        max-width: 100%;
+        gap: 6vw;
+    }
+
+    .deep-dive-featured-card {
+        width: 100%;
+        padding: 6vw;
+        border-radius: 4vw;
+    }
+
+    .badge-deep-dive {
+        font-size: 2.5vw;
+        padding: 1vw 2.5vw;
+    }
+
+    .deep-dive-readtime {
+        font-size: 3vw;
+    }
+
+    .deep-dive-quote {
+        font-size: 6vw;
+    }
+
+    .deep-dive-read-title {
+        font-size: 3.5vw;
+    }
+
+    .deep-dive-author-row {
+        gap: 2vw;
+    }
+
+    .author-text {
+        font-size: 3vw;
+    }
+
+    .deep-dive-list-column {
+        width: 100%;
+        gap: 4vw;
+    }
+
+    .deep-dive-item {
+        gap: 3vw;
+    }
+
+    .item-number {
+        font-size: 10vw;
+    }
+
+    .item-category {
+        font-size: 2.5vw;
+    }
+
+    .item-title {
+        font-size: 4.5vw;
+    }
+
+    .item-meta {
+        font-size: 3vw;
+    }
+
+    .item-divider {
+        margin: 1vw 0;
+    }
+
+    .blog-cta-banner {
+        padding: 10vw 4vw;
+    }
+
+    .cta-banner-card {
+        flex-direction: column;
+        padding: 6vw;
+        gap: 6vw;
+        border-radius: 4vw;
+        max-width: 100%;
+    }
+
+    .cta-banner-left {
+        max-width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cta-banner-title {
+        font-size: 8vw;
+    }
+
+    .btn-cta-call {
+        font-size: 4vw;
+        padding: 3vw 6vw;
+    }
+
+    .cta-arrow {
+        font-size: 4vw;
+    }
+
+    .cta-banner-right {
+        width: 100%;
+        height: 50vw;
+    }
+
+    .tilted-card {
+        width: 50vw;
+        height: 35vw;
+    }
+}
