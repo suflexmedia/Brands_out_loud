@@ -77,7 +77,7 @@ body {
 }
 
 .remaster-nav-logo {
-  height: 3.33vw; /* 48px */
+  height: 4.33vw;
   width: auto;
 }
 
@@ -105,9 +105,17 @@ body {
   opacity: 0.8;
   background: rgba(255, 255, 255, 0.1);
 }
+.remaster-nav-link.active,
 .remaster-nav-link.selected {
-  background: rgba(255, 255, 255, 0.2);
+  background: #0d1b4b;
+  color: #ffffff;
   opacity: 1;
+}
+.remaster-nav-link.active:hover,
+.remaster-nav-link.selected:hover {
+  background: #0d1b4b;
+  color: #ffffff;
+  opacity: 0.95;
 }
 
 .remaster-nav-contact {

@@ -15,10 +15,12 @@
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
         <link rel="stylesheet" href="/static/css/homepage_remaster.css?v=2" />
         <link rel="stylesheet" href="/static/css/homepage.css?v=2" />
+        <link rel="stylesheet" href="/static/css/magazine_remaster.css?v=1" />
         <link rel="stylesheet" href="/static/css/blog_remaster.css?v=1" />
     </head>
     <body>
         <div class="blog-page-wrapper">
+            <div class="blog-hero-bg-overlay"></div>
             <nav class="remaster-navbar">
                 <div class="remaster-nav-left">
                     <i
@@ -34,27 +36,27 @@
                     /></a>
                 </div>
                 <div class="remaster-nav-center">
-                    <a href="/magazine" class="remaster-nav-link">Magazine</a>
+                    <a href="/magazine_remaster" class="remaster-nav-link">Magazine</a>
                     <a href="/blog_remaster" class="remaster-nav-link active">Blog</a>
-                    <a href="/contact" class="remaster-nav-link">Contact</a>
+                    <a href="/" class="remaster-nav-link">Contact</a>
                 </div>
                 <div class="remaster-nav-right">
-                    <a href="/contact" class="btn-primary remaster-nav-book"
+                    <a href="/" class="btn-primary remaster-nav-book"
                         >Book a Call →</a
                     >
                 </div>
             </nav>
 
             <div class="mobile-menu-dropdown" id="mobileMenu">
-                <a href="/blog_remaster" class="mobile-menu-link">Blog</a>
-                <a href="/magazine" class="mobile-menu-link">Magazine</a>
-                <a href="/contact" class="mobile-menu-contact">Contact</a>
+                <a href="/magazine_remaster" class="mobile-menu-link">Magazine</a>
+                <a href="/blog_remaster" class="mobile-menu-link active">Blog</a>
+                <a href="/" class="mobile-menu-link">Contact</a>
             </div>
 
             <section class="blog-hero">
                 <div class="blog-hero-header">
                     <h1 class="blog-hero-title">Ideas that shape the next generation of authors.</h1>
-                    <p class="blog-hero-subtitle">We publish exclusively with the top 5% of corporate leaders, venture partners, and operators.</p>
+                    <p class="blog-hero-subtitle">Insights on publishing, personal branding, and turning expertise into influence — straight from the BOL editorial desk.</p>
                 </div>
 
                 <div class="blog-featured-card">
@@ -273,25 +275,22 @@
                 </div>
             </section>
 
-            <section class="blog-cta-banner">
-                <div class="cta-banner-card">
-                    <div class="cta-banner-left">
-                        <h2 class="cta-banner-title">Your book is waiting.<br />Let's make it real.</h2>
-                        <a href="/contact" class="btn-cta-call">
-                            <span>Schedule Your Strategy Call Today</span>
-                            <span class="cta-arrow">→</span>
-                        </a>
+            <section class="mid-cta-section section-container">
+                <div class="mid-cta-container">
+                    <div class="mid-cta-left">
+                        <h2 class="mid-cta-title">
+                            Your book is waiting.<br />Let's make it real.
+                        </h2>
+                        <a href="/contact" class="btn-orange"
+                            >Schedule Your Strategy Call Today →</a
+                        >
                     </div>
-                    <div class="cta-banner-right">
-                        <div class="cta-card-stack">
-                            <div class="tilted-card card-back">
-                                <span class="card-back-text">Your story.</span>
-                            </div>
-                            <div class="tilted-card card-front">
-                                <span class="card-front-title">BOL · 2026</span>
-                                <span class="card-front-tag">In print.</span>
-                            </div>
-                        </div>
+                    <div class="mid-cta-right">
+                        <img
+                            src="/static/images/remaster-homepage/images/book-banner.png"
+                            alt="Book Banner"
+                            style="width: 100%; height: 100%; display: block"
+                        />
                     </div>
                 </div>
             </section>
@@ -317,10 +316,10 @@
                             <a href="/blog_remaster" class="remaster-footer-link"
                                 >Blog</a
                             >
-                            <a href="/magazine" class="remaster-footer-link"
+                            <a href="/magazine_remaster" class="remaster-footer-link"
                                 >Magazine</a
                             >
-                            <a href="/contact" class="remaster-footer-link"
+                            <a href="/" class="remaster-footer-link"
                                 >Contact</a
                             >
                         </div>

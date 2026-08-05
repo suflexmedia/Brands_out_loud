@@ -7,8 +7,8 @@ We are ready to build the next page for our BOL (Brands Out Loud) FastAPI-based 
 Here are the details for the page we are implementing:
 
 - **Page Name:** Blog Page
-- **Target HTML Filename:** page_serving_routers/static/templates/blog_remaster.html
-- **Target CSS Filename:** page_serving_routers/static/css/blog_remaster.css
+- **Target HTML Filename:** page_serving_routers/static/templates/blog_page_remaster.html
+- **Target CSS Filename:** page_serving_routers/static/css/blog_page_remaster.css
 - **Figma CSS Reference File:** page_serving_routers/static/templates/figma_reference/figma.css
 - **Figma Visual Design Reference:** page_serving_routers/static/templates/figma_reference/image.png
 - **Page Route:** /blog_remaster

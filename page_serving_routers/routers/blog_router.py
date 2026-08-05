@@ -2592,6 +2592,18 @@ async def get_related_blogs(category: str, current_slug: str):
     return related[:3]
 
 
+@router.get("/blog/blog_page_remaster", tags=["Pages"])
+async def serve_blog_page_remaster(request: Request):
+    """Serves the remastered single blog post page HTML."""
+    all_blogs = await get_all_blogs()
+    blogs_list = list(all_blogs.values()) if isinstance(all_blogs, dict) else []
+    navbar = await get_navbar_data()
+    return templates.TemplateResponse(request, "blog_page_remaster.html", {
+        "blogs": blogs_list,
+        "navbar": navbar,
+    })
+
+
 @router.get("/blog/{slug}", tags=["Pages"])
 async def get_blog(slug: str):
     """Render a blog post page by its slug. Uses O(1) dict lookup by slug key."""
@@ -2644,7 +2656,7 @@ async def get_blog(slug: str):
 
 @router.get("/blog_remaster", tags=["Pages"])
 async def serve_blog_remaster(request: Request):
-    """Serves the remastered blog page HTML."""
+    """Serves the remastered blog listing page HTML."""
     all_blogs = await get_all_blogs()
     blogs_list = list(all_blogs.values()) if isinstance(all_blogs, dict) else []
     navbar = await get_navbar_data()
