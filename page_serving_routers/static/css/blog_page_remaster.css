@@ -213,30 +213,43 @@ body,
 
 .blog-quote-box {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 1.11vw;
-    padding: 1.38vw 1.66vw;
-    background: rgba(234, 238, 255, 0.35);
-    border-left: 0.27vw solid #1c4a9c;
-    border-radius: 0.55vw;
+    gap: 0.14vw;
+    width: 100%;
     box-sizing: border-box;
 }
 
-.quote-icon {
-    font-size: 2.22vw;
-    color: #1c4a9c;
-    flex-shrink: 0;
-    margin-top: 0.2vw;
+.blog-quote-top-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.11vw;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.quote-text {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 1.25vw;
+.blog-quote-icon {
+    width: 3.05vw;
+    height: 2.7vw;
+    flex-shrink: 0;
+    display: block;
+}
+
+.blog-quote-text {
+    font-family: 'Akshar', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.388vw;
     line-height: 1.6;
     color: #1c4a9c;
     margin: 0;
+    flex: 1;
+}
+
+.blog-quote-text-bottom {
+    width: 100%;
+    align-self: stretch;
 }
 
 .blog-inline-img-wrap {
@@ -1013,12 +1026,18 @@ body,
         font-size: 1.6vw;
     }
 
-    .quote-text {
-        font-size: 1.8vw;
+    .blog-quote-top-row {
+        gap: 1.3vw;
     }
 
-    .quote-icon {
-        font-size: 2.8vw;
+    .blog-quote-icon {
+        width: 3.8vw;
+        height: 3.4vw;
+    }
+
+    .blog-quote-text {
+        font-size: 1.8vw;
+        line-height: 1.6;
     }
 
     .btn-download-pill,
@@ -1252,18 +1271,21 @@ body,
     }
 
     .blog-quote-box {
-        padding: 4vw;
-        border-radius: 2vw;
-        border-left-width: 1vw;
+        gap: 1vw;
+    }
+
+    .blog-quote-top-row {
         gap: 3vw;
     }
 
-    .quote-icon {
-        font-size: 6vw;
+    .blog-quote-icon {
+        width: 7vw;
+        height: 6.2vw;
     }
 
-    .quote-text {
-        font-size: 3.8vw;
+    .blog-quote-text {
+        font-size: 4vw;
+        line-height: 1.55;
     }
 
     .blog-inline-img-wrap {
@@ -1433,6 +1455,16 @@ body,
     .blog-paragraph,
     .blog-bullet-list li {
         font-size: 4vw;
+    }
+
+    .blog-quote-icon {
+        width: 8vw;
+        height: 7vw;
+    }
+
+    .blog-quote-text {
+        font-size: 4.4vw;
+        line-height: 1.5;
     }
 
     .related-section-title,
