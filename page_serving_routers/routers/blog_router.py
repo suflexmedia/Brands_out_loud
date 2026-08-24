@@ -1191,8 +1191,8 @@ async def generate_desktop_toc(data):
     """Generate a desktop/sidebar Table of Contents HTML from structured data."""
     toc_sections = await _generate_toc_sections(data)
 
-    complete_toc = f"""<aside class="sticky top-8 h-8rem lg:order-1 self-start md:mt-[0rem] mt-[-57rem]">
-                <div class="p-6 flex flex-col w-full rounded-xl bg-white max-w-[20rem] border-gray-100 hidden lg:block overflow-y- max-h-[calc(100vh-4rem)]"
+    complete_toc = f"""<aside class="sticky top-8 lg:order-1 self-start">
+                <div class="p-6 flex flex-col w-full rounded-xl bg-white max-w-[20rem] border-gray-100 hidden lg:block max-h-[calc(100vh-4rem)] overflow-y-auto"
                     style="scroll-behavior: smooth">
                     <h2 class="text-2xl font-bold text-[#3533CD] mb-6 border-b pb-3">Table of Contents</h2>
                     {toc_sections}
@@ -1306,7 +1306,7 @@ async def get_blog_body(data: dict):
         </style>
         {hero_section}
         {mobile_toc}
-        <div class="mobile-blog-grid grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-8 mt-4 md:mt-8 max-w-[80rem] mx-auto px-2 md:px-0">
+        <div class="mobile-blog-grid grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-8 mt-4 md:mt-8 max-w-[80rem] mx-auto px-2 md:px-0 items-start">
         {desktop_toc}
         {blog_content}
         </div>
@@ -1879,7 +1879,7 @@ EMPTY_BLOG_TEMPLATE = r"""<!DOCTYPE html>
     </style>
 </head>
 
-<body data-zoom-container class="font-jakarta bg-white text-bol-black w-full max-w-[100vw] mx-auto bg-white overflow-x-hidden relative" style="margin: 0; padding: 0;">
+<body data-zoom-container class="font-jakarta bg-white text-bol-black w-full max-w-[100vw] mx-auto bg-white relative" style="margin: 0; padding: 0; overflow-x: visible;">
 
     <div class="page-wrapper" style="overflow-x: visible; overflow: visible;">
         [[header_content]]

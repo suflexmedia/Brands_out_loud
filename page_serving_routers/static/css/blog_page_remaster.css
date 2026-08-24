@@ -1,3 +1,12 @@
+html,
+body,
+.blog-page-wrapper,
+.blog-article-body-wrapper {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
 .blog-page-wrapper {
     width: 100%;
     min-height: 100vh;
@@ -5,7 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-x: hidden;
+    overflow: visible !important;
 }
 
 .blog-hero-section {
@@ -14,7 +23,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2.77vw;
+    padding-top: 8.88vw;
     padding-bottom: 0px;
     gap: 2.22vw;
     box-sizing: border-box;
@@ -110,6 +119,7 @@
     padding-bottom: 5.55vw;
     gap: 3.33vw;
     box-sizing: border-box;
+    overflow: visible !important;
 }
 
 .blog-lead-summary {
@@ -133,10 +143,12 @@
     width: 83.33vw;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: flex-start !important;
     justify-content: space-between;
     gap: 4.44vw;
     box-sizing: border-box;
+    position: relative;
+    overflow: visible !important;
 }
 
 .blog-article-content {
@@ -151,6 +163,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.66vw;
+    scroll-margin-top: 6vw;
 }
 
 .blog-h2-title {
@@ -182,10 +195,26 @@
     margin: 0;
 }
 
+.blog-bullet-list {
+    margin: 0;
+    padding-left: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55vw;
+}
+
+.blog-bullet-list li {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1.11vw;
+    line-height: 1.62;
+    color: #353536;
+}
+
 .blog-quote-box {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.11vw;
     padding: 1.38vw 1.66vw;
     background: rgba(234, 238, 255, 0.35);
@@ -195,16 +224,16 @@
 }
 
 .quote-icon {
-    width: 2.5vw;
-    height: 2.5vw;
-    object-fit: contain;
+    font-size: 2.22vw;
+    color: #1c4a9c;
     flex-shrink: 0;
+    margin-top: 0.2vw;
 }
 
 .quote-text {
-    font-family: 'Akshar', 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 1.38vw;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.25vw;
     line-height: 1.6;
     color: #1c4a9c;
     margin: 0;
@@ -226,108 +255,172 @@
     display: block;
 }
 
+.blog-article-footer-meta {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2vw;
+    border-top: 0.07vw solid #e0e0e8;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.18vw;
+    line-height: 1.4;
+    width: 100%;
+}
+
 .blog-sidebar {
     width: 24.58vw;
     flex-shrink: 0;
-    position: sticky;
-    top: 2vw;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 2.22vw !important;
+    align-self: flex-start !important;
     display: flex;
     flex-direction: column;
-    gap: 2.22vw;
+    gap: 1.66vw;
     box-sizing: border-box;
+    z-index: 30;
 }
 
 .blog-toc-card {
     width: 100%;
     padding: 1.66vw;
-    background: linear-gradient(122.4deg, rgba(234, 238, 255, 0.2) 10.44%, rgba(255, 255, 255, 0.2) 21.06%, rgba(255, 255, 255, 0.2) 80.85%, rgba(234, 238, 255, 0.2) 91.29%);
+    background: linear-gradient(122.4deg, rgba(234, 238, 255, 0.3) 10.44%, rgba(255, 255, 255, 0.4) 21.06%, rgba(255, 255, 255, 0.4) 80.85%, rgba(234, 238, 255, 0.3) 91.29%);
     border: 0.07vw solid #b2c1ff;
     border-radius: 0.83vw;
     display: flex;
     flex-direction: column;
-    gap: 1.38vw;
+    gap: 1.11vw;
     box-sizing: border-box;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    max-height: calc(100vh - 14vw);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #3533CD #f5f5f5;
+    scroll-behavior: smooth;
+}
+
+.blog-toc-card::-webkit-scrollbar {
+    width: 0.35vw;
+}
+
+.blog-toc-card::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 0.69vw;
+}
+
+.blog-toc-card::-webkit-scrollbar-thumb {
+    background: rgba(53, 51, 205, 0.5);
+    border-radius: 0.69vw;
 }
 
 .blog-toc-title {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 1.66vw;
-    line-height: 1.17;
+    font-size: 1.52vw;
+    line-height: 1.2;
     color: #1755c6;
     margin: 0;
+    padding-bottom: 0.83vw;
+    border-bottom: 0.07vw solid #e2e8f8;
 }
 
 .blog-toc-list {
     display: flex;
     flex-direction: column;
-    gap: 0vw;
+    gap: 0.27vw;
     width: 100%;
 }
 
-.toc-item {
-    border-bottom: 0.07vw solid #e6e6ed;
+.toc-section {
     display: flex;
     flex-direction: column;
+    padding-bottom: 0.27vw;
 }
 
-.toc-item:last-child {
-    border-bottom: none;
-}
-
-.toc-header-link {
+.toc-h1-link {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0.97vw 0;
+    padding: 0.69vw 0;
     text-decoration: none;
     color: #0b0e66;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 1.11vw;
-    line-height: 1.2;
+    font-size: 1.04vw;
+    line-height: 1.25;
     transition: color 0.2s ease;
+    cursor: pointer;
 }
 
-.toc-header-link:hover {
+.toc-h1-link:hover,
+.toc-h1-link.active {
+    color: #1755c6;
+    font-weight: 700;
+}
+
+.toc-h1-text {
+    flex: 1;
+}
+
+.toc-arrow {
+    font-size: 0.97vw;
+    color: #0b0e66;
+    transition: transform 0.3s ease, color 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 0.4vw;
+    padding: 0.2vw;
+    cursor: pointer;
+}
+
+.toc-h1-link.active .toc-arrow,
+.toc-h1-link:hover .toc-arrow {
     color: #1755c6;
 }
 
-.toc-chevron {
-    font-size: 1.11vw;
-    color: #0b0e66;
-    transition: transform 0.3s ease;
+.toc-arrow.rotate-180 {
+    transform: rotate(180deg);
 }
 
-.toc-sub-list {
+.toc-subcategories {
     display: flex;
     flex-direction: column;
-    gap: 0.55vw;
-    padding-left: 1.38vw;
-    padding-bottom: 0.97vw;
+    gap: 0.4vw;
+    padding-left: 0.97vw;
+    margin-top: 0.27vw;
+    margin-bottom: 0.55vw;
     border-left: 0.14vw solid #9799d8;
-    margin-left: 0.55vw;
+    margin-left: 0.27vw;
+    transition: all 0.3s ease;
+}
+
+.toc-subcategories.hidden {
+    display: none;
 }
 
 .toc-sub-link {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
-    font-size: 0.97vw;
-    color: #363636;
+    font-size: 0.9vw;
+    line-height: 1.35;
+    color: #525256;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, font-weight 0.2s ease;
+    padding: 0.2vw 0;
+    cursor: pointer;
 }
 
-.toc-sub-link:hover {
+.toc-sub-link:hover,
+.toc-sub-link.active {
     color: #1755c6;
+    font-weight: 600;
 }
 
 .sidebar-actions-wrap {
     display: flex;
     flex-direction: column;
-    gap: 1.11vw;
+    gap: 0.97vw;
     width: 100%;
 }
 
@@ -348,13 +441,14 @@
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 1.11vw;
+    font-size: 1.04vw;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.55vw;
     cursor: pointer;
     transition: opacity 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 0.27vw 0.83vw rgba(23, 85, 198, 0.2);
 }
 
 .btn-download-pill:hover {
@@ -366,35 +460,36 @@
     flex: 1;
     height: 3.19vw;
     background: #ffffff;
-    border: 0.07vw solid #e5e2d8;
+    border: 0.07vw solid #c4c3ff;
     border-radius: 99vw;
     color: #0b0e66;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 1.11vw;
+    font-size: 1.04vw;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.55vw;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-share-pill:hover {
     background: #f7f7fa;
+    border-color: #1755c6;
 }
 
 .social-icons-row {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.55vw;
+    gap: 0.69vw;
     width: 100%;
 }
 
 .social-icon-box {
-    width: 3.33vw;
-    height: 3.33vw;
+    width: 3.05vw;
+    height: 3.05vw;
     border-radius: 0.55vw;
     border: 0.07vw solid #e5e2d8;
     background: #ffffff;
@@ -402,20 +497,21 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
 .social-icon-box:hover {
-    transform: scale(1.05);
+    transform: scale(1.06);
     background: #f7f7fa;
+    border-color: #1755c6;
 }
 
 .social-img {
-    width: 2.22vw;
-    height: 2.22vw;
-    object-fit: cover;
-    border-radius: 0.3vw;
+    width: 2.08vw;
+    height: 2.08vw;
+    object-fit: contain;
 }
 
 .blog-related-section {
@@ -681,50 +777,256 @@
     transform: rotate(180deg);
 }
 
+.download-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+    padding: 2vw;
+    box-sizing: border-box;
+    backdrop-filter: blur(4px);
+}
+
+.download-modal-overlay.show {
+    display: flex;
+}
+
+.download-modal {
+    background: #ffffff;
+    border-radius: 1.11vw;
+    padding: 2.22vw;
+    max-width: 38.19vw;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 1.73vw 3.47vw rgba(0, 0, 0, 0.25);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.download-modal-close {
+    position: absolute;
+    top: 1.11vw;
+    right: 1.11vw;
+    background: none;
+    border: none;
+    font-size: 1.66vw;
+    cursor: pointer;
+    color: #525256;
+    padding: 0.27vw;
+    line-height: 1;
+}
+
+.download-modal-close:hover {
+    color: #0b0e66;
+}
+
+.download-modal h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.66vw;
+    font-weight: 700;
+    color: #0b0e66;
+    margin: 0 0 1.66vw 0;
+    padding-right: 2vw;
+}
+
+.download-form-row {
+    display: flex;
+    gap: 1.11vw;
+    margin-bottom: 1.11vw;
+}
+
+.download-form-field {
+    flex: 1;
+}
+
+.download-form-field.full-width {
+    width: 100%;
+    margin-bottom: 1.11vw;
+}
+
+.download-form-field label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.97vw;
+    font-weight: 600;
+    color: #353536;
+    margin-bottom: 0.4vw;
+}
+
+.download-form-field .optional {
+    color: #8c8c96;
+    font-weight: 400;
+    font-size: 0.83vw;
+}
+
+.download-form-field input {
+    width: 100%;
+    padding: 0.97vw 1.11vw;
+    border: 0.07vw solid #d9d9e0;
+    border-radius: 0.55vw;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.97vw;
+    background: #f7f7fa;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.download-form-field input:focus {
+    outline: none;
+    border-color: #1755c6;
+    box-shadow: 0 0 0 0.2vw rgba(23, 85, 198, 0.1);
+}
+
+.download-form-error {
+    color: #e53935;
+    font-size: 0.83vw;
+    margin-top: 0.27vw;
+    display: none;
+}
+
+.download-form-field.error input {
+    border-color: #e53935;
+}
+
+.download-form-field.error .download-form-error {
+    display: block;
+}
+
+.download-modal-terms {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.83vw;
+    color: #525256;
+    line-height: 1.5;
+    margin: 1.38vw 0;
+}
+
+.download-modal-submit {
+    background: linear-gradient(91.39deg, #1d4896 0%, #1755c6 48.01%, #1d4896 100.69%);
+    color: #ffffff;
+    border: none;
+    padding: 0.97vw 1.94vw;
+    border-radius: 0.55vw;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.11vw;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+}
+
+.download-modal-submit:hover {
+    opacity: 0.95;
+}
+
+.download-modal-submit:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.bol-toast-notification {
+    position: fixed;
+    top: 2vw;
+    right: 2vw;
+    background: #0b0e66;
+    color: #ffffff;
+    padding: 0.83vw 1.66vw;
+    border-radius: 0.55vw;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.97vw;
+    font-weight: 600;
+    box-shadow: 0 0.55vw 1.66vw rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(-1vw);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.bol-toast-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 @media (max-width: 1024px) {
-    .blog-hero-section, .blog-lead-summary, .blog-body-divider, .blog-two-column, .related-header-wrap, .related-grid, .faq-inner-container {
+    .blog-hero-section {
+        padding-top: 11vw;
+    }
+
+    .blog-hero-section,
+    .blog-lead-summary,
+    .blog-body-divider,
+    .blog-two-column,
+    .related-header-wrap,
+    .related-grid,
+    .faq-inner-container {
         width: 92vw;
         max-width: 92vw;
     }
-    
+
     .blog-hero-title {
         font-size: 4.2vw;
         width: 100%;
     }
-    
-    .blog-hero-meta, .blog-lead-summary {
+
+    .blog-hero-meta,
+    .blog-lead-summary {
         font-size: 1.8vw;
     }
-    
+
     .blog-article-content {
         width: 58vw;
     }
-    
+
     .blog-sidebar {
         width: 30vw;
     }
-    
+
+    .blog-toc-title {
+        font-size: 2.2vw;
+    }
+
+    .toc-h1-link {
+        font-size: 1.5vw;
+    }
+
+    .toc-sub-link {
+        font-size: 1.3vw;
+    }
+
     .blog-h2-title {
         font-size: 3vw;
     }
-    
+
     .blog-h3-title {
         font-size: 2.4vw;
     }
-    
-    .blog-paragraph {
+
+    .blog-paragraph,
+    .blog-bullet-list li {
         font-size: 1.6vw;
     }
-    
+
     .quote-text {
         font-size: 1.8vw;
     }
-    
-    .btn-download-pill, .btn-share-pill {
-        height: 4.5vw;
-        font-size: 1.6vw;
+
+    .quote-icon {
+        font-size: 2.8vw;
     }
-    
+
+    .btn-download-pill,
+    .btn-share-pill {
+        height: 4.5vw;
+        font-size: 1.5vw;
+    }
+
     .social-icon-box {
         width: 4.5vw;
         height: 4.5vw;
@@ -734,56 +1036,78 @@
         width: 3vw;
         height: 3vw;
     }
-    
+
     .related-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .related-card-img-wrap {
         height: 22vw;
     }
-    
+
     .related-card-title {
         font-size: 2vw;
     }
-    
+
     .related-card-excerpt {
         font-size: 1.5vw;
     }
-    
+
     .btn-see-more-pill {
         font-size: 1.8vw;
         padding: 1.5vw 2.5vw;
     }
-    
+
     .faq-inner-container {
         flex-direction: column;
         gap: 4vw;
     }
-    
-    .faq-left-col, .faq-right-col {
+
+    .faq-left-col,
+    .faq-right-col {
         width: 100%;
     }
-    
+
     .faq-main-title {
         font-size: 4.5vw;
     }
-    
+
     .faq-main-desc {
         font-size: 2.2vw;
     }
-    
+
     .btn-faq-cta {
         font-size: 2vw;
         padding: 1.5vw 2.5vw;
     }
-    
+
     .faq-q-btn {
         font-size: 2vw;
     }
-    
+
     .faq-a-text {
         font-size: 1.6vw;
+    }
+
+    .download-modal {
+        max-width: 60vw;
+        padding: 3vw;
+    }
+
+    .download-modal h2 {
+        font-size: 2.5vw;
+    }
+
+    .download-form-field label,
+    .download-form-field input,
+    .download-modal-submit {
+        font-size: 1.6vw;
+    }
+
+    .download-modal-terms,
+    .download-form-field .optional,
+    .download-form-error {
+        font-size: 1.4vw;
     }
 }
 
@@ -794,7 +1118,7 @@
         width: 92vw;
         max-width: 92vw;
     }
-    
+
     .blog-breadcrumb-row {
         font-size: 3.2vw;
         gap: 1.5vw;
@@ -804,34 +1128,34 @@
     .breadcrumb-separator {
         font-size: 2.8vw;
     }
-    
+
     .blog-hero-image-wrap {
         height: 52vw;
         max-height: unset;
         border-radius: 4vw;
         border-width: 1px;
     }
-    
+
     .blog-hero-title {
         font-size: 6.5vw;
         line-height: 1.25;
         width: 100%;
     }
-    
+
     .blog-hero-meta {
         font-size: 3.2vw;
         flex-direction: row;
         gap: 3vw;
         justify-content: center;
     }
-    
+
     .blog-lead-summary {
         font-size: 3.6vw;
         line-height: 1.6;
         width: 92vw;
         text-align: left;
     }
-    
+
     .blog-body-divider {
         width: 92vw;
     }
@@ -841,118 +1165,144 @@
         gap: 6vw;
         width: 92vw;
     }
-    
+
     .blog-article-content {
         width: 100%;
         gap: 5vw;
     }
-    
+
     .blog-sidebar {
         width: 100%;
-        position: static;
+        position: static !important;
+        top: auto !important;
         gap: 4vw;
     }
-    
+
     .blog-toc-card {
         padding: 4vw;
         border-radius: 3vw;
         gap: 3vw;
+        max-height: unset;
     }
-    
+
     .blog-toc-title {
         font-size: 4.8vw;
     }
-    
-    .toc-header-link {
+
+    .toc-h1-link {
         font-size: 3.8vw;
-        padding: 2.5vw 0;
+        padding: 2vw 0;
     }
-    
+
+    .toc-arrow {
+        font-size: 3.5vw;
+    }
+
+    .toc-subcategories {
+        padding-left: 3vw;
+        border-left-width: 0.5vw;
+        margin-left: 1vw;
+        gap: 1.5vw;
+    }
+
     .toc-sub-link {
         font-size: 3.2vw;
+        padding: 1vw 0;
     }
 
     .sidebar-pill-row {
         gap: 3vw;
     }
-    
-    .btn-download-pill, .btn-share-pill {
+
+    .btn-download-pill,
+    .btn-share-pill {
         height: 11vw;
         font-size: 3.8vw;
         border-radius: 99vw;
     }
-    
+
     .social-icon-box {
         width: 11vw;
         height: 11vw;
         border-radius: 2.5vw;
     }
-    
+
     .social-img {
         width: 6vw;
         height: 6vw;
     }
-    
+
     .blog-h2-title {
         font-size: 5.5vw;
     }
-    
+
     .blog-h3-title {
         font-size: 4.5vw;
     }
-    
-    .blog-paragraph {
+
+    .blog-paragraph,
+    .blog-bullet-list li {
         font-size: 3.8vw;
         line-height: 1.65;
     }
-    
+
+    .blog-bullet-list {
+        padding-left: 5vw;
+        gap: 2vw;
+    }
+
     .blog-quote-box {
         padding: 4vw;
         border-radius: 2vw;
         border-left-width: 1vw;
         gap: 3vw;
     }
-    
+
     .quote-icon {
-        width: 6vw;
-        height: 6vw;
+        font-size: 6vw;
     }
-    
+
     .quote-text {
         font-size: 3.8vw;
     }
-    
+
     .blog-inline-img-wrap {
         height: 48vw;
         border-radius: 3.5vw;
+    }
+
+    .blog-article-footer-meta {
+        font-size: 3.5vw;
+        padding-top: 4vw;
     }
 
     .blog-related-section {
         padding: 10vw 4vw;
         gap: 6vw;
     }
-    
-    .related-section-title, .faq-main-title {
+
+    .related-section-title,
+    .faq-main-title {
         font-size: 6.5vw;
         text-align: center;
     }
-    
+
     .related-grid {
         grid-template-columns: 1fr;
         gap: 5vw;
         width: 92vw;
     }
-    
+
     .related-card-img-wrap {
         height: 48vw;
     }
-    
+
     .related-card-title {
         font-size: 4.5vw;
         line-height: 1.35;
         text-align: left;
     }
-    
+
     .related-card-excerpt {
         font-size: 3.4vw;
         line-height: 1.55;
@@ -964,12 +1314,13 @@
         gap: 2.5vw;
         align-items: flex-start;
     }
-    
-    .btn-see-more-pill, .btn-faq-cta {
+
+    .btn-see-more-pill,
+    .btn-faq-cta {
         font-size: 3.8vw;
         padding: 3vw 6vw;
     }
-    
+
     .faq-inner-container {
         width: 92vw;
         flex-direction: column;
@@ -982,11 +1333,15 @@
         text-align: center;
         gap: 3vw;
     }
-    
+
     .faq-q-btn {
         font-size: 3.8vw;
     }
-    
+
+    .faq-q-chevron {
+        font-size: 4.5vw;
+    }
+
     .faq-a-text {
         font-size: 3.4vw;
     }
@@ -1002,8 +1357,51 @@
         border-radius: 4vw;
     }
 
-    .social-icon-box i {
-        font-size: 5vw !important;
+    .download-modal {
+        max-width: 92vw;
+        padding: 5vw;
+        border-radius: 3vw;
+    }
+
+    .download-modal h2 {
+        font-size: 5vw;
+    }
+
+    .download-modal-close {
+        font-size: 6vw;
+    }
+
+    .download-form-row {
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    .download-form-field label {
+        font-size: 3.6vw;
+    }
+
+    .download-form-field input {
+        font-size: 3.6vw;
+        padding: 3vw;
+        border-radius: 2vw;
+    }
+
+    .download-modal-terms {
+        font-size: 3vw;
+    }
+
+    .download-modal-submit {
+        font-size: 4vw;
+        padding: 3.5vw;
+        border-radius: 2vw;
+    }
+
+    .bol-toast-notification {
+        font-size: 3.5vw;
+        padding: 3vw 5vw;
+        top: 5vw;
+        right: 5vw;
+        border-radius: 2vw;
     }
 }
 
@@ -1032,11 +1430,13 @@
         font-size: 4.8vw;
     }
 
-    .blog-paragraph {
+    .blog-paragraph,
+    .blog-bullet-list li {
         font-size: 4vw;
     }
 
-    .related-section-title, .faq-main-title {
+    .related-section-title,
+    .faq-main-title {
         font-size: 7.5vw;
     }
 
@@ -1048,14 +1448,16 @@
         font-size: 3.8vw;
     }
 
-    .btn-see-more-pill, .btn-faq-cta {
+    .btn-see-more-pill,
+    .btn-faq-cta {
         font-size: 4vw;
         padding: 3.5vw 7vw;
         width: 100%;
         justify-content: center;
     }
 
-    .btn-download-pill, .btn-share-pill {
+    .btn-download-pill,
+    .btn-share-pill {
         height: 13vw;
         font-size: 4vw;
     }
