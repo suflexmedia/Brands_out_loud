@@ -131,31 +131,42 @@ async def admin_edit_pages(request: Request):
     return FileResponse("page_serving_routers/static/templates/admin/edit_pages.html")
 
 
-@router.get("/edit-pages/homepage")
-async def admin_edit_homepage(request: Request):
-    """Serve the admin homepage editor HTML page."""
+EDITABLE_PAGE_SLUGS = {
+    "homepage",
+    "blog-listing",
+    "blog-post",
+    "magazine-listing",
+    "magazine-issue",
+    "book-detail",
+    "contact",
+}
+
+
+@router.get("/magazine-issues")
+async def admin_magazine_issues_page(request: Request):
+    """Serve the magazine issues and books management page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("page_serving_routers/static/templates/admin/edit_homepage.html")
+    return FileResponse("page_serving_routers/static/templates/admin/magazine_issues.html")
 
 
-@router.get("/edit-pages/magazine-homepage")
-async def admin_edit_magazine_homepage(request: Request):
-    """Serve the admin magazine homepage editor HTML page."""
+@router.get("/site-settings")
+async def admin_site_settings_page(request: Request):
+    """Serve the shared nav and footer settings editor."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    return FileResponse("page_serving_routers/static/templates/admin/edit_magazine_homepage.html")
+    return FileResponse("page_serving_routers/static/templates/admin/site_settings.html")
 
 
-@router.get("/edit-pages/service/{category}")
-async def admin_edit_service_page(request: Request, category: str):
-    """Serve the admin service page editor HTML page."""
+@router.get("/edit-pages/{page_slug}")
+async def admin_edit_page_content(request: Request, page_slug: str):
+    """Serve the generic page content editor for one editable page."""
     if not await is_authenticated(request):
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    valid = {"business", "technology", "gcc", "sustainability", "semiconductor"}
-    if category not in valid:
+    if page_slug not in EDITABLE_PAGE_SLUGS:
         return RedirectResponse(url="/admin/edit-pages", status_code=status.HTTP_302_FOUND)
-    return FileResponse("page_serving_routers/static/templates/admin/edit_service_page.html")
+    return FileResponse("page_serving_routers/static/templates/admin/edit_page_content.html")
+
 
 
 @router.get("/logout")

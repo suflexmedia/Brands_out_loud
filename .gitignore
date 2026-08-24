@@ -2,6 +2,10 @@ venv/
 .env
 __pycache__/
 .rustic/
+
+__pycache__/
+
+*.pyc
 page_serving_routers/static/templates/figma_reference/
 page_serving_routers/static/templates/figma_reference/**
 **/figma_reference/**

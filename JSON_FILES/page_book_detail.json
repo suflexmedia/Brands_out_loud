@@ -1,0 +1,20 @@
+{
+    "seo": {
+        "title": "Magazine Book | Brands Out Loud",
+        "description": "Explore the books published by Brands Out Loud — in hardcover and eBook.",
+        "og_image": ""
+    },
+    "sections": {
+        "about_title": "About the book",
+        "covers_title": "What the book <span class=\"highlight-blue\">covers</span>",
+        "covers_subtitle": "Rather than looking at unconscious bias from a single perspective, the book examines it from many angles. It explores:",
+        "highlights_title": "Book <span class=\"highlight-blue\">highlights</span>",
+        "audience_title": "Who should read this book",
+        "audience_subtitle": "The book is ideal for",
+        "more_books_title": "More from <span class=\"highlight-blue\">BOL</span>",
+        "browse_all": {
+            "label": "Browse all books →",
+            "href": "/magazine"
+        }
+    }
+}

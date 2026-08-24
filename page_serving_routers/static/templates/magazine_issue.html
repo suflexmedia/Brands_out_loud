@@ -1,0 +1,63 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ issue.title }} | Brands Out Loud{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/magazine_book.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+{% set sections = content.sections | default({}, true) %}
+{% set browse_all = sections.browse_all | default({}, true) %}
+<div class="book-page-wrapper">
+    <section class="more-books-section" data-bol-section="sections">
+        <div class="more-books-container">
+            <div class="covers-header">
+                <h2 class="covers-title">{{ issue.title }}</h2>
+                {% if issue.season_label or issue.issue_number %}
+                <p class="covers-subtitle">{{ issue.season_label }}{% if issue.season_label and issue.issue_number %} · {% endif %}{% if issue.issue_number %}Issue {{ issue.issue_number }}{% endif %}</p>
+                {% endif %}
+                {% if issue.description %}
+                <p class="covers-subtitle">{{ issue.description }}</p>
+                {% endif %}
+            </div>
+
+            <div class="more-books-header">
+                <h2 class="more-books-title">{{ sections.books_title | default("Books in this issue", true) | safe }}</h2>
+                <a href="{{ browse_all.href | default('/magazine', true) }}" class="btn-browse-all">{{ browse_all.label | default("Browse all issues →", true) }}</a>
+            </div>
+
+            {% if books %}
+            <div class="more-books-grid">
+                {% for item in books %}
+                <a href="{{ item.url }}" class="book-item-card">
+                    <div class="book-item-cover {{ item.cover_variant }}">
+                        <div class="book-item-cover-header">
+                            <span class="book-item-brand">{{ item.brand }}</span>
+                            <span class="book-item-tag">{{ item.tag }}</span>
+                        </div>
+                        <div class="book-item-line"></div>
+                        <h3 class="book-item-cover-title">{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h3>
+                        <div class="book-item-bg-num">{{ item.background_number }}</div>
+                    </div>
+                    <div class="book-item-info">
+                        <div class="book-item-meta">
+                            <span class="book-item-cat">{{ item.category | upper }}</span>
+                            <span class="book-item-dot">·</span>
+                            <span class="book-item-pages">{{ item.pages_label | upper }}</span>
+                        </div>
+                        <h4 class="book-item-title">{{ item.title }}</h4>
+                        {% if item.author_name %}<div class="book-item-author">by {{ item.author_name }}</div>{% endif %}
+                        {% if item.price and item.price.current %}<div class="book-item-price">{{ item.price.current }}</div>{% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="covers-subtitle">{{ sections.empty_message | default("No books have been published in this issue yet.", true) }}</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

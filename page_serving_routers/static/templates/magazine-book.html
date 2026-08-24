@@ -1,470 +1,266 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>The Hidden Lens - Magazine Book | Brands Out Loud</title>
-        <link rel="icon" type="image/png" href="/static/icon/website_icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=IBM+Plex+Sans:wght@600&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Roboto:wght@500&display=swap"
-            rel="stylesheet"
-        />
-        <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
-        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-        <link rel="stylesheet" href="/static/css/homepage_remaster.css?v=2" />
-        <link rel="stylesheet" href="/static/css/homepage.css?v=2" />
-        <link rel="stylesheet" href="/static/css/magazine_remaster.css?v=1" />
-        <link rel="stylesheet" href="/static/css/magazine_book.css?v=4" />
-    </head>
-    <body>
-        <div class="book-page-wrapper">
-            <nav class="remaster-navbar">
-                <div class="remaster-nav-left">
-                    <i
-                        class="ph ph-list mobile-menu-icon"
-                        id="mobileMenuIcon"
-                        onclick="toggleMobileMenu()"
-                    ></i>
-                    <a href="/"
-                        ><img
-                            src="/static/images/header_logo.png"
-                            alt="Logo"
-                            class="remaster-nav-logo"
-                    /></a>
-                </div>
-                <div class="remaster-nav-center">
-                    <a href="/magazine_remaster" class="remaster-nav-link active">Magazine</a>
-                    <a href="/blog_remaster" class="remaster-nav-link">Blog</a>
-                    <a href="/" class="remaster-nav-link">Contact</a>
-                </div>
-                <div class="remaster-nav-right">
-                    <a href="/" class="btn-primary remaster-nav-book"
-                        >Book a Call →</a
-                    >
-                </div>
-            </nav>
+{% extends 'layouts/remaster_base.html' %}
 
-            <div class="mobile-menu-dropdown" id="mobileMenu">
-                <a href="/magazine_remaster" class="mobile-menu-link active">Magazine</a>
-                <a href="/blog_remaster" class="mobile-menu-link">Blog</a>
-                <a href="/" class="mobile-menu-link">Contact</a>
+{% block title %}{{ book.title }} - Magazine Book | Brands Out Loud{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/magazine_book.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+{% set sections = content.sections | default({}, true) %}
+{% set covers = book.covers | default([], true) %}
+{% set highlights = book.highlights | default([], true) %}
+{% set audience = book.audience | default([], true) %}
+{% set price = book.price | default({}, true) %}
+{% set rating = book.rating | default({}, true) %}
+{% set about = book.about | default({}, true) %}
+{% set cta_banner = book.cta_banner | default({}, true) %}
+{% set browse_all = sections.browse_all | default({}, true) %}
+<div class="book-page-wrapper">
+    <section class="book-hero-section">
+        <div class="book-hero-container">
+            <div class="book-cover-wrapper">
+                <div class="book-cover-spine"></div>
+                <div class="book-cover-header">
+                    <div class="book-cover-brand">{{ book.brand }}</div>
+                    <div class="book-cover-divider"></div>
+                </div>
+                <div class="book-cover-graphics">
+                    <div class="book-cover-circle-1"></div>
+                    <div class="book-cover-circle-2"></div>
+                    <div class="book-cover-circle-3"></div>
+                </div>
+                <div class="book-cover-main">
+                    <h2 class="book-cover-title">{% for line in book.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h2>
+                    {% if book.subtitle %}<p class="book-cover-subtitle">{{ book.subtitle }}</p>{% endif %}
+                </div>
+                <div class="book-cover-divider-main"></div>
+                <div class="book-cover-author">{{ book.author_name | upper }}</div>
             </div>
 
-            <section class="book-hero-section">
-                <div class="book-hero-container">
-                    <div class="book-cover-wrapper">
-                        <div class="book-cover-spine"></div>
-                        <div class="book-cover-header">
-                            <div class="book-cover-brand">BOL PRESS</div>
-                            <div class="book-cover-divider"></div>
+            <div class="book-purchase-card">
+                <div class="book-title-header">
+                    <h1 class="book-main-title">{{ book.title }}</h1>
+                    {% if book.subtitle %}<p class="book-main-subtitle">{{ book.subtitle }}</p>{% endif %}
+                </div>
+
+                <div class="book-meta-row">
+                    <div class="book-author-info">
+                        <div class="book-author-avatar"{% if book.author_avatar_url %} style="background-image: url('{{ book.author_avatar_url }}'); background-size: cover; background-position: center;"{% endif %}></div>
+                        <div class="book-author-text">
+                            <span class="book-author-label">BY</span>
+                            <span class="book-author-name">{{ book.author_name }}</span>
                         </div>
-                        <div class="book-cover-graphics">
-                            <div class="book-cover-circle-1"></div>
-                            <div class="book-cover-circle-2"></div>
-                            <div class="book-cover-circle-3"></div>
-                        </div>
-                        <div class="book-cover-main">
-                            <h2 class="book-cover-title">The<br />Hidden<br />Lens</h2>
-                            <p class="book-cover-subtitle">Understanding Unconscious Bias</p>
-                        </div>
-                        <div class="book-cover-divider-main"></div>
-                        <div class="book-cover-author">MOHIT KAPOOR</div>
                     </div>
 
-                    <div class="book-purchase-card">
-                        <div class="book-title-header">
-                            <h1 class="book-main-title">The Hidden Lens</h1>
-                            <p class="book-main-subtitle">Understanding Unconscious Bias.</p>
-                        </div>
+                    {% if rating.stars or rating.score %}
+                    <div class="book-rating-box">
+                        <div class="book-stars">{{ rating.stars }}</div>
+                        <span class="book-rating-score">{{ rating.score }}</span>
+                    </div>
+                    {% endif %}
+                </div>
 
-                        <div class="book-meta-row">
-                            <div class="book-author-info">
-                                <div class="book-author-avatar"></div>
-                                <div class="book-author-text">
-                                    <span class="book-author-label">BY</span>
-                                    <span class="book-author-name">Mohit Kapoor</span>
-                                </div>
-                            </div>
+                {% if book.description %}
+                <p class="book-description-text">{{ book.description }}</p>
+                {% endif %}
 
-                            <div class="book-rating-box">
-                                <div class="book-stars">★★★★★</div>
-                                <span class="book-rating-score">4.8</span>
-                            </div>
-                        </div>
+                {% if book.badges %}
+                <div class="book-badges-row">
+                    {% for badge in book.badges %}
+                    <div class="book-badge">{{ badge }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
-                        <p class="book-description-text">
-                            A practical guide to the automatic judgements shaping our decisions — how they form, why they persist, and how greater self-awareness leads to fairer thinking in life, work, and leadership.
-                        </p>
+                <div class="book-divider-line"></div>
 
-                        <div class="book-badges-row">
-                            <div class="book-badge">248 pages</div>
-                            <div class="book-badge">Hardcover + eBook</div>
-                            <div class="book-badge">English</div>
-                            <div class="book-badge">Published Sep 2026</div>
-                        </div>
-
-                        <div class="book-divider-line"></div>
-
-                        <div class="book-price-block">
-                            <div class="book-discount-tag">Save 25%</div>
-                            <div class="book-price-row">
-                                <span class="book-current-price">₹599</span>
-                                <span class="book-original-price">₹799</span>
-                            </div>
-                        </div>
-
-                        <div class="book-action-buttons">
-                            <a href="#" class="btn-purchase-now">
-                                <i class="ph ph-shopping-cart-simple"></i>
-                                <span>Purchase Now</span>
-                            </a>
-                            <a href="#" class="btn-read-sample">Read a Sample</a>
-                        </div>
+                {% if price.current %}
+                <div class="book-price-block">
+                    {% if price.discount_label %}<div class="book-discount-tag">{{ price.discount_label }}</div>{% endif %}
+                    <div class="book-price-row">
+                        <span class="book-current-price">{{ price.current }}</span>
+                        {% if price.original %}<span class="book-original-price">{{ price.original }}</span>{% endif %}
                     </div>
                 </div>
-            </section>
+                {% endif %}
 
-            <section class="about-book-section">
-                <div class="about-book-container">
-                    <div class="about-book-left">
-                        <h2 class="about-section-heading">About the book</h2>
-                        <div class="about-quote-box">
-                            <span class="about-quote-mark">“</span>
-                            <p class="about-quote-text">
-                                Every day we make decisions that feel rational and deliberate. Many of them aren't.
-                            </p>
-                            <span class="about-quote-mark quote-right">“</span>
-                        </div>
-                    </div>
-
-                    <div class="about-book-right">
-                        <p class="about-paragraph">
-                            In The Hidden Lens, Mohit Kapoor explores one of the most overlooked aspects of human behaviour: unconscious bias. He explains how it develops, why it affects the choices we make, and how greater awareness can lead to fairer decisions in our personal and professional lives.
-                        </p>
-                        <p class="about-paragraph">
-                            Rather than stopping at theory, Kapoor connects bias to the situations people face every day — hiring, leadership, teamwork, the technologies we build — and offers simple, practical ways to make more thoughtful and inclusive decisions.
-                        </p>
-                        <p class="about-paragraph">
-                            Awareness is where change begins. This book is written for professionals, educators, students, and curious readers alike — anyone who wants to better understand human behaviour and make fairer, more thoughtful decisions.
-                        </p>
-                    </div>
+                <div class="book-action-buttons">
+                    <a href="{{ book.store_url | default('#', true) }}" class="btn-purchase-now" target="_blank" rel="noopener noreferrer">
+                        <i class="ph ph-shopping-cart-simple"></i>
+                        <span>{{ sections.purchase_label | default("Purchase Now", true) }}</span>
+                    </a>
+                    <a href="{{ book.sample_url | default('#', true) }}" class="btn-read-sample">{{ sections.sample_label | default("Read a Sample", true) }}</a>
                 </div>
-            </section>
-
-            <section class="covers-section">
-                <div class="covers-container">
-                    <div class="covers-header">
-                        <h2 class="covers-title">What the book <span class="highlight-blue">covers</span></h2>
-                        <p class="covers-subtitle">
-                            Rather than looking at unconscious bias from a single perspective, the book examines it from many angles. It explores:
-                        </p>
-                    </div>
-
-                    <div class="covers-layout">
-                        <div class="covers-row covers-row-4">
-                            <div class="cover-card">
-                                <div class="cover-card-num">01</div>
-                                <h3 class="cover-card-title">How unconscious<br />bias develops</h3>
-                                <p class="cover-card-desc">The neuroscience of pattern-matching — and why it isn’t a moral failing.</p>
-                            </div>
-
-                            <div class="cover-card">
-                                <div class="cover-card-num">02</div>
-                                <h3 class="cover-card-title">Why our brains rely<br />on shortcuts</h3>
-                                <p class="cover-card-desc">The cognitive load equation and how shortcuts became survival tools.</p>
-                            </div>
-
-                            <div class="cover-card">
-                                <div class="cover-card-num">03</div>
-                                <h3 class="cover-card-title">What shapes our<br />assumptions</h3>
-                                <p class="cover-card-desc">Upbringing, culture, media, and the invisible curriculum we all absorb.</p>
-                            </div>
-
-                            <div class="cover-card">
-                                <div class="cover-card-num">04</div>
-                                <h3 class="cover-card-title">How bias influences<br />decisions at work</h3>
-                                <p class="cover-card-desc">From hiring and promotions to the meetings you don’t get invited to.</p>
-                            </div>
-                        </div>
-
-                        <div class="covers-row covers-row-3">
-                            <div class="cover-card">
-                                <div class="cover-card-num">05</div>
-                                <h3 class="cover-card-title">Practical ways to reduce bias</h3>
-                                <p class="cover-card-desc">Everyday habits, team rituals, and structural fixes that actually stick.</p>
-                            </div>
-
-                            <div class="cover-card">
-                                <div class="cover-card-num">06</div>
-                                <h3 class="cover-card-title">Bias and emerging<br />technologies</h3>
-                                <p class="cover-card-desc">What happens when biased data trains models we then trust to be neutral.</p>
-                            </div>
-
-                            <div class="cover-card">
-                                <div class="cover-card-num">07</div>
-                                <h3 class="cover-card-title">Why self-awareness is hard</h3>
-                                <p class="cover-card-desc">The paradox at the heart of introspection — and how to work around it.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="highlights-section">
-                <div class="highlights-container">
-                    <div class="covers-header">
-                        <h2 class="covers-title">Book <span class="highlight-blue">highlights</span></h2>
-                    </div>
-
-                    <div class="highlights-layout">
-                        <div class="highlights-row highlights-row-3">
-                            <div class="highlight-card">
-                                <div class="highlight-card-num">01</div>
-                                <p class="highlight-card-text">Evidence-based insights from psychology and behavioural science</p>
-                            </div>
-
-                            <div class="highlight-card">
-                                <div class="highlight-card-num">02</div>
-                                <p class="highlight-card-text">Practical workplace applications and real-world examples</p>
-                            </div>
-
-                            <div class="highlight-card">
-                                <div class="highlight-card-num">03</div>
-                                <p class="highlight-card-text">Self-reflection exercises to help identify personal biases</p>
-                            </div>
-                        </div>
-
-                        <div class="highlights-row highlights-row-2">
-                            <div class="highlight-card">
-                                <div class="highlight-card-num">04</div>
-                                <p class="highlight-card-text">Actionable strategies for individuals and organisations</p>
-                            </div>
-
-                            <div class="highlight-card">
-                                <div class="highlight-card-num">05</div>
-                                <p class="highlight-card-text">Balanced approach focused on empathy & behavioural change</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="target-audience-section">
-                <div class="target-audience-container">
-                    <div class="audience-header">
-                        <h2 class="audience-section-title">Who should read this book</h2>
-                        <p class="audience-section-subtitle">The book is ideal for</p>
-                    </div>
-
-                    <div class="audience-cards-grid">
-                        <div class="audience-grid-row audience-row-top">
-                            <div class="audience-card">Business Leaders</div>
-                            <div class="audience-card">HR Professionals</div>
-                            <div class="audience-card">Curious readers</div>
-                            <div class="audience-card">Recruiters & Talent</div>
-                            <div class="audience-card">DEI Practitioners</div>
-                        </div>
-                        <div class="audience-grid-row audience-row-bottom">
-                            <div class="audience-card">Managers & Team Leads</div>
-                            <div class="audience-card">Educators & Students</div>
-                            <div class="audience-card">Org Development Pros</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="cta-banner-section">
-                <div class="cta-banner-card">
-                    <div class="cta-banner-left">
-                        <h2 class="cta-banner-title">The Hidden Lens</h2>
-                        <p class="cta-banner-desc">
-                            Pick up your copy of The Hidden Lens — in hardcover or as an eBook and start noticing what you’ve been trained to overlook.
-                        </p>
-                        <a href="#" class="btn-cta-purchase">Purchase for ₹599 →</a>
-                    </div>
-                    <div class="cta-3d-cards-wrapper">
-                        <img src="/static/images/remaster-homepage/magazine-books/book-founder-issue.png" alt="The Founder Issue - BOL Magazine" class="cta-cards-img" />
-                    </div>
-                </div>
-            </section>
-
-            <section class="more-books-section">
-                <div class="more-books-container">
-                    <div class="more-books-header">
-                        <h2 class="more-books-title">More from <span class="highlight-blue">BOL</span></h2>
-                        <a href="/magazine_remaster" class="btn-browse-all">Browse all books →</a>
-                    </div>
-
-                    <div class="more-books-grid">
-                        <div class="book-item-card">
-                            <div class="book-item-cover cover-gradient-1">
-                                <div class="book-item-cover-header">
-                                    <span class="book-item-brand">BOL</span>
-                                    <span class="book-item-tag">SUMMER 2026 · 11</span>
-                                </div>
-                                <div class="book-item-line"></div>
-                                <h3 class="book-item-cover-title">The<br />Comeback<br />Issue</h3>
-                                <div class="book-item-bg-num">11</div>
-                            </div>
-                            <div class="book-item-info">
-                                <div class="book-item-meta">
-                                    <span class="book-item-cat">LEADERSHIP</span>
-                                    <span class="book-item-dot">·</span>
-                                    <span class="book-item-pages">224 PAGES</span>
-                                </div>
-                                <h4 class="book-item-title">The Comeback Issue</h4>
-                                <div class="book-item-author">by Aditya Raghavan</div>
-                                <div class="book-item-price">₹549</div>
-                            </div>
-                        </div>
-
-                        <div class="book-item-card">
-                            <div class="book-item-cover cover-gradient-2">
-                                <div class="book-item-cover-header">
-                                    <span class="book-item-brand">BOL</span>
-                                    <span class="book-item-tag">SPRING 2026 · 10</span>
-                                </div>
-                                <div class="book-item-line"></div>
-                                <h3 class="book-item-cover-title">The<br />Second<br />Career</h3>
-                                <div class="book-item-bg-num">10</div>
-                            </div>
-                            <div class="book-item-info">
-                                <div class="book-item-meta">
-                                    <span class="book-item-cat">LEADERSHIP</span>
-                                    <span class="book-item-dot">·</span>
-                                    <span class="book-item-pages">224 PAGES</span>
-                                </div>
-                                <h4 class="book-item-title">The Second Career</h4>
-                                <div class="book-item-author">by Aditya Raghavan</div>
-                                <div class="book-item-price">₹549</div>
-                            </div>
-                        </div>
-
-                        <div class="book-item-card">
-                            <div class="book-item-cover cover-gradient-3">
-                                <div class="book-item-cover-header">
-                                    <span class="book-item-brand">BOL</span>
-                                    <span class="book-item-tag">WINTER 2025 · 09</span>
-                                </div>
-                                <div class="book-item-line"></div>
-                                <h3 class="book-item-cover-title">Money<br />&<br />Meaning</h3>
-                                <div class="book-item-bg-num">09</div>
-                            </div>
-                            <div class="book-item-info">
-                                <div class="book-item-meta">
-                                    <span class="book-item-cat">LEADERSHIP</span>
-                                    <span class="book-item-dot">·</span>
-                                    <span class="book-item-pages">224 PAGES</span>
-                                </div>
-                                <h4 class="book-item-title">Money & Meaning</h4>
-                                <div class="book-item-author">by Aditya Raghavan</div>
-                                <div class="book-item-price">₹549</div>
-                            </div>
-                        </div>
-
-                        <div class="book-item-card">
-                            <div class="book-item-cover cover-gradient-4">
-                                <div class="book-item-cover-header">
-                                    <span class="book-item-brand">BOL</span>
-                                    <span class="book-item-tag">AUTUMN 2025 · 08</span>
-                                </div>
-                                <div class="book-item-line"></div>
-                                <h3 class="book-item-cover-title">Boards.<br />Not<br />Bosses.</h3>
-                                <div class="book-item-bg-num">08</div>
-                            </div>
-                            <div class="book-item-info">
-                                <div class="book-item-meta">
-                                    <span class="book-item-cat">LEADERSHIP</span>
-                                    <span class="book-item-dot">·</span>
-                                    <span class="book-item-pages">224 PAGES</span>
-                                </div>
-                                <h4 class="book-item-title">The Quiet Founder</h4>
-                                <div class="book-item-author">by Aditya Raghavan</div>
-                                <div class="book-item-price">₹549</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <footer class="remaster-footer section-container">
-                <div class="remaster-footer-top">
-                    <div class="remaster-footer-brand">
-                        <div class="remaster-footer-logo-box">
-                            <img
-                                src="/static/images/header_logo.png"
-                                alt="Brands Out Loud"
-                            />
-                        </div>
-                        <h2 class="remaster-footer-tagline">
-                            Where Expertise<br />Becomes Influence.
-                        </h2>
-                    </div>
-                    <div class="remaster-footer-links-container">
-                        <div class="remaster-footer-col">
-                            <div class="remaster-footer-col-title">
-                                DISCOVER
-                            </div>
-                            <a href="/blog_remaster" class="remaster-footer-link"
-                                >Blog</a
-                            >
-                            <a href="/magazine_remaster" class="remaster-footer-link"
-                                >Magazine</a
-                            >
-                            <a href="/" class="remaster-footer-link"
-                                >Contact</a
-                            >
-                        </div>
-                        <div class="remaster-footer-col">
-                            <div class="remaster-footer-col-title">COMPANY</div>
-                            <a href="#" class="remaster-footer-link">About</a>
-                            <a href="#" class="remaster-footer-link"
-                                >Return Policy</a
-                            >
-                            <a href="#" class="remaster-footer-link">Privacy</a>
-                            <a href="#" class="remaster-footer-link"
-                                >Terms & Conditions</a
-                            >
-                        </div>
-                        <div class="remaster-footer-col">
-                            <div class="remaster-footer-col-title">CONNECT</div>
-                            <a href="#" class="remaster-footer-link"
-                                >Instagram</a
-                            >
-                            <a href="#" class="remaster-footer-link"
-                                >LinkedIn</a
-                            >
-                            <a href="#" class="remaster-footer-link"
-                                >X (Twitter)</a
-                            >
-                            <a href="#" class="remaster-footer-link">YouTube</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="remaster-footer-divider"></div>
-                <div class="remaster-footer-bottom">
-                    <div class="remaster-footer-copyright">
-                        © 2026 Brands Out Loud
-                    </div>
-                </div>
-            </footer>
+            </div>
         </div>
-        <script>
-            function toggleMobileMenu() {
-                const menu = document.getElementById("mobileMenu");
-                const icon = document.getElementById("mobileMenuIcon");
-                if (menu.classList.contains("active")) {
-                    menu.classList.remove("active");
-                    icon.classList.remove("ph-x");
-                    icon.classList.add("ph-list");
-                } else {
-                    menu.classList.add("active");
-                    icon.classList.remove("ph-list");
-                    icon.classList.add("ph-x");
-                }
-            }
-        </script>
-    </body>
-</html>
+    </section>
+
+    {% if about.quote or about.paragraphs %}
+    <section class="about-book-section" data-bol-section="sections">
+        <div class="about-book-container">
+            <div class="about-book-left">
+                <h2 class="about-section-heading">{{ sections.about_title }}</h2>
+                {% if about.quote %}
+                <div class="about-quote-box">
+                    <span class="about-quote-mark">“</span>
+                    <p class="about-quote-text">{{ about.quote }}</p>
+                    <span class="about-quote-mark quote-right">“</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="about-book-right">
+                {% for paragraph in about.paragraphs %}
+                <p class="about-paragraph">{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if covers %}
+    <section class="covers-section" data-bol-section="sections">
+        <div class="covers-container">
+            <div class="covers-header">
+                <h2 class="covers-title">{{ sections.covers_title | safe }}</h2>
+                {% if sections.covers_subtitle %}<p class="covers-subtitle">{{ sections.covers_subtitle }}</p>{% endif %}
+            </div>
+
+            <div class="covers-layout">
+                <div class="covers-row covers-row-4">
+                    {% for card in covers[:4] %}
+                    <div class="cover-card">
+                        <div class="cover-card-num">{{ card.num }}</div>
+                        <h3 class="cover-card-title">{{ card.title | safe }}</h3>
+                        <p class="cover-card-desc">{{ card.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if covers | length > 4 %}
+                <div class="covers-row covers-row-3">
+                    {% for card in covers[4:] %}
+                    <div class="cover-card">
+                        <div class="cover-card-num">{{ card.num }}</div>
+                        <h3 class="cover-card-title">{{ card.title | safe }}</h3>
+                        <p class="cover-card-desc">{{ card.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if highlights %}
+    <section class="highlights-section" data-bol-section="sections">
+        <div class="highlights-container">
+            <div class="covers-header">
+                <h2 class="covers-title">{{ sections.highlights_title | safe }}</h2>
+            </div>
+
+            <div class="highlights-layout">
+                <div class="highlights-row highlights-row-3">
+                    {% for card in highlights[:3] %}
+                    <div class="highlight-card">
+                        <div class="highlight-card-num">{{ card.num }}</div>
+                        <p class="highlight-card-text">{{ card.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if highlights | length > 3 %}
+                <div class="highlights-row highlights-row-2">
+                    {% for card in highlights[3:] %}
+                    <div class="highlight-card">
+                        <div class="highlight-card-num">{{ card.num }}</div>
+                        <p class="highlight-card-text">{{ card.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if audience %}
+    <section class="target-audience-section" data-bol-section="sections">
+        <div class="target-audience-container">
+            <div class="audience-header">
+                <h2 class="audience-section-title">{{ sections.audience_title }}</h2>
+                {% if sections.audience_subtitle %}<p class="audience-section-subtitle">{{ sections.audience_subtitle }}</p>{% endif %}
+            </div>
+
+            <div class="audience-cards-grid">
+                <div class="audience-grid-row audience-row-top">
+                    {% for item in audience[:5] %}
+                    <div class="audience-card">{{ item }}</div>
+                    {% endfor %}
+                </div>
+                {% if audience | length > 5 %}
+                <div class="audience-grid-row audience-row-bottom">
+                    {% for item in audience[5:] %}
+                    <div class="audience-card">{{ item }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="cta-banner-section">
+        <div class="cta-banner-card">
+            <div class="cta-banner-left">
+                <h2 class="cta-banner-title">{{ cta_banner.title | default(book.title, true) }}</h2>
+                {% if cta_banner.description %}<p class="cta-banner-desc">{{ cta_banner.description }}</p>{% endif %}
+                <a href="{{ book.store_url | default('#', true) }}" class="btn-cta-purchase" target="_blank" rel="noopener noreferrer">{{ cta_banner.cta_label | default("Purchase for", true) }}{% if price.current %} {{ price.current }}{% endif %} →</a>
+            </div>
+            <div class="cta-3d-cards-wrapper">
+                <img src="{{ cta_banner.image_url | default('/static/images/remaster-homepage/magazine-books/book-founder-issue.png', true) }}" alt="{{ book.title }}" class="cta-cards-img" />
+            </div>
+        </div>
+    </section>
+
+    {% if more_books %}
+    <section class="more-books-section" data-bol-section="sections">
+        <div class="more-books-container">
+            <div class="more-books-header">
+                <h2 class="more-books-title">{{ sections.more_books_title | safe }}</h2>
+                <a href="{{ browse_all.href | default('/magazine', true) }}" class="btn-browse-all">{{ browse_all.label | default("Browse all books →", true) }}</a>
+            </div>
+
+            <div class="more-books-grid">
+                {% for item in more_books %}
+                <a href="{{ item.url }}" class="book-item-card">
+                    <div class="book-item-cover {{ item.cover_variant }}">
+                        <div class="book-item-cover-header">
+                            <span class="book-item-brand">{{ item.brand }}</span>
+                            <span class="book-item-tag">{{ item.tag }}</span>
+                        </div>
+                        <div class="book-item-line"></div>
+                        <h3 class="book-item-cover-title">{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h3>
+                        <div class="book-item-bg-num">{{ item.background_number }}</div>
+                    </div>
+                    <div class="book-item-info">
+                        <div class="book-item-meta">
+                            <span class="book-item-cat">{{ item.category | upper }}</span>
+                            <span class="book-item-dot">·</span>
+                            <span class="book-item-pages">{{ item.pages_label | upper }}</span>
+                        </div>
+                        <h4 class="book-item-title">{{ item.title }}</h4>
+                        {% if item.author_name %}<div class="book-item-author">by {{ item.author_name }}</div>{% endif %}
+                        {% if item.price and item.price.current %}<div class="book-item-price">{{ item.price.current }}</div>{% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{
+    "seo": {
+        "title": "Magazine Issue | Brands Out Loud",
+        "description": "Every book published in this issue of the Brands Out Loud magazine.",
+        "og_image": ""
+    },
+    "sections": {
+        "books_title": "Books in <span class=\"highlight-blue\">this issue</span>",
+        "empty_message": "No books have been published in this issue yet.",
+        "browse_all": {
+            "label": "Browse all issues →",
+            "href": "/magazine"
+        }
+    }
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}{{ seo.title | default("Brands Out Loud") }}{% endblock %}</title>
+        <meta name="description" content="{{ seo.description | default('') }}" />
+        {% if seo and seo.og_image %}<meta property="og:image" content="{{ seo.og_image }}" />{% endif %}
+        <link rel="icon" type="image/png" href="{{ site.nav.logo_url }}" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=IBM+Plex+Sans:wght@600&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Roboto:wght@500&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <link rel="stylesheet" href="/static/css/homepage_remaster.css?v={{ asset_version }}" />
+        {% block page_css %}{% endblock %}
+    </head>
+    <body>
+        <div class="page-wrapper">
+            {% include 'partials/remaster_nav.html' %}
+            {% block content %}{% endblock %}
+            {% include 'partials/remaster_footer.html' %}
+        </div>
+        <script>
+            function toggleMobileMenu() {
+                const menu = document.getElementById("mobileMenu");
+                const icon = document.getElementById("mobileMenuIcon");
+                if (menu.classList.contains("active")) {
+                    menu.classList.remove("active");
+                    icon.classList.remove("ph-x", "open");
+                    icon.classList.add("ph-list");
+                } else {
+                    menu.classList.add("active");
+                    icon.classList.remove("ph-list");
+                    icon.classList.add("ph-x", "open");
+                }
+            }
+        </script>
+        {% block page_js %}{% endblock %}
+    </body>
+</html>

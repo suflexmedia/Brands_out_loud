@@ -1,0 +1,10 @@
+{
+    "_id": "blog_categories",
+    "categories": [
+        { "slug": "authority", "label": "Authority", "order": 1 },
+        { "slug": "publishing", "label": "Publishing", "order": 2 },
+        { "slug": "branding", "label": "Branding", "order": 3 },
+        { "slug": "speaking", "label": "Speaking", "order": 4 },
+        { "slug": "legacy", "label": "Legacy", "order": 5 }
+    ]
+}

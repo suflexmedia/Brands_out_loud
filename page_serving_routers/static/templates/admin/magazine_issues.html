@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Magazine Issues - Admin</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/static/css/admin.css?v=7" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <span class="navbar-brand">BOL ADMIN</span>
+                <span class="navbar-page-title" id="view-title"
+                    >Magazine Issues</span
+                >
+            </div>
+            <div class="navbar-actions">
+                <span id="user-greeting"></span>
+                <button
+                    id="btn-back"
+                    class="btn btn-small"
+                    style="display: none"
+                >
+                    &larr; Back
+                </button>
+                <button id="btn-add" class="btn btn-small btn-primary">
+                    + New Issue
+                </button>
+                <button
+                    id="btn-save"
+                    class="btn btn-small btn-primary"
+                    style="display: none"
+                >
+                    Save
+                </button>
+                <a href="/admin/dashboard" class="nav-back">&larr; Dashboard</a>
+                <a href="/admin/logout" class="logout-btn">Log off</a>
+            </div>
+        </nav>
+
+        <div class="workspace">
+            <div class="edit-panel full">
+                <div class="edit-body" id="view-mount"></div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="confirm-modal">
+            <div class="modal">
+                <h3>Confirm delete</h3>
+                <p id="confirm-text"></p>
+                <div class="modal-actions">
+                    <button class="btn" id="confirm-cancel">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-ok">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+        <div class="loading-overlay" id="loading">Loading...</div>
+
+        <script src="/static/js/admin-editor.js?v=7"></script>
+        <script>
+            (function () {
+                const ISSUE_SKELETON = {
+                    title: "",
+                    slug: "",
+                    issue_number: "",
+                    season_label: "",
+                    badge: "",
+                    description: "",
+                    cover_image_url: "",
+                    cover_variant: "edition-bg-1",
+                    cover_title_lines: [""],
+                    brand: "BOL",
+                    stats: [{ value: "", label: "" }],
+                    meta_tags: [""],
+                    pdf_url: "",
+                    status: "published",
+                    order: 0,
+                };
+
+                const BOOK_SKELETON = {
+                    title: "",
+                    slug: "",
+                    subtitle: "",
+                    author_name: "",
+                    author_avatar_url: "",
+                    category: "",
+                    pages_label: "",
+                    price: { current: "", original: "", discount_label: "" },
+                    brand: "BOL",
+                    tag: "",
+                    cover_image_url: "",
+                    cover_variant: "cover-gradient-1",
+                    cover_title_lines: [""],
+                    background_number: "",
+                    description: "",
+                    badges: [""],
+                    rating: { score: "", stars: 5 },
+                    store_url: "",
+                    sample_url: "",
+                    about: { quote: "", paragraphs: [""] },
+                    covers: [{ num: "01", title: "", desc: "" }],
+                    highlights: [{ num: "01", text: "" }],
+                    audience: [""],
+                    cta_banner: { title: "", description: "", cta_label: "" },
+                    status: "published",
+                    order: 0,
+                };
+
+                let state = {
+                    view: "issues",
+                    issueSlug: null,
+                    issueTitle: "",
+                    readEditor: null,
+                    mode: null,
+                    editingSlug: null,
+                };
+                let pendingDelete = null;
+
+                const mount = document.getElementById("view-mount");
+                const btnAdd = document.getElementById("btn-add");
+                const btnBack = document.getElementById("btn-back");
+                const btnSave = document.getElementById("btn-save");
+                const title = document.getElementById("view-title");
+
+                function merge(skeleton, actual) {
+                    const result = JSON.parse(JSON.stringify(skeleton));
+                    Object.keys(actual || {}).forEach(function (key) {
+                        if (key in result) result[key] = actual[key];
+                    });
+                    return result;
+                }
+
+                function setChrome(view) {
+                    btnBack.style.display =
+                        view === "issues" ? "none" : "inline-block";
+                    btnSave.style.display =
+                        view === "form" ? "inline-block" : "none";
+                    btnAdd.style.display =
+                        view === "form" ? "none" : "inline-block";
+                    btnAdd.textContent =
+                        view === "books" ? "+ New Book" : "+ New Issue";
+                }
+
+                async function api(url, options) {
+                    const response = await fetch(url, options);
+                    const data = await response.json().catch(function () {
+                        return {};
+                    });
+                    if (!response.ok)
+                        throw new Error(data.detail || "Request failed");
+                    return data;
+                }
+
+                async function showIssues() {
+                    state = {
+                        view: "issues",
+                        issueSlug: null,
+                        readEditor: null,
+                        mode: null,
+                        editingSlug: null,
+                    };
+                    setChrome("issues");
+                    title.textContent = "Magazine Issues";
+                    AdminEditor.setLoading(true);
+                    try {
+                        const issues = await api("/admin/api/magazine/issues");
+                        if (!issues.length) {
+                            mount.innerHTML =
+                                '<div class="empty-state">No issues yet. Create your first issue to start adding books.</div>';
+                            return;
+                        }
+                        mount.innerHTML = "";
+                        const grid = document.createElement("div");
+                        grid.className = "list-grid";
+                        issues.forEach(function (issue) {
+                            const card = document.createElement("div");
+                            card.className = "list-card";
+                            card.innerHTML =
+                                "<h3></h3><div class='list-card-meta'></div><div class='list-card-actions'></div>";
+                            card.querySelector("h3").textContent = issue.title;
+                            card.querySelector(".list-card-meta").textContent =
+                                "/" +
+                                issue.slug +
+                                " · " +
+                                (issue.status || "published");
+
+                            const actions =
+                                card.querySelector(".list-card-actions");
+                            const open = document.createElement("button");
+                            open.className = "btn btn-small btn-primary";
+                            open.textContent = "Books";
+                            open.addEventListener("click", function () {
+                                showBooks(issue.slug, issue.title);
+                            });
+                            const edit = document.createElement("button");
+                            edit.className = "btn btn-small";
+                            edit.textContent = "Edit";
+                            edit.addEventListener("click", function () {
+                                showForm("issue", issue.slug, issue);
+                            });
+                            const del = document.createElement("button");
+                            del.className = "btn btn-small btn-danger";
+                            del.textContent = "Delete";
+                            del.addEventListener("click", function () {
+                                askDelete(
+                                    'Delete issue "' + issue.title + '"?',
+                                    "/admin/api/magazine/issues/" + issue.slug,
+                                );
+                            });
+                            actions.appendChild(open);
+                            actions.appendChild(edit);
+                            actions.appendChild(del);
+                            grid.appendChild(card);
+                        });
+                        mount.appendChild(grid);
+                    } catch (error) {
+                        AdminEditor.showToast(error.message, true);
+                    } finally {
+                        AdminEditor.setLoading(false);
+                    }
+                }
+
+                async function showBooks(issueSlug, issueTitle) {
+                    state = {
+                        view: "books",
+                        issueSlug: issueSlug,
+                        issueTitle: issueTitle || state.issueTitle || issueSlug,
+                        readEditor: null,
+                        mode: null,
+                        editingSlug: null,
+                    };
+                    setChrome("books");
+                    title.textContent = "Books in " + state.issueTitle;
+                    AdminEditor.setLoading(true);
+                    try {
+                        const books = await api(
+                            "/admin/api/magazine/issues/" +
+                                issueSlug +
+                                "/books",
+                        );
+                        if (!books.length) {
+                            mount.innerHTML =
+                                '<div class="empty-state">No books in this issue yet.</div>';
+                            return;
+                        }
+                        mount.innerHTML = "";
+                        const grid = document.createElement("div");
+                        grid.className = "list-grid";
+                        books.forEach(function (book) {
+                            const card = document.createElement("div");
+                            card.className = "list-card";
+                            card.innerHTML =
+                                "<h3></h3><div class='list-card-meta'></div><div class='list-card-actions'></div>";
+                            card.querySelector("h3").textContent = book.title;
+                            card.querySelector(".list-card-meta").textContent =
+                                "/magazine/" + issueSlug + "/" + book.slug;
+
+                            const actions =
+                                card.querySelector(".list-card-actions");
+                            const edit = document.createElement("button");
+                            edit.className = "btn btn-small";
+                            edit.textContent = "Edit";
+                            edit.addEventListener("click", function () {
+                                showForm("book", book.slug, book);
+                            });
+                            const del = document.createElement("button");
+                            del.className = "btn btn-small btn-danger";
+                            del.textContent = "Delete";
+                            del.addEventListener("click", function () {
+                                askDelete(
+                                    'Delete book "' + book.title + '"?',
+                                    "/admin/api/magazine/issues/" +
+                                        issueSlug +
+                                        "/books/" +
+                                        book.slug,
+                                );
+                            });
+                            actions.appendChild(edit);
+                            actions.appendChild(del);
+                            grid.appendChild(card);
+                        });
+                        mount.appendChild(grid);
+                    } catch (error) {
+                        AdminEditor.showToast(error.message, true);
+                    } finally {
+                        AdminEditor.setLoading(false);
+                    }
+                }
+
+                function showForm(kind, slug, data) {
+                    state.mode = kind;
+                    state.editingSlug = slug;
+                    state.view = "form";
+                    setChrome("form");
+                    title.textContent =
+                        (slug ? "Edit " : "New ") +
+                        (kind === "issue" ? "Issue" : "Book");
+                    const skeleton =
+                        kind === "issue" ? ISSUE_SKELETON : BOOK_SKELETON;
+                    state.readEditor = AdminEditor.renderEditor(
+                        "view-mount",
+                        merge(skeleton, data),
+                    );
+                }
+
+                async function save() {
+                    if (!state.readEditor) return;
+                    const payload = state.readEditor();
+                    const isIssue = state.mode === "issue";
+                    const base = isIssue
+                        ? "/admin/api/magazine/issues"
+                        : "/admin/api/magazine/issues/" +
+                          state.issueSlug +
+                          "/books";
+                    const url = state.editingSlug
+                        ? base + "/" + state.editingSlug
+                        : base;
+                    AdminEditor.setLoading(true);
+                    try {
+                        const data = await api(url, {
+                            method: state.editingSlug ? "PUT" : "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload),
+                        });
+                        AdminEditor.showToast(data.message || "Saved");
+                        if (isIssue) await showIssues();
+                        else await showBooks(state.issueSlug, state.issueSlug);
+                    } catch (error) {
+                        AdminEditor.showToast(error.message, true);
+                    } finally {
+                        AdminEditor.setLoading(false);
+                    }
+                }
+
+                function askDelete(text, url) {
+                    pendingDelete = url;
+                    document.getElementById("confirm-text").textContent = text;
+                    document
+                        .getElementById("confirm-modal")
+                        .classList.add("visible");
+                }
+
+                document
+                    .getElementById("confirm-cancel")
+                    .addEventListener("click", function () {
+                        pendingDelete = null;
+                        document
+                            .getElementById("confirm-modal")
+                            .classList.remove("visible");
+                    });
+
+                document
+                    .getElementById("confirm-ok")
+                    .addEventListener("click", async function () {
+                        if (!pendingDelete) return;
+                        document
+                            .getElementById("confirm-modal")
+                            .classList.remove("visible");
+                        AdminEditor.setLoading(true);
+                        try {
+                            const data = await api(pendingDelete, {
+                                method: "DELETE",
+                            });
+                            AdminEditor.showToast(data.message || "Deleted");
+                            if (state.view === "books")
+                                await showBooks(
+                                    state.issueSlug,
+                                    state.issueSlug,
+                                );
+                            else await showIssues();
+                        } catch (error) {
+                            AdminEditor.showToast(error.message, true);
+                        } finally {
+                            pendingDelete = null;
+                            AdminEditor.setLoading(false);
+                        }
+                    });
+
+                btnAdd.addEventListener("click", function () {
+                    showForm(
+                        state.view === "books" ? "book" : "issue",
+                        null,
+                        {},
+                    );
+                });
+
+                btnBack.addEventListener("click", function () {
+                    if (state.view === "form" && state.mode === "book")
+                        showBooks(state.issueSlug, state.issueSlug);
+                    else showIssues();
+                });
+
+                btnSave.addEventListener("click", save);
+
+                document.addEventListener(
+                    "DOMContentLoaded",
+                    async function () {
+                        const user = await AdminEditor.requireSession();
+                        if (!user) return;
+                        await showIssues();
+                    },
+                );
+            })();
+        </script>
+    </body>
+</html>

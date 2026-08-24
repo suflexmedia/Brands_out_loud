@@ -1,0 +1,36 @@
+{
+    "seo": {
+        "title": "Contact - Brands Out Loud",
+        "description": "Talk to the Brands Out Loud team about turning your expertise into a published book.",
+        "og_image": ""
+    },
+    "hero": {
+        "title": "Let's turn your expertise into influence.",
+        "subtitle": "Tell us about your work and we will come back to you with the right next step."
+    },
+    "form": {
+        "title": "Book a call",
+        "submit_label": "Send message →",
+        "note": "We reply to every enquiry within two working days.",
+        "success_message": "Thanks — we have your details and will be in touch shortly."
+    },
+    "details": [
+        {
+            "title": "EMAIL",
+            "lines": [{ "label": "hello@brandsoutloud.com", "href": "mailto:hello@brandsoutloud.com" }]
+        },
+        {
+            "title": "FOLLOW",
+            "lines": [
+                { "label": "Instagram", "href": "#" },
+                { "label": "LinkedIn", "href": "#" },
+                { "label": "X (Twitter)", "href": "#" },
+                { "label": "YouTube", "href": "#" }
+            ]
+        },
+        {
+            "title": "OFFICE HOURS",
+            "lines": [{ "label": "Monday to Friday, 10:00 - 18:00 IST" }]
+        }
+    ]
+}

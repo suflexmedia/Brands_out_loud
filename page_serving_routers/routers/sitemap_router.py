@@ -1,336 +1,157 @@
-"""
-Dynamic XML Sitemap generation for Brands Out Loud.
+"""Generates the sitemap index, page sitemaps and robots.txt for the new URL scheme."""
 
-Generates 7 sitemaps + a sitemap index:
-  1. sitemap-main.xml       – Homepage, magazine homepage, 5 service pages
-  2. sitemap-business.xml   – /business + its blogs
-  3. sitemap-technology.xml – /technology + its blogs
-  4. sitemap-gcc.xml        – /gcc + its blogs
-  5. sitemap-sustainability.xml – /sustainability + its blogs
-  6. sitemap-semiconductor.xml  – /semiconductor + its blogs
-  7. sitemap-magazine.xml   – /magazine + all published magazines
-
-All sitemaps are cached for 1 hour and auto-invalidated when
-blogs or magazines are created/updated/deleted.
-"""
-
-from fastapi import APIRouter, Request
-from fastapi.responses import Response
 from datetime import datetime, timezone
-import json
+from xml.sax.saxutils import escape
 
-from database_handler import db_handler
+from fastapi import APIRouter, Response
+
 from cache_manager import cache_manager
+from database_handler import db_handler
 
 router = APIRouter()
 
 SITE_URL = "https://brandsoutloud.com"
-SERVICE_CATEGORIES = ["business", "technology", "gcc", "sustainability", "semiconductor"]
 
-XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>\n'
-
-
-def _format_date(dt) -> str:
-    """Convert a datetime or timestamp to W3C date format for sitemaps."""
-    if dt is None:
-        return datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    if isinstance(dt, (int, float)):
-        return datetime.fromtimestamp(dt, tz=timezone.utc).strftime("%Y-%m-%d")
-    if isinstance(dt, datetime):
-        return dt.strftime("%Y-%m-%d")
-    if isinstance(dt, str):
-        try:
-            parsed = datetime.fromisoformat(dt.replace("Z", "+00:00"))
-            return parsed.strftime("%Y-%m-%d")
-        except (ValueError, TypeError):
-            pass
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+STATIC_PATHS = [
+    ("/", "1.0", "daily"),
+    ("/blog", "0.9", "daily"),
+    ("/magazine", "0.9", "weekly"),
+    ("/contact", "0.5", "yearly"),
+]
 
 
-def _xml_response(content: str) -> Response:
-    """Return an XML response with proper content type and cache headers."""
-    return Response(
-        content=content,
-        media_type="application/xml",
-        headers={"Cache-Control": "public, max-age=3600"},
+def _format_date(value) -> str:
+    """Renders a stored timestamp of any supported type as an ISO date."""
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value, tz=timezone.utc).date().isoformat()
+    if isinstance(value, str) and value:
+        return value[:10]
+    return datetime.now(tz=timezone.utc).date().isoformat()
+
+
+def _url_entry(path: str, lastmod: str, priority: str, changefreq: str) -> str:
+    """Builds one url block."""
+    return (
+        "  <url>\n"
+        f"    <loc>{escape(SITE_URL + path)}</loc>\n"
+        f"    <lastmod>{lastmod}</lastmod>\n"
+        f"    <changefreq>{changefreq}</changefreq>\n"
+        f"    <priority>{priority}</priority>\n"
+        "  </url>\n"
     )
 
 
-def _url_entry(loc: str, lastmod: str = None, changefreq: str = None, priority: str = None) -> str:
-    """Build a single <url> entry."""
-    parts = [f"  <url>\n    <loc>{loc}</loc>"]
-    if lastmod:
-        parts.append(f"    <lastmod>{lastmod}</lastmod>")
-    if changefreq:
-        parts.append(f"    <changefreq>{changefreq}</changefreq>")
-    if priority:
-        parts.append(f"    <priority>{priority}</priority>")
-    parts.append("  </url>")
-    return "\n".join(parts)
+def _wrap(entries: str) -> str:
+    """Wraps url entries in a urlset document."""
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{entries}"
+        "</urlset>\n"
+    )
 
 
-# ---------------------------------------------------------------------------
-# Helpers to fetch data from MongoDB
-# ---------------------------------------------------------------------------
-
-async def _fetch_published_blogs_by_category(category: str) -> list:
-    """Fetch all published blogs for a given category."""
-    db = db_handler.get_db()
-    cursor = db["blogs"].find(
-        {
-            "isDeleted": {"$ne": True},
-            "status": "published",
-        },
-        {"slug": 1, "blogContent": 1, "created_at": 1, "date": 1},
-    ).sort("created_at", -1)
-
-    blogs = []
-    async for doc in cursor:
-        blog_content = doc.get("blogContent", {})
-        if isinstance(blog_content, str):
-            try:
-                blog_content = json.loads(blog_content)
-            except (json.JSONDecodeError, TypeError):
-                blog_content = {}
-
-        blog_category = blog_content.get("blogCategory", "").lower().strip()
-        if blog_category == category.lower():
-            blogs.append({
-                "slug": doc.get("slug"),
-                "lastmod": _format_date(doc.get("created_at") or doc.get("date")),
-            })
-    return blogs
+def _xml(content: str) -> Response:
+    """Returns an XML response."""
+    return Response(content=content, media_type="application/xml")
 
 
-async def _fetch_all_published_blogs() -> list:
-    """Fetch all published blogs (for sitemap index lastmod)."""
+async def _build_main() -> str:
+    """Builds the static page sitemap."""
+    today = datetime.now(tz=timezone.utc).date().isoformat()
+    entries = "".join(_url_entry(path, today, priority, freq) for path, priority, freq in STATIC_PATHS)
+    return _wrap(entries)
+
+
+async def _build_blog() -> str:
+    """Builds the sitemap of every published blog post."""
     db = db_handler.get_db()
     cursor = db["blogs"].find(
         {"isDeleted": {"$ne": True}, "status": "published"},
         {"slug": 1, "created_at": 1, "date": 1},
-    ).sort("created_at", -1).limit(1)
-
-    result = []
-    async for doc in cursor:
-        result.append({
-            "lastmod": _format_date(doc.get("created_at") or doc.get("date")),
-        })
-    return result
-
-
-async def _fetch_published_magazines() -> list:
-    """Fetch all published magazines."""
-    db = db_handler.get_db()
-    cursor = db["magazines"].find(
-        {"status": "published"},
-        {"slug": 1, "created_at": 1},
     ).sort("created_at", -1)
-
-    magazines = []
+    entries = ""
     async for doc in cursor:
-        magazines.append({
-            "slug": doc.get("slug"),
-            "lastmod": _format_date(doc.get("created_at")),
-        })
-    return magazines
+        slug = doc.get("slug")
+        if not slug:
+            continue
+        lastmod = _format_date(doc.get("date") or doc.get("created_at"))
+        entries += _url_entry(f"/blog/{slug}", lastmod, "0.6", "monthly")
+    return _wrap(entries)
 
 
-# ---------------------------------------------------------------------------
-# Sitemap Index
-# ---------------------------------------------------------------------------
+async def _build_magazine() -> str:
+    """Builds the sitemap of every published issue and book."""
+    db = db_handler.get_db()
+    entries = ""
+    async for issue in db["magazine_issues"].find({"status": "published"}, {"slug": 1, "created_at": 1}):
+        slug = issue.get("slug")
+        if not slug:
+            continue
+        entries += _url_entry(f"/magazine/{slug}", _format_date(issue.get("created_at")), "0.7", "monthly")
 
-@router.get("/sitemap.xml")
-async def sitemap_index(request: Request):
-    """Sitemap index that lists all individual sitemaps."""
-
-    async def _build():
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
-        # Get latest blog date for service sitemaps
-        latest_blogs = await _fetch_all_published_blogs()
-        blog_lastmod = latest_blogs[0]["lastmod"] if latest_blogs else today
-
-        # Get latest magazine date
-        magazines = await _fetch_published_magazines()
-        mag_lastmod = magazines[0]["lastmod"] if magazines else today
-
-        sitemaps = [
-            (f"{SITE_URL}/sitemap-main.xml", today),
-        ]
-        for cat in SERVICE_CATEGORIES:
-            sitemaps.append((f"{SITE_URL}/sitemap-{cat}.xml", blog_lastmod))
-        sitemaps.append((f"{SITE_URL}/sitemap-magazine.xml", mag_lastmod))
-
-        entries = []
-        for loc, lastmod in sitemaps:
-            entries.append(
-                f"  <sitemap>\n"
-                f"    <loc>{loc}</loc>\n"
-                f"    <lastmod>{lastmod}</lastmod>\n"
-                f"  </sitemap>"
-            )
-
-        return (
-            XML_HEADER
-            + '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            + "\n".join(entries)
-            + "\n</sitemapindex>\n"
+    async for book in db["books"].find({"status": "published"}, {"slug": 1, "issue_slug": 1, "created_at": 1}):
+        slug = book.get("slug")
+        issue_slug = book.get("issue_slug")
+        if not slug or not issue_slug:
+            continue
+        entries += _url_entry(
+            f"/magazine/{issue_slug}/{slug}", _format_date(book.get("created_at")), "0.6", "monthly"
         )
-
-    content = await cache_manager.get("sitemap_index", _build)
-    return _xml_response(content)
+    return _wrap(entries)
 
 
-# ---------------------------------------------------------------------------
-# Main Sitemap (static pages)
-# ---------------------------------------------------------------------------
-
-@router.get("/sitemap-main.xml")
-async def sitemap_main():
-    """Main sitemap with homepage, magazine homepage, and service pages."""
-
-    async def _build():
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        urls = [
-            _url_entry(SITE_URL, lastmod=today, changefreq="daily", priority="1.0"),
-            _url_entry(f"{SITE_URL}/magazine", lastmod=today, changefreq="weekly", priority="0.8"),
-        ]
-        for cat in SERVICE_CATEGORIES:
-            urls.append(
-                _url_entry(f"{SITE_URL}/{cat}", lastmod=today, changefreq="daily", priority="0.8")
-            )
-        return (
-            XML_HEADER
-            + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            + "\n".join(urls)
-            + "\n</urlset>\n"
-        )
-
-    content = await cache_manager.get("sitemap_main", _build)
-    return _xml_response(content)
-
-
-# ---------------------------------------------------------------------------
-# Service Category Sitemaps (one per category)
-# ---------------------------------------------------------------------------
-
-async def _build_service_sitemap(category: str) -> str:
-    """Build sitemap XML for a service category page and its blogs."""
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    blogs = await _fetch_published_blogs_by_category(category)
-
-    urls = [
-        _url_entry(f"{SITE_URL}/{category}", lastmod=today, changefreq="daily", priority="0.8"),
-    ]
-    for blog in blogs:
-        urls.append(
-            _url_entry(
-                f"{SITE_URL}/blog/{blog['slug']}",
-                lastmod=blog["lastmod"],
-                changefreq="monthly",
-                priority="0.6",
-            )
-        )
-
+async def _build_index() -> str:
+    """Builds the sitemap index."""
+    today = datetime.now(tz=timezone.utc).date().isoformat()
+    names = ["sitemap-main.xml", "sitemap-blog.xml", "sitemap-magazine.xml"]
+    body = "".join(
+        f"  <sitemap>\n    <loc>{SITE_URL}/{name}</loc>\n    <lastmod>{today}</lastmod>\n  </sitemap>\n"
+        for name in names
+    )
     return (
-        XML_HEADER
-        + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "\n".join(urls)
-        + "\n</urlset>\n"
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{body}"
+        "</sitemapindex>\n"
     )
 
 
-@router.get("/sitemap-business.xml")
-async def sitemap_business():
-    content = await cache_manager.get(
-        "sitemap_business", lambda: _build_service_sitemap("business")
-    )
-    return _xml_response(content)
+@router.get("/sitemap.xml", include_in_schema=False)
+async def sitemap_index():
+    """Serves the sitemap index."""
+    return _xml(await cache_manager.get("sitemap_index", _build_index))
 
 
-@router.get("/sitemap-technology.xml")
-async def sitemap_technology():
-    content = await cache_manager.get(
-        "sitemap_technology", lambda: _build_service_sitemap("technology")
-    )
-    return _xml_response(content)
+@router.get("/sitemap-main.xml", include_in_schema=False)
+async def sitemap_main():
+    """Serves the static page sitemap."""
+    return _xml(await cache_manager.get("sitemap_main", _build_main))
 
 
-@router.get("/sitemap-gcc.xml")
-async def sitemap_gcc():
-    content = await cache_manager.get(
-        "sitemap_gcc", lambda: _build_service_sitemap("gcc")
-    )
-    return _xml_response(content)
+@router.get("/sitemap-blog.xml", include_in_schema=False)
+async def sitemap_blog():
+    """Serves the blog post sitemap."""
+    return _xml(await cache_manager.get("sitemap_blog", _build_blog))
 
 
-@router.get("/sitemap-sustainability.xml")
-async def sitemap_sustainability():
-    content = await cache_manager.get(
-        "sitemap_sustainability", lambda: _build_service_sitemap("sustainability")
-    )
-    return _xml_response(content)
-
-
-@router.get("/sitemap-semiconductor.xml")
-async def sitemap_semiconductor():
-    content = await cache_manager.get(
-        "sitemap_semiconductor", lambda: _build_service_sitemap("semiconductor")
-    )
-    return _xml_response(content)
-
-
-# ---------------------------------------------------------------------------
-# Magazine Sitemap
-# ---------------------------------------------------------------------------
-
-@router.get("/sitemap-magazine.xml")
+@router.get("/sitemap-magazine.xml", include_in_schema=False)
 async def sitemap_magazine():
-    """Sitemap with magazine homepage and all published magazines."""
-
-    async def _build():
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        magazines = await _fetch_published_magazines()
-
-        urls = [
-            _url_entry(f"{SITE_URL}/magazine", lastmod=today, changefreq="weekly", priority="0.8"),
-        ]
-        for mag in magazines:
-            urls.append(
-                _url_entry(
-                    f"{SITE_URL}/magazine/{mag['slug']}",
-                    lastmod=mag["lastmod"],
-                    changefreq="monthly",
-                    priority="0.7",
-                )
-            )
-
-        return (
-            XML_HEADER
-            + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            + "\n".join(urls)
-            + "\n</urlset>\n"
-        )
-
-    content = await cache_manager.get("sitemap_magazine", _build)
-    return _xml_response(content)
+    """Serves the magazine issue and book sitemap."""
+    return _xml(await cache_manager.get("sitemap_magazine", _build_magazine))
 
 
-# ---------------------------------------------------------------------------
-# robots.txt
-# ---------------------------------------------------------------------------
-
-@router.get("/robots.txt")
-async def robots_txt():
-    """Serve robots.txt pointing to the sitemap index."""
-    content = (
+@router.get("/robots.txt", include_in_schema=False)
+async def robots():
+    """Serves robots.txt."""
+    body = (
         "User-agent: *\n"
-        "Allow: /\n"
         "Disallow: /admin/\n"
         "Disallow: /api/\n"
         "Disallow: /login\n"
         "Disallow: /static/\n"
-        "\n"
-        f"Sitemap: {SITE_URL}/sitemap.xml\n"
+        f"\nSitemap: {SITE_URL}/sitemap.xml\n"
     )
-    return Response(content=content, media_type="text/plain")
+    return Response(content=body, media_type="text/plain")

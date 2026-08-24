@@ -1,360 +1,219 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>The Future Of Business In 2025 | Brands Out Loud</title>
-        <link rel="icon" type="image/png" href="/static/images/header_logo.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ post.title }} | Brands Out Loud{% endblock %}
+
+{% block page_css %}
         <link
-            href="https://fonts.googleapis.com/css2?family=Akshar:wght@500&family=DM+Sans:wght@400;500&family=IBM+Plex+Sans:wght@600&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Akshar:wght@500&family=DM+Sans:wght@400;500&family=IBM+Plex+Sans:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         />
-        <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
-        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-        <link rel="stylesheet" href="/static/css/homepage_remaster.css?v=2" />
-        <link rel="stylesheet" href="/static/css/homepage.css?v=2" />
-        <link rel="stylesheet" href="/static/css/magazine_remaster.css?v=1" />
-        <link rel="stylesheet" href="/static/css/blog_page_remaster.css?v=4" />
-    </head>
-    <body>
+        <link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+        <link rel="stylesheet" href="/static/css/blog_page_remaster.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+{% set faq = content.get('faq', {}) %}
+{% set faq_items = faq.get('items', []) %}
+{% set modal = content.get('download_modal', {}) %}
+{% set sidebar = content.get('sidebar', {}) %}
         <div class="blog-page-wrapper">
-            <nav class="remaster-navbar">
-                <div class="remaster-nav-left">
-                    <i
-                        class="ph ph-list mobile-menu-icon"
-                        id="mobileMenuIcon"
-                        onclick="toggleMobileMenu()"
-                    ></i>
-                    <a href="/"
-                        ><img
-                            src="/static/images/header_logo.png"
-                            alt="Logo"
-                            class="remaster-nav-logo"
-                    /></a>
-                </div>
-                <div class="remaster-nav-center">
-                    <a href="/magazine_remaster" class="remaster-nav-link">Magazine</a>
-                    <a href="/blog_remaster" class="remaster-nav-link active">Blog</a>
-                    <a href="/" class="remaster-nav-link">Contact</a>
-                </div>
-                <div class="remaster-nav-right">
-                    <a href="/" class="btn-primary remaster-nav-book"
-                        >Book a Call →</a
-                    >
-                </div>
-            </nav>
-
-            <div class="mobile-menu-dropdown" id="mobileMenu">
-                <a href="/magazine_remaster" class="mobile-menu-link">Magazine</a>
-                <a href="/blog_remaster" class="mobile-menu-link active">Blog</a>
-                <a href="/" class="mobile-menu-link">Contact</a>
-            </div>
-
             <section class="blog-hero-section">
                 <div class="blog-breadcrumb-row">
                     <a href="/" class="breadcrumb-link">Home</a>
                     <span class="breadcrumb-separator"><i class="ph ph-caret-right"></i></span>
-                    <a href="/blog_remaster" class="breadcrumb-link">Blog</a>
+                    <a href="/blog" class="breadcrumb-link">Blog</a>
                     <span class="breadcrumb-separator"><i class="ph ph-caret-right"></i></span>
-                    <span class="breadcrumb-current">The Future Of Business In 2025</span>
+                    <span class="breadcrumb-current">{{ post.title }}</span>
                 </div>
 
+                {% if post.image_url %}
                 <div class="blog-hero-image-wrap">
-                    <img src="https://picsum.photos/1200/480?random=future_biz_2025" alt="The Future Of Business In 2025" class="blog-hero-image" />
+                    <img src="{{ post.image_url }}" alt="{{ post.image_alt or post.title }}" class="blog-hero-image" />
                 </div>
+                {% endif %}
 
-                <h1 class="blog-hero-title">The Future Of Business In 2025: Trends Shaping The Global Economy</h1>
+                <h1 class="blog-hero-title">{{ post.title }}</h1>
 
                 <div class="blog-hero-meta">
-                    <span class="meta-author">By Will Byers</span>
-                    <span class="meta-date">29 January 2026</span>
+                    <span class="meta-author">By {{ post.author_name }}</span>
+                    <span class="meta-date">{{ post.date }}</span>
                 </div>
             </section>
 
             <section class="blog-article-body-wrapper">
-                <p class="blog-lead-summary">Explore the key business trends that are reshaping industries worldwide in 2025, from AI-driven decision making to sustainable supply chains and the rise of the experience economy.</p>
+                {% if post.excerpt %}
+                <p class="blog-lead-summary">{{ post.excerpt }}</p>
+                {% endif %}
 
                 <div class="blog-body-divider"></div>
 
                 <div class="blog-two-column">
                     <div class="blog-article-content">
-                        <div class="blog-section-block" id="ai-decision-making">
-                            <h2 class="blog-h2-title">AI-Driven Decision Making</h2>
-                            <p class="blog-paragraph">Artificial intelligence has moved beyond the realm of experimentation and into the core of business strategy. In 2025, organizations that leverage AI for decision-making are seeing significant competitive advantages. From predictive analytics that forecast market shifts to AI-powered customer insights that drive product innovation, the technology is transforming how leaders make critical business decisions.</p>
-                            
-                            <div class="blog-section-block" id="predictive-analytics">
-                                <h3 class="blog-h3-title">Predictive Analytics in Action</h3>
-                                <p class="blog-paragraph">Artificial intelligence has moved beyond the realm of experimentation and into the core of business strategy. In 2025, organizations that leverage AI for decision-making are seeing significant competitive advantages. From predictive analytics that forecast market shifts to AI-powered customer insights that drive product innovation, the technology is transforming how leaders make critical business decisions.</p>
-                            </div>
-
+                        {% set ns = namespace(h2=0, h3=0, in_h2=false, in_h3=false) %}
+                        {% for block in post.blocks %}
+                        {% set btype = block.type %}
+                        {% if btype in ['h1', 'h2', 'heading2'] %}
+                        {% if ns.in_h3 %}</div>{% set ns.in_h3 = false %}{% endif %}
+                        {% if ns.in_h2 %}</div>{% set ns.in_h2 = false %}{% endif %}
+                        {% set ns.h2 = ns.h2 + 1 %}
+                        {% set ns.h3 = 0 %}
+                        {% set ns.in_h2 = true %}
+                        <div class="blog-section-block" id="{{ block.id or 'section-' ~ ns.h2 }}">
+                            <h2 class="blog-h2-title">{{ block.content }}</h2>
+                        {% elif btype in ['h3', 'heading3'] %}
+                        {% if ns.in_h3 %}</div>{% set ns.in_h3 = false %}{% endif %}
+                        {% set ns.h3 = ns.h3 + 1 %}
+                        {% set ns.in_h3 = true %}
+                            <div class="blog-section-block" id="{{ block.id or 'subsection-' ~ ns.h2 ~ '-' ~ ns.h3 }}">
+                                <h3 class="blog-h3-title">{{ block.content }}</h3>
+                        {% elif btype in ['h4', 'h5', 'h6'] %}
+                            <h4 class="blog-h3-title">{{ block.content }}</h4>
+                        {% elif btype == 'text' %}
+                            <p class="blog-paragraph">{{ block.content }}</p>
+                        {% elif btype == 'list' %}
+                            <ul class="blog-bullet-list">
+                                {% for item in block.get('items', []) %}
+                                <li>{{ item }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% elif btype == 'quote' %}
                             <div class="blog-quote-box">
                                 <div class="blog-quote-top-row">
                                     <img src="/static/images/blog_quote_icon.svg" alt="Quote" class="blog-quote-icon" />
-                                    <p class="blog-quote-text">Companies across sectors are using predictive analytics to anticipate customer behavior, optimize supply chains, and identify market opportunities before competitors. The</p>
+                                    <p class="blog-quote-text">{{ block.content }}</p>
                                 </div>
-                                <p class="blog-quote-text blog-quote-text-bottom">integration of real-time data processing with machine learning models has enabled businesses to make faster, more accurate decisions than ever before. Companies across sectors are using.</p>
                             </div>
-
+                        {% elif btype == 'image' %}
+                        {% set media = block.content if block.content is mapping else block %}
                             <div class="blog-inline-img-wrap">
-                                <img src="https://picsum.photos/840/272?random=ai_chart" alt="Predictive Analytics Chart" class="blog-inline-img" />
+                                <img src="{{ media.url }}" alt="{{ media.alt }}" class="blog-inline-img" />
                             </div>
-                        </div>
-
-                        <div class="blog-section-block" id="sustainable-supply-chains">
-                            <h2 class="blog-h2-title">Sustainable Supply Chains</h2>
-                            <p class="blog-paragraph">Sustainability is no longer a nice-to-have; it's a business imperative. Consumers, investors, and regulators are demanding greater transparency and responsibility from companies regarding their environmental impact. In 2025, businesses are reimagining their supply chains to be more sustainable, resilient, and efficient.</p>
-
-                            <div class="blog-section-block" id="circular-economy">
-                                <h3 class="blog-h3-title">1. Circular Economy Models</h3>
-                                <p class="blog-paragraph">The shift from linear to circular economy models is gaining momentum. Companies are designing products for longevity, repairability, and recyclability. This approach not only reduces waste but also creates new revenue streams through refurbishment and resale programs.</p>
-                                <ul class="blog-bullet-list">
-                                    <li>The shift from linear to circular economy models is gaining momentum.</li>
-                                    <li>Companies are designing products for longevity, repairability, and recyclability.</li>
-                                    <li>This approach not only reduces waste but also creates new revenue streams through refurbishment and resale programs.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="blog-section-block" id="experience-economy">
-                            <h2 class="blog-h2-title">The Experience Economy</h2>
-                            <p class="blog-paragraph">Consumers increasingly value experiences over products, pushing businesses to rethink how they engage customers. Brands that create memorable, personalized experiences are outperforming those that compete on price or features alone.</p>
-
-                            <div class="blog-section-block" id="personalization-scale">
-                                <h3 class="blog-h3-title">Personalization at Scale</h3>
-                                <p class="blog-paragraph">Thanks to advances in AI and data analytics, businesses can now deliver personalized experiences at scale. From customized product recommendations to tailored content and communications, personalization is becoming the standard rather than the exception.</p>
-                            </div>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% if ns.in_h3 %}</div>{% endif %}
+                        {% if ns.in_h2 %}</div>{% endif %}
 
                         <div class="blog-article-footer-meta">
-                            <span class="meta-author">By Will Byers</span>
-                            <span class="meta-date">29 January 2026</span>
+                            <span class="meta-author">By {{ post.author_name }}</span>
+                            <span class="meta-date">{{ post.date }}</span>
                         </div>
                     </div>
 
-                    <aside class="blog-sidebar">
+                    <aside class="blog-sidebar" data-bol-section="sidebar">
+                        {% if post.toc %}
                         <div class="blog-toc-card">
-                            <h3 class="blog-toc-title">Table of Contents</h3>
-                            <div class="blog-toc-list">
-                                <div class="toc-section" data-section-id="ai-decision-making">
-                                    <a href="#ai-decision-making" data-toggle-target="#sub-ai-decision-making" class="toc-h1-link toc-link active">
-                                        <span class="toc-h1-text">AI-Driven Decision Making</span>
-                                        <i class="ph ph-caret-down toc-arrow rotate-180"></i>
+                        <h3 class="blog-toc-title">Table of Contents</h3>
+                        <div class="blog-toc-list">
+                            {% for section in post.toc %}
+                            {% set section_id = section.id or 'section-' ~ loop.index %}
+                            {% set section_index = loop.index %}
+                            {% set is_first = loop.first %}
+                            <div class="toc-section" data-section-id="{{ section_id }}">
+                                <a href="#{{ section_id }}" data-toggle-target="#sub-{{ section_id }}" class="toc-h1-link toc-link{% if is_first %} active{% endif %}">
+                                    <span class="toc-h1-text">{{ section.title }}</span>
+                                    <i class="ph ph-caret-down toc-arrow{% if is_first %} rotate-180{% endif %}"></i>
+                                </a>
+                                <div id="sub-{{ section_id }}" class="toc-subcategories{% if not is_first %} hidden{% endif %}">
+                                    {% for child in section.children %}
+                                    <a href="#{{ child.id or 'subsection-' ~ section_index ~ '-' ~ loop.index }}" class="toc-sub-link toc-link">
+                                        {{ child.title }}
                                     </a>
-                                    <div id="sub-ai-decision-making" class="toc-subcategories">
-                                        <a href="#predictive-analytics" class="toc-sub-link toc-link">
-                                            Predictive Analytics in Action
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="toc-section" data-section-id="sustainable-supply-chains">
-                                    <a href="#sustainable-supply-chains" data-toggle-target="#sub-sustainable-supply-chains" class="toc-h1-link toc-link">
-                                        <span class="toc-h1-text">Sustainable Supply Chains</span>
-                                        <i class="ph ph-caret-down toc-arrow"></i>
-                                    </a>
-                                    <div id="sub-sustainable-supply-chains" class="toc-subcategories hidden">
-                                        <a href="#circular-economy" class="toc-sub-link toc-link">
-                                            1. Circular Economy Models
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="toc-section" data-section-id="experience-economy">
-                                    <a href="#experience-economy" data-toggle-target="#sub-experience-economy" class="toc-h1-link toc-link">
-                                        <span class="toc-h1-text">The Experience Economy</span>
-                                        <i class="ph ph-caret-down toc-arrow"></i>
-                                    </a>
-                                    <div id="sub-experience-economy" class="toc-subcategories hidden">
-                                        <a href="#personalization-scale" class="toc-sub-link toc-link">
-                                            Personalization at Scale
-                                        </a>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
+                    </div>
+                        {% endif %}
 
                         <div class="sidebar-actions-wrap">
                             <div class="sidebar-pill-row">
                                 <button class="btn-download-pill" id="btnDownloadPdf">
                                     <i class="ph ph-download"></i>
-                                    <span>Download PDF</span>
+                                    <span>{{ sidebar.download_label | default('Download PDF') }}</span>
                                 </button>
                                 <button class="btn-share-pill" id="btnShareLink">
                                     <i class="ph ph-share-network"></i>
-                                    <span>Share Link</span>
+                                    <span>{{ sidebar.share_label | default('Share Link') }}</span>
                                 </button>
                             </div>
                             <div class="social-icons-row">
-                                <a href="#" class="social-icon-box whatsapp-share-btn" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">
-                                    <img src="/static/images/whatsapp_logo.png" alt="WhatsApp" class="social-img" />
+                                {% for social in sidebar.get('socials', []) %}
+                                <a href="{{ social.href }}" class="social-icon-box {{ social.key }}-share-btn" target="_blank" rel="noopener noreferrer" aria-label="Share on {{ social.name }}">
+                                    <img src="{{ social.icon_url }}" alt="{{ social.name }}" class="social-img" />
                                 </a>
-                                <a href="#" class="social-icon-box insta-share-btn" target="_blank" rel="noopener noreferrer" aria-label="Share on Instagram">
-                                    <img src="/static/images/insta_logo.png" alt="Instagram" class="social-img" />
-                                </a>
-                                <a href="#" class="social-icon-box x-share-btn" target="_blank" rel="noopener noreferrer" aria-label="Share on X">
-                                    <img src="/static/images/x_logo.svg" alt="X" class="social-img" />
-                                </a>
+                                {% endfor %}
                             </div>
                         </div>
                     </aside>
                 </div>
             </section>
 
+            {% if related_posts %}
             <section class="blog-related-section">
                 <div class="related-header-wrap">
                     <h2 class="related-section-title">Related Articles and Topics</h2>
                 </div>
 
                 <div class="related-grid">
-                    <a href="/blog/blog_page_remaster" class="related-card">
+                    {% for related in related_posts %}
+                    <a href="{{ related.url }}" class="related-card">
                         <div class="related-card-img-wrap">
-                            <img src="https://picsum.photos/400/250?random=rel1" alt="The Future of Global Trade in 2025" class="related-card-img" />
+                            <img src="{{ related.image_url }}" alt="{{ related.image_alt or related.title }}" class="related-card-img" />
                         </div>
                         <div class="related-card-body">
-                            <h3 class="related-card-title">How Industry Leaders Build Moats Around Brand Authority</h3>
-                            <p class="related-card-excerpt">A comprehensive deep-dive into how AI is transforming corporate decision making, examining the forces driving change, strategic frameworks for leaders and the key decisions that will define success in the BUSINESS sector over the next 12 months.</p>
+                            <h3 class="related-card-title">{{ related.title }}</h3>
+                            <p class="related-card-excerpt">{{ related.excerpt }}</p>
                         </div>
                     </a>
-
-                    <a href="/blog/blog_page_remaster" class="related-card">
-                        <div class="related-card-img-wrap">
-                            <img src="https://picsum.photos/400/250?random=rel2" alt="The Architecture of Executive Influence" class="related-card-img" />
-                        </div>
-                        <div class="related-card-body">
-                            <h3 class="related-card-title">The Future of Global Trade in 2025</h3>
-                            <p class="related-card-excerpt">A comprehensive deep-dive into the future of global trade in 2025, examining the forces driving change, strategic frameworks for leaders and the key decisions that will define success in the BUSINESS sector over the next 12 months.</p>
-                        </div>
-                    </a>
-
-                    <a href="/blog/blog_page_remaster" class="related-card">
-                        <div class="related-card-img-wrap">
-                            <img src="https://picsum.photos/400/250?random=rel3" alt="The Rise of the Circular Economy" class="related-card-img" />
-                        </div>
-                        <div class="related-card-body">
-                            <h3 class="related-card-title">The Rise of the Circular Economy</h3>
-                            <p class="related-card-excerpt">How companies are redesigning products and supply chains for longevity, repairability, and resale and what it means for margins, brand trust and long-term growth.</p>
-                        </div>
-                    </a>
+                    {% endfor %}
                 </div>
 
-                <a href="/blog_remaster" class="btn-see-more-pill">
+                <a href="/blog" class="btn-see-more-pill">
                     <span>See More Articles</span>
                     <i class="ph ph-arrow-right"></i>
                 </a>
             </section>
+            {% endif %}
 
-            <section class="blog-faq-section">
+            {% if faq_items %}
+            <section class="blog-faq-section" data-bol-section="faq">
                 <div class="faq-inner-container">
                     <div class="faq-left-col">
-                        <h2 class="faq-main-title">Frequently Asked Questions</h2>
-                        <p class="faq-main-desc">Find answers to common questions about Brands Out Loud's content, insights and how we cover the latest in business and technology.</p>
-                        <a href="/" class="btn-faq-cta">
-                            <span>Explore more on our homepage</span>
+                        <h2 class="faq-main-title">{{ faq.title }}</h2>
+                        <p class="faq-main-desc">{{ faq.description }}</p>
+                        <a href="{{ faq.cta.href | default('/') }}" class="btn-faq-cta">
+                            <span>{{ faq.cta.label | default('Explore more on our homepage') }}</span>
                             <i class="ph ph-arrow-right"></i>
                         </a>
                     </div>
 
                     <div class="faq-right-col">
-                        <div class="faq-item-block active">
+                        {% for item in faq_items %}
+                        <div class="faq-item-block{% if loop.first %} active{% endif %}" data-bol-index="{{ loop.index0 }}">
                             <button class="faq-q-btn" onclick="toggleFaq(this)">
-                                <span>What topics does Brands Out Loud cover?</span>
+                                <span>{{ item.question }}</span>
                                 <i class="ph ph-caret-down faq-q-chevron"></i>
                             </button>
                             <p class="faq-a-text">
-                                A comprehensive deep-dive into the future of global trade in 2025, examining the forces driving change, strategic frameworks for leaders and the key decisions that will define success in the BUSINESS sector over the next 12 months.
+                                {{ item.answer }}
                             </p>
                         </div>
-
-                        <div class="faq-item-block">
-                            <button class="faq-q-btn" onclick="toggleFaq(this)">
-                                <span>How often is new content published?</span>
-                                <i class="ph ph-caret-down faq-q-chevron"></i>
-                            </button>
-                            <p class="faq-a-text">
-                                We publish weekly long-form essays, quarterly print issues, and daily commentary curated exclusively from corporate leaders and venture partners.
-                            </p>
-                        </div>
-
-                        <div class="faq-item-block">
-                            <button class="faq-q-btn" onclick="toggleFaq(this)">
-                                <span>Can I submit an article or pitch to Brands Out Loud?</span>
-                                <i class="ph ph-caret-down faq-q-chevron"></i>
-                            </button>
-                            <p class="faq-a-text">
-                                Yes, we collaborate directly with executive authors, venture operators, and industry visionaries. Reach out via our Contact page to pitch your thesis.
-                            </p>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
+            {% endif %}
 
-            <footer class="remaster-footer section-container">
-                <div class="remaster-footer-top">
-                    <div class="remaster-footer-brand">
-                        <div class="remaster-footer-logo-box">
-                            <img
-                                src="/static/images/header_logo.png"
-                                alt="Brands Out Loud"
-                            />
-                        </div>
-                        <h2 class="remaster-footer-tagline">
-                            Where Expertise<br />Becomes Influence.
-                        </h2>
-                    </div>
-                    <div class="remaster-footer-links-container">
-                        <div class="remaster-footer-col">
-                            <div class="remaster-footer-col-title">
-                                DISCOVER
-                            </div>
-                            <a href="/blog_remaster" class="remaster-footer-link"
-                                >Blog</a
-                            >
-                            <a href="/magazine_remaster" class="remaster-footer-link"
-                                >Magazine</a
-                            >
-                            <a href="/" class="remaster-footer-link"
-                                >Contact</a
-                            >
-                        </div>
-                        <div class="remaster-footer-col">
-                            <div class="remaster-footer-col-title">COMPANY</div>
-                            <a href="#" class="remaster-footer-link">About</a>
-                            <a href="#" class="remaster-footer-link"
-                                >Return Policy</a
-                            >
-                            <a href="#" class="remaster-footer-link">Privacy</a>
-                            <a href="#" class="remaster-footer-link"
-                                >Terms & Conditions</a
-                            >
-                        </div>
-                        <div class="remaster-footer-col">
-                            <div class="remaster-footer-col-title">CONNECT</div>
-                            <a href="#" class="remaster-footer-link"
-                                >Instagram</a
-                            >
-                            <a href="#" class="remaster-footer-link"
-                                >LinkedIn</a
-                            >
-                            <a href="#" class="remaster-footer-link"
-                                >X (Twitter)</a
-                            >
-                            <a href="#" class="remaster-footer-link">YouTube</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="remaster-footer-divider"></div>
-                <div class="remaster-footer-bottom">
-                    <div class="remaster-footer-copyright">
-                        © 2026 Brands Out Loud
-                    </div>
-                </div>
-            </footer>
         </div>
 
-        <div id="downloadModalOverlay" class="download-modal-overlay">
+        <div id="downloadModalOverlay" class="download-modal-overlay" data-bol-section="download_modal">
             <div class="download-modal">
                 <button class="download-modal-close" onclick="hideDownloadModal()">&times;</button>
-                <h2>Download Article as PDF</h2>
+                <h2>{{ modal.title | default('Download Article as PDF') }}</h2>
+                {% if modal.description %}
+                <p class="download-modal-desc">{{ modal.description }}</p>
+                {% endif %}
                 <form id="downloadForm" onsubmit="submitDownloadForm(event)">
                     <div class="download-form-row">
                         <div class="download-form-field" id="firstNameField">
@@ -383,27 +242,20 @@
                         </div>
                     </div>
                     <div class="download-modal-terms">
-                        By submitting this form, you agree to the processing of the submitted personal data in accordance with Brands Out Loud's Privacy Policy.
+                        {{ modal.terms }}
                     </div>
-                    <button type="submit" class="download-modal-submit" id="downloadSubmitBtn">Download now</button>
+                    <button type="submit" class="download-modal-submit" id="downloadSubmitBtn">{{ modal.submit_label | default('Download now') }}</button>
                 </form>
             </div>
         </div>
 
+{% endblock %}
+
+{% block page_js %}
         <script>
-            function toggleMobileMenu() {
-                const menu = document.getElementById("mobileMenu");
-                const icon = document.getElementById("mobileMenuIcon");
-                if (menu.classList.contains("active")) {
-                    menu.classList.remove("active");
-                    icon.classList.remove("ph-x");
-                    icon.classList.add("ph-list");
-                } else {
-                    menu.classList.add("active");
-                    icon.classList.remove("ph-list");
-                    icon.classList.add("ph-x");
-                }
-            }
+            const BOL_POST = {{ {'title': post.title, 'url': post.url} | tojson }};
+            const ARTICLE_TITLE = BOL_POST.title;
+            const ARTICLE_URL = window.location.origin + BOL_POST.url;
 
             function toggleFaq(btn) {
                 const item = btn.parentElement;
@@ -575,8 +427,8 @@
                     });
                 }
 
-                const articleTitle = document.querySelector(".blog-hero-title")?.textContent?.trim() || "The Future Of Business In 2025";
-                const articleUrl = window.location.href;
+                const articleTitle = ARTICLE_TITLE;
+                const articleUrl = ARTICLE_URL;
 
                 const whatsappBtn = document.querySelector(".whatsapp-share-btn");
                 if (whatsappBtn) {
@@ -606,8 +458,8 @@
             }
 
             function handleShareAction() {
-                const articleTitle = document.querySelector(".blog-hero-title")?.textContent?.trim() || "The Future Of Business In 2025";
-                const articleUrl = window.location.href;
+                const articleTitle = ARTICLE_TITLE;
+                const articleUrl = ARTICLE_URL;
 
                 if (navigator.share && window.isSecureContext) {
                     navigator.share({
@@ -686,7 +538,7 @@
                 return re.test(email);
             }
 
-            function submitDownloadForm(event) {
+            async function submitDownloadForm(event) {
                 event.preventDefault();
                 const firstName = document.getElementById("downloadFirstName").value.trim();
                 const email = document.getElementById("downloadEmail").value.trim();
@@ -711,12 +563,34 @@
                 submitBtn.textContent = "Preparing PDF...";
                 submitBtn.disabled = true;
 
-                setTimeout(() => {
+                const payload = {
+                    first_name: firstName,
+                    last_name: document.getElementById("downloadLastName").value.trim(),
+                    email: email,
+                    company_name: document.getElementById("downloadCompanyName").value.trim(),
+                    mobile_number: document.getElementById("downloadMobileNumber").value.trim(),
+                    pdf_link: ARTICLE_URL
+                };
+
+                try {
+                    const response = await fetch("/api/pdf-download-form", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await response.json().catch(() => ({}));
+                    if (!response.ok || data.status !== "ok") {
+                        throw new Error(data.message || "Submission failed");
+                    }
                     hideDownloadModal();
+                    showToast("Your article is ready to download.");
+                    window.print();
+                } catch (err) {
+                    showToast("We could not process your request. Please try again.");
+                } finally {
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
-                    window.print();
-                }, 600);
+                }
             }
 
             const downloadOverlay = document.getElementById("downloadModalOverlay");
@@ -728,5 +602,4 @@
                 });
             }
         </script>
-    </body>
-</html>
+{% endblock %}

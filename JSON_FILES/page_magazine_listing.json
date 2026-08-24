@@ -1,0 +1,43 @@
+{
+    "seo": {
+        "title": "Magazine - Brands Out Loud",
+        "description": "",
+        "og_image": ""
+    },
+    "hero": {
+        "watermark": "IN PRINT.",
+        "featured_issue_slug": "the-founder-issue",
+        "description_fallback": "16 founders on the moments that changed everything, the pivots, the near-misses and the essays they never thought they’d put their name to.",
+        "primary_cta": {
+            "label": "Read online"
+        },
+        "secondary_cta": {
+            "label": "Order Print Copy",
+            "href": "#"
+        }
+    },
+    "featured_articles": {
+        "title": "Articles everyone’s talking about",
+        "link": {
+            "label": "See full content",
+            "href": "#"
+        },
+        "items": []
+    },
+    "archive": {
+        "title": "From the archive",
+        "link": {
+            "label": "Browse all issues",
+            "href": "#"
+        }
+    },
+    "fuel_cta": {
+        "title_lines": ["Fuel your ambitions", "with Fresh Insights"],
+        "description": "Business news, strategies and trends, all in one place, just for you!",
+        "cta": {
+            "label": "Check out the latest magazine",
+            "href": "#"
+        },
+        "image_url": "/static/images/remaster-homepage/magazine/magazine_card.png"
+    }
+}

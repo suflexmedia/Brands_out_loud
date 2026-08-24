@@ -1,0 +1,59 @@
+{
+    "seo": {
+        "title": "Brands Out Loud",
+        "description": "Insights, essays and long reads on authority, publishing and brand building from Brands Out Loud.",
+        "og_image": ""
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "description": "Find answers to common questions about Brands Out Loud's content, insights and how we cover the latest in business and technology.",
+        "cta": {
+            "label": "Explore more on our homepage",
+            "href": "/"
+        },
+        "items": [
+            {
+                "question": "What topics does Brands Out Loud cover?",
+                "answer": "A comprehensive deep-dive into the future of global trade in 2025, examining the forces driving change, strategic frameworks for leaders and the key decisions that will define success in the BUSINESS sector over the next 12 months."
+            },
+            {
+                "question": "How often is new content published?",
+                "answer": "We publish weekly long-form essays, quarterly print issues, and daily commentary curated exclusively from corporate leaders and venture partners."
+            },
+            {
+                "question": "Can I submit an article or pitch to Brands Out Loud?",
+                "answer": "Yes, we collaborate directly with executive authors, venture operators, and industry visionaries. Reach out via our Contact page to pitch your thesis."
+            }
+        ]
+    },
+    "download_modal": {
+        "title": "Download Article as PDF",
+        "description": "",
+        "terms": "By submitting this form, you agree to the processing of the submitted personal data in accordance with Brands Out Loud's Privacy Policy.",
+        "submit_label": "Download now"
+    },
+    "sidebar": {
+        "download_label": "Download PDF",
+        "share_label": "Share Link",
+        "socials": [
+            {
+                "name": "WhatsApp",
+                "key": "whatsapp",
+                "icon_url": "/static/images/whatsapp_logo.png",
+                "href": "#"
+            },
+            {
+                "name": "Instagram",
+                "key": "insta",
+                "icon_url": "/static/images/insta_logo.png",
+                "href": "#"
+            },
+            {
+                "name": "X",
+                "key": "x",
+                "icon_url": "/static/images/x_logo.svg",
+                "href": "#"
+            }
+        ]
+    }
+}
