@@ -602,6 +602,10 @@
   user-select: none;
 }
 
+.edition-bg-1 .edition-watermark {
+  color: rgba(13, 27, 75, 0.45);
+}
+
 .edition-info {
   display: flex;
   flex-direction: column;
