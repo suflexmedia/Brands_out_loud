@@ -1145,6 +1145,195 @@ body {
     color: #000000;
 }
 
+.issue-hero-section {
+    width: 100%;
+    padding: 14vw 8.33vw 4vw;
+    background: linear-gradient(108.58deg, #ffffff 0%, #eff0ff 100%);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.issue-hero-watermark {
+    position: absolute;
+    right: 6vw;
+    top: 8vw;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    font-size: 14vw;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgba(25, 65, 202, 0.05);
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+}
+
+.issue-hero-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 55vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2vw;
+}
+
+.issue-hero-badge {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 0.9vw;
+    letter-spacing: 1.5px;
+    color: #ff6b3d;
+    text-transform: uppercase;
+}
+
+.issue-hero-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    font-size: 4.2vw;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0b0e66;
+    margin: 0;
+}
+
+.issue-hero-desc {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 1.15vw;
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.7);
+    margin: 0;
+}
+
+.issue-books-section {
+    width: 100%;
+    padding: 4vw 8.33vw 8vw;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.issue-books-container {
+    width: 100%;
+    max-width: 83.33vw;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5vw;
+}
+
+.issue-books-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.issue-books-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    font-size: 3vw;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    color: #000000;
+    margin: 0;
+}
+
+.issue-books-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.22vw;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.book-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.4vw;
+}
+
+.book-item-link {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 0.9vw;
+    color: #ff6b3d;
+}
+
+.issue-empty-state {
+    background: #f8faff;
+    border: 1.5px dashed rgba(29, 72, 150, 0.2);
+    border-radius: 1.5vw;
+    padding: 4.5vw 3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1vw;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.empty-state-icon {
+    width: 4.5vw;
+    height: 4.5vw;
+    border-radius: 50%;
+    background: rgba(29, 72, 150, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2vw;
+    color: #1d4896;
+    margin-bottom: 0.5vw;
+}
+
+.empty-state-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+    font-size: 1.8vw;
+    color: #0b0e66;
+    margin: 0;
+}
+
+.empty-state-desc {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 1.05vw;
+    color: #525256;
+    max-width: 32vw;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.btn-empty-cta {
+    margin-top: 1vw;
+    padding: 0.9vw 2vw;
+    font-size: 1vw;
+    border-radius: 99px;
+    text-decoration: none;
+    background: linear-gradient(91.39deg, #1d4896 0%, #1755c6 48.01%, #1d4896 100.69%);
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(29, 72, 150, 0.25);
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.btn-empty-cta:hover {
+    transform: translateY(-2px);
+}
+
 @media (max-width: 1024px) {
     .book-hero-section {
         padding: 12vw 5vw 5vw 5vw;

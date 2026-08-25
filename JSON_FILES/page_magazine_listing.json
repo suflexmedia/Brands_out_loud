@@ -1,42 +1,149 @@
 {
     "seo": {
         "title": "Magazine - Brands Out Loud",
-        "description": "",
+        "description": "Explore the latest issues of Brands Out Loud Magazine.",
         "og_image": ""
     },
     "hero": {
-        "watermark": "IN PRINT.",
+        "watermark": "IN PRINT",
         "featured_issue_slug": "the-founder-issue",
-        "description_fallback": "16 founders on the moments that changed everything, the pivots, the near-misses and the essays they never thought they’d put their name to.",
+        "title": "The founder issue.",
+        "meta_tags": [
+            "AUTUMN 2024 /",
+            "PRINT + DIGITAL /",
+            "148 PAGES"
+        ],
+        "description": "16 founders on the moments that changed everything, the pivots, the near-misses and the essays they never thought they’d put their name to.",
+        "stats": [
+            {
+                "value": "148",
+                "label": "PAGES"
+            },
+            {
+                "value": "16",
+                "label": "CONTRIBUTORS"
+            },
+            {
+                "value": "9",
+                "label": "LONG READS"
+            }
+        ],
         "primary_cta": {
-            "label": "Read online"
+            "label": "Read online",
+            "href": "/magazine/the-founder-issue"
         },
         "secondary_cta": {
             "label": "Order Print Copy",
             "href": "#"
-        }
+        },
+        "cover_title_lines": [
+            "The",
+            "Issue"
+        ],
+        "cover_issue_label": "ISSUE 12"
     },
     "featured_articles": {
         "title": "Articles everyone’s talking about",
         "link": {
             "label": "See full content",
-            "href": "#"
+            "href": "/blog"
         },
-        "items": []
+        "items": [
+            {
+                "title": "“I shipped seven products before the one that mattered.”",
+                "excerpt": "On staying in-market long enough to find light, and why a good idea is only a good idea in retrospect.",
+                "author_name": "Rohan Mehta",
+                "author_info": "Rohan Mehta • 12 min read • 4 Jul 2026",
+                "author_avatar_url": "/static/images/remaster-homepage/icons/author-1.svg",
+                "image_url": "https://picsum.photos/800/500?random=mag_art_1",
+                "gradient_class": "article-gradient-1"
+            },
+            {
+                "title": "The org chart that let Nykaa go public without breaking.",
+                "excerpt": "How to grow past 200 people without adopting the habits of companies you left banking to avoid.",
+                "author_name": "Rohan Mehta",
+                "author_info": "Rohan Mehta • 10 min read • 4 Jul 2026",
+                "author_avatar_url": "/static/images/remaster-homepage/icons/author-2.svg",
+                "image_url": "https://picsum.photos/800/500?random=mag_art_2",
+                "gradient_class": "article-gradient-2"
+            },
+            {
+                "title": "A short defence of the founder who doesn’t want to be one anymore.",
+                "excerpt": "Succession, burnout, and the awkward second decade nobody wrote a playbook for.",
+                "author_name": "Rohan Mehta",
+                "author_info": "Rohan Mehta • 15 min read • 4 Jul 2026",
+                "author_avatar_url": "/static/images/remaster-homepage/icons/author-3.svg",
+                "image_url": "https://picsum.photos/800/500?random=mag_art_3",
+                "gradient_class": "article-gradient-3"
+            }
+        ]
     },
     "archive": {
         "title": "From the archive",
         "link": {
             "label": "Browse all issues",
             "href": "#"
-        }
+        },
+        "default_items": [
+            {
+                "slug": "the-comeback-issue",
+                "title": "The Comeback Issue",
+                "issue_number": "11",
+                "season_label": "SUMMER 2024",
+                "badge": "ISSUE 11 · SUMMER 2024",
+                "brand": "BOL",
+                "cover_variant": "edition-bg-1",
+                "watermark_number": "11",
+                "cover_title": "The Comeback Issue",
+                "url": "/magazine/the-comeback-issue"
+            },
+            {
+                "slug": "the-second-career",
+                "title": "The Second Career",
+                "issue_number": "10",
+                "season_label": "SPRING 2024",
+                "badge": "ISSUE 10 · SPRING 2024",
+                "brand": "BOL",
+                "cover_variant": "edition-bg-2",
+                "watermark_number": "10",
+                "cover_title": "The Second Career",
+                "url": "/magazine/the-second-career"
+            },
+            {
+                "slug": "money-meaning",
+                "title": "Money & Meaning",
+                "issue_number": "09",
+                "season_label": "WINTER 2023",
+                "badge": "ISSUE 09 · WINTER 2023",
+                "brand": "BOL",
+                "cover_variant": "edition-bg-3",
+                "watermark_number": "09",
+                "cover_title": "Money & Meaning",
+                "url": "/magazine/money-meaning"
+            },
+            {
+                "slug": "boards-not-bosses",
+                "title": "Boards, Not Bosses",
+                "issue_number": "08",
+                "season_label": "AUTUMN 2023",
+                "badge": "ISSUE 08 · AUTUMN 2023",
+                "brand": "BOL",
+                "cover_variant": "edition-bg-4",
+                "watermark_number": "08",
+                "cover_title": "Boards, Not Bosses.",
+                "url": "/magazine/boards-not-bosses"
+            }
+        ]
     },
     "fuel_cta": {
-        "title_lines": ["Fuel your ambitions", "with Fresh Insights"],
+        "title_lines": [
+            "Fuel your ambitions",
+            "with Fresh Insights"
+        ],
         "description": "Business news, strategies and trends, all in one place, just for you!",
         "cta": {
             "label": "Check out the latest magazine",
-            "href": "#"
+            "href": "/magazine"
         },
         "image_url": "/static/images/remaster-homepage/magazine/magazine_card.png"
     }

@@ -53,11 +53,11 @@ def book_card(book: Dict[str, Any]) -> Dict[str, Any]:
 
 
 async def get_issues() -> List[Dict[str, Any]]:
-    """Returns all published issues, newest first, cached."""
+    """Returns all published issues, ordered by order then newest, cached."""
 
     async def _fetch() -> List[Dict[str, Any]]:
         db = db_handler.get_db()
-        cursor = db["magazine_issues"].find(PUBLISHED, {"_id": 0}).sort("created_at", -1)
+        cursor = db["magazine_issues"].find(PUBLISHED, {"_id": 0}).sort([("order", 1), ("created_at", -1)])
         return [issue_card(doc) async for doc in cursor]
 
     return await cache_manager.get("magazine_listing", _fetch)

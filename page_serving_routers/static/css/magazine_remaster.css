@@ -99,10 +99,11 @@
   width: 100%;
   min-height: 66.3vw;
   background: linear-gradient(108.58deg, #ffffff 0%, #eff0ff 100%);
-  padding: 14vw 6vw 8vw;
+  padding: 16.6vw 8.33vw 6.5vw;
   display: flex;
   align-items: center;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .hero-watermark {
@@ -112,7 +113,7 @@
   font-family: "Inter", sans-serif;
   font-weight: 900;
   font-size: 18.05vw;
-  line-height: 0.92;
+  line-height: 16.66vw;
   letter-spacing: -0.05em;
   color: rgba(25, 65, 202, 0.08);
   pointer-events: none;
@@ -126,29 +127,31 @@
   width: 100vw;
   height: auto;
   left: 0;
-  top: 18vw;
+  top: 20.97vw;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.95;
+  opacity: 0.9;
 }
 
 .hero-magazine-container {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 90vw;
+  max-width: 83.33vw;
   margin: 0 auto;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 22vw;
+  gap: 4vw;
+  box-sizing: border-box;
 }
 
 .hero-magazine-left {
-  flex: 0 0 34.7vw;
+  flex: 0 0 34.72vw;
   display: flex;
   flex-direction: column;
-  gap: 2.2vw;
+  gap: 2.5vw;
+  box-sizing: border-box;
 }
 
 .hero-magazine-title {
@@ -167,7 +170,6 @@
   font-size: 1.11vw;
   line-height: 1.75;
   color: rgba(0, 0, 0, 0.72);
-  max-width: 34.7vw;
   margin: 0;
 }
 
@@ -176,7 +178,6 @@
   align-items: center;
   gap: 1.66vw;
   flex-wrap: wrap;
-  margin-top: 0.5vw;
 }
 
 .hero-stat-block {
@@ -189,7 +190,7 @@
   font-family: "Inter", sans-serif;
   font-weight: 900;
   font-size: 2.5vw;
-  line-height: 1.1;
+  line-height: 1.11;
   letter-spacing: -0.02em;
   color: #ff6b3d;
 }
@@ -214,14 +215,13 @@
   align-items: center;
   gap: 0.83vw;
   flex-wrap: wrap;
-  margin-top: 0.8vw;
 }
 
 .btn-read-online {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6vw;
+  gap: 0.69vw;
   padding: 1.11vw 1.66vw;
   background: linear-gradient(
     91.39deg,
@@ -229,7 +229,7 @@
     #1755c6 48.01%,
     #1d4896 100.69%
   );
-  border-radius: 99px;
+  border-radius: 6.87vw;
   color: #ffffff;
   font-family: "Inter", sans-serif;
   font-weight: 700;
@@ -250,15 +250,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6vw;
+  gap: 0.69vw;
   padding: 1.11vw 1.66vw;
-  border-radius: 99px;
+  border-radius: 6.87vw;
   color: #0b0e66;
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 1.11vw;
   text-decoration: none;
   border: 1.5px solid #0b0e66;
+  background: transparent;
   transition:
     background-color 0.25s ease,
     transform 0.25s ease;
@@ -270,11 +271,12 @@
 }
 
 .hero-magazine-right {
-  flex: 1;
+  flex: 0 0 34.37vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   position: relative;
+  box-sizing: border-box;
 }
 
 .hero-meta-block {
@@ -288,7 +290,6 @@
   letter-spacing: 1.5px;
   color: #9b9b9b;
   margin-bottom: 1.5vw;
-  margin-left: 4vw;
   text-align: left;
 }
 
@@ -310,6 +311,7 @@
   transform: rotate(-6deg);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   padding: 1.5vw 2vw;
+  box-sizing: border-box;
 }
 
 .stack-card-issue {
@@ -341,6 +343,7 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 7vw 3.19vw 3vw;
+  box-sizing: border-box;
   transition: transform 0.35s ease;
 }
 
@@ -363,20 +366,23 @@
   position: relative;
   width: 100%;
   background: linear-gradient(70.54deg, #ffffff 0%, #eff0ff 100%);
-  padding: 10vh 7.5vw;
+  padding: 5.55vw 8.33vw;
+  box-sizing: border-box;
 }
 
 .section-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6vh;
+  margin-bottom: 4.16vw;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .section-title {
   font-family: "Inter", sans-serif;
   font-weight: 900;
-  font-size: 3.2vw;
+  font-size: 3.33vw;
   line-height: 1.25;
   letter-spacing: -1.6px;
   color: #0f1f1a;
@@ -386,14 +392,14 @@
 .btn-section-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.6vw;
-  padding: 1vh 1.5vw;
-  border-radius: 99px;
+  gap: 0.69vw;
+  padding: 0.83vw 1.66vw;
+  border-radius: 6.87vw;
   border: 1px solid rgba(11, 14, 102, 0.2);
   color: #0b0e66;
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 1.05vw;
+  font-size: 1.11vw;
   text-decoration: none;
   transition:
     background-color 0.25s ease,
@@ -408,12 +414,14 @@
 .articles-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.2vw;
+  gap: 2.22vw;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .article-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 1.11vw;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -421,6 +429,7 @@
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
 .article-card:hover {
@@ -430,9 +439,25 @@
 
 .article-cover {
   width: 100%;
-  height: 18vw;
+  height: 19.16vw;
   min-height: 220px;
   overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-gradient-1 {
+  background: linear-gradient(90deg, #0d1b4b 0%, #ff6b3d 100%);
+}
+
+.article-gradient-2 {
+  background: linear-gradient(90deg, #0f1f1a 0%, #8b2635 100%);
+}
+
+.article-gradient-3 {
+  background: linear-gradient(90deg, #1d4896 0%, #e65a30 100%);
 }
 
 .article-img {
@@ -447,28 +472,29 @@
 }
 
 .article-body {
-  padding: 2vw 2.2vw 2.2vw;
+  padding: 1.66vw 2.22vw 2.22vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  gap: 2.5vw;
+  gap: 2.22vw;
+  box-sizing: border-box;
 }
 
 .article-title {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 1.4vw;
-  line-height: 1.35;
+  font-size: 1.66vw;
+  line-height: 1.33;
   color: #000402;
-  margin: 0 0 1vh;
+  margin: 0 0 1.11vw;
 }
 
 .article-excerpt {
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: 0.95vw;
-  line-height: 1.6;
+  font-size: 0.97vw;
+  line-height: 1.71;
   color: #141d4b;
   margin: 0;
 }
@@ -476,43 +502,58 @@
 .article-meta {
   display: flex;
   align-items: center;
-  gap: 0.8vw;
+  gap: 0.83vw;
   margin-top: auto;
 }
 
-.author-avatar {
-  width: 2.5vw;
-  height: 2.5vw;
-  min-width: 34px;
-  min-height: 34px;
+.author-avatar-badge {
+  width: 2.77vw;
+  height: 2.77vw;
+  min-width: 36px;
+  min-height: 36px;
   border-radius: 50%;
+  background: linear-gradient(90deg, #ff6b3d 0%, #d53d5e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.author-avatar {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
 .author-info {
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 0.85vw;
+  font-size: 0.97vw;
   color: rgba(47, 47, 47, 0.7);
 }
 
 .past-editions {
   width: 100%;
   background: #ffffff;
-  padding: 10vh 7.5vw;
+  padding: 5.55vw 8.33vw;
+  box-sizing: border-box;
 }
 
 .editions-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2vw;
+  gap: 2.22vw;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .edition-card {
   display: flex;
   flex-direction: column;
-  gap: 1.8vh;
+  gap: 1.38vw;
   transition: transform 0.3s ease;
+  box-sizing: border-box;
 }
 
 .edition-card:hover {
@@ -522,10 +563,10 @@
 .edition-cover {
   position: relative;
   width: 100%;
-  height: 24vw;
+  height: 25vw;
   min-height: 320px;
-  border-radius: 8px;
-  padding: 1.4vw;
+  border-radius: 0.55vw;
+  padding: 1.11vw;
   border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   flex-direction: column;
@@ -533,6 +574,7 @@
   overflow: hidden;
   color: #ffffff;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
 .edition-bg-1 {
@@ -555,18 +597,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .edition-brand {
   font-family: "Inter", sans-serif;
   font-weight: 900;
-  font-size: 1.1vw;
+  font-size: 1.11vw;
+  color: #ffffff;
 }
 
 .edition-date {
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 0.6vw;
+  font-size: 0.55vw;
   letter-spacing: 0.8px;
   color: rgba(255, 255, 255, 0.7);
 }
@@ -575,26 +619,26 @@
   width: 100%;
   height: 1px;
   background: rgba(255, 255, 255, 0.3);
-  margin-top: 1vh;
+  margin: 0.83vw 0;
 }
 
 .edition-cover-title {
   font-family: "Fraunces", serif;
   font-weight: 300;
-  font-size: 1.9vw;
-  line-height: 1.1;
+  font-size: 2.08vw;
+  line-height: 1.07;
   letter-spacing: -0.03em;
-  margin-top: 2vh;
+  margin-top: 1.11vw;
   color: #ffffff;
 }
 
 .edition-watermark {
   position: absolute;
-  right: 0.8vw;
-  bottom: 0.5vw;
+  right: 0.83vw;
+  bottom: 0.55vw;
   font-family: "Inter", sans-serif;
   font-weight: 900;
-  font-size: 6.5vw;
+  font-size: 6.94vw;
   line-height: 1;
   letter-spacing: -0.06em;
   color: rgba(255, 107, 61, 0.85);
@@ -602,20 +646,16 @@
   user-select: none;
 }
 
-.edition-bg-1 .edition-watermark {
-  color: rgba(13, 27, 75, 0.45);
-}
-
 .edition-info {
   display: flex;
   flex-direction: column;
-  gap: 0.6vh;
+  gap: 0.55vw;
 }
 
 .edition-badge {
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 0.8vw;
+  font-size: 0.83vw;
   letter-spacing: 1px;
   color: #ff6b3d;
 }
@@ -623,7 +663,8 @@
 .edition-name {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 1.3vw;
+  font-size: 1.38vw;
+  line-height: 1.4;
   letter-spacing: -0.01em;
   color: #000000;
   margin: 0;
@@ -632,10 +673,10 @@
 .edition-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.4vw;
+  gap: 0.41vw;
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 0.95vw;
+  font-size: 0.97vw;
   color: rgba(67, 67, 67, 0.7);
   text-decoration: none;
 }
@@ -651,12 +692,14 @@
 
 .fuel-ambitions-section {
   width: 100%;
-  background-image: url("../images/remaster-homepage/images/book-banner-bg.jpg");
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)),
+    url("/static/images/remaster-homepage/images/book-banner-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 5.5vw 8.3vw;
+  padding: 5.55vw 8.33vw;
   position: relative;
+  box-sizing: border-box;
 }
 
 .fuel-ambitions-card {
@@ -667,26 +710,30 @@
     #162666 100%
   );
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.24);
-  border-radius: 32px;
-  padding: 1.5vw 3vw;
+  border-radius: 2.22vw;
+  padding: 4.44vw 4.44vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5.5vw;
+  gap: 5.55vw;
   color: #ffffff;
   position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .fuel-ambitions-content {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
 }
 
 .fuel-ambitions-title {
   font-family: "Inter", sans-serif;
   font-weight: 800;
-  font-size: 4.4vw;
+  font-size: 4.44vw;
   line-height: 1.12;
   letter-spacing: -2.16px;
   color: #ffffff;
@@ -696,25 +743,25 @@
 .fuel-ambitions-desc {
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: 1.1vw;
+  font-size: 1.11vw;
   line-height: 1.75;
   color: rgba(255, 255, 255, 0.8);
-  margin: 2.4vh 0 4vh;
+  margin: 1.66vw 0 2.77vw;
 }
 
 .btn-fuel-cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 18px 28px;
+  gap: 0.69vw;
+  padding: 1.25vw 1.94vw;
   background: #ff6b3d;
   box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 99px;
+  border-radius: 6.87vw;
   color: #ffffff;
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 15px;
-  line-height: 18px;
+  font-size: 1.04vw;
+  line-height: 1.2;
   text-decoration: none;
   width: max-content;
   transition:
@@ -730,27 +777,103 @@
 .fuel-ambitions-graphic {
   position: relative;
   width: 25vw;
-  max-width: 360px;
+  height: 29vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.fuel-card-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.fuel-ambitions-img {
+.fuel-stack-card {
+  position: absolute;
+  width: 16.14vw;
+  height: 21.52vw;
+  border-radius: 0.55vw;
+  padding: 1.11vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(
+    113.96deg,
+    #0f1f1a 0%,
+    #0b0e66 46.15%,
+    #d53d5e 76.92%
+  );
+  color: #ffffff;
+}
+
+.fuel-stack-card.back-card {
+  transform: rotate(6deg);
+  top: 1.35vw;
+  left: 3.41vw;
+}
+
+.fuel-stack-card.front-card {
+  transform: rotate(-5.51deg);
+  top: 3.63vw;
+  left: 2.08vw;
+  box-shadow: 0px 0px 26.1px rgba(0, 0, 0, 0.25);
+}
+
+.fuel-card-brand {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 1.11vw;
+  line-height: 1.31;
+  color: #ffffff;
+}
+
+.fuel-card-divider {
   width: 100%;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0.55vw 0 1.11vw;
+}
+
+.fuel-card-title {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-size: 2.22vw;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.fuel-card-number {
+  position: absolute;
+  right: 0.83vw;
+  bottom: 0.83vw;
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 5.55vw;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: #ffffff;
+  pointer-events: none;
 }
 
 @media (max-width: 1024px) {
   .hero-magazine-container {
     flex-direction: column;
     max-width: 100%;
+    gap: 6vw;
   }
 
   .hero-magazine-left {
-    gap: 2.5vh;
+    flex: 1;
+    gap: 3vh;
   }
 
   .hero-magazine-title {
@@ -776,10 +899,15 @@
     padding: 1.8vh 3vw;
   }
 
+  .hero-magazine-right {
+    flex: 1;
+    width: 100%;
+  }
+
   .magazine-stack-wrapper {
     width: 50vw;
     height: 65vw;
-    margin-top: 4vh;
+    margin-top: 2vh;
   }
 
   .magazine-card-back {
@@ -796,16 +924,12 @@
     font-size: 6vw;
   }
 
-  .magazine-cover-meta {
-    font-size: 1.5vw;
-  }
-
   .section-title {
-    font-size: 5vw;
+    font-size: 4.5vw;
   }
 
   .btn-section-link {
-    font-size: 2vw;
+    font-size: 1.8vw;
     padding: 1.2vh 2.5vw;
   }
 
@@ -866,6 +990,7 @@
   .fuel-ambitions-card {
     flex-direction: column;
     padding: 6vw;
+    gap: 6vw;
   }
 
   .fuel-ambitions-title {
@@ -884,7 +1009,24 @@
 
   .fuel-ambitions-graphic {
     width: 45vw;
-    max-width: 320px;
+    height: 50vw;
+  }
+
+  .fuel-stack-card {
+    width: 32vw;
+    height: 42vw;
+  }
+
+  .fuel-card-brand {
+    font-size: 2.5vw;
+  }
+
+  .fuel-card-title {
+    font-size: 4vw;
+  }
+
+  .fuel-card-number {
+    font-size: 10vw;
   }
 }
 
@@ -955,7 +1097,9 @@
     text-decoration: none;
     font-weight: 700;
     font-size: 6vw;
-    transition: color 0.3s, opacity 0.3s;
+    transition:
+      color 0.3s,
+      opacity 0.3s;
   }
 
   .mobile-menu-link:hover {
@@ -1001,6 +1145,11 @@
     justify-content: center;
   }
 
+  .hero-actions-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
   .magazine-stack-wrapper {
     width: 75vw;
     height: 95vw;
@@ -1018,10 +1167,6 @@
 
   .magazine-cover-title {
     font-size: 9vw;
-  }
-
-  .magazine-cover-meta {
-    font-size: 2.4vw;
   }
 
   .from-this-issue,
@@ -1126,6 +1271,23 @@
 
   .fuel-ambitions-graphic {
     width: 75vw;
-    max-width: 280px;
+    height: 80vw;
+  }
+
+  .fuel-stack-card {
+    width: 55vw;
+    height: 70vw;
+  }
+
+  .fuel-card-brand {
+    font-size: 4.5vw;
+  }
+
+  .fuel-card-title {
+    font-size: 7vw;
+  }
+
+  .fuel-card-number {
+    font-size: 16vw;
   }
 }

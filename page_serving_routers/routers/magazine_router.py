@@ -23,12 +23,39 @@ async def build_listing_context(content_override=None):
     """Builds the magazine listing context, optionally from unsaved content."""
     context = await base_context(active_nav="magazine", page_id="magazine_listing", content_override=content_override)
     issues = await magazine_service.get_issues()
-    featured_slug = context["content"].get("hero", {}).get("featured_issue_slug")
-    featured = next((i for i in issues if i["slug"] == featured_slug), issues[0] if issues else None)
+    hero_data = context["content"].get("hero", {})
+    featured_slug = hero_data.get("featured_issue_slug")
+    featured = next((i for i in issues if i["slug"] == featured_slug), None)
+    if not featured:
+        featured = {
+            "slug": hero_data.get("featured_issue_slug", "the-founder-issue"),
+            "url": f"/magazine/{hero_data.get('featured_issue_slug', 'the-founder-issue')}",
+            "title": hero_data.get("title", "The founder issue."),
+            "issue_number": "12",
+            "season_label": "AUTUMN 2024",
+            "description": hero_data.get("description", ""),
+            "stats": hero_data.get("stats", []),
+            "meta_tags": hero_data.get("meta_tags", []),
+            "cover_title_lines": hero_data.get("cover_title_lines", ["The", "Issue"]),
+            "cover_variant": "edition-bg-1",
+            "cover_image_url": "",
+        }
+    else:
+        if not featured.get("stats"):
+            featured["stats"] = hero_data.get("stats", [])
+        if not featured.get("meta_tags"):
+            featured["meta_tags"] = hero_data.get("meta_tags", [])
+        if not featured.get("cover_title_lines"):
+            featured["cover_title_lines"] = hero_data.get("cover_title_lines", ["The", "Issue"])
+
+    archive_issues = [i for i in issues if not featured or i["slug"] != featured["slug"]]
+    if not archive_issues or all(not i.get("badge") for i in archive_issues):
+        archive_issues = context["content"].get("archive", {}).get("default_items", [])
+
     context.update({
         "issues": issues,
         "featured_issue": featured,
-        "archive_issues": [i for i in issues if not featured or i["slug"] != featured["slug"]],
+        "archive_issues": archive_issues,
     })
     return context
 

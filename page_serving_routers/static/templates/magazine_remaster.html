@@ -7,19 +7,19 @@
 {% endblock %}
 
 {% block content %}
-{% if featured_issue %}
 <section class="hero-magazine" data-bol-section="hero">
-    <div class="hero-watermark">{{ content.hero.watermark }}</div>
+    <div class="hero-watermark">{{ content.hero.watermark | default("IN PRINT.") }}</div>
     <img src="/static/images/hero_wave_line.svg" class="hero-wave-line" alt="Decorative Wave" />
     <div class="hero-magazine-container">
         <div class="hero-magazine-left">
-            <h1 class="hero-magazine-title">{{ featured_issue.title | safe }}</h1>
+            <h1 class="hero-magazine-title">{{ featured_issue.title | default(content.hero.title) | default("The founder issue.") }}</h1>
             <p class="hero-magazine-desc">
-                {{ featured_issue.description or content.hero.description_fallback }}
+                {{ featured_issue.description or content.hero.description or content.hero.description_fallback }}
             </p>
-            {% if featured_issue.stats %}
+            {% set stats = featured_issue.stats or content.hero.stats %}
+            {% if stats %}
             <div class="hero-stats-row">
-                {% for stat in featured_issue.stats %}
+                {% for stat in stats %}
                 {% if not loop.first %}<div class="hero-stat-divider"></div>{% endif %}
                 <div class="hero-stat-block">
                     <div class="hero-stat-num">{{ stat.value }}</div>
@@ -29,63 +29,66 @@
             </div>
             {% endif %}
             <div class="hero-actions-row">
-                <a href="{{ featured_issue.url }}" class="btn-read-online">
-                    <span>{{ content.hero.primary_cta.label }}</span>
+                <a href="{{ featured_issue.url | default(content.hero.primary_cta.href) | default('/magazine/the-founder-issue') }}" class="btn-read-online">
+                    <span>{{ content.hero.primary_cta.label | default("Read online") }}</span>
                     <span class="btn-arrow">→</span>
                 </a>
-                <a href="{{ content.hero.secondary_cta.href }}" class="btn-order-print">
-                    <span>{{ content.hero.secondary_cta.label }}</span>
-                    <i class="ph ph-arrow-right"></i>
+                <a href="{{ content.hero.secondary_cta.href | default('#') }}" class="btn-order-print">
+                    <span>{{ content.hero.secondary_cta.label | default("Order Print Copy") }}</span>
+                    <span class="btn-arrow">→</span>
                 </a>
             </div>
         </div>
         <div class="hero-magazine-right">
-            {% if featured_issue.meta_tags %}
+            {% set meta_tags = featured_issue.meta_tags or content.hero.meta_tags %}
+            {% if meta_tags %}
             <div class="hero-meta-block">
-                {% for tag in featured_issue.meta_tags %}
+                {% for tag in meta_tags %}
                 <span>{{ tag }}</span>
                 {% endfor %}
             </div>
             {% endif %}
             <div class="magazine-stack-wrapper">
                 <div class="magazine-card-back">
-                    <div class="stack-card-issue">ISSUE {{ featured_issue.issue_number }}</div>
+                    <div class="stack-card-issue">ISSUE {{ featured_issue.issue_number | default("12") }}</div>
                 </div>
                 <div class="magazine-card-front"{% if featured_issue.cover_image_url %} style="background-image: url('{{ featured_issue.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
                     <div class="magazine-cover-content">
-                        <div class="magazine-cover-title">{% if featured_issue.cover_title_lines %}{% for line in featured_issue.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ featured_issue.title | safe }}{% endif %}</div>
+                        <div class="magazine-cover-title">{% if featured_issue.cover_title_lines %}{% for line in featured_issue.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}The<br />Issue{% endif %}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-{% endif %}
 
-{% if content.featured_articles and content.featured_articles['items'] %}
+{% set articles = content.featured_articles['items'] if (content.featured_articles and content.featured_articles['items']) else [] %}
+{% if articles %}
 <section class="from-this-issue" data-bol-section="featured_articles">
     <div class="section-header-row">
-        <h2 class="section-title">{{ content.featured_articles.title }}</h2>
-        <a href="{{ content.featured_articles.link.href }}" class="btn-section-link">
-            <span>{{ content.featured_articles.link.label }}</span>
-            <i class="ph ph-arrow-right"></i>
+        <h2 class="section-title">{{ content.featured_articles.title | default("Articles everyone’s talking about") }}</h2>
+        <a href="{{ content.featured_articles.link.href | default('/blog') }}" class="btn-section-link">
+            <span>{{ content.featured_articles.link.label | default("See full content") }}</span>
+            <span class="btn-link-arrow">→</span>
         </a>
     </div>
     <div class="articles-grid">
-        {% for article in content.featured_articles['items'] %}
+        {% for article in articles %}
         <div class="article-card">
-            <div class="article-cover">
-                <img src="{{ article.image_url }}" alt="{{ article.image_alt | default('Article Cover') }}" class="article-img" />
+            <div class="article-cover {{ article.gradient_class | default('article-gradient-' ~ loop.index) }}">
+                {% if article.image_url %}
+                <img src="{{ article.image_url }}" alt="{{ article.title }}" class="article-img" />
+                {% endif %}
             </div>
             <div class="article-body">
                 <div class="article-content">
                     <h3 class="article-title">{{ article.title }}</h3>
-                    <p class="article-excerpt">
-                        {{ article.excerpt }}
-                    </p>
+                    <p class="article-excerpt">{{ article.excerpt }}</p>
                 </div>
                 <div class="article-meta">
-                    <img src="{{ article.author_avatar_url }}" alt="Author" class="author-avatar" />
+                    <div class="author-avatar-badge">
+                        <img src="{{ article.author_avatar_url | default('/static/images/remaster-homepage/icons/author-1.svg') }}" alt="Author" class="author-avatar" onerror="this.style.display='none'" />
+                    </div>
                     <span class="author-info">{{ article.author_info }}</span>
                 </div>
             </div>
@@ -95,32 +98,33 @@
 </section>
 {% endif %}
 
-{% if archive_issues %}
+{% set archives = archive_issues if archive_issues else (content.archive['default_items'] if content.archive else []) %}
+{% if archives %}
 <section class="past-editions" data-bol-section="archive">
     <div class="section-header-row">
-        <h2 class="section-title">{{ content.archive.title }}</h2>
-        <a href="{{ content.archive.link.href }}" class="btn-section-link">
-            <span>{{ content.archive.link.label }}</span>
-            <i class="ph ph-arrow-right"></i>
+        <h2 class="section-title">{{ content.archive.title | default("From the archive") }}</h2>
+        <a href="{{ content.archive.link.href | default('#') }}" class="btn-section-link">
+            <span>{{ content.archive.link.label | default("Browse all issues") }}</span>
+            <span class="btn-link-arrow">→</span>
         </a>
     </div>
     <div class="editions-grid">
-        {% for issue in archive_issues %}
+        {% for issue in archives %}
         <div class="edition-card">
-            <div class="edition-cover {{ issue.cover_variant }}"{% if issue.cover_image_url %} style="background-image: url('{{ issue.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
+            <div class="edition-cover {{ issue.cover_variant | default('edition-bg-' ~ (((loop.index0) % 4) + 1)) }}"{% if issue.cover_image_url %} style="background-image: url('{{ issue.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
                 <div class="edition-cover-top">
-                    <span class="edition-brand">{{ issue.brand }}</span>
-                    <span class="edition-date">{{ issue.season_label }}{% if issue.issue_number %} · {{ issue.issue_number }}{% endif %}</span>
+                    <span class="edition-brand">{{ issue.brand | default('BOL') }}</span>
+                    <span class="edition-date">{{ issue.season_label | default('SUMMER 2024') }}{% if issue.issue_number %} · {{ issue.issue_number }}{% endif %}</span>
                 </div>
                 <div class="edition-divider"></div>
-                <div class="edition-cover-title">{% if issue.cover_title_lines %}{% for line in issue.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ issue.title }}{% endif %}</div>
-                <div class="edition-watermark">{{ issue.issue_number }}</div>
+                <div class="edition-cover-title">{% if issue.cover_title_lines %}{% for line in issue.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ issue.cover_title | default(issue.title) }}{% endif %}</div>
+                <div class="edition-watermark">{{ issue.watermark_number | default(issue.issue_number) | default("11") }}</div>
             </div>
             <div class="edition-info">
-                <div class="edition-badge">{{ issue.badge }}</div>
+                <div class="edition-badge">{{ issue.badge | default("ISSUE " ~ issue.issue_number ~ " · " ~ issue.season_label) }}</div>
                 <h3 class="edition-name">{{ issue.title }}</h3>
-                <a href="{{ issue.url }}" class="edition-link">
-                    <span>{{ content.hero.primary_cta.label }}</span>
+                <a href="{{ issue.url | default('/magazine/' ~ issue.slug) }}" class="edition-link">
+                    <span>Read online</span>
                     <span class="edition-arrow">→</span>
                 </a>
             </div>
@@ -134,18 +138,35 @@
     <div class="fuel-ambitions-card">
         <div class="fuel-ambitions-content">
             <h2 class="fuel-ambitions-title">
+                {% if content.fuel_cta.title_lines %}
                 {% for line in content.fuel_cta.title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}
+                {% else %}
+                Fuel your ambitions<br />with Fresh Insights
+                {% endif %}
             </h2>
             <p class="fuel-ambitions-desc">
-                {{ content.fuel_cta.description }}
+                {{ content.fuel_cta.description | default("Business news, strategies and trends, all in one place, just for you!") }}
             </p>
-            <a href="{{ content.fuel_cta.cta.href }}" class="btn-fuel-cta">
-                <span>{{ content.fuel_cta.cta.label }}</span>
+            <a href="{{ content.fuel_cta.cta.href | default('/magazine') }}" class="btn-fuel-cta">
+                <span>{{ content.fuel_cta.cta.label | default("Check out the latest magazine") }}</span>
                 <span class="btn-arrow">→</span>
             </a>
         </div>
         <div class="fuel-ambitions-graphic">
-            <img src="{{ content.fuel_cta.image_url }}" alt="Magazine Card" class="fuel-ambitions-img" />
+            <div class="fuel-card-stack">
+                <div class="fuel-stack-card back-card">
+                    <div class="fuel-card-brand">BOL</div>
+                    <div class="fuel-card-divider"></div>
+                    <div class="fuel-card-title">The Founder Issue</div>
+                    <div class="fuel-card-number">12</div>
+                </div>
+                <div class="fuel-stack-card front-card">
+                    <div class="fuel-card-brand">BOL</div>
+                    <div class="fuel-card-divider"></div>
+                    <div class="fuel-card-title">The Founder Issue</div>
+                    <div class="fuel-card-number">12</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

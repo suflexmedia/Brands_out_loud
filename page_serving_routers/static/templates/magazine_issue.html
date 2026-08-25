@@ -11,51 +11,62 @@
 {% set sections = content.sections | default({}, true) %}
 {% set browse_all = sections.browse_all | default({}, true) %}
 <div class="book-page-wrapper">
-    <section class="more-books-section" data-bol-section="sections">
-        <div class="more-books-container">
-            <div class="covers-header">
-                <h2 class="covers-title">{{ issue.title }}</h2>
-                {% if issue.season_label or issue.issue_number %}
-                <p class="covers-subtitle">{{ issue.season_label }}{% if issue.season_label and issue.issue_number %} · {% endif %}{% if issue.issue_number %}Issue {{ issue.issue_number }}{% endif %}</p>
-                {% endif %}
-                {% if issue.description %}
-                <p class="covers-subtitle">{{ issue.description }}</p>
-                {% endif %}
-            </div>
+    <section class="issue-hero-section" data-bol-section="hero">
+        <div class="issue-hero-watermark">{{ issue.issue_number | default("BOL") }}</div>
+        <div class="issue-hero-container">
+            <div class="issue-hero-badge">{{ issue.badge | default("ISSUE " ~ issue.issue_number ~ " · " ~ issue.season_label) }}</div>
+            <h1 class="issue-hero-title">{{ issue.title }}</h1>
+            <p class="issue-hero-desc">
+                {{ issue.description | default("Explore every book, founder feature, and in-depth business essay published in this edition.") }}
+            </p>
+        </div>
+    </section>
 
-            <div class="more-books-header">
-                <h2 class="more-books-title">{{ sections.books_title | default("Books in this issue", true) | safe }}</h2>
+    <section class="issue-books-section" data-bol-section="sections">
+        <div class="issue-books-container">
+            <div class="issue-books-header">
+                <h2 class="issue-books-title">{{ sections.books_title | default("Books in <span class='highlight-blue'>this issue</span>", true) | safe }}</h2>
                 <a href="{{ browse_all.href | default('/magazine', true) }}" class="btn-browse-all">{{ browse_all.label | default("Browse all issues →", true) }}</a>
             </div>
 
             {% if books %}
-            <div class="more-books-grid">
+            <div class="issue-books-grid">
                 {% for item in books %}
                 <a href="{{ item.url }}" class="book-item-card">
-                    <div class="book-item-cover {{ item.cover_variant }}">
+                    <div class="book-item-cover {{ item.cover_variant | default('cover-gradient-1') }}"{% if item.cover_image_url %} style="background-image: url('{{ item.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
                         <div class="book-item-cover-header">
-                            <span class="book-item-brand">{{ item.brand }}</span>
-                            <span class="book-item-tag">{{ item.tag }}</span>
+                            <span class="book-item-brand">{{ item.brand | default('BOL') }}</span>
+                            <span class="book-item-tag">{{ item.tag | default(item.category) }}</span>
                         </div>
                         <div class="book-item-line"></div>
-                        <h3 class="book-item-cover-title">{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h3>
-                        <div class="book-item-bg-num">{{ item.background_number }}</div>
+                        <h3 class="book-item-cover-title">{% if item.cover_title_lines %}{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ item.title }}{% endif %}</h3>
+                        <div class="book-item-bg-num">{{ item.background_number | default(item.order) | default("") }}</div>
                     </div>
                     <div class="book-item-info">
                         <div class="book-item-meta">
-                            <span class="book-item-cat">{{ item.category | upper }}</span>
+                            <span class="book-item-cat">{{ item.category | default('BUSINESS') | upper }}</span>
                             <span class="book-item-dot">·</span>
-                            <span class="book-item-pages">{{ item.pages_label | upper }}</span>
+                            <span class="book-item-pages">{{ item.pages_label | default('148 PAGES') | upper }}</span>
                         </div>
                         <h4 class="book-item-title">{{ item.title }}</h4>
                         {% if item.author_name %}<div class="book-item-author">by {{ item.author_name }}</div>{% endif %}
-                        {% if item.price and item.price.current %}<div class="book-item-price">{{ item.price.current }}</div>{% endif %}
+                        <div class="book-item-bottom">
+                            {% if item.price and item.price.current %}<div class="book-item-price">{{ item.price.current }}</div>{% endif %}
+                            <span class="book-item-link">Read book →</span>
+                        </div>
                     </div>
                 </a>
                 {% endfor %}
             </div>
             {% else %}
-            <p class="covers-subtitle">{{ sections.empty_message | default("No books have been published in this issue yet.", true) }}</p>
+            <div class="issue-empty-state">
+                <div class="empty-state-icon">
+                    <i class="ph ph-books"></i>
+                </div>
+                <h3 class="empty-state-title">No books published in this issue yet</h3>
+                <p class="empty-state-desc">{{ sections.empty_message | default("Stay tuned! New book releases from this edition will appear here soon.", true) }}</p>
+                <a href="/magazine" class="btn-primary btn-empty-cta">Browse All Magazine Issues →</a>
+            </div>
             {% endif %}
         </div>
     </section>
