@@ -11,3 +11,4 @@ pyjwt
 pymongo
 python-dotenv
 python-multipart
+uvicorn[standard]
