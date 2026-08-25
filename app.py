@@ -44,7 +44,6 @@ async def lifespan(app: FastAPI):
         db_handler.connect()
         bucket_handler.connect()
         
-        # Seed database collections if they are empty
         db = db_handler.get_db()
         json_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "JSON_FILES")
         
@@ -81,7 +80,6 @@ async def lifespan(app: FastAPI):
         except Exception as idx_err:
             print(f"Index note for books: {idx_err}")
 
-        # Blogs
         if await db["blogs"].count_documents({}) == 0:
             try:
                 with open(os.path.join(json_dir, "blog.json"), "r", encoding="utf-8") as f:
@@ -96,12 +94,10 @@ async def lifespan(app: FastAPI):
             except FileNotFoundError:
                 print("Seed file not found for blogs")
 
-        # Admin Users Collection
         if await db["admin_users"].count_documents({}) == 0:
             admin_username = os.environ.get("ADMIN_USERNAME", "admin")
             admin_password = os.environ.get("ADMIN_PASSWORD", "password")
             
-            # Hash the password
             salt = bcrypt.gensalt()
             hashed_password = bcrypt.hashpw(admin_password.encode('utf-8'), salt).decode('utf-8')
             
@@ -115,7 +111,6 @@ async def lifespan(app: FastAPI):
             await db["admin_users"].insert_one(default_admin)
             print("Seeded default admin user into admin_users collection.")
 
-        # Ensure older admin users are migrated to system_admin role
         await db["admin_users"].update_many(
             {"$or": [{"role": "system administrator"}, {"role": {"$exists": False}}]},
             {"$set": {
