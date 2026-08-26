@@ -1,0 +1,45 @@
+{
+    "_id": "site_settings",
+    "nav": {
+        "logo_url": "/static/images/header_logo.png",
+        "links": [
+            { "key": "magazine", "label": "Magazine", "href": "/magazine" },
+            { "key": "blog", "label": "Blog", "href": "/blog" },
+            { "key": "contact", "label": "Contact", "href": "/contact" }
+        ],
+        "cta": { "label": "Book a Call →", "href": "/contact" }
+    },
+    "footer": {
+        "logo_url": "/static/images/header_logo.png",
+        "tagline_lines": ["Where Expertise", "Becomes Influence."],
+        "columns": [
+            {
+                "title": "DISCOVER",
+                "links": [
+                    { "label": "Blog", "href": "/blog" },
+                    { "label": "Magazine", "href": "/magazine" },
+                    { "label": "Contact", "href": "/contact" }
+                ]
+            },
+            {
+                "title": "COMPANY",
+                "links": [
+                    { "label": "About", "href": "#" },
+                    { "label": "Return Policy", "href": "#" },
+                    { "label": "Privacy", "href": "#" },
+                    { "label": "Terms & Conditions", "href": "#" }
+                ]
+            },
+            {
+                "title": "CONNECT",
+                "links": [
+                    { "label": "Instagram", "href": "#" },
+                    { "label": "LinkedIn", "href": "#" },
+                    { "label": "X (Twitter)", "href": "#" },
+                    { "label": "YouTube", "href": "#" }
+                ]
+            }
+        ],
+        "copyright": "© 2026 Brands Out Loud"
+    }
+}

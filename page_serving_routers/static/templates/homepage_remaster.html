@@ -1,0 +1,232 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ seo.title | default("Brands Out Loud") }}{% endblock %}
+
+{% block page_css %}{% endblock %}
+
+{% block content %}
+{% set hero = content.hero %}
+{% set expertise = content.expertise %}
+{% set impact = content.impact %}
+{% set featured_in = content.featured_in %}
+{% set expert_author = content.expert_author %}
+{% set mid_cta = content.mid_cta %}
+{% set accelerator = content.accelerator %}
+{% set final_cta = content.final_cta %}
+
+<section class="hero-remaster" data-bol-section="hero">
+    <video class="hero-remaster-video" autoplay loop muted playsinline>
+        <source src="{{ hero.video_url }}" type="video/mp4" />
+    </video>
+    <div class="hero-remaster-content">
+        <h1 class="hero-remaster-title">{{ hero.title }}</h1>
+        <p class="hero-remaster-subtitle">{{ hero.subtitle }}</p>
+        <a href="{{ hero.cta.href }}" class="btn-primary">
+            <span>{{ hero.cta.label }}</span>
+            <span>→</span>
+        </a>
+    </div>
+    <div class="hero-stats-bar-wrapper">
+        <div class="hero-stats-bar">
+            {% for stat in hero.stats_marquee %}
+            <div class="hero-stat-item">
+                <i class="ph {{ stat.icon }} hero-stat-icon"></i>
+                <span>{{ stat.text }}</span>
+            </div>
+            {% endfor %}
+            {% for stat in hero.stats_marquee %}
+            <div class="hero-stat-item">
+                <i class="ph {{ stat.icon }} hero-stat-icon"></i>
+                <span>{{ stat.text }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="expertise-section section-container" data-bol-section="expertise">
+    <h2 class="expertise-title">{{ expertise.title }}</h2>
+    <div class="expertise-grid">
+        {% for card in expertise.cards %}
+        <div class="expertise-card" data-bol-index="{{ loop.index0 }}">
+            <img
+                src="{{ card.icon_url }}"
+                alt="Icon"
+                class="expertise-card-icon"
+                style="border-radius: 50%"
+            />
+            <h3 class="expertise-card-title">{{ card.title }}</h3>
+            <p class="expertise-card-desc">{{ card.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="impact-section section-container" data-bol-section="impact">
+    <div class="impact-header">
+        <div class="impact-title-box">
+            <h2 class="impact-title">
+                {% for line in impact.title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}
+            </h2>
+            <p class="impact-subtitle">{{ impact.subtitle }}</p>
+        </div>
+        <a href="{{ impact.cta.href }}" class="btn-primary">
+            <span>{{ impact.cta.label }}</span>
+            <span>→</span>
+        </a>
+    </div>
+    <div class="impact-grid">
+        {% for card in impact.cards %}
+        <div class="impact-card" data-bol-index="{{ loop.index0 }}">
+            {% if card.media_type == 'video' %}
+            <video
+                src="{{ card.media_url }}"
+                aria-label="Impact"
+                class="impact-card-img"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+            ></video>
+            {% else %}
+            <img src="{{ card.media_url }}" alt="Impact" class="impact-card-img" />
+            {% endif %}
+            <div class="impact-card-overlay">
+                <p class="impact-card-text">{{ card.overlay_text | safe }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="featured-in-section" data-bol-section="featured_in">
+    <h2 class="featured-in-title">{{ featured_in.title }}</h2>
+    <div class="featured-logos">
+        {% for logo in featured_in.logos %}
+        <img
+            src="{{ logo.logo_url }}"
+            alt="Logo"
+            class="featured-logo"
+            data-bol-index="{{ loop.index0 }}"
+            {% if logo.invert %}style="filter: invert(1); mix-blend-mode: screen"{% endif %}
+        />
+        {% endfor %}
+    </div>
+</section>
+
+<section class="expert-author-section section-container" data-bol-section="expert_author">
+    <div class="expert-author-left">
+        <h2 class="expert-author-title">{{ expert_author.title_html | safe }}</h2>
+        <p class="expert-author-desc">{{ expert_author.description }}</p>
+    </div>
+    <div class="expert-author-grid">
+        {% for card in expert_author.cards %}
+        <div class="expert-feature-card" data-bol-index="{{ loop.index0 }}">
+            <div class="expert-feature-icon">
+                <img src="{{ card.icon_url }}" alt="Icon" />
+            </div>
+            <h3 class="expert-feature-title">{{ card.title }}</h3>
+            <p class="expert-feature-desc">{{ card.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="mid-cta-section section-container" data-bol-section="mid_cta">
+    <div class="mid-cta-container">
+        <div class="mid-cta-left">
+            <h2 class="mid-cta-title">
+                {% for line in mid_cta.title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}
+            </h2>
+            <a href="{{ mid_cta.cta.href }}" class="btn-orange">{{ mid_cta.cta.label }}</a>
+        </div>
+        <div class="mid-cta-right">
+            <img
+                src="{{ mid_cta.image_url }}"
+                alt="Book Banner"
+                style="width: 100%; height: 100%; display: block"
+            />
+        </div>
+    </div>
+</section>
+
+<section class="accelerator-section section-container" data-bol-section="accelerator">
+    <div class="accelerator-header">
+        <p class="accelerator-eyebrow">{{ accelerator.eyebrow }}</p>
+        <h2 class="accelerator-title">{{ accelerator.title_html | safe }}</h2>
+    </div>
+    <div class="accelerator-cta">
+        <a href="{{ accelerator.cta.href }}" class="btn-white">{{ accelerator.cta.label }}</a>
+    </div>
+    <div class="accelerator-steps">
+        {% for step in accelerator.steps %}
+        <div class="step-card" data-bol-index="{{ loop.index0 }}">
+            <div class="step-number">{{ step.number }}</div>
+            <div class="step-card-content">
+                <div class="step-icon">
+                    <img src="{{ step.icon_url }}" alt="Icon" />
+                </div>
+                <h3 class="step-title">{{ step.title }}</h3>
+                <p class="step-desc">{{ step.description }}</p>
+            </div>
+            <video
+                class="step-card-image"
+                src="{{ step.video_url }}"
+                autoplay
+                loop
+                muted
+                playsinline
+                style="object-fit: cover"
+            ></video>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="final-cta-section section-container" data-bol-section="final_cta">
+    <div class="final-cta-container">
+        <div class="final-cta-left">
+            <h2 class="final-cta-title">{{ final_cta.title }}</h2>
+            <a
+                href="{{ final_cta.cta.href }}"
+                class="btn-primary"
+                style="width: max-content"
+                >{{ final_cta.cta.label }}</a
+            >
+        </div>
+        <div class="final-cta-quote-block">
+            <span class="quote-mark-open">“</span>
+            <p class="quote-text">{{ final_cta.quote }}</p>
+            <span class="quote-mark-close">“</span>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const cta = document.querySelector(".accelerator-cta");
+        const cards = document.querySelectorAll(".step-card");
+
+        if (cta && cards.length > 0) {
+            const lastCard = cards[cards.length - 1];
+            let stickyTop = parseFloat(window.getComputedStyle(lastCard).top);
+
+            window.addEventListener("resize", function () {
+                stickyTop = parseFloat(window.getComputedStyle(lastCard).top);
+            });
+
+            window.addEventListener("scroll", function () {
+                const rect = lastCard.getBoundingClientRect();
+                if (rect.top <= stickyTop + 2) {
+                    cta.classList.add("hidden");
+                } else {
+                    cta.classList.remove("hidden");
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

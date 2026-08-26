@@ -1,0 +1,306 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ seo.title | default("Blog - Brands Out Loud") }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/blog_remaster.css?v={{ asset_version }}" />
+<style>
+    .blog-featured-card,
+    .must-read-main-card,
+    .trending-card,
+    .grid-card,
+    .deep-dive-item,
+    .deep-dive-read-title {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="blog-page-wrapper">
+    <div class="blog-hero-bg-overlay"></div>
+
+    <section class="blog-hero" data-bol-section="hero">
+        <div class="blog-hero-header">
+            <h1 class="blog-hero-title">{{ content.hero.title }}</h1>
+            <p class="blog-hero-subtitle">{{ content.hero.subtitle }}</p>
+        </div>
+
+        {% if featured_post %}
+        <a class="blog-featured-card" href="{{ featured_post.url }}">
+            <div class="featured-card-image-wrap">
+                <img src="{{ featured_post.image_url }}" class="featured-card-img" alt="{{ featured_post.image_alt | default(featured_post.title, true) }}" />
+                <span class="badge-featured">{{ content.hero.badge_label }}</span>
+            </div>
+            <div class="featured-card-content">
+                <div class="featured-tag">{{ featured_post.category_label | upper }} • {{ featured_post.read_time }} MIN READ</div>
+                <h2 class="featured-title">{{ featured_post.title }}</h2>
+                <p class="featured-excerpt">{{ featured_post.excerpt }}</p>
+                <div class="featured-author-row">
+                    {% if featured_post.author_avatar_url %}
+                    <img src="{{ featured_post.author_avatar_url }}" alt="{{ featured_post.author_name }}" class="author-avatar" />
+                    {% endif %}
+                    <div class="author-details">
+                        <span class="author-name">By {{ featured_post.author_name }}</span>
+                        <span class="author-info">{{ featured_post.date }}</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endif %}
+    </section>
+
+    <section class="blog-must-read" data-bol-section="must_read">
+        <div class="blog-section-header">
+            <h2 class="must-read-heading">{{ content.must_read.heading }}</h2>
+        </div>
+        <div class="must-read-flex">
+            {% if must_read_main %}
+            <a class="must-read-main-card" href="{{ must_read_main.url }}">
+                <div class="must-read-cover-wrap">
+                    <img src="{{ must_read_main.image_url }}" class="must-read-cover-img" alt="{{ must_read_main.image_alt | default(must_read_main.title, true) }}" />
+                    <span class="category-chip">{{ must_read_main.category_label | upper }}</span>
+                </div>
+                <div class="must-read-body">
+                    <h3 class="must-read-title">{{ must_read_main.title }}</h3>
+                    <p class="must-read-excerpt">{{ must_read_main.excerpt }}</p>
+                    <div class="must-read-meta">
+                        {% if must_read_main.author_avatar_url %}
+                        <img src="{{ must_read_main.author_avatar_url }}" alt="{{ must_read_main.author_name }}" class="author-avatar" />
+                        {% endif %}
+                        <span class="meta-text">{{ must_read_main.author_name }} • {{ must_read_main.read_time }} min read • {{ must_read_main.date }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endif %}
+            <div class="must-read-trending-column">
+                {% for post in trending_posts %}
+                <a class="trending-card" href="{{ post.url }}">
+                    <img src="{{ post.image_url }}" alt="{{ post.image_alt | default(post.title, true) }}" class="trending-thumb" />
+                    <div class="trending-content">
+                        <span class="trending-category">{{ post.category_label | upper }}</span>
+                        <h4 class="trending-title">{{ post.title }}</h4>
+                        <span class="trending-meta">{{ post.author_name }} • {{ post.date }} • {{ post.read_time }} min</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-latest" data-bol-section="latest">
+        <div class="latest-header-row">
+            <h2 class="latest-heading">{{ content.latest.heading }}</h2>
+            <div class="category-filters">
+                <button class="filter-pill active" data-category="all">All</button>
+                {% for category in categories %}
+                <button class="filter-pill" data-category="{{ category.slug }}">{{ category.label }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="latest-grid" id="latestGrid">
+            {% for post in latest['items'] %}
+            <a class="grid-card" data-category="{{ post.category | lower }}" href="{{ post.url }}">
+                <div class="grid-card-thumb">
+                    <img src="{{ post.image_url }}" alt="{{ post.image_alt | default(post.title, true) }}" class="grid-thumb-img" />
+                    <span class="grid-category-chip">{{ post.category_label | upper }}</span>
+                </div>
+                <div class="grid-card-body">
+                    <h3 class="grid-card-title">{{ post.title }}</h3>
+                    <span class="grid-card-meta">{{ post.author_name }} • {{ post.date }} • {{ post.read_time }} min</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="latest-load-row" id="latestLoadRow">
+            <button class="btn-load-more" id="btnLoadMore">
+                <span>{{ content.latest.load_more_label }}</span>
+                <span class="down-arrow">↓</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="blog-deep-dive" data-bol-section="deep_dive">
+        <div class="deep-dive-header">
+            <h2 class="deep-dive-heading">{{ content.deep_dive.heading }}</h2>
+        </div>
+
+        <div class="deep-dive-flex">
+            {% if deep_dive_featured %}
+            <div class="deep-dive-featured-card">
+                <div class="deep-dive-badge-row">
+                    <span class="badge-deep-dive">{{ content.deep_dive.badge }}</span>
+                    <span class="deep-dive-readtime">{{ deep_dive_featured.read_time }} MIN READ</span>
+                </div>
+                <blockquote class="deep-dive-quote">“{{ deep_dive_featured.excerpt }}”</blockquote>
+                <a class="deep-dive-read-title" href="{{ deep_dive_featured.url }}">Read: {{ deep_dive_featured.title }}</a>
+                <div class="deep-dive-author-row">
+                    {% if deep_dive_featured.author_avatar_url %}
+                    <img src="{{ deep_dive_featured.author_avatar_url }}" alt="{{ deep_dive_featured.author_name }}" class="author-avatar" />
+                    {% endif %}
+                    <span class="author-text">{{ deep_dive_featured.author_name }} • {{ deep_dive_featured.date }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="deep-dive-list-column">
+                {% for post in deep_dive_items %}
+                {% if not loop.first %}<div class="item-divider"></div>{% endif %}
+                <a class="deep-dive-item" href="{{ post.url }}">
+                    <span class="item-number">{{ "%02d" | format(loop.index) }}</span>
+                    <div class="item-body">
+                        <span class="item-category">{{ post.category_label | upper }}</span>
+                        <h3 class="item-title">{{ post.title }}</h3>
+                        <span class="item-meta">{{ post.author_name }} • {{ post.read_time }} min</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="mid-cta-section section-container" data-bol-section="mid_cta">
+        <div class="mid-cta-container">
+            <div class="mid-cta-left">
+                <h2 class="mid-cta-title">
+                    {% for line in content.mid_cta.title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}
+                </h2>
+                <a href="{{ content.mid_cta.cta.href }}" class="btn-orange">{{ content.mid_cta.cta.label }}</a>
+            </div>
+            <div class="mid-cta-right">
+                <img
+                    src="{{ content.mid_cta.image_url }}"
+                    alt="Book Banner"
+                    style="width: 100%; height: 100%; display: block"
+                />
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    (function () {
+        const grid = document.getElementById("latestGrid");
+        const loadRow = document.getElementById("latestLoadRow");
+        const loadButton = document.getElementById("btnLoadMore");
+        const perPage = {{ latest.per_page | default(6) }};
+
+        let currentPage = {{ latest.page | default(1) }};
+        let currentCategory = "all";
+        let hasNext = {{ latest.has_next | default(false) | tojson }};
+        let busy = false;
+
+        function escapeHtml(value) {
+            return String(value === null || value === undefined ? "" : value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function syncLoadMore() {
+            loadRow.style.display = hasNext ? "flex" : "none";
+        }
+
+        function applyFilter() {
+            grid.querySelectorAll(".grid-card").forEach(function (card) {
+                const cardCategory = card.getAttribute("data-category") || "";
+                if (currentCategory === "all" || cardCategory === currentCategory) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function buildCard(item) {
+            const card = document.createElement("a");
+            card.className = "grid-card";
+            card.setAttribute("data-category", String(item.category || "").toLowerCase());
+            card.setAttribute("href", item.url || "#");
+
+            const metaParts = [];
+            if (item.author_name) metaParts.push(escapeHtml(item.author_name));
+            if (item.date) metaParts.push(escapeHtml(item.date));
+            if (item.read_time) metaParts.push(escapeHtml(item.read_time) + " min");
+
+            const label = escapeHtml(item.category_label || item.category || "").toUpperCase();
+
+            card.innerHTML =
+                '<div class="grid-card-thumb">' +
+                '<img src="' + escapeHtml(item.image_url) + '" alt="' + escapeHtml(item.image_alt || item.title) + '" class="grid-thumb-img" />' +
+                '<span class="grid-category-chip">' + label + "</span>" +
+                "</div>" +
+                '<div class="grid-card-body">' +
+                '<h3 class="grid-card-title">' + escapeHtml(item.title) + "</h3>" +
+                '<span class="grid-card-meta">' + metaParts.join(" • ") + "</span>" +
+                "</div>";
+            return card;
+        }
+
+        async function fetchPage(page, replace) {
+            if (busy) return;
+            busy = true;
+            loadButton.disabled = true;
+            try {
+                const params = new URLSearchParams();
+                params.set("page", String(page));
+                params.set("per_page", String(perPage));
+                if (currentCategory !== "all") {
+                    params.set("category", currentCategory);
+                }
+
+                const response = await fetch("/api/blogs?" + params.toString());
+                if (!response.ok) throw new Error("Failed to load articles");
+                const data = await response.json();
+
+                if (replace) grid.innerHTML = "";
+                (data.items || []).forEach(function (item) {
+                    grid.appendChild(buildCard(item));
+                });
+
+                currentPage = data.page || page;
+                hasNext = Boolean(data.has_next);
+                applyFilter();
+                syncLoadMore();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                busy = false;
+                loadButton.disabled = false;
+            }
+        }
+
+        function selectCategory(pill) {
+            document.querySelectorAll(".filter-pill").forEach(function (item) {
+                item.classList.remove("active");
+            });
+            pill.classList.add("active");
+
+            currentCategory = pill.getAttribute("data-category") || "all";
+            currentPage = 1;
+            applyFilter();
+            fetchPage(1, true);
+        }
+
+        document.querySelectorAll(".filter-pill").forEach(function (pill) {
+            pill.addEventListener("click", function () {
+                selectCategory(pill);
+            });
+        });
+
+        loadButton.addEventListener("click", function () {
+            fetchPage(currentPage + 1, false);
+        });
+
+        syncLoadMore();
+    })();
+</script>
+{% endblock %}

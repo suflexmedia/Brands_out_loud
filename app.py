@@ -12,21 +12,20 @@ import asyncio
 import httpx
 import uvicorn
 import bcrypt
+from pymongo import ASCENDING
 
 from page_serving_routers.routers.homepage_router import router as homepage_router
-from page_serving_routers.routers.service_router import router as service_router
-from page_serving_routers.routers.magazine_homepage_router import router as magazine_homepage_router
-from page_serving_routers.routers.magazine_page_router import router as magazine_page_router
+from page_serving_routers.routers.magazine_router import router as magazine_router
 from page_serving_routers.routers.blog_router import router as blog_router
+from page_serving_routers.routers.contact_router import router as contact_router
 from page_serving_routers.routers.auth_router import router as auth_router
 from page_serving_routers.routers.sitemap_router import router as sitemap_router
 from page_serving_routers.routers.admin_router import router as admin_router
 from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
 from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api_router
 from API_ROUTERS.admin.admin_analytics_router import router as admin_analytics_api_router
-from API_ROUTERS.admin.admin_homepage_router import router as admin_homepage_api_router
-from API_ROUTERS.admin.admin_magazine_homepage_router import router as admin_magazine_homepage_api_router
-from API_ROUTERS.admin.admin_service_page_router import router as admin_service_page_api_router
+from API_ROUTERS.admin.admin_content_router import router as admin_content_api_router
+from API_ROUTERS.admin.admin_magazine_issue_router import router as admin_magazine_issue_api_router
 
 from database_handler import db_handler
 from bucket_handler import bucket_handler
@@ -45,63 +44,42 @@ async def lifespan(app: FastAPI):
         db_handler.connect()
         bucket_handler.connect()
         
-        # Seed database collections if they are empty
         db = db_handler.get_db()
         json_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "JSON_FILES")
         
-        # Homepage
-        if await db["homepage"].count_documents({}) == 0:
-            try:
-                with open(os.path.join(json_dir, "homepage.json"), "r", encoding="utf-8") as f:
-                    await db["homepage"].insert_one(json.load(f))
-                print("Seeded homepage collection.")
-            except FileNotFoundError:
-                print("Seed file not found for homepage")
-                
-        # Magazine Homepage
-        if await db["magazine_homepage"].count_documents({}) == 0:
-            try:
-                with open(os.path.join(json_dir, "magazine_homepage.json"), "r", encoding="utf-8") as f:
-                    await db["magazine_homepage"].insert_one(json.load(f))
-                print("Seeded magazine_homepage collection.")
-            except FileNotFoundError:
-                print("Seed file not found for magazine_homepage")
-                
-        # Magazine Page
-        magazine_page_doc = await db["magazine_page"].find_one({})
-        magazine_grid = magazine_page_doc.get("magazine_grid_section", []) if magazine_page_doc else []
-        has_new_schema = len(magazine_grid) > 0 and "pdf_name" in magazine_grid[0]
-        needs_reseed = magazine_page_doc is None or "ad_banner_1" not in magazine_page_doc or not has_new_schema
-        if needs_reseed:
-            try:
-                await db["magazine_page"].drop()
-                with open(os.path.join(json_dir, "magazine_page.json"), "r", encoding="utf-8") as f:
-                    await db["magazine_page"].insert_one(json.load(f))
-                print("Seeded magazine_page collection.")
-            except FileNotFoundError:
-                print("Seed file not found for magazine_page")
-
-        # Services
-        for category in ["business", "technology", "gcc", "sustainability", "semiconductor"]:
-            col_name = f"service_{category}"
-            if await db[col_name].count_documents({}) == 0:
+        for singleton in ["site_settings", "blog_categories"]:
+            if await db[singleton].count_documents({}) == 0:
                 try:
-                    with open(os.path.join(json_dir, f"{col_name}.json"), "r", encoding="utf-8") as f:
-                        await db[col_name].insert_one(json.load(f))
-                    print(f"Seeded {col_name} collection.")
+                    with open(os.path.join(json_dir, f"{singleton}.json"), "r", encoding="utf-8") as f:
+                        await db[singleton].insert_one(json.load(f))
+                    print(f"Seeded {singleton} collection.")
                 except FileNotFoundError:
-                    print(f"Seed file not found for {col_name}")
+                    print(f"Seed file not found for {singleton}")
 
-        # Navbar
-        if await db["navbar"].count_documents({}) == 0:
+        for page_id in ["homepage", "blog_listing", "magazine_listing", "magazine_issue",
+                        "blog_post", "book_detail", "contact"]:
+            if await db["page_content"].count_documents({"_id": page_id}) == 0:
+                try:
+                    with open(os.path.join(json_dir, f"page_{page_id}.json"), "r", encoding="utf-8") as f:
+                        doc = json.load(f)
+                    doc["_id"] = page_id
+                    await db["page_content"].insert_one(doc)
+                    print(f"Seeded page_content/{page_id}.")
+                except FileNotFoundError:
+                    print(f"Seed file not found for page_{page_id}")
+
+        for collection, field in [("blogs", "slug"), ("magazine_issues", "slug")]:
             try:
-                with open(os.path.join(json_dir, "navbar.json"), "r", encoding="utf-8") as f:
-                    await db["navbar"].insert_one(json.load(f))
-                print("Seeded navbar collection.")
-            except FileNotFoundError:
-                print("Seed file not found for navbar")
+                await db[collection].create_index([(field, ASCENDING)], unique=True, name=f"{collection}_{field}_unique")
+            except Exception as idx_err:
+                print(f"Index note for {collection}: {idx_err}")
+        try:
+            await db["books"].create_index(
+                [("issue_slug", ASCENDING), ("slug", ASCENDING)], unique=True, name="books_issue_slug_unique"
+            )
+        except Exception as idx_err:
+            print(f"Index note for books: {idx_err}")
 
-        # Blogs
         if await db["blogs"].count_documents({}) == 0:
             try:
                 with open(os.path.join(json_dir, "blog.json"), "r", encoding="utf-8") as f:
@@ -116,12 +94,10 @@ async def lifespan(app: FastAPI):
             except FileNotFoundError:
                 print("Seed file not found for blogs")
 
-        # Admin Users Collection
         if await db["admin_users"].count_documents({}) == 0:
             admin_username = os.environ.get("ADMIN_USERNAME", "admin")
             admin_password = os.environ.get("ADMIN_PASSWORD", "password")
             
-            # Hash the password
             salt = bcrypt.gensalt()
             hashed_password = bcrypt.hashpw(admin_password.encode('utf-8'), salt).decode('utf-8')
             
@@ -135,7 +111,6 @@ async def lifespan(app: FastAPI):
             await db["admin_users"].insert_one(default_admin)
             print("Seeded default admin user into admin_users collection.")
 
-        # Ensure older admin users are migrated to system_admin role
         await db["admin_users"].update_many(
             {"$or": [{"role": "system administrator"}, {"role": {"$exists": False}}]},
             {"$set": {
@@ -145,7 +120,6 @@ async def lifespan(app: FastAPI):
         )
 
         from datetime import datetime, timedelta
-        from pymongo import ASCENDING
         try:
             await db["page_views"].create_index(
                 [("timestamp", ASCENDING)],
@@ -177,7 +151,7 @@ class HealthCheck(BaseModel):
     """Data model for health check response."""
     status: str
 
-TRACKED_PREFIXES = ("/", "/blog/", "/magazine", "/business", "/technology", "/gcc", "/sustainability", "/semiconductor", "/login")
+TRACKED_PREFIXES = ("/", "/blog", "/magazine", "/contact", "/login")
 EXCLUDED_PREFIXES = ("/static/", "/admin/", "/api/", "/health", "/download_proxy", "/favicon", "/sitemap", "/robots.txt")
 
 
@@ -255,18 +229,16 @@ app.mount("/static", StaticFiles(directory="page_serving_routers/static"), name=
 
 app.include_router(sitemap_router)
 app.include_router(homepage_router)
-app.include_router(service_router)
-app.include_router(magazine_homepage_router)
-app.include_router(magazine_page_router)
+app.include_router(magazine_router)
 app.include_router(blog_router)
+app.include_router(contact_router)
 app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(admin_blog_api_router)
 app.include_router(admin_magazine_api_router)
 app.include_router(admin_analytics_api_router)
-app.include_router(admin_homepage_api_router)
-app.include_router(admin_magazine_homepage_api_router)
-app.include_router(admin_service_page_api_router)
+app.include_router(admin_content_api_router)
+app.include_router(admin_magazine_issue_api_router)
 
 @app.get("/health", response_model=HealthCheck)
 async def health_check():

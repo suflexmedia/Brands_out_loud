@@ -2,12 +2,11 @@
 Run this script to wipe and re-seed all page-content collections from JSON_FILES.
 
 Collections that are reset:
-  homepage, magazine_homepage, magazine_page, navbar,
-  service_business, service_technology, service_gcc,
-  service_sustainability, service_semiconductor
+  site_settings, blog_categories, page_content
 
 Collections that are intentionally left untouched:
-  admin_users, blogs, page_views, pdf_download_leads
+  admin_users, admin_sessions, blogs, magazine_issues, books,
+  page_views, pdf_download_leads, contact_leads
 
 Usage:
     py reset_db.py
@@ -27,32 +26,24 @@ DB_NAME = "brands-out-loud"
 BASE_DIR = Path(__file__).parent
 JSON_DIR = BASE_DIR / "JSON_FILES"
 
-PAGE_COLLECTIONS = [
-    "homepage",
-    "magazine_homepage",
-    "magazine_page",
-    "navbar",
-    "service_business",
-    "service_technology",
-    "service_gcc",
-    "service_sustainability",
-    "service_semiconductor",
-]
-
-JSON_MAP = {
-    "homepage": "homepage.json",
-    "magazine_homepage": "magazine_homepage.json",
-    "magazine_page": "magazine_page.json",
-    "navbar": "navbar.json",
-    "service_business": "service_business.json",
-    "service_technology": "service_technology.json",
-    "service_gcc": "service_gcc.json",
-    "service_sustainability": "service_sustainability.json",
-    "service_semiconductor": "service_semiconductor.json",
+SINGLETON_COLLECTIONS = {
+    "site_settings": "site_settings.json",
+    "blog_categories": "blog_categories.json",
 }
+
+PAGE_IDS = [
+    "homepage",
+    "blog_listing",
+    "blog_post",
+    "magazine_listing",
+    "magazine_issue",
+    "book_detail",
+    "contact",
+]
 
 
 async def reset():
+    """Drops and re-seeds every page-content collection from the JSON seeds."""
     mongo_url = os.getenv("mongo_public_url")
     if not mongo_url:
         raise ValueError("mongo_public_url is not set in .env")
@@ -60,21 +51,30 @@ async def reset():
     client = AsyncIOMotorClient(mongo_url)
     db = client[DB_NAME]
 
-    print(f"Connected to MongoDB — database: '{DB_NAME}'\n")
+    print(f"Connected to MongoDB - database: '{DB_NAME}'\n")
 
-    for col_name in PAGE_COLLECTIONS:
-        json_file = JSON_DIR / JSON_MAP[col_name]
-
+    for col_name, file_name in SINGLETON_COLLECTIONS.items():
+        json_file = JSON_DIR / file_name
         if not json_file.exists():
-            print(f"  [SKIP] {col_name} — JSON file not found: {json_file.name}")
+            print(f"  [SKIP] {col_name} - JSON file not found: {file_name}")
             continue
-
         with open(json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-
         await db[col_name].drop()
         await db[col_name].insert_one(data)
-        print(f"  [OK]   {col_name} — dropped and re-seeded from {json_file.name}")
+        print(f"  [OK]   {col_name} - dropped and re-seeded from {file_name}")
+
+    await db["page_content"].drop()
+    for page_id in PAGE_IDS:
+        json_file = JSON_DIR / f"page_{page_id}.json"
+        if not json_file.exists():
+            print(f"  [SKIP] page_content/{page_id} - seed file not found")
+            continue
+        with open(json_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        data["_id"] = page_id
+        await db["page_content"].insert_one(data)
+        print(f"  [OK]   page_content/{page_id} - re-seeded")
 
     print("\nDone. All page collections have been reset.")
     client.close()

@@ -1,0 +1,21 @@
+{% set nav = site.nav %}
+<nav class="remaster-navbar" data-bol-section="nav">
+    <div class="remaster-nav-left">
+        <i class="ph ph-list mobile-menu-icon" id="mobileMenuIcon" onclick="toggleMobileMenu()"></i>
+        <a href="/"><img src="{{ nav.logo_url }}" alt="Logo" class="remaster-nav-logo" /></a>
+    </div>
+    <div class="remaster-nav-center">
+        {% for link in nav.links %}
+        <a href="{{ link.href }}" class="remaster-nav-link{% if link.key == active_nav %} active{% endif %}">{{ link.label }}</a>
+        {% endfor %}
+    </div>
+    <div class="remaster-nav-right">
+        <a href="{{ nav.cta.href }}" class="btn-primary remaster-nav-book">{{ nav.cta.label }}</a>
+    </div>
+</nav>
+
+<div class="mobile-menu-dropdown" id="mobileMenu">
+    {% for link in nav.links %}
+    <a href="{{ link.href }}" class="mobile-menu-link{% if link.key == active_nav %} active{% endif %}">{{ link.label }}</a>
+    {% endfor %}
+</div>

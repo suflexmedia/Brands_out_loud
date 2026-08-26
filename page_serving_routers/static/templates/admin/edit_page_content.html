@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Edit Page - Admin</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/static/css/admin.css?v=7" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <span class="navbar-brand">BOL ADMIN</span>
+                <span class="navbar-page-title" id="page-title">Page</span>
+            </div>
+            <div class="navbar-actions">
+                <span id="user-greeting"></span>
+                <button class="btn btn-small" id="btn-sections">Sections</button>
+                <button class="btn btn-small" id="btn-discard">Discard</button>
+                <button class="btn btn-small btn-primary" id="btn-save">Save</button>
+                <a href="/admin/edit-pages" class="nav-back">&larr; Pages</a>
+                <a href="/admin/logout" class="logout-btn">Log off</a>
+            </div>
+        </nav>
+
+        <div class="workspace preview-first">
+            <div class="preview-panel" id="preview-panel">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                    <div class="device-toggle">
+                        <button class="device-btn active" data-device="desktop">Desktop</button>
+                        <button class="device-btn" data-device="mobile">Mobile</button>
+                    </div>
+                    <span class="preview-hint">Click Edit on any section</span>
+                </div>
+                <div class="preview-body">
+                    <div class="preview-frame-wrap" id="preview-frame-wrap">
+                        <span class="preview-stale" id="preview-stale">Updating...</span>
+                        <iframe id="preview-iframe" sandbox="allow-same-origin allow-scripts"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="edit-drawer" id="edit-drawer">
+            <div class="drawer-header">
+                <span class="drawer-title" id="drawer-title">Section</span>
+                <div style="display: flex; gap: 0.4rem">
+                    <button class="btn btn-small" id="btn-all-sections">All</button>
+                    <button class="btn btn-small" id="btn-close-drawer">Close</button>
+                </div>
+            </div>
+            <div class="drawer-body" id="drawer-body"></div>
+            <div class="drawer-footer">
+                <button class="btn" id="btn-drawer-close">Done</button>
+                <button class="btn btn-primary" id="btn-drawer-save">Save</button>
+            </div>
+        </aside>
+
+        <div class="toast" id="toast"></div>
+        <div class="loading-overlay" id="loading">Loading...</div>
+
+        <script src="/static/js/admin-editor.js?v=7"></script>
+        <script>
+            (function () {
+                const segments = window.location.pathname.split("/").filter(Boolean);
+                const pageId = segments[segments.length - 1].replace(/-/g, "_");
+                const base = "/admin/api/content/pages/" + pageId;
+
+                document.getElementById("page-title").textContent = AdminEditor.humanise(pageId);
+
+                const editor = AdminEditor.createPageEditor({
+                    getUrl: base,
+                    putUrl: base,
+                    previewUrl: base + "/preview",
+                    storageKey: pageId,
+                });
+
+                document.addEventListener("DOMContentLoaded", async function () {
+                    const user = await AdminEditor.requireSession();
+                    if (!user) return;
+                    await editor.load();
+
+                    document.getElementById("btn-save").addEventListener("click", editor.save);
+                    document.getElementById("btn-drawer-save").addEventListener("click", editor.save);
+                    document.getElementById("btn-sections").addEventListener("click", editor.openSectionList);
+                    document.getElementById("btn-all-sections").addEventListener("click", editor.openSectionList);
+                    document.getElementById("btn-close-drawer").addEventListener("click", editor.closeDrawer);
+                    document.getElementById("btn-drawer-close").addEventListener("click", editor.closeDrawer);
+                    document.getElementById("btn-discard").addEventListener("click", function () {
+                        if (confirm("Discard all unsaved changes and reload?")) editor.reload();
+                    });
+                });
+            })();
+        </script>
+    </body>
+</html>

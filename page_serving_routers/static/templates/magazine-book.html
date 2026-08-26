@@ -1,0 +1,266 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ book.title }} - Magazine Book | Brands Out Loud{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/magazine_book.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+{% set sections = content.sections | default({}, true) %}
+{% set covers = book.covers | default([], true) %}
+{% set highlights = book.highlights | default([], true) %}
+{% set audience = book.audience | default([], true) %}
+{% set price = book.price | default({}, true) %}
+{% set rating = book.rating | default({}, true) %}
+{% set about = book.about | default({}, true) %}
+{% set cta_banner = book.cta_banner | default({}, true) %}
+{% set browse_all = sections.browse_all | default({}, true) %}
+<div class="book-page-wrapper">
+    <section class="book-hero-section">
+        <div class="book-hero-container">
+            <div class="book-cover-wrapper">
+                <div class="book-cover-spine"></div>
+                <div class="book-cover-header">
+                    <div class="book-cover-brand">{{ book.brand }}</div>
+                    <div class="book-cover-divider"></div>
+                </div>
+                <div class="book-cover-graphics">
+                    <div class="book-cover-circle-1"></div>
+                    <div class="book-cover-circle-2"></div>
+                    <div class="book-cover-circle-3"></div>
+                </div>
+                <div class="book-cover-main">
+                    <h2 class="book-cover-title">{% for line in book.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h2>
+                    {% if book.subtitle %}<p class="book-cover-subtitle">{{ book.subtitle }}</p>{% endif %}
+                </div>
+                <div class="book-cover-divider-main"></div>
+                <div class="book-cover-author">{{ book.author_name | upper }}</div>
+            </div>
+
+            <div class="book-purchase-card">
+                <div class="book-title-header">
+                    <h1 class="book-main-title">{{ book.title }}</h1>
+                    {% if book.subtitle %}<p class="book-main-subtitle">{{ book.subtitle }}</p>{% endif %}
+                </div>
+
+                <div class="book-meta-row">
+                    <div class="book-author-info">
+                        <div class="book-author-avatar"{% if book.author_avatar_url %} style="background-image: url('{{ book.author_avatar_url }}'); background-size: cover; background-position: center;"{% endif %}></div>
+                        <div class="book-author-text">
+                            <span class="book-author-label">BY</span>
+                            <span class="book-author-name">{{ book.author_name }}</span>
+                        </div>
+                    </div>
+
+                    {% if rating.stars or rating.score %}
+                    <div class="book-rating-box">
+                        <div class="book-stars">{{ rating.stars }}</div>
+                        <span class="book-rating-score">{{ rating.score }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if book.description %}
+                <p class="book-description-text">{{ book.description }}</p>
+                {% endif %}
+
+                {% if book.badges %}
+                <div class="book-badges-row">
+                    {% for badge in book.badges %}
+                    <div class="book-badge">{{ badge }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="book-divider-line"></div>
+
+                {% if price.current %}
+                <div class="book-price-block">
+                    {% if price.discount_label %}<div class="book-discount-tag">{{ price.discount_label }}</div>{% endif %}
+                    <div class="book-price-row">
+                        <span class="book-current-price">{{ price.current }}</span>
+                        {% if price.original %}<span class="book-original-price">{{ price.original }}</span>{% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="book-action-buttons">
+                    <a href="{{ book.store_url | default('#', true) }}" class="btn-purchase-now" target="_blank" rel="noopener noreferrer">
+                        <i class="ph ph-shopping-cart-simple"></i>
+                        <span>{{ sections.purchase_label | default("Purchase Now", true) }}</span>
+                    </a>
+                    <a href="{{ book.sample_url | default('#', true) }}" class="btn-read-sample">{{ sections.sample_label | default("Read a Sample", true) }}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if about.quote or about.paragraphs %}
+    <section class="about-book-section" data-bol-section="sections">
+        <div class="about-book-container">
+            <div class="about-book-left">
+                <h2 class="about-section-heading">{{ sections.about_title }}</h2>
+                {% if about.quote %}
+                <div class="about-quote-box">
+                    <span class="about-quote-mark">“</span>
+                    <p class="about-quote-text">{{ about.quote }}</p>
+                    <span class="about-quote-mark quote-right">“</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="about-book-right">
+                {% for paragraph in about.paragraphs %}
+                <p class="about-paragraph">{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if covers %}
+    <section class="covers-section" data-bol-section="sections">
+        <div class="covers-container">
+            <div class="covers-header">
+                <h2 class="covers-title">{{ sections.covers_title | safe }}</h2>
+                {% if sections.covers_subtitle %}<p class="covers-subtitle">{{ sections.covers_subtitle }}</p>{% endif %}
+            </div>
+
+            <div class="covers-layout">
+                <div class="covers-row covers-row-4">
+                    {% for card in covers[:4] %}
+                    <div class="cover-card">
+                        <div class="cover-card-num">{{ card.num }}</div>
+                        <h3 class="cover-card-title">{{ card.title | safe }}</h3>
+                        <p class="cover-card-desc">{{ card.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if covers | length > 4 %}
+                <div class="covers-row covers-row-3">
+                    {% for card in covers[4:] %}
+                    <div class="cover-card">
+                        <div class="cover-card-num">{{ card.num }}</div>
+                        <h3 class="cover-card-title">{{ card.title | safe }}</h3>
+                        <p class="cover-card-desc">{{ card.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if highlights %}
+    <section class="highlights-section" data-bol-section="sections">
+        <div class="highlights-container">
+            <div class="covers-header">
+                <h2 class="covers-title">{{ sections.highlights_title | safe }}</h2>
+            </div>
+
+            <div class="highlights-layout">
+                <div class="highlights-row highlights-row-3">
+                    {% for card in highlights[:3] %}
+                    <div class="highlight-card">
+                        <div class="highlight-card-num">{{ card.num }}</div>
+                        <p class="highlight-card-text">{{ card.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if highlights | length > 3 %}
+                <div class="highlights-row highlights-row-2">
+                    {% for card in highlights[3:] %}
+                    <div class="highlight-card">
+                        <div class="highlight-card-num">{{ card.num }}</div>
+                        <p class="highlight-card-text">{{ card.text }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if audience %}
+    <section class="target-audience-section" data-bol-section="sections">
+        <div class="target-audience-container">
+            <div class="audience-header">
+                <h2 class="audience-section-title">{{ sections.audience_title }}</h2>
+                {% if sections.audience_subtitle %}<p class="audience-section-subtitle">{{ sections.audience_subtitle }}</p>{% endif %}
+            </div>
+
+            <div class="audience-cards-grid">
+                <div class="audience-grid-row audience-row-top">
+                    {% for item in audience[:5] %}
+                    <div class="audience-card">{{ item }}</div>
+                    {% endfor %}
+                </div>
+                {% if audience | length > 5 %}
+                <div class="audience-grid-row audience-row-bottom">
+                    {% for item in audience[5:] %}
+                    <div class="audience-card">{{ item }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="cta-banner-section">
+        <div class="cta-banner-card">
+            <div class="cta-banner-left">
+                <h2 class="cta-banner-title">{{ cta_banner.title | default(book.title, true) }}</h2>
+                {% if cta_banner.description %}<p class="cta-banner-desc">{{ cta_banner.description }}</p>{% endif %}
+                <a href="{{ book.store_url | default('#', true) }}" class="btn-cta-purchase" target="_blank" rel="noopener noreferrer">{{ cta_banner.cta_label | default("Purchase for", true) }}{% if price.current %} {{ price.current }}{% endif %} →</a>
+            </div>
+            <div class="cta-3d-cards-wrapper">
+                <img src="{{ cta_banner.image_url | default('/static/images/remaster-homepage/magazine-books/book-founder-issue.png', true) }}" alt="{{ book.title }}" class="cta-cards-img" />
+            </div>
+        </div>
+    </section>
+
+    {% if more_books %}
+    <section class="more-books-section" data-bol-section="sections">
+        <div class="more-books-container">
+            <div class="more-books-header">
+                <h2 class="more-books-title">{{ sections.more_books_title | safe }}</h2>
+                <a href="{{ browse_all.href | default('/magazine', true) }}" class="btn-browse-all">{{ browse_all.label | default("Browse all books →", true) }}</a>
+            </div>
+
+            <div class="more-books-grid">
+                {% for item in more_books %}
+                <a href="{{ item.url }}" class="book-item-card">
+                    <div class="book-item-cover {{ item.cover_variant }}">
+                        <div class="book-item-cover-header">
+                            <span class="book-item-brand">{{ item.brand }}</span>
+                            <span class="book-item-tag">{{ item.tag }}</span>
+                        </div>
+                        <div class="book-item-line"></div>
+                        <h3 class="book-item-cover-title">{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h3>
+                        <div class="book-item-bg-num">{{ item.background_number }}</div>
+                    </div>
+                    <div class="book-item-info">
+                        <div class="book-item-meta">
+                            <span class="book-item-cat">{{ item.category | upper }}</span>
+                            <span class="book-item-dot">·</span>
+                            <span class="book-item-pages">{{ item.pages_label | upper }}</span>
+                        </div>
+                        <h4 class="book-item-title">{{ item.title }}</h4>
+                        {% if item.author_name %}<div class="book-item-author">by {{ item.author_name }}</div>{% endif %}
+                        {% if item.price and item.price.current %}<div class="book-item-price">{{ item.price.current }}</div>{% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

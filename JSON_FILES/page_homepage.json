@@ -1,0 +1,191 @@
+{
+    "seo": {
+        "title": "Brands Out Loud - Remaster",
+        "description": "We publish exclusively with the top 5% of corporate professionals, doctors and founders who want to build their credibility, visibility, and influence.",
+        "og_image": ""
+    },
+    "hero": {
+        "video_url": "/static/images/remaster-homepage/hero-background/hero-bg.mp4",
+        "title": "Turn your expertise into a published book.",
+        "subtitle": "We publish exclusively with the top 5% of corporate professionals, doctors and founders who want to build their credibility, visibility, and influence.",
+        "cta": {
+            "label": "Become the voice of your industry",
+            "href": "/contact"
+        },
+        "stats_marquee": [
+            { "icon": "ph-chart-bar", "text": "Multiple Bestsellers Published" },
+            { "icon": "ph-book-open", "text": "Thousands of Readers Impacted" },
+            { "icon": "ph-star", "text": "4.9 Average Author Rating" },
+            { "icon": "ph-calendar-blank", "text": "Publishing Since 2018" },
+            { "icon": "ph-pen-nib", "text": "Growing Community of Authors" }
+        ]
+    },
+    "expertise": {
+        "title": "We help experts become the name their industry trusts.",
+        "cards": [
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/help-icon-1.svg",
+                "title": "Author Mentorship",
+                "description": "Expert guidance from idea to publication."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/help-icon-2.svg",
+                "title": "Professional Publishing",
+                "description": "Editing, production & distribution."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/help-icon-3.svg",
+                "title": "Personal Branding",
+                "description": "Build a recognisable identity."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/help-icon-4.svg",
+                "title": "Authority Positioning",
+                "description": "Become the trusted voice in your field."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/help-icon-5.svg",
+                "title": "Visibility & Growth",
+                "description": "Turn your expertise into opportunities."
+            }
+        ]
+    },
+    "impact": {
+        "title_lines": ["Real People. Real Books.", "Real Impact."],
+        "subtitle": "Our authors have built credibility, expanded their influence, and created lasting legacies through the power of a published book. Here's what they've achieved.",
+        "cta": {
+            "label": "Become our next success story",
+            "href": "/contact"
+        },
+        "cards": [
+            {
+                "media_url": "/static/images/remaster-homepage/gif/gif-1.gif",
+                "media_type": "image",
+                "overlay_text": "Increased business<br class=\"mobile-break\" />visibility"
+            },
+            {
+                "media_url": "/static/images/remaster-homepage/gif/gif-2.mp4",
+                "media_type": "video",
+                "overlay_text": "Built stronger personal<br class=\"mobile-break\" />brands"
+            },
+            {
+                "media_url": "/static/images/remaster-homepage/gif/gif-3.gif",
+                "media_type": "image",
+                "overlay_text": "Landed speaking<br class=\"mobile-break\" />engagements"
+            },
+            {
+                "media_url": "/static/images/remaster-homepage/gif/gif-4.gif",
+                "media_type": "image",
+                "overlay_text": "Expand professional<br class=\"mobile-break\" />influence"
+            },
+            {
+                "media_url": "/static/images/remaster-homepage/gif/gif-5.gif",
+                "media_type": "image",
+                "overlay_text": "Created meaningful<br class=\"mobile-break\" />legacies"
+            }
+        ]
+    },
+    "featured_in": {
+        "title": "Our authors were featured in",
+        "logos": [
+            { "logo_url": "/static/images/remaster-homepage/icons/britishcolumbia_times.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/the_techOutlook.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/helloEntrepreneurs.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/ani.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/ahmedabadMirror.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/BusinessStandard.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/EntrepreneurStreet.svg", "invert": false },
+            { "logo_url": "/static/images/remaster-homepage/icons/Forbes.svg", "invert": true }
+        ]
+    },
+    "expert_author": {
+        "title_html": "From Expert<br />to <span>Author.</span>",
+        "description": "Anyone can write a book. Few write one that changes how they're perceived. Imagine having:",
+        "cards": [
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/author-1.svg",
+                "title": "A professionally published book",
+                "description": "Carrying your name on shelves and in the hands of clients, investors, and industry peers."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/author-2.svg",
+                "title": "Greater credibility",
+                "description": "With clients, investors and audiences who immediately understand what you've built and what you stand for."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/author-3.svg",
+                "title": "Speaking opportunities",
+                "description": "And media visibility that position you as the go-to voice in your field before you even walk into the room."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/author-4.svg",
+                "title": "A stronger personal brand",
+                "description": "That attracts the right opportunities, commands premium fees and outlasts any algorithm or trend."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/author-5.svg",
+                "title": "A powerful legacy",
+                "description": "That outlives your title & ensures the ideas & lessons you've built over decades continue to inspire."
+            },
+            {
+                "icon_url": "/static/images/remaster-homepage/icons/author-6.svg",
+                "title": "A platform that attracts",
+                "description": "Opportunities instead of chasing them. This is what we help create, end-to-end, for every author we take on."
+            }
+        ]
+    },
+    "mid_cta": {
+        "title_lines": ["Your book is waiting.", "Let's make it real."],
+        "cta": {
+            "label": "Schedule Your Strategy Call Today →",
+            "href": "/contact"
+        },
+        "image_url": "/static/images/remaster-homepage/images/book-banner.png"
+    },
+    "accelerator": {
+        "eyebrow": "THE PROCESS",
+        "title_html": "The BOL<br /><span>Authority Accelerator</span>",
+        "cta": {
+            "label": "Get the publishing timeline →",
+            "href": "/contact"
+        },
+        "steps": [
+            {
+                "number": "01",
+                "icon_url": "/static/images/remaster-homepage/icons/authority-acc-1.svg",
+                "title": "Discover your signature message",
+                "description": "We help uncover the ideas, experiences, and insights that deserve to become your book.",
+                "video_url": "/static/images/remaster-homepage/authority-video/auth-acc-hero-1_compressed.mp4"
+            },
+            {
+                "number": "02",
+                "icon_url": "/static/images/remaster-homepage/icons/authority-acc-2.svg",
+                "title": "Refine your manuscript",
+                "description": "Our editors, designers, and publishing experts transform your manuscript into a world-class book, ensuring every detail meets traditional publishing standards.",
+                "video_url": "/static/images/remaster-homepage/authority-video/auth-acc-hero-2_compressed.mp4"
+            },
+            {
+                "number": "03",
+                "icon_url": "/static/images/remaster-homepage/icons/authority-acc-3.svg",
+                "title": "Publish & showcase your book",
+                "description": "We handle the entire publishing process and help place your book where readers, clients, industry peers, and opportunities can easily discover it.",
+                "video_url": "/static/images/remaster-homepage/authority-video/auth-acc-hero-3_compressed.mp4"
+            },
+            {
+                "number": "04",
+                "icon_url": "/static/images/remaster-homepage/icons/authority-acc-4.svg",
+                "title": "Amplify your influence",
+                "description": "Leverage your published book for high-ticket speaking engagements, top-tier media opportunities, business growth, and thought leadership.",
+                "video_url": "/static/images/remaster-homepage/authority-video/auth-acc-hero-4_compressed.mp4"
+            }
+        ]
+    },
+    "final_cta": {
+        "title": "Great Work Deserves Greater Visibility.",
+        "cta": {
+            "label": "Become a published author →",
+            "href": "/contact"
+        },
+        "quote": "Expertise creates value. Authority creates opportunities. The most successful leaders know how to turn one into the other."
+    }
+}

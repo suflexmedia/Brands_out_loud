@@ -1,0 +1,27 @@
+{% set footer = site.footer %}
+<footer class="remaster-footer section-container" data-bol-section="footer">
+    <div class="remaster-footer-top">
+        <div class="remaster-footer-brand">
+            <div class="remaster-footer-logo-box">
+                <img src="{{ footer.logo_url }}" alt="Brands Out Loud" />
+            </div>
+            <h2 class="remaster-footer-tagline">
+                {% for line in footer.tagline_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}
+            </h2>
+        </div>
+        <div class="remaster-footer-links-container">
+            {% for column in footer.columns %}
+            <div class="remaster-footer-col">
+                <div class="remaster-footer-col-title">{{ column.title }}</div>
+                {% for link in column.links %}
+                <a href="{{ link.href }}" class="remaster-footer-link">{{ link.label }}</a>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="remaster-footer-divider"></div>
+    <div class="remaster-footer-bottom">
+        <div class="remaster-footer-copyright">{{ footer.copyright }}</div>
+    </div>
+</footer>

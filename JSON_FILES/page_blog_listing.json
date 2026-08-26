@@ -1,0 +1,36 @@
+{
+    "seo": {
+        "title": "Blog - Brands Out Loud",
+        "description": "Insights on publishing, personal branding, and turning expertise into influence — straight from the BOL editorial desk.",
+        "og_image": ""
+    },
+    "hero": {
+        "title": "Ideas that shape the next generation of authors.",
+        "subtitle": "Insights on publishing, personal branding, and turning expertise into influence — straight from the BOL editorial desk.",
+        "badge_label": "FEATURED",
+        "featured_post_slug": ""
+    },
+    "must_read": {
+        "heading": "This week’s must-read",
+        "main_post_slug": "",
+        "trending_post_slugs": []
+    },
+    "latest": {
+        "heading": "Fresh off the page.",
+        "load_more_label": "Load more essays"
+    },
+    "deep_dive": {
+        "heading": "Long reads for the boredom.",
+        "badge": "DEEP DIVE",
+        "featured_post_slug": "",
+        "item_slugs": []
+    },
+    "mid_cta": {
+        "title_lines": ["Your book is waiting.", "Let's make it real."],
+        "cta": {
+            "label": "Schedule Your Strategy Call Today →",
+            "href": "/contact"
+        },
+        "image_url": "/static/images/remaster-homepage/images/book-banner.png"
+    }
+}

@@ -1,0 +1,114 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ content.seo.title }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/contact.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+<section class="contact-hero section-container" data-bol-section="hero">
+    <h1 class="contact-hero-title">{{ content.hero.title }}</h1>
+    <p class="contact-hero-subtitle">{{ content.hero.subtitle }}</p>
+</section>
+
+<section class="contact-body section-container">
+    <div class="contact-form-panel" data-bol-section="form">
+        <h2 class="contact-form-title">{{ content.form.title }}</h2>
+        <form id="contactForm" class="contact-form">
+            <div class="contact-field-row">
+                <div class="contact-field">
+                    <label for="contactFirstName">First name</label>
+                    <input type="text" id="contactFirstName" name="first_name" required />
+                </div>
+                <div class="contact-field">
+                    <label for="contactLastName">Last name</label>
+                    <input type="text" id="contactLastName" name="last_name" />
+                </div>
+            </div>
+            <div class="contact-field">
+                <label for="contactEmail">Work email</label>
+                <input type="email" id="contactEmail" name="email" required />
+            </div>
+            <div class="contact-field">
+                <label for="contactCompany">Company</label>
+                <input type="text" id="contactCompany" name="company_name" />
+            </div>
+            <div class="contact-field">
+                <label for="contactMobile">Mobile number</label>
+                <input type="tel" id="contactMobile" name="mobile_number" />
+            </div>
+            <div class="contact-field">
+                <label for="contactMessage">How can we help?</label>
+                <textarea id="contactMessage" name="message" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn-primary contact-submit">{{ content.form.submit_label }}</button>
+            <p class="contact-form-note">{{ content.form.note }}</p>
+        </form>
+    </div>
+
+    <aside class="contact-details-panel" data-bol-section="details">
+        {% for block in content.details %}
+        <div class="contact-detail-block" data-bol-index="{{ loop.index0 }}">
+            <div class="contact-detail-title">{{ block.title }}</div>
+            {% for line in block.lines %}
+            {% if line.href %}
+            <a href="{{ line.href }}" class="contact-detail-link">{{ line.label }}</a>
+            {% else %}
+            <p class="contact-detail-text">{{ line.label }}</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </aside>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    (function () {
+        const form = document.getElementById("contactForm");
+        if (!form) return;
+
+        function showStatus(message, isError) {
+            let toast = document.getElementById("contactToast");
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "contactToast";
+                toast.className = "contact-toast";
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.classList.toggle("is-error", !!isError);
+            toast.classList.add("visible");
+            setTimeout(function () {
+                toast.classList.remove("visible");
+            }, 3500);
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const button = form.querySelector(".contact-submit");
+            button.disabled = true;
+            const payload = Object.fromEntries(new FormData(form).entries());
+            payload.pdf_link = window.location.href;
+            try {
+                const response = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+                const data = await response.json();
+                if (!response.ok || data.status !== "ok") throw new Error(data.detail || "Failed");
+                form.reset();
+                showStatus("{{ content.form.success_message }}", false);
+            } catch (error) {
+                showStatus("Something went wrong. Please try again.", true);
+            } finally {
+                button.disabled = false;
+            }
+        });
+    })();
+</script>
+{% endblock %}

@@ -476,29 +476,74 @@
 
         <div class="pages-grid">
 
-            <!-- Home Page Card -->
             <div class="card" id="card-homepage" onclick="window.location.href='/admin/edit-pages/homepage'">
                 <div>
                     <h3>Home Page</h3>
-                    <p>Edit hero section, featured content, and the main landing experience.</p>
+                    <p>Hero video, expertise cards, impact stories, accelerator steps and every CTA.</p>
                 </div>
                 <span class="card-badge">Edit &rarr;</span>
             </div>
 
-            <!-- Service Pages Card -->
-            <div class="card" id="card-service-pages" onclick="openServiceModal()">
+            <div class="card" id="card-blog-listing" onclick="window.location.href='/admin/edit-pages/blog-listing'">
                 <div>
-                    <h3>Service Pages</h3>
-                    <p>Select a service page to edit its content, layout, and featured sections.</p>
+                    <h3>Blog Landing</h3>
+                    <p>Headings, featured and must-read slots, deep dives and the mid-page CTA.</p>
                 </div>
-                <span class="card-badge">5 Pages &rarr;</span>
+                <span class="card-badge">Edit &rarr;</span>
             </div>
 
-            <!-- Magazine Home Page Card -->
-            <div class="card" id="card-magazine-home" onclick="window.location.href='/admin/edit-pages/magazine-homepage'">
+            <div class="card" id="card-blog-post" onclick="window.location.href='/admin/edit-pages/blog-post'">
                 <div>
-                    <h3>Magazine Home</h3>
-                    <p>Edit the magazine landing page layout, featured issues, and category display.</p>
+                    <h3>Blog Post Chrome</h3>
+                    <p>Site-wide FAQ, download form copy and the post sidebar links.</p>
+                </div>
+                <span class="card-badge">Edit &rarr;</span>
+            </div>
+
+            <div class="card" id="card-magazine-listing" onclick="window.location.href='/admin/edit-pages/magazine-listing'">
+                <div>
+                    <h3>Magazine Landing</h3>
+                    <p>Featured issue spotlight, archive section copy and the closing CTA.</p>
+                </div>
+                <span class="card-badge">Edit &rarr;</span>
+            </div>
+
+            <div class="card" id="card-magazine-issue" onclick="window.location.href='/admin/edit-pages/magazine-issue'">
+                <div>
+                    <h3>Issue Page Chrome</h3>
+                    <p>Headings and empty-state copy for the books-in-an-issue page.</p>
+                </div>
+                <span class="card-badge">Edit &rarr;</span>
+            </div>
+
+            <div class="card" id="card-book-detail" onclick="window.location.href='/admin/edit-pages/book-detail'">
+                <div>
+                    <h3>Book Page Chrome</h3>
+                    <p>Section headings shared by every book sales page.</p>
+                </div>
+                <span class="card-badge">Edit &rarr;</span>
+            </div>
+
+            <div class="card" id="card-contact" onclick="window.location.href='/admin/edit-pages/contact'">
+                <div>
+                    <h3>Contact Page</h3>
+                    <p>Hero copy, form labels and the contact detail blocks.</p>
+                </div>
+                <span class="card-badge">Edit &rarr;</span>
+            </div>
+
+            <div class="card" id="card-magazine-issues" onclick="window.location.href='/admin/magazine-issues'">
+                <div>
+                    <h3>Magazine Issues &amp; Books</h3>
+                    <p>Create issues and add the books that appear inside each one.</p>
+                </div>
+                <span class="card-badge">Manage &rarr;</span>
+            </div>
+
+            <div class="card" id="card-site-settings" onclick="window.location.href='/admin/site-settings'">
+                <div>
+                    <h3>Navigation &amp; Footer</h3>
+                    <p>Shared header links, call-to-action button and every footer column.</p>
                 </div>
                 <span class="card-badge">Edit &rarr;</span>
             </div>
@@ -506,37 +551,7 @@
         </div>
     </main>
 
-    <!-- Service Pages Modal -->
-    <div class="modal-overlay" id="service-modal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeServiceModal()">&times;</button>
-            <h3>Service Pages</h3>
-            <p class="modal-subtitle">Select a service page to edit</p>
-
-            <div class="service-options">
-                <a class="service-option-btn" id="btn-service-business" href="/admin/edit-pages/service/business">
-                    <span class="svc-name">Business</span>
-                    <span class="arrow">&rarr;</span>
-                </a>
-                <a class="service-option-btn" id="btn-service-gcc" href="/admin/edit-pages/service/gcc">
-                    <span class="svc-name">GCC</span>
-                    <span class="arrow">&rarr;</span>
-                </a>
-                <a class="service-option-btn" id="btn-service-semiconductor" href="/admin/edit-pages/service/semiconductor">
-                    <span class="svc-name">Semiconductor</span>
-                    <span class="arrow">&rarr;</span>
-                </a>
-                <a class="service-option-btn" id="btn-service-sustainability" href="/admin/edit-pages/service/sustainability">
-                    <span class="svc-name">Sustainability</span>
-                    <span class="arrow">&rarr;</span>
-                </a>
-                <a class="service-option-btn" id="btn-service-technology" href="/admin/edit-pages/service/technology">
-                    <span class="svc-name">Technology</span>
-                    <span class="arrow">&rarr;</span>
-                </a>
-            </div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="service-modal" style="display: none"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -553,25 +568,6 @@
             }
         });
 
-        function openServiceModal() {
-            document.getElementById('service-modal').style.display = 'flex';
-        }
-
-        function closeServiceModal() {
-            document.getElementById('service-modal').style.display = 'none';
-        }
-
-        document.getElementById('service-modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('service-modal')) {
-                closeServiceModal();
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeServiceModal();
-            }
-        });
     </script>
 </body>
 
