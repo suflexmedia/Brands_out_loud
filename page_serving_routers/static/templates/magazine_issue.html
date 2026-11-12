@@ -5,6 +5,7 @@
 {% block page_css %}
 <link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
 <link rel="stylesheet" href="/static/css/magazine_book.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/magazine_pdf_viewer.css?v={{ asset_version }}" />
 {% endblock %}
 
 {% block content %}
@@ -19,6 +20,11 @@
             <p class="issue-hero-desc">
                 {{ issue.description | default("Explore every book, founder feature, and in-depth business essay published in this edition.") }}
             </p>
+            {% if issue.pdf_url %}
+            <div class="issue-hero-actions">
+                <a href="/magazine/{{ issue.slug }}/read" class="btn-issue-read-pdf">Read Digital Edition (PDF) →</a>
+            </div>
+            {% endif %}
         </div>
     </section>
 
@@ -59,6 +65,15 @@
                     </div>
                 </a>
                 {% endfor %}
+            </div>
+            {% elif issue.pdf_url %}
+            <div class="issue-empty-state">
+                <div class="empty-state-icon">
+                    <i class="ph ph-file-pdf"></i>
+                </div>
+                <h3 class="empty-state-title">Digital Magazine Edition Ready</h3>
+                <p class="empty-state-desc">Read the complete {{ issue.title }} PDF edition online in our interactive page-flip viewer.</p>
+                <a href="/magazine/{{ issue.slug }}/read" class="btn-primary btn-empty-cta">Open PDF Flipbook Viewer →</a>
             </div>
             {% else %}
             <div class="issue-empty-state">

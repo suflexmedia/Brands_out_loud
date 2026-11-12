@@ -1,0 +1,131 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ issue.title }} — PDF Reader | Brands Out Loud{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/magazine_pdf_viewer.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+<div class="pdf-reader-wrapper">
+    <section class="pdf-reader-header">
+        <div class="pdf-reader-header-inner">
+            <div class="pdf-reader-heading">
+                <div class="pdf-reader-breadcrumb">
+                    <a href="/magazine">Magazine</a>
+                    <span>/</span>
+                    <a href="/magazine/{{ issue.slug }}">{{ issue.title }}</a>
+                    <span>/</span>
+                    <span>Digital Edition</span>
+                </div>
+                <h1 class="pdf-reader-title">{{ issue.title }}</h1>
+                {% if issue.description %}
+                <p class="pdf-reader-subtitle">{{ issue.description }}</p>
+                {% endif %}
+            </div>
+            <div class="pdf-reader-actions">
+                <a href="/magazine/{{ issue.slug }}" class="btn-pdf-secondary">
+                    <i class="ph ph-arrow-left"></i>
+                    <span>Issue Overview</span>
+                </a>
+                <a href="{{ download_url }}" class="btn-pdf-primary">
+                    <i class="ph ph-download"></i>
+                    <span>Download PDF</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="pdf-reader-stage-section" aria-label="Magazine PDF Flipbook Viewer">
+        <div class="pdf-reader-frame-wrap">
+            <iframe
+                id="my-flipbook-container"
+                class="pdf-reader-iframe"
+                src="/magazine/{{ issue.slug }}/viewer-frame"
+                title="{{ issue.title }} Interactive PDF Viewer"
+                allow="fullscreen"
+                allowfullscreen="true"
+            ></iframe>
+        </div>
+        <div class="pdf-reader-hint">
+            <span>Tip: Use Arrow Left / Right keys or click the page corners to flip pages.</span>
+            <span>Press F inside the reader for fullscreen mode.</span>
+        </div>
+    </section>
+
+    {% if other_issues %}
+    <section class="pdf-more-issues-section">
+        <div class="pdf-more-issues-inner">
+            <div class="pdf-more-header">
+                <h2 class="pdf-more-title">Explore more <span class="highlight-blue">editions</span></h2>
+                <a href="/magazine" class="btn-pdf-secondary">All Editions →</a>
+            </div>
+            <div class="pdf-more-grid">
+                {% for item in other_issues %}
+                <a href="{% if item.pdf_url %}/magazine/{{ item.slug }}/read{% else %}{{ item.url }}{% endif %}" class="pdf-more-card">
+                    <div class="pdf-more-cover"{% if item.cover_image_url %} style="background-image: url('{{ item.cover_image_url }}');"{% endif %}>
+                        {% if item.pdf_url %}
+                        <span class="pdf-more-cover-badge">PDF Reader Available</span>
+                        {% elif item.badge %}
+                        <span class="pdf-more-cover-badge">{{ item.badge }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="pdf-more-body">
+                        <h3 class="pdf-more-card-title">{{ item.title }}</h3>
+                        <span class="pdf-more-card-cta">{% if item.pdf_url %}Read Digital Edition →{% else %}Explore Issue →{% endif %}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    (function () {
+        const iframeEl = document.getElementById("my-flipbook-container");
+
+        function triggerDownload(url, filename) {
+            const safeName = filename || (url ? url.split("/").pop() : "document.pdf") || "document.pdf";
+            const proxiedUrl = `${window.location.origin}/download_proxy?pdf=${encodeURIComponent(url)}&filename=${encodeURIComponent(safeName)}`;
+            const a = document.createElement("a");
+            a.href = proxiedUrl;
+            a.download = safeName;
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        window.addEventListener("message", function (event) {
+            if (event.origin !== window.location.origin) return;
+            if (!iframeEl || event.source !== iframeEl.contentWindow) return;
+            const data = event.data || {};
+            const type = data.type || data.action;
+            if (type === "download" || type === "downloadResponse") {
+                triggerDownload(data.pdfUrl, data.filename);
+            }
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (!iframeEl || !iframeEl.contentWindow) return;
+            if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable)) return;
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                iframeEl.contentWindow.postMessage({ type: "prevPage" }, window.location.origin);
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                iframeEl.contentWindow.postMessage({ type: "nextPage" }, window.location.origin);
+            } else if (e.key === "f" || e.key === "F") {
+                e.preventDefault();
+                iframeEl.contentWindow.postMessage({ type: "toggleFullscreen" }, window.location.origin);
+            }
+        });
+    })();
+</script>
+{% endblock %}
+

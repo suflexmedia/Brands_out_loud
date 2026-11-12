@@ -97,6 +97,28 @@ async def get_books(issue_slug: str) -> List[Dict[str, Any]]:
     return await cache_manager.get(f"magazine_issue_{issue_slug}_books", _fetch)
 
 
+def _hydrate_book_detail(doc: Dict[str, Any]) -> Dict[str, Any]:
+    """Merges detailed fields onto a base book card payload."""
+    detail = book_card(doc)
+    detail.update({
+        "cover_subtitle": doc.get("cover_subtitle", ""),
+        "description": doc.get("description", ""),
+        "badges": doc.get("badges", []),
+        "rating": doc.get("rating", {}),
+        "store_url": doc.get("store_url", "#"),
+        "sample_url": doc.get("sample_url", "#"),
+        "purchase_label": doc.get("purchase_label", ""),
+        "sample_label": doc.get("sample_label", ""),
+        "author_avatar_url": doc.get("author_avatar_url", ""),
+        "about": doc.get("about", {}),
+        "covers": doc.get("covers", []),
+        "highlights": doc.get("highlights", []),
+        "audience": doc.get("audience", []),
+        "cta_banner": doc.get("cta_banner", {}),
+    })
+    return detail
+
+
 async def get_book(issue_slug: str, slug: str) -> Optional[Dict[str, Any]]:
     """Returns the full detail document for one book, cached per book."""
 
@@ -107,26 +129,22 @@ async def get_book(issue_slug: str, slug: str) -> Optional[Dict[str, Any]]:
         )
         if not doc:
             return None
-        detail = book_card(doc)
-        detail.update({
-            "cover_subtitle": doc.get("cover_subtitle", ""),
-            "description": doc.get("description", ""),
-            "badges": doc.get("badges", []),
-            "rating": doc.get("rating", {}),
-            "store_url": doc.get("store_url", "#"),
-            "sample_url": doc.get("sample_url", "#"),
-            "purchase_label": doc.get("purchase_label", ""),
-            "sample_label": doc.get("sample_label", ""),
-            "author_avatar_url": doc.get("author_avatar_url", ""),
-            "about": doc.get("about", {}),
-            "covers": doc.get("covers", []),
-            "highlights": doc.get("highlights", []),
-            "audience": doc.get("audience", []),
-            "cta_banner": doc.get("cta_banner", {}),
-        })
-        return detail
+        return _hydrate_book_detail(doc)
 
     return await cache_manager.get(f"magazine_book_{issue_slug}_{slug}", _fetch)
+
+
+async def get_book_by_slug(slug: str) -> Optional[Dict[str, Any]]:
+    """Returns the full detail document for one published book by slug across issues."""
+
+    async def _fetch() -> Optional[Dict[str, Any]]:
+        db = db_handler.get_db()
+        doc = await db["books"].find_one({**PUBLISHED, "slug": slug}, {"_id": 0})
+        if not doc:
+            return None
+        return _hydrate_book_detail(doc)
+
+    return await cache_manager.get(f"magazine_book_slug_{slug}", _fetch)
 
 
 async def get_other_books(issue_slug: str, exclude_slug: str, limit: int = 4) -> List[Dict[str, Any]]:
@@ -151,8 +169,8 @@ def get_hidden_lens_v2_data() -> Dict[str, Any]:
     return {
         "book": {
             "slug": "the-hidden-lens-v2",
-            "issue_slug": "india-in-a-centennium",
-            "url": "/magazine/india-in-a-centennium/the-hidden-lens-v2",
+            "issue_slug": "the-founder-issue",
+            "url": "/magazine/the-hidden-lens",
             "title": "The Hidden Lens",
             "subtitle": "Understanding Unconscious Bias.",
             "author_name": "Mohit Kapoor",

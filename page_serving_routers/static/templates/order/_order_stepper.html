@@ -1,0 +1,41 @@
+<nav class="lvo-stepper" aria-label="Checkout progress">
+    <div class="lvo-step">
+        {% if active_step > 1 %}
+        <span class="lvo-step-marker lvo-step-marker--done">
+            <img src="/static/images/lazerveda/order/check_white.svg" alt="" class="lvo-step-check" />
+        </span>
+        {% elif active_step == 1 %}
+        <span class="lvo-step-marker lvo-step-marker--active">1</span>
+        {% else %}
+        <span class="lvo-step-marker">1</span>
+        {% endif %}
+        <span class="lvo-step-label{% if active_step == 1 %} lvo-step-label--active{% endif %}">Details</span>
+    </div>
+
+    <div class="lvo-step">
+        {% if active_step > 2 %}
+        <span class="lvo-step-marker lvo-step-marker--done">
+            <img src="/static/images/lazerveda/order/check_white.svg" alt="" class="lvo-step-check" />
+        </span>
+        {% elif active_step == 2 %}
+        <span class="lvo-step-marker lvo-step-marker--active">2</span>
+        {% else %}
+        <span class="lvo-step-marker">2</span>
+        {% endif %}
+        <span class="lvo-step-label{% if active_step == 2 %} lvo-step-label--active{% endif %}">Verify phone</span>
+    </div>
+
+    <div class="lvo-step">
+        {% if active_step > 3 %}
+        <span class="lvo-step-marker lvo-step-marker--done">
+            <img src="/static/images/lazerveda/order/check_white.svg" alt="" class="lvo-step-check" />
+        </span>
+        {% elif active_step == 3 %}
+        <span class="lvo-step-marker lvo-step-marker--active">3</span>
+        {% else %}
+        <span class="lvo-step-marker">3</span>
+        {% endif %}
+        <span class="lvo-step-label{% if active_step == 3 %} lvo-step-label--active{% endif %}">Review order</span>
+    </div>
+</nav>
+

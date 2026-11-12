@@ -1,0 +1,106 @@
+{% extends 'order/order_base.html' %}
+
+{% block title %}Order Placed — LaserVEDA® | Brands Out Loud{% endblock %}
+{% block canvas_modifier %} lvo-canvas--placed{% endblock %}
+
+{% block content %}
+<section class="lvo-placed-hero">
+    <img src="/static/images/lazerveda/order/sparkle_orange.svg" alt="" class="lvo-sparkle lvo-sparkle--1" />
+    <img src="/static/images/lazerveda/order/sparkle_orange.svg" alt="" class="lvo-sparkle lvo-sparkle--2" />
+    <img src="/static/images/lazerveda/order/sparkle_green.svg" alt="" class="lvo-sparkle lvo-sparkle--3" />
+    <img src="/static/images/lazerveda/order/sparkle_green.svg" alt="" class="lvo-sparkle lvo-sparkle--4" />
+    <span class="lvo-confetti-dot lvo-confetti-dot--1" aria-hidden="true"></span>
+    <span class="lvo-confetti-dot lvo-confetti-dot--2" aria-hidden="true"></span>
+    <span class="lvo-confetti-dash lvo-confetti-dash--1" aria-hidden="true"></span>
+    <span class="lvo-confetti-dash lvo-confetti-dash--2" aria-hidden="true"></span>
+    <span class="lvo-confetti-dash lvo-confetti-dash--3" aria-hidden="true"></span>
+
+    <div class="lvo-placed-badge">
+        <span class="lvo-placed-seal">
+            <img src="/static/images/lazerveda/order/check_navy.svg" alt="" />
+        </span>
+        <span class="lvo-placed-badge-text">ORDER CONFIRMED</span>
+    </div>
+
+    <h1 class="lvo-placed-headline">
+        Great stories start with <span class="lvo-gold-accent">you.</span>
+    </h1>
+
+    <p class="lvo-placed-sub">
+        Your copy of LaserVEDA is one step closer. A new way of seeing awaits.
+    </p>
+
+    <div class="lvo-placed-cta-wrap">
+        <a href="/order/confirmed" class="lvo-btn-primary lvo-placed-cta">
+            <span>View order receipt</span>
+            <img src="/static/images/lazerveda/order/arrow_right_white.svg" alt="" class="lvo-btn-arrow" />
+        </a>
+        <p class="lvo-placed-auto-hint" id="autoAdvanceHint">
+            Continuing to your order summary in <span id="placedCountdown">5</span>s
+        </p>
+    </div>
+</section>
+
+<section class="lvo-next-steps-section">
+    <div class="lvo-next-steps-head">
+        <h2 class="lvo-next-steps-title">What happens next?</h2>
+        <span class="lvo-next-steps-sub">From our bookshelf to yours.</span>
+    </div>
+
+    <div class="lvo-next-steps-grid">
+        <article class="lvo-next-card">
+            <div class="lvo-next-card-title-row">
+                <img src="/static/images/lazerveda/order/mail_gold.svg" alt="" class="lvo-next-card-icon" />
+                <h3 class="lvo-next-card-title">Check your inbox</h3>
+            </div>
+            <p class="lvo-next-card-desc">
+                Your confirmation and receipt will be sent to the email used at checkout.
+            </p>
+            <a href="/order/confirmed" class="lvo-next-card-link">Keep your order number handy</a>
+        </article>
+
+        <article class="lvo-next-card">
+            <div class="lvo-next-card-title-row">
+                <img src="/static/images/lazerveda/order/package_check_gold.svg" alt="" class="lvo-next-card-icon" />
+                <h3 class="lvo-next-card-title">Follow your book’s journey</h3>
+            </div>
+            <p class="lvo-next-card-desc">
+                We’ll share a tracking link as soon as your copy is packed and on its way.
+            </p>
+            <a href="/order/confirmed" class="lvo-next-card-link">Look out for a dispatch email</a>
+        </article>
+
+        <article class="lvo-next-card">
+            <div class="lvo-next-card-title-row">
+                <img src="/static/images/lazerveda/order/book_open_gold.svg" alt="" class="lvo-next-card-icon" />
+                <h3 class="lvo-next-card-title">Let the discovery begin</h3>
+            </div>
+            <p class="lvo-next-card-desc">
+                No need to wait for the doorstep. Explore a sample chapter while your book travels.
+            </p>
+            <a href="{{ sample_chapter_url }}" class="lvo-next-card-link">
+                <span>Read a sample chapter</span>
+                <img src="/static/images/lazerveda/order/arrow_up_right_gold.svg" alt="" />
+            </a>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    let secondsLeft = 5;
+    const countdownEl = document.getElementById("placedCountdown");
+    const advanceTimer = setInterval(() => {
+        secondsLeft -= 1;
+        if (countdownEl) {
+            countdownEl.textContent = String(Math.max(0, secondsLeft));
+        }
+        if (secondsLeft <= 0) {
+            clearInterval(advanceTimer);
+            window.location.href = "/order/confirmed";
+        }
+    }, 1000);
+</script>
+{% endblock %}
+

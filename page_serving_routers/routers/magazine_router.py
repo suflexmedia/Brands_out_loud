@@ -1,8 +1,10 @@
 """Serves the magazine issue listing, per-issue book grids and book detail pages."""
 
 import os
+from urllib.parse import quote
 
 from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from page_serving_routers.routers import magazine_service
@@ -18,6 +20,8 @@ LISTING_TEMPLATE = "magazine_remaster.html"
 ISSUE_TEMPLATE = "magazine_issue.html"
 BOOK_TEMPLATE = "magazine-book.html"
 LAZERVEDA_TEMPLATE = "lazerveda-book.html"
+PDF_VIEWER_TEMPLATE = "magazine_pdf_viewer.html"
+PDF_FRAME_TEMPLATE = "magazine_flipbook_frame.html"
 
 
 async def build_listing_context(content_override=None):
@@ -106,7 +110,7 @@ async def build_hidden_lens_v2_context(content_override=None):
     context.update({
         "content": _with_book_section_defaults(context.get("content")),
         "book": v2_data["book"],
-        "issue": await magazine_service.get_issue("india-in-a-centennium"),
+        "issue": await magazine_service.get_issue("the-founder-issue"),
         "more_books": v2_data["more_books"],
     })
     return context
@@ -129,6 +133,24 @@ async def serve_lazerveda_book(request: Request):
     return templates.TemplateResponse(request, LAZERVEDA_TEMPLATE, context)
 
 
+@router.get("/magazine/the-hidden-lens", tags=["Pages"])
+async def serve_hidden_lens_book(request: Request):
+    """Serves The Hidden Lens standalone book landing page."""
+    book = await magazine_service.get_book_by_slug("the-hidden-lens")
+    if not book:
+        context = await build_hidden_lens_v2_context()
+    else:
+        issue_slug = book.get("issue_slug", "the-founder-issue")
+        context = await base_context(active_nav="magazine", page_id="book_detail")
+        context.update({
+            "content": _with_book_section_defaults(context.get("content")),
+            "book": book,
+            "issue": await magazine_service.get_issue(issue_slug),
+            "more_books": await magazine_service.get_other_books(issue_slug, "the-hidden-lens"),
+        })
+    return templates.TemplateResponse(request, BOOK_TEMPLATE, context)
+
+
 @router.get("/magazine/{issue_slug}", tags=["Pages"])
 async def serve_issue_books(request: Request, issue_slug: str):
     """Serves the grid of books belonging to one magazine issue."""
@@ -145,11 +167,51 @@ async def serve_hidden_lens_v2(request: Request):
     return templates.TemplateResponse(request, BOOK_TEMPLATE, context)
 
 
+@router.get("/magazine/{issue_slug}/read", tags=["Pages"])
+async def serve_issue_pdf_reader(request: Request, issue_slug: str):
+    """Serves the interactive flipbook PDF reader for a magazine issue."""
+    issue = await magazine_service.get_issue(issue_slug)
+    if not issue or not issue.get("pdf_url"):
+        raise HTTPException(status_code=404, detail="Issue PDF not found")
+    context = await base_context(active_nav="magazine")
+    all_issues = await magazine_service.get_issues()
+    other_issues = [item for item in all_issues if item["slug"] != issue_slug][:6]
+    pdf_url = issue["pdf_url"]
+    context.update({
+        "seo": {
+            "title": f"{issue['title']} — Digital Edition | Brands Out Loud",
+            "description": issue.get("description") or f"Read {issue['title']} online in our interactive magazine viewer.",
+            "og_image": issue.get("cover_image_url", ""),
+        },
+        "issue": issue,
+        "other_issues": other_issues,
+        "download_url": f"/download_proxy?pdf={quote(pdf_url, safe='')}",
+    })
+    return templates.TemplateResponse(request, PDF_VIEWER_TEMPLATE, context)
+
+
+@router.get("/magazine/{issue_slug}/viewer-frame", tags=["Pages"])
+async def serve_issue_pdf_frame(request: Request, issue_slug: str):
+    """Serves the standalone flipbook iframe document for a magazine issue."""
+    issue = await magazine_service.get_issue(issue_slug)
+    if not issue or not issue.get("pdf_url"):
+        raise HTTPException(status_code=404, detail="Issue PDF not found")
+    raw_pdf_url = issue["pdf_url"]
+    return templates.TemplateResponse(request, PDF_FRAME_TEMPLATE, {
+        "issue_title": issue.get("title", "Magazine Flipbook Viewer"),
+        "raw_pdf_url": raw_pdf_url,
+        "proxy_pdf_url": f"/api/pdf-proxy?url={quote(raw_pdf_url, safe='')}",
+    })
+
+
 @router.get("/magazine/{issue_slug}/{book_slug}", tags=["Pages"])
 async def serve_book_detail(request: Request, issue_slug: str, book_slug: str):
     """Serves the sales page for a single book."""
     context = await build_book_context(issue_slug, book_slug)
     if not context:
+        book_fallback = await magazine_service.get_book_by_slug(book_slug)
+        if book_fallback and book_fallback.get("url"):
+            return RedirectResponse(url=book_fallback["url"], status_code=301)
         raise HTTPException(status_code=404, detail="Book not found")
     custom_template = context["book"].get("custom_template")
     if custom_template == LAZERVEDA_TEMPLATE:

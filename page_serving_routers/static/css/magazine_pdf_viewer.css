@@ -1,0 +1,428 @@
+.pdf-reader-wrapper {
+    width: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #eff0ff 100%);
+    overflow-x: hidden;
+}
+
+.pdf-reader-header {
+    width: 100%;
+    padding: 9vw 8.33vw 2.4vw;
+    background: linear-gradient(108.58deg, #ffffff 0%, #eff0ff 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.pdf-reader-header-inner {
+    width: 100%;
+    max-width: 83.33vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 3vw;
+}
+
+.pdf-reader-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vw;
+    max-width: 54vw;
+}
+
+.pdf-reader-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6vw;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 0.85vw;
+    letter-spacing: 0.1vw;
+    text-transform: uppercase;
+    color: #ff6b3d;
+}
+
+.pdf-reader-breadcrumb a {
+    color: #1c4ba0;
+    text-decoration: none;
+}
+
+.pdf-reader-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.pdf-reader-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    font-size: 3.2vw;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0b0e66;
+    margin: 0;
+}
+
+.pdf-reader-subtitle {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 1.05vw;
+    line-height: 1.6;
+    color: rgba(17, 24, 39, 0.72);
+    margin: 0;
+}
+
+.pdf-reader-actions {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    flex-shrink: 0;
+}
+
+.btn-pdf-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5vw;
+    padding: 0.85vw 1.5vw;
+    border-radius: 0.55vw;
+    border: 1px solid rgba(11, 14, 102, 0.2);
+    background: #ffffff;
+    color: #0b0e66;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 0.95vw;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-pdf-secondary:hover {
+    background: #eff0ff;
+    border-color: #0b0e66;
+    transform: translateY(-0.1vw);
+}
+
+.btn-pdf-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5vw;
+    padding: 0.85vw 1.6vw;
+    border-radius: 0.55vw;
+    background: #0b0e66;
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 0.95vw;
+    text-decoration: none;
+    border: 1px solid #0b0e66;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-pdf-primary:hover {
+    background: #1c4ba0;
+    border-color: #1c4ba0;
+    transform: translateY(-0.1vw);
+}
+
+.pdf-reader-stage-section {
+    width: 100%;
+    padding: 0 8.33vw 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.pdf-reader-frame-wrap {
+    width: 100%;
+    max-width: 83.33vw;
+    height: 78vh;
+    min-height: 36vw;
+    background: #141726;
+    border-radius: 0.9vw;
+    overflow: hidden;
+    border: 1px solid rgba(11, 14, 102, 0.14);
+    box-shadow: 0 1.4vw 3.5vw rgba(11, 14, 102, 0.16);
+}
+
+.pdf-reader-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #141726;
+}
+
+.pdf-reader-hint {
+    width: 100%;
+    max-width: 83.33vw;
+    margin-top: 1vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Inter", sans-serif;
+    font-size: 0.85vw;
+    color: rgba(17, 24, 39, 0.65);
+}
+
+.pdf-more-issues-section {
+    width: 100%;
+    padding: 5vw 8.33vw 7vw;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.pdf-more-issues-inner {
+    width: 100%;
+    max-width: 83.33vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2.8vw;
+}
+
+.pdf-more-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.pdf-more-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    font-size: 2.6vw;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0b0e66;
+    margin: 0;
+}
+
+.pdf-more-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2vw;
+    width: 100%;
+}
+
+.pdf-more-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid rgba(11, 14, 102, 0.1);
+    border-radius: 0.85vw;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pdf-more-card:hover {
+    transform: translateY(-0.3vw);
+    box-shadow: 0 1vw 2.4vw rgba(11, 14, 102, 0.1);
+}
+
+.pdf-more-cover {
+    width: 100%;
+    height: 16vw;
+    background: linear-gradient(125deg, #0d1b4b 0%, #1c4ba0 100%);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5vw;
+    box-sizing: border-box;
+}
+
+.pdf-more-cover-badge {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 0.78vw;
+    letter-spacing: 0.08vw;
+    text-transform: uppercase;
+    padding: 0.35vw 0.75vw;
+    border-radius: 0.4vw;
+    background: rgba(255, 255, 255, 0.92);
+    color: #0b0e66;
+}
+
+.pdf-more-body {
+    padding: 1.4vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55vw;
+}
+
+.pdf-more-card-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+    font-size: 1.25vw;
+    line-height: 1.3;
+    color: #0b0e66;
+    margin: 0;
+}
+
+.pdf-more-card-cta {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 0.9vw;
+    color: #1c4ba0;
+}
+
+.issue-hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1vw;
+    margin-top: 0.8vw;
+}
+
+.btn-issue-read-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55vw;
+    padding: 0.95vw 1.8vw;
+    border-radius: 0.55vw;
+    background: #0b0e66;
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 1vw;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-issue-read-pdf:hover {
+    background: #1c4ba0;
+    transform: translateY(-0.12vw);
+}
+
+@media (max-width: 768px) {
+    .pdf-reader-header {
+        padding: 22vw 5vw 6vw;
+    }
+
+    .pdf-reader-header-inner {
+        max-width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4vw;
+    }
+
+    .pdf-reader-heading {
+        max-width: 100%;
+        gap: 2.2vw;
+    }
+
+    .pdf-reader-breadcrumb {
+        font-size: 3.1vw;
+        gap: 2vw;
+        flex-wrap: wrap;
+    }
+
+    .pdf-reader-title {
+        font-size: 7.4vw;
+    }
+
+    .pdf-reader-subtitle {
+        font-size: 3.6vw;
+    }
+
+    .pdf-reader-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 2.8vw;
+    }
+
+    .btn-pdf-secondary,
+    .btn-pdf-primary {
+        font-size: 3.6vw;
+        padding: 2.8vw 4.5vw;
+        border-radius: 2vw;
+        gap: 2vw;
+    }
+
+    .pdf-reader-stage-section {
+        padding: 0 3vw 10vw;
+    }
+
+    .pdf-reader-frame-wrap {
+        max-width: 100%;
+        height: 72vh;
+        min-height: 95vw;
+        border-radius: 2.5vw;
+    }
+
+    .pdf-reader-hint {
+        max-width: 100%;
+        margin-top: 3vw;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5vw;
+        font-size: 3.2vw;
+    }
+
+    .pdf-more-issues-section {
+        padding: 10vw 5vw 14vw;
+    }
+
+    .pdf-more-issues-inner {
+        max-width: 100%;
+        gap: 6vw;
+    }
+
+    .pdf-more-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3vw;
+    }
+
+    .pdf-more-title {
+        font-size: 6.4vw;
+    }
+
+    .pdf-more-grid {
+        grid-template-columns: 1fr;
+        gap: 5vw;
+    }
+
+    .pdf-more-card {
+        border-radius: 2.5vw;
+    }
+
+    .pdf-more-cover {
+        height: 46vw;
+        padding: 4vw;
+    }
+
+    .pdf-more-cover-badge {
+        font-size: 3vw;
+        padding: 1.2vw 2.4vw;
+        border-radius: 1.2vw;
+    }
+
+    .pdf-more-body {
+        padding: 4.5vw;
+        gap: 2vw;
+    }
+
+    .pdf-more-card-title {
+        font-size: 4.6vw;
+    }
+
+    .pdf-more-card-cta {
+        font-size: 3.6vw;
+    }
+
+    .issue-hero-actions {
+        gap: 3vw;
+        margin-top: 2.5vw;
+    }
+
+    .btn-issue-read-pdf {
+        font-size: 3.8vw;
+        padding: 3vw 5.5vw;
+        border-radius: 2vw;
+    }
+}
+

@@ -1,0 +1,79 @@
+{% extends 'order/order_base.html' %}
+
+{% block title %}Order Confirmed — LaserVEDA® | Brands Out Loud{% endblock %}
+
+{% block content %}
+<section class="lvo-page-intro">
+    <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
+    <h1 class="lvo-page-heading">Your next chapter starts here.</h1>
+    <p class="lvo-page-copy">Thank you for choosing LaserVEDA.</p>
+</section>
+
+<section class="lvo-surface">
+    <div class="lvo-checkout-grid">
+        <div class="lvo-main-col">
+            <div class="lvo-confirm-hero">
+                <div class="lvo-icon-badge lvo-icon-badge--circle">
+                    <img src="/static/images/lazerveda/order/check_orange.svg" alt="" />
+                </div>
+                <h2 class="lvo-confirm-title">Your book order is confirmed.</h2>
+                <p class="lvo-section-copy">
+                    Thank you, {{ order.first_name }}. We’ve sent your order confirmation to {{ order.email }}.
+                </p>
+            </div>
+
+            <div class="lvo-order-ref-box">
+                <div class="lvo-order-ref-meta">
+                    <span class="lvo-order-ref-label">Order Number</span>
+                    <span class="lvo-order-ref-code">{{ order.order_number }}</span>
+                </div>
+                <span class="lvo-status-pill">Confirmed</span>
+            </div>
+
+            <div class="lvo-shipping-summary">
+                <h3 class="lvo-shipping-heading">Shipping to</h3>
+                <p class="lvo-review-primary">{{ order.first_name }} {{ order.last_name }}</p>
+                <p class="lvo-review-secondary">
+                    {{ order.address_line_1 }}<br />
+                    {% if order.address_line_2 %}{{ order.address_line_2 }} · {% endif %}{{ order.zip_code }}<br />
+                    {{ order.phone }}
+                </p>
+            </div>
+
+            <div class="lvo-divider"></div>
+
+            <div class="lvo-notice-box lvo-notice-box--orange">
+                <img
+                    src="/static/images/lazerveda/order/info_orange.svg"
+                    alt=""
+                    class="lvo-notice-icon"
+                />
+                <div class="lvo-notice-msg">
+                    <p class="lvo-notice-title">What happens next?</p>
+                    <p class="lvo-notice-sub">
+                        Keep your order number handy. Check your email for updates about your book order.
+                    </p>
+                </div>
+            </div>
+
+            <div class="lvo-confirm-actions">
+                <a href="{{ book_page_url }}" class="lvo-btn-primary">
+                    <span>Back to the book</span>
+                    <img
+                        src="/static/images/lazerveda/order/arrow_right_white.svg"
+                        alt=""
+                        class="lvo-btn-arrow"
+                    />
+                </a>
+                <a href="/magazine" class="lvo-btn-secondary">Continue exploring</a>
+            </div>
+        </div>
+
+        {% set summary_heading = "Your book" %}
+        {% set total_label = "Order total" %}
+        {% set summary_note = "Order details have been sent to your email." %}
+        {% include 'order/_order_summary.html' %}
+    </div>
+</section>
+{% endblock %}
+
