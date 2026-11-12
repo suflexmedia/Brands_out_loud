@@ -33,6 +33,13 @@
                     + New Issue
                 </button>
                 <button
+                    id="btn-load-template"
+                    class="btn btn-small"
+                    style="display: none"
+                >
+                    Load Sample Template
+                </button>
+                <button
                     id="btn-save"
                     class="btn btn-small btn-primary"
                     style="display: none"
@@ -66,7 +73,7 @@
         <div class="toast" id="toast"></div>
         <div class="loading-overlay" id="loading">Loading...</div>
 
-        <script src="/static/js/admin-editor.js?v=7"></script>
+        <script src="/static/js/admin-editor.js?v=8"></script>
         <script>
             (function () {
                 const ISSUE_SKELETON = {
@@ -91,6 +98,7 @@
                     title: "",
                     slug: "",
                     subtitle: "",
+                    cover_subtitle: "",
                     author_name: "",
                     author_avatar_url: "",
                     category: "",
@@ -107,11 +115,13 @@
                     rating: { score: "", stars: 5 },
                     store_url: "",
                     sample_url: "",
+                    purchase_label: "",
+                    sample_label: "",
                     about: { quote: "", paragraphs: [""] },
                     covers: [{ num: "01", title: "", desc: "" }],
                     highlights: [{ num: "01", text: "" }],
                     audience: [""],
-                    cta_banner: { title: "", description: "", cta_label: "" },
+                    cta_banner: { title: "", description: "", cta_label: "", image_url: "" },
                     status: "published",
                     order: 0,
                 };
@@ -129,13 +139,34 @@
                 const mount = document.getElementById("view-mount");
                 const btnAdd = document.getElementById("btn-add");
                 const btnBack = document.getElementById("btn-back");
+                const btnLoadTemplate = document.getElementById("btn-load-template");
                 const btnSave = document.getElementById("btn-save");
                 const title = document.getElementById("view-title");
+
+                function isPlainObject(val) {
+                    return !!val && typeof val === "object" && !Array.isArray(val);
+                }
 
                 function merge(skeleton, actual) {
                     const result = JSON.parse(JSON.stringify(skeleton));
                     Object.keys(actual || {}).forEach(function (key) {
-                        if (key in result) result[key] = actual[key];
+                        if (!(key in result)) return;
+                        const skVal = result[key];
+                        const acVal = actual[key];
+                        if (isPlainObject(skVal) && isPlainObject(acVal)) {
+                            result[key] = merge(skVal, acVal);
+                        } else if (
+                            Array.isArray(skVal) &&
+                            Array.isArray(acVal) &&
+                            skVal.length &&
+                            isPlainObject(skVal[0])
+                        ) {
+                            result[key] = acVal.map(function (item) {
+                                return isPlainObject(item) ? merge(skVal[0], item) : item;
+                            });
+                        } else if (acVal !== undefined && acVal !== null) {
+                            result[key] = acVal;
+                        }
                     });
                     return result;
                 }
@@ -145,6 +176,10 @@
                         view === "issues" ? "none" : "inline-block";
                     btnSave.style.display =
                         view === "form" ? "inline-block" : "none";
+                    btnLoadTemplate.style.display =
+                        view === "form" && state.mode === "book"
+                            ? "inline-block"
+                            : "none";
                     btnAdd.style.display =
                         view === "form" ? "none" : "inline-block";
                     btnAdd.textContent =
@@ -267,6 +302,12 @@
 
                             const actions =
                                 card.querySelector(".list-card-actions");
+                            const view = document.createElement("a");
+                            view.className = "btn btn-small";
+                            view.textContent = "View";
+                            view.href = "/magazine/" + issueSlug + "/" + book.slug;
+                            view.target = "_blank";
+                            view.rel = "noopener noreferrer";
                             const edit = document.createElement("button");
                             edit.className = "btn btn-small";
                             edit.textContent = "Edit";
@@ -285,6 +326,7 @@
                                         book.slug,
                                 );
                             });
+                            actions.appendChild(view);
                             actions.appendChild(edit);
                             actions.appendChild(del);
                             grid.appendChild(card);
@@ -310,6 +352,8 @@
                     state.readEditor = AdminEditor.renderEditor(
                         "view-mount",
                         merge(skeleton, data),
+                        null,
+                        skeleton,
                     );
                 }
 
@@ -334,7 +378,7 @@
                         });
                         AdminEditor.showToast(data.message || "Saved");
                         if (isIssue) await showIssues();
-                        else await showBooks(state.issueSlug, state.issueSlug);
+                        else await showBooks(state.issueSlug, state.issueTitle);
                     } catch (error) {
                         AdminEditor.showToast(error.message, true);
                     } finally {
@@ -375,7 +419,7 @@
                             if (state.view === "books")
                                 await showBooks(
                                     state.issueSlug,
-                                    state.issueSlug,
+                                    state.issueTitle,
                                 );
                             else await showIssues();
                         } catch (error) {
@@ -396,8 +440,30 @@
 
                 btnBack.addEventListener("click", function () {
                     if (state.view === "form" && state.mode === "book")
-                        showBooks(state.issueSlug, state.issueSlug);
+                        showBooks(state.issueSlug, state.issueTitle);
                     else showIssues();
+                });
+
+                btnLoadTemplate.addEventListener("click", async function () {
+                    if (state.mode !== "book") return;
+                    AdminEditor.setLoading(true);
+                    try {
+                        const sample = await api(
+                            "/admin/api/magazine/book-template",
+                        );
+                        if (state.editingSlug) sample.slug = state.editingSlug;
+                        state.readEditor = AdminEditor.renderEditor(
+                            "view-mount",
+                            merge(BOOK_SKELETON, sample),
+                            null,
+                            BOOK_SKELETON,
+                        );
+                        AdminEditor.showToast("Sample book template loaded");
+                    } catch (error) {
+                        AdminEditor.showToast(error.message, true);
+                    } finally {
+                        AdminEditor.setLoading(false);
+                    }
                 });
 
                 btnSave.addEventListener("click", save);

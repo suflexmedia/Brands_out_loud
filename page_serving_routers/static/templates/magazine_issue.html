@@ -34,6 +34,7 @@
                 {% for item in books %}
                 <a href="{{ item.url }}" class="book-item-card">
                     <div class="book-item-cover {{ item.cover_variant | default('cover-gradient-1') }}"{% if item.cover_image_url %} style="background-image: url('{{ item.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
+                        {% if not item.cover_image_url %}
                         <div class="book-item-cover-header">
                             <span class="book-item-brand">{{ item.brand | default('BOL') }}</span>
                             <span class="book-item-tag">{{ item.tag | default(item.category) }}</span>
@@ -41,6 +42,7 @@
                         <div class="book-item-line"></div>
                         <h3 class="book-item-cover-title">{% if item.cover_title_lines %}{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ item.title }}{% endif %}</h3>
                         <div class="book-item-bg-num">{{ item.background_number | default(item.order) | default("") }}</div>
+                        {% endif %}
                     </div>
                     <div class="book-item-info">
                         <div class="book-item-meta">

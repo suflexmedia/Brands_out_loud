@@ -98,6 +98,50 @@
 </section>
 {% endif %}
 
+{% if published_books %}
+<section class="published-books-section" data-bol-section="published_books">
+    <div class="section-header-row">
+        <h2 class="section-title">Books from <span class="highlight-blue">BOL</span></h2>
+        <a href="/magazine/lazer-veda" class="btn-section-link">
+            <span>Featured: LaserVEDA®</span>
+            <span class="btn-link-arrow">→</span>
+        </a>
+    </div>
+    <div class="published-books-grid">
+        {% for item in published_books %}
+        <a href="{{ item.url }}" class="bol-book-card">
+            <div class="bol-book-cover {{ item.cover_variant | default('cover-gradient-1') }}"{% if item.cover_image_url %} style="background-image: url('{{ item.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
+                {% if not item.cover_image_url %}
+                <div class="bol-book-cover-header">
+                    <span class="bol-book-brand">{{ item.brand | default('BOL') }}</span>
+                    <span class="bol-book-tag">{{ item.tag | default(item.category) }}</span>
+                </div>
+                <div class="bol-book-line"></div>
+                <h3 class="bol-book-cover-title">{% if item.cover_title_lines %}{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ item.title }}{% endif %}</h3>
+                <div class="bol-book-bg-num">{{ item.background_number }}</div>
+                {% endif %}
+            </div>
+            <div class="bol-book-info">
+                {% if item.category or item.pages_label %}
+                <div class="bol-book-meta">
+                    {% if item.category %}<span class="bol-book-cat">{{ item.category | upper }}</span>{% endif %}
+                    {% if item.category and item.pages_label %}<span class="bol-book-dot">·</span>{% endif %}
+                    {% if item.pages_label %}<span class="bol-book-pages">{{ item.pages_label | upper }}</span>{% endif %}
+                </div>
+                {% endif %}
+                <h3 class="bol-book-title">{{ item.title }}</h3>
+                {% if item.author_name %}<div class="bol-book-author">by {{ item.author_name }}</div>{% endif %}
+                <div class="bol-book-bottom">
+                    {% if item.price and item.price.current %}<div class="bol-book-price">{{ item.price.current }}</div>{% endif %}
+                    <span class="bol-book-link">Explore book →</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
 {% set archives = archive_issues if archive_issues else (content.archive['default_items'] if content.archive else []) %}
 {% if archives %}
 <section class="past-editions" data-bol-section="archive">
@@ -112,6 +156,7 @@
         {% for issue in archives %}
         <div class="edition-card">
             <div class="edition-cover {{ issue.cover_variant | default('edition-bg-' ~ (((loop.index0) % 4) + 1)) }}"{% if issue.cover_image_url %} style="background-image: url('{{ issue.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
+                {% if not issue.cover_image_url %}
                 <div class="edition-cover-top">
                     <span class="edition-brand">{{ issue.brand | default('BOL') }}</span>
                     <span class="edition-date">{{ issue.season_label | default('SUMMER 2024') }}{% if issue.issue_number %} · {{ issue.issue_number }}{% endif %}</span>
@@ -119,6 +164,7 @@
                 <div class="edition-divider"></div>
                 <div class="edition-cover-title">{% if issue.cover_title_lines %}{% for line in issue.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ issue.cover_title | default(issue.title) }}{% endif %}</div>
                 <div class="edition-watermark">{{ issue.watermark_number | default(issue.issue_number) | default("11") }}</div>
+                {% endif %}
             </div>
             <div class="edition-info">
                 <div class="edition-badge">{{ issue.badge | default("ISSUE " ~ issue.issue_number ~ " · " ~ issue.season_label) }}</div>

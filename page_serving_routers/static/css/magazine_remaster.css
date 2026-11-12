@@ -864,6 +864,193 @@
   pointer-events: none;
 }
 
+.highlight-blue {
+  color: #1c4ba0;
+}
+
+.published-books-section {
+  width: 100%;
+  background: linear-gradient(242.45deg, #eff0ff 0%, #ffffff 100%);
+  padding: 5.55vw 8.33vw;
+  box-sizing: border-box;
+}
+
+.published-books-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.22vw;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bol-book-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.38vw;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease;
+}
+
+.bol-book-card:hover {
+  transform: translateY(-4px);
+}
+
+.bol-book-cover {
+  position: relative;
+  width: 100%;
+  height: 25vw;
+  min-height: 320px;
+  border-radius: 0.55vw;
+  padding: 1.11vw;
+  border: 1px solid rgba(13, 27, 75, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.cover-gradient-1 {
+  background: linear-gradient(113.96deg, #0d1b4b 0%, #ff6b3d 76.92%);
+}
+
+.cover-gradient-2 {
+  background: linear-gradient(113.96deg, #0f1f1a 0%, #525256 76.92%);
+}
+
+.cover-gradient-3 {
+  background: linear-gradient(113.96deg, #ff6b3d 0%, #d53d5e 76.92%);
+}
+
+.cover-gradient-4 {
+  background: linear-gradient(113.96deg, #0b0e66 0%, #525256 76.92%);
+}
+
+.bol-book-cover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.bol-book-brand {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 1.11vw;
+  color: #ffffff;
+}
+
+.bol-book-tag {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.55vw;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bol-book-line {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin-top: 0.5vw;
+}
+
+.bol-book-cover-title {
+  font-family: "Fraunces", serif;
+  font-weight: 300;
+  font-size: 2.08vw;
+  line-height: 2.22vw;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-top: 1vw;
+}
+
+.bol-book-bg-num {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 6.94vw;
+  line-height: 6.94vw;
+  letter-spacing: -0.06em;
+  color: rgba(13, 27, 75, 0.45);
+  align-self: flex-end;
+}
+
+.bol-book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65vw;
+}
+
+.bol-book-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.55vw;
+}
+
+.bol-book-cat {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.83vw;
+  letter-spacing: 1.2px;
+  color: #ff6b3d;
+}
+
+.bol-book-dot {
+  font-family: "Inter", sans-serif;
+  font-size: 0.69vw;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.bol-book-pages {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.69vw;
+  letter-spacing: 0.5px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.bol-book-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1.38vw;
+  line-height: 1.94vw;
+  letter-spacing: -0.01em;
+  color: #000000;
+  margin: 0;
+}
+
+.bol-book-author {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 0.97vw;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.bol-book-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.35vw;
+}
+
+.bol-book-price {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 1.52vw;
+  line-height: 1.87vw;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+
+.bol-book-link {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.9vw;
+  color: #ff6b3d;
+}
+
 @media (max-width: 1024px) {
   .hero-magazine-container {
     flex-direction: column;
@@ -957,6 +1144,51 @@
   .editions-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 3vw;
+  }
+
+  .published-books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3vw;
+  }
+
+  .bol-book-cover {
+    height: 38vw;
+  }
+
+  .bol-book-brand {
+    font-size: 2.2vw;
+  }
+
+  .bol-book-tag {
+    font-size: 1.3vw;
+  }
+
+  .bol-book-cover-title {
+    font-size: 3.5vw;
+    line-height: 4vw;
+  }
+
+  .bol-book-cat,
+  .bol-book-pages {
+    font-size: 1.4vw;
+  }
+
+  .bol-book-title {
+    font-size: 2.4vw;
+    line-height: 3vw;
+  }
+
+  .bol-book-author {
+    font-size: 1.6vw;
+  }
+
+  .bol-book-price {
+    font-size: 2.6vw;
+    line-height: 3vw;
+  }
+
+  .bol-book-link {
+    font-size: 1.7vw;
   }
 
   .edition-cover {
@@ -1170,9 +1402,61 @@
   }
 
   .from-this-issue,
+  .published-books-section,
   .past-editions,
   .fuel-ambitions-section {
     padding: 10vw 5vw;
+  }
+
+  .published-books-grid {
+    grid-template-columns: 1fr;
+    gap: 5vw;
+  }
+
+  .bol-book-cover {
+    height: 75vw;
+    padding: 4vw;
+    border-radius: 2vw;
+  }
+
+  .bol-book-brand {
+    font-size: 4.5vw;
+  }
+
+  .bol-book-tag {
+    font-size: 2.6vw;
+  }
+
+  .bol-book-cover-title {
+    font-size: 7vw;
+    line-height: 8vw;
+  }
+
+  .bol-book-info {
+    gap: 2vw;
+  }
+
+  .bol-book-cat,
+  .bol-book-pages {
+    font-size: 2.8vw;
+  }
+
+  .bol-book-title {
+    font-size: 4.8vw;
+    line-height: 6vw;
+  }
+
+  .bol-book-author {
+    font-size: 3.4vw;
+  }
+
+  .bol-book-price {
+    font-size: 5vw;
+    line-height: 6vw;
+  }
+
+  .bol-book-link {
+    font-size: 3.6vw;
   }
 
   .section-header-row {

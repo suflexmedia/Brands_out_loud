@@ -17,6 +17,7 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "static", "template
 LISTING_TEMPLATE = "magazine_remaster.html"
 ISSUE_TEMPLATE = "magazine_issue.html"
 BOOK_TEMPLATE = "magazine-book.html"
+LAZERVEDA_TEMPLATE = "lazerveda-book.html"
 
 
 async def build_listing_context(content_override=None):
@@ -56,6 +57,7 @@ async def build_listing_context(content_override=None):
         "issues": issues,
         "featured_issue": featured,
         "archive_issues": archive_issues,
+        "published_books": await magazine_service.get_all_books(),
     })
     return context
 
@@ -73,6 +75,15 @@ async def build_issue_context(issue_slug: str, content_override=None):
     return context
 
 
+def _with_book_section_defaults(content: dict) -> dict:
+    """Returns a shallow copy of book_detail content with default section labels filled in."""
+    v2_data = magazine_service.get_hidden_lens_v2_data()
+    merged = dict(content or {})
+    existing_sections = {k: v for k, v in (merged.get("sections") or {}).items() if v}
+    merged["sections"] = {**v2_data["default_sections"], **existing_sections}
+    return merged
+
+
 async def build_book_context(issue_slug: str, book_slug: str, content_override=None):
     """Builds the book context, returning None when the book is missing."""
     book = await magazine_service.get_book(issue_slug, book_slug)
@@ -80,9 +91,23 @@ async def build_book_context(issue_slug: str, book_slug: str, content_override=N
         return None
     context = await base_context(active_nav="magazine", page_id="book_detail", content_override=content_override)
     context.update({
+        "content": _with_book_section_defaults(context.get("content")),
         "book": book,
         "issue": await magazine_service.get_issue(issue_slug),
         "more_books": await magazine_service.get_other_books(issue_slug, book_slug),
+    })
+    return context
+
+
+async def build_hidden_lens_v2_context(content_override=None):
+    """Builds the recovered full-content context for The Hidden Lens v2 page."""
+    context = await base_context(active_nav="magazine", page_id="book_detail", content_override=content_override)
+    v2_data = magazine_service.get_hidden_lens_v2_data()
+    context.update({
+        "content": _with_book_section_defaults(context.get("content")),
+        "book": v2_data["book"],
+        "issue": await magazine_service.get_issue("india-in-a-centennium"),
+        "more_books": v2_data["more_books"],
     })
     return context
 
@@ -91,6 +116,17 @@ async def build_book_context(issue_slug: str, book_slug: str, content_override=N
 async def serve_magazine_listing(request: Request):
     """Serves the magazine landing page listing every published issue."""
     return templates.TemplateResponse(request, LISTING_TEMPLATE, await build_listing_context())
+
+
+@router.get("/magazine/lazer-veda", tags=["Pages"])
+async def serve_lazerveda_book(request: Request):
+    """Serves the dedicated LaserVEDA book landing page."""
+    context = await base_context(active_nav="magazine")
+    context["seo"] = {
+        "title": "LaserVEDA® — Healing at the Speed of Light | Brands Out Loud",
+        "description": "From Pain to Purpose - A Doctor's Journey Through Loss, Light, and the Fight to Make Healing Gentle Again.",
+    }
+    return templates.TemplateResponse(request, LAZERVEDA_TEMPLATE, context)
 
 
 @router.get("/magazine/{issue_slug}", tags=["Pages"])
@@ -102,10 +138,24 @@ async def serve_issue_books(request: Request, issue_slug: str):
     return templates.TemplateResponse(request, ISSUE_TEMPLATE, context)
 
 
+@router.get("/magazine/india-in-a-centennium/the-hidden-lens-v2", tags=["Pages"])
+async def serve_hidden_lens_v2(request: Request):
+    """Serves the recovered pre-templatization version of The Hidden Lens book page."""
+    context = await build_hidden_lens_v2_context()
+    return templates.TemplateResponse(request, BOOK_TEMPLATE, context)
+
+
 @router.get("/magazine/{issue_slug}/{book_slug}", tags=["Pages"])
 async def serve_book_detail(request: Request, issue_slug: str, book_slug: str):
     """Serves the sales page for a single book."""
     context = await build_book_context(issue_slug, book_slug)
     if not context:
         raise HTTPException(status_code=404, detail="Book not found")
+    custom_template = context["book"].get("custom_template")
+    if custom_template == LAZERVEDA_TEMPLATE:
+        context["seo"] = {
+            "title": "LaserVEDA® — Healing at the Speed of Light | Brands Out Loud",
+            "description": context["book"].get("subtitle") or context["book"].get("description", ""),
+        }
+        return templates.TemplateResponse(request, LAZERVEDA_TEMPLATE, context)
     return templates.TemplateResponse(request, BOOK_TEMPLATE, context)

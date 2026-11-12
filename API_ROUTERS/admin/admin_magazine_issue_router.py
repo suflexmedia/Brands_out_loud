@@ -19,11 +19,12 @@ ISSUE_FIELDS = [
 ]
 
 BOOK_FIELDS = [
-    "title", "subtitle", "author_name", "author_avatar_url", "category",
-    "pages_label", "price", "brand", "tag", "cover_image_url", "cover_variant",
-    "cover_title_lines", "background_number", "description", "badges", "rating",
-    "store_url", "sample_url", "about", "covers", "highlights", "audience",
-    "cta_banner", "status", "order",
+    "title", "subtitle", "cover_subtitle", "author_name", "author_avatar_url",
+    "category", "pages_label", "price", "brand", "tag", "cover_image_url",
+    "cover_variant", "cover_title_lines", "background_number", "description",
+    "badges", "rating", "store_url", "sample_url", "purchase_label",
+    "sample_label", "about", "covers", "highlights", "audience", "cta_banner",
+    "custom_url", "custom_template", "status", "order",
 ]
 
 
@@ -74,6 +75,20 @@ async def _resolve_slug(payload: Dict[str, Any], collection: str, extra_filter: 
     if await db[collection].find_one({**extra_filter, "slug": slug}):
         raise HTTPException(status_code=400, detail="That slug is already in use")
     return slug
+
+
+@router.get("/book-template")
+async def get_book_template(_admin: dict = Depends(require_admin)):
+    """Returns the full sample book structure for pre-filling the admin book form."""
+    from copy import deepcopy
+    from page_serving_routers.routers import magazine_service
+
+    sample = deepcopy(magazine_service.get_hidden_lens_v2_data()["book"])
+    for key in ("slug", "issue_slug", "url"):
+        sample.pop(key, None)
+    if isinstance(sample.get("rating"), dict):
+        sample["rating"]["stars"] = 5
+    return sample
 
 
 @router.get("/issues")

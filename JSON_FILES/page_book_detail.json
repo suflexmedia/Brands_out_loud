@@ -5,6 +5,8 @@
         "og_image": ""
     },
     "sections": {
+        "purchase_label": "Purchase Now",
+        "sample_label": "Read a Sample",
         "about_title": "About the book",
         "covers_title": "What the book <span class=\"highlight-blue\">covers</span>",
         "covers_subtitle": "Rather than looking at unconscious bias from a single perspective, the book examines it from many angles. It explores:",

@@ -164,14 +164,15 @@
         return "";
     }
 
-    function buildArrayField(key, value, path) {
+    function buildArrayField(key, value, path, schema) {
         const wrapper = el("div", "sub-section");
         wrapper.appendChild(el("div", "sub-section-title", humanise(key)));
 
         const list = el("div");
         wrapper.appendChild(list);
 
-        const template = value.length ? value[0] : "";
+        const schemaTemplate = Array.isArray(schema) && schema.length ? schema[0] : undefined;
+        const template = value.length ? value[0] : schemaTemplate !== undefined ? schemaTemplate : "";
         const readers = [];
 
         function renderItem(itemValue, index) {
@@ -194,7 +195,7 @@
 
             let reader;
             if (itemValue && typeof itemValue === "object" && !Array.isArray(itemValue)) {
-                const body = buildObjectFields(itemValue, path + "." + index);
+                const body = buildObjectFields(itemValue, path + "." + index, schemaTemplate);
                 item.appendChild(body);
                 reader = body.__read;
             } else {
@@ -237,7 +238,11 @@
         const add = el("button", "btn btn-small repeat-add", "+ Add " + humanise(key));
         add.type = "button";
         add.addEventListener("click", function () {
-            list.appendChild(renderItem(blankLike(template), list.children.length));
+            const nextItem = blankLike(template);
+            if (nextItem && typeof nextItem === "object" && !Array.isArray(nextItem) && "num" in nextItem) {
+                nextItem.num = String(list.children.length + 1).padStart(2, "0");
+            }
+            list.appendChild(renderItem(nextItem, list.children.length));
             reindex();
         });
         wrapper.appendChild(add);
@@ -250,20 +255,21 @@
         return wrapper;
     }
 
-    function buildObjectFields(obj, path) {
+    function buildObjectFields(obj, path, schema) {
         const container = el("div");
         const readers = {};
 
         Object.keys(obj).forEach(function (key) {
             const value = obj[key];
+            const childSchema = schema && typeof schema === "object" ? schema[key] : undefined;
             let node;
 
             if (Array.isArray(value)) {
-                node = buildArrayField(key, value, path + "." + key);
+                node = buildArrayField(key, value, path + "." + key, childSchema);
             } else if (value && typeof value === "object") {
                 node = el("div", "sub-section");
                 node.appendChild(el("div", "sub-section-title", humanise(key)));
-                const inner = buildObjectFields(value, path + "." + key);
+                const inner = buildObjectFields(value, path + "." + key, childSchema);
                 node.appendChild(inner);
                 node.__read = inner.__read;
             } else {
@@ -284,7 +290,7 @@
         return container;
     }
 
-    function renderEditor(mountId, data, onChange) {
+    function renderEditor(mountId, data, onChange, schema) {
         const mount = document.getElementById(mountId);
         mount.innerHTML = "";
         const readers = {};
@@ -296,11 +302,12 @@
             card.appendChild(header);
 
             const value = data[sectionKey];
+            const sectionSchema = schema && typeof schema === "object" ? schema[sectionKey] : undefined;
             let node;
             if (Array.isArray(value)) {
-                node = buildArrayField(sectionKey, value, sectionKey);
+                node = buildArrayField(sectionKey, value, sectionKey, sectionSchema);
             } else if (value && typeof value === "object") {
-                node = buildObjectFields(value, sectionKey);
+                node = buildObjectFields(value, sectionKey, sectionSchema);
             } else {
                 node = buildScalarField(sectionKey, value);
             }

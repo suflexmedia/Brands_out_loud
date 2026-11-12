@@ -61,27 +61,27 @@
             {
                 "media_url": "/static/images/remaster-homepage/gif/gif-1.gif",
                 "media_type": "image",
-                "overlay_text": "Increased business<br class=\"mobile-break\" />visibility"
+                "overlay_text": "Increased business <br class=\"mobile-break\" />visibility"
             },
             {
                 "media_url": "/static/images/remaster-homepage/gif/gif-2.mp4",
                 "media_type": "video",
-                "overlay_text": "Built stronger personal<br class=\"mobile-break\" />brands"
+                "overlay_text": "Built stronger personal <br class=\"mobile-break\" />brands"
             },
             {
                 "media_url": "/static/images/remaster-homepage/gif/gif-3.gif",
                 "media_type": "image",
-                "overlay_text": "Landed speaking<br class=\"mobile-break\" />engagements"
+                "overlay_text": "Landed speaking <br class=\"mobile-break\" />engagements"
             },
             {
                 "media_url": "/static/images/remaster-homepage/gif/gif-4.gif",
                 "media_type": "image",
-                "overlay_text": "Expand professional<br class=\"mobile-break\" />influence"
+                "overlay_text": "Expand professional <br class=\"mobile-break\" />influence"
             },
             {
                 "media_url": "/static/images/remaster-homepage/gif/gif-5.gif",
                 "media_type": "image",
-                "overlay_text": "Created meaningful<br class=\"mobile-break\" />legacies"
+                "overlay_text": "Created meaningful <br class=\"mobile-break\" />legacies"
             }
         ]
     },
