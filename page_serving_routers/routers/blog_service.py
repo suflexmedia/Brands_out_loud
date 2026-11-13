@@ -8,6 +8,15 @@ from database_handler import db_handler
 
 PUBLISHED_FILTER = {"isDeleted": {"$ne": True}, "status": "published"}
 
+DEFAULT_CATEGORY_IMAGES = {
+    "business": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "technology": "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "semiconductor": "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "gcc": "https://images.pexels.com/photos/162031/dubai-tower-arab-khalifa-162031.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "sustainability": "https://images.pexels.com/photos/414837/pexels-photo-414837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+}
+GLOBAL_DEFAULT_IMAGE = "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+
 
 def _coerce_content(raw: Any) -> Dict[str, Any]:
     """Returns blogContent as a dict whether it was stored as a dict or a JSON string."""
@@ -35,6 +44,11 @@ def to_card(blog: Dict[str, Any]) -> Dict[str, Any]:
     content = _coerce_content(blog.get("blogContent"))
     sections = content.get("dynamicSections", [])
     category = (content.get("blogCategory") or "").strip()
+    raw_img = (content.get("mainImageUrl") or "").strip()
+    if not raw_img or "picsum.photos" in raw_img:
+        img_url = DEFAULT_CATEGORY_IMAGES.get(category.lower(), GLOBAL_DEFAULT_IMAGE)
+    else:
+        img_url = raw_img
     return {
         "slug": blog.get("slug", ""),
         "url": f"/blog/{blog.get('slug', '')}",
@@ -42,7 +56,7 @@ def to_card(blog: Dict[str, Any]) -> Dict[str, Any]:
         "excerpt": content.get("blogSummary", ""),
         "category": category,
         "category_label": category.title(),
-        "image_url": content.get("mainImageUrl", ""),
+        "image_url": img_url,
         "image_alt": content.get("mainImageAlt", ""),
         "author_name": content.get("author") or "BOL Editorial",
         "author_avatar_url": content.get("authorAvatarUrl") or "",
@@ -56,6 +70,18 @@ def to_post(blog: Dict[str, Any]) -> Dict[str, Any]:
     card = to_card(blog)
     content = _coerce_content(blog.get("blogContent"))
     blocks = content.get("dynamicSections", [])
+    category = card.get("category", "").lower()
+    for block in blocks or []:
+        if block.get("type") == "image":
+            c = block.get("content")
+            if isinstance(c, dict):
+                u = c.get("url", "")
+                if not u or "picsum.photos" in u:
+                    c["url"] = DEFAULT_CATEGORY_IMAGES.get(category, GLOBAL_DEFAULT_IMAGE)
+            elif isinstance(block.get("url"), str):
+                u = block.get("url", "")
+                if not u or "picsum.photos" in u:
+                    block["url"] = DEFAULT_CATEGORY_IMAGES.get(category, GLOBAL_DEFAULT_IMAGE)
     card["blocks"] = blocks
     card["toc"] = build_toc(blocks)
     return card

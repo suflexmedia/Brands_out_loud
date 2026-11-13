@@ -67,8 +67,8 @@
                 </div>
 
                 <div class="lv-hero-cta-row">
-                    <a href="/order" class="lv-btn-orange">
-                        <span>Buy the Book</span>
+                    <a href="/magazine/laser-veda-edition/read" class="lv-btn-orange">
+                        <span>Read Book Online</span>
                         <span class="lv-btn-arrow">→</span>
                     </a>
                 </div>
@@ -500,17 +500,14 @@
     <section class="lv-video-section">
         <div class="lv-video-inner">
             <div class="lv-video-box" id="lvVideoBox">
-                <button
-                    type="button"
-                    class="lv-video-play-btn"
-                    aria-label="Play keynote video"
-                    onclick="toggleLaservedaVideo()"
-                >
-                    <img src="/static/images/lazerveda/play_triangle.svg" alt="Play" class="lv-play-icon" />
-                </button>
-                <div class="lv-video-placeholder-msg" id="lvVideoStatus" aria-live="polite">
-                    Keynote &amp; TEDx video preview slot — connect embed or MP4 URL when ready.
-                </div>
+                <iframe
+                    class="lv-video-iframe"
+                    src="https://www.youtube-nocookie.com/embed/4YzVW74yo0Y?rel=0&amp;modestbranding=1"
+                    title="International keynote and TEDx speaker"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                ></iframe>
             </div>
             <p class="lv-video-caption">International keynote and TEDx speaker</p>
         </div>
@@ -562,12 +559,12 @@
                         </div>
 
                         <div class="lv-getbook-actions">
-                            <a href="/order" class="lv-btn-buy">
-                                <span>Buy the Book</span>
+                            <a href="/magazine/laser-veda-edition/read" class="lv-btn-buy">
+                                <span>Read Book Online</span>
                                 <span class="lv-btn-arrow">→</span>
                             </a>
-                            <a href="#get-the-book" class="lv-btn-sample">
-                                Download Sample Chapter
+                            <a href="/magazine/laser-veda-edition/read" class="lv-btn-sample">
+                                Download &amp; Read Online
                             </a>
                         </div>
                     </div>
@@ -668,13 +665,6 @@
         if (!isOpen) {
             item.classList.add("is-open");
             button.setAttribute("aria-expanded", "true");
-        }
-    }
-
-    function toggleLaservedaVideo() {
-        const box = document.getElementById("lvVideoBox");
-        if (box) {
-            box.classList.toggle("is-preview-active");
         }
     }
 </script>

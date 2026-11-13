@@ -211,7 +211,13 @@
                         const issues = await api("/admin/api/magazine/issues");
                         if (!issues.length) {
                             mount.innerHTML =
-                                '<div class="empty-state">No issues yet. Create your first issue to start adding books.</div>';
+                                '<div class="empty-state"><p>No issues yet. Create your first issue to start adding books.</p><button id="btn-create-first-issue" class="btn btn-primary" style="margin-top:16px;">+ Create First Issue</button></div>';
+                            const firstIssueBtn = document.getElementById("btn-create-first-issue");
+                            if (firstIssueBtn) {
+                                firstIssueBtn.addEventListener("click", function () {
+                                    showForm("issue", null, {});
+                                });
+                            }
                             return;
                         }
                         mount.innerHTML = "";
@@ -220,6 +226,7 @@
                         issues.forEach(function (issue) {
                             const card = document.createElement("div");
                             card.className = "list-card";
+                            card.style.cursor = "pointer";
                             card.innerHTML =
                                 "<h3></h3><div class='list-card-meta'></div><div class='list-card-actions'></div>";
                             card.querySelector("h3").textContent = issue.title;
@@ -229,24 +236,31 @@
                                 " · " +
                                 (issue.status || "published");
 
+                            card.addEventListener("click", function () {
+                                showBooks(issue.slug, issue.title);
+                            });
+
                             const actions =
                                 card.querySelector(".list-card-actions");
                             const open = document.createElement("button");
                             open.className = "btn btn-small btn-primary";
                             open.textContent = "Books";
-                            open.addEventListener("click", function () {
+                            open.addEventListener("click", function (e) {
+                                e.stopPropagation();
                                 showBooks(issue.slug, issue.title);
                             });
                             const edit = document.createElement("button");
                             edit.className = "btn btn-small";
                             edit.textContent = "Edit";
-                            edit.addEventListener("click", function () {
+                            edit.addEventListener("click", function (e) {
+                                e.stopPropagation();
                                 showForm("issue", issue.slug, issue);
                             });
                             const del = document.createElement("button");
                             del.className = "btn btn-small btn-danger";
                             del.textContent = "Delete";
-                            del.addEventListener("click", function () {
+                            del.addEventListener("click", function (e) {
+                                e.stopPropagation();
                                 askDelete(
                                     'Delete issue "' + issue.title + '"?',
                                     "/admin/api/magazine/issues/" + issue.slug,
@@ -285,7 +299,13 @@
                         );
                         if (!books.length) {
                             mount.innerHTML =
-                                '<div class="empty-state">No books in this issue yet.</div>';
+                                '<div class="empty-state"><p>No books in this issue yet.</p><button id="btn-create-first-book" class="btn btn-primary" style="margin-top:16px;">+ Create First Book</button></div>';
+                            const firstBookBtn = document.getElementById("btn-create-first-book");
+                            if (firstBookBtn) {
+                                firstBookBtn.addEventListener("click", function () {
+                                    showForm("book", null, {});
+                                });
+                            }
                             return;
                         }
                         mount.innerHTML = "";
@@ -294,11 +314,16 @@
                         books.forEach(function (book) {
                             const card = document.createElement("div");
                             card.className = "list-card";
+                            card.style.cursor = "pointer";
                             card.innerHTML =
                                 "<h3></h3><div class='list-card-meta'></div><div class='list-card-actions'></div>";
                             card.querySelector("h3").textContent = book.title;
                             card.querySelector(".list-card-meta").textContent =
                                 "/magazine/" + issueSlug + "/" + book.slug;
+
+                            card.addEventListener("click", function () {
+                                showForm("book", book.slug, book);
+                            });
 
                             const actions =
                                 card.querySelector(".list-card-actions");
@@ -308,16 +333,21 @@
                             view.href = "/magazine/" + issueSlug + "/" + book.slug;
                             view.target = "_blank";
                             view.rel = "noopener noreferrer";
+                            view.addEventListener("click", function (e) {
+                                e.stopPropagation();
+                            });
                             const edit = document.createElement("button");
                             edit.className = "btn btn-small";
                             edit.textContent = "Edit";
-                            edit.addEventListener("click", function () {
+                            edit.addEventListener("click", function (e) {
+                                e.stopPropagation();
                                 showForm("book", book.slug, book);
                             });
                             const del = document.createElement("button");
                             del.className = "btn btn-small btn-danger";
                             del.textContent = "Delete";
-                            del.addEventListener("click", function () {
+                            del.addEventListener("click", function (e) {
+                                e.stopPropagation();
                                 askDelete(
                                     'Delete book "' + book.title + '"?',
                                     "/admin/api/magazine/issues/" +

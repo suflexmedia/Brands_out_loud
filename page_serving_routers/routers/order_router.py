@@ -130,7 +130,8 @@ def _base_order_context(order: Optional[dict], active_step: int) -> dict:
         "order": order or {},
         "active_step": active_step,
         "book_page_url": "/magazine/lazer-veda",
-        "sample_chapter_url": "/magazine/lazer-veda#get-the-book",
+        "sample_chapter_url": "/magazine/laser-veda-edition/read",
+        "reader_url": "/magazine/laser-veda-edition/read",
     }
 
 

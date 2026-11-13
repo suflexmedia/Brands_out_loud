@@ -57,15 +57,16 @@
             </div>
 
             <div class="lvo-confirm-actions">
-                <a href="{{ book_page_url }}" class="lvo-btn-primary">
-                    <span>Back to the book</span>
+                <a href="{{ reader_url | default('/magazine/laser-veda-edition/read') }}" class="lvo-btn-primary">
+                    <span>Read Digital Edition</span>
                     <img
                         src="/static/images/lazerveda/order/arrow_right_white.svg"
                         alt=""
                         class="lvo-btn-arrow"
                     />
                 </a>
-                <a href="/magazine" class="lvo-btn-secondary">Continue exploring</a>
+                <a href="{{ book_page_url }}" class="lvo-btn-secondary">Back to book page</a>
+                <a href="/magazine" class="lvo-btn-secondary">Explore magazine</a>
             </div>
         </div>
 

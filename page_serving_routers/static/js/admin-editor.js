@@ -2,8 +2,8 @@
     "use strict";
 
     const TEXTAREA_KEYS = /(description|desc|excerpt|summary|quote|answer|paragraph|text|note|terms|message)$/i;
-    const IMAGE_KEYS = /(image_url|logo_url|icon_url|avatar_url|media_url|video_url|og_image|cover_image_url)$/i;
-    const LABEL_OVERRIDES = { seo: "SEO", cta: "Call To Action" };
+    const IMAGE_KEYS = /(image_url|logo_url|icon_url|avatar_url|media_url|video_url|og_image|cover_image_url|pdf_url|file_url|sample_url|store_url)$/i;
+    const LABEL_OVERRIDES = { seo: "SEO", cta: "Call To Action", pdf_url: "PDF URL" };
 
     function humanise(key) {
         if (LABEL_OVERRIDES[key]) return LABEL_OVERRIDES[key];
@@ -47,6 +47,10 @@
         return data.url;
     }
 
+    function isImageFile(url) {
+        return /\.(jpe?g|png|gif|webp|svg|bmp|ico|avif)(\?.*)?$/i.test(String(url || ""));
+    }
+
     function buildImageField(key, value) {
         const group = el("div", "form-group");
         group.appendChild(el("label", null, humanise(key)));
@@ -58,7 +62,7 @@
         input.dataset.field = key;
 
         const preview = el("img", "image-preview");
-        if (value) {
+        if (value && isImageFile(value)) {
             preview.src = value;
             preview.classList.add("visible");
         }
@@ -76,8 +80,12 @@
         });
 
         input.addEventListener("input", function () {
-            preview.src = input.value;
-            preview.classList.toggle("visible", !!input.value);
+            if (input.value && isImageFile(input.value)) {
+                preview.src = input.value;
+                preview.classList.add("visible");
+            } else {
+                preview.classList.remove("visible");
+            }
         });
 
         picker.addEventListener("change", async function () {
@@ -86,9 +94,14 @@
             try {
                 const url = await uploadFile(picker.files[0]);
                 input.value = url;
-                preview.src = url;
-                preview.classList.add("visible");
+                if (isImageFile(url)) {
+                    preview.src = url;
+                    preview.classList.add("visible");
+                } else {
+                    preview.classList.remove("visible");
+                }
                 input.dispatchEvent(new Event("input", { bubbles: true }));
+                input.dispatchEvent(new Event("change", { bubbles: true }));
                 showToast("File uploaded");
             } catch (error) {
                 showToast(error.message, true);
@@ -335,6 +348,14 @@
 
     let galleryTarget = null;
     let galleryItems = [];
+    let lastActiveField = null;
+
+    document.addEventListener("focusin", function (e) {
+        const target = e.target;
+        if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA") && target.id !== "gallery-search" && target.type !== "file") {
+            lastActiveField = target;
+        }
+    });
 
     function ensureGalleryDom() {
         if (document.getElementById("gallery-panel")) return;
@@ -442,9 +463,11 @@
 
             tile.appendChild(el("div", "gallery-item-name", item.display_name || item.object_name));
             tile.addEventListener("click", function () {
-                if (galleryTarget) {
-                    galleryTarget.value = item.url;
-                    galleryTarget.dispatchEvent(new Event("input", { bubbles: true }));
+                const target = galleryTarget || lastActiveField;
+                if (target && document.body.contains(target)) {
+                    target.value = item.url;
+                    target.dispatchEvent(new Event("input", { bubbles: true }));
+                    target.dispatchEvent(new Event("change", { bubbles: true }));
                     showToast("Inserted into field");
                     closeGallery();
                 } else if (navigator.clipboard) {
@@ -470,7 +493,7 @@
 
     function openGallery(targetInput) {
         ensureGalleryDom();
-        galleryTarget = targetInput || null;
+        galleryTarget = targetInput || lastActiveField || null;
         document.getElementById("gallery-panel").classList.add("open");
         document.getElementById("gallery-backdrop").classList.add("visible");
         document.getElementById("gallery-tab").classList.add("shifted");

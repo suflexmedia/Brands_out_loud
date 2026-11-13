@@ -499,6 +499,7 @@ body {
     height: 15.27vw;
     position: relative;
     overflow: hidden;
+    background-color: #e8ecf4;
 }
 
 .grid-thumb-img {
@@ -523,6 +524,7 @@ body {
     letter-spacing: 0.06vw;
     padding: 0.41vw 0.83vw;
     border-radius: 2.77vw;
+    box-shadow: 0 0.28vw 0.55vw rgba(0, 0, 0, 0.12);
 }
 
 .grid-card-body {

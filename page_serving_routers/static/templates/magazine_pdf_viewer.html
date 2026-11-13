@@ -15,7 +15,7 @@
                 <div class="pdf-reader-breadcrumb">
                     <a href="/magazine">Magazine</a>
                     <span>/</span>
-                    <a href="/magazine/{{ issue.slug }}">{{ issue.title }}</a>
+                    <a href="{{ back_url | default('/magazine/' ~ issue.slug) }}">{{ issue.title }}</a>
                     <span>/</span>
                     <span>Digital Edition</span>
                 </div>
@@ -25,9 +25,9 @@
                 {% endif %}
             </div>
             <div class="pdf-reader-actions">
-                <a href="/magazine/{{ issue.slug }}" class="btn-pdf-secondary">
+                <a href="{{ back_url | default('/magazine/' ~ issue.slug) }}" class="btn-pdf-secondary">
                     <i class="ph ph-arrow-left"></i>
-                    <span>Issue Overview</span>
+                    <span>Overview</span>
                 </a>
                 <a href="{{ download_url }}" class="btn-pdf-primary">
                     <i class="ph ph-download"></i>

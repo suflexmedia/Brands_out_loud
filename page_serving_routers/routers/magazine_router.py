@@ -133,6 +133,12 @@ async def serve_lazerveda_book(request: Request):
     return templates.TemplateResponse(request, LAZERVEDA_TEMPLATE, context)
 
 
+@router.get("/magazine/lazer-veda/read", tags=["Pages"])
+async def serve_lazerveda_pdf_reader(request: Request):
+    """Serves the interactive flipbook PDF reader for LaserVEDA."""
+    return await serve_issue_pdf_reader(request, "laser-veda-edition")
+
+
 @router.get("/magazine/the-hidden-lens", tags=["Pages"])
 async def serve_hidden_lens_book(request: Request):
     """Serves The Hidden Lens standalone book landing page."""
@@ -170,13 +176,15 @@ async def serve_hidden_lens_v2(request: Request):
 @router.get("/magazine/{issue_slug}/read", tags=["Pages"])
 async def serve_issue_pdf_reader(request: Request, issue_slug: str):
     """Serves the interactive flipbook PDF reader for a magazine issue."""
-    issue = await magazine_service.get_issue(issue_slug)
+    target_slug = "laser-veda-edition" if issue_slug == "lazer-veda" else issue_slug
+    issue = await magazine_service.get_issue(target_slug)
     if not issue or not issue.get("pdf_url"):
         raise HTTPException(status_code=404, detail="Issue PDF not found")
     context = await base_context(active_nav="magazine")
     all_issues = await magazine_service.get_issues()
-    other_issues = [item for item in all_issues if item["slug"] != issue_slug][:6]
+    other_issues = [item for item in all_issues if item["slug"] != target_slug][:6]
     pdf_url = issue["pdf_url"]
+    back_url = "/magazine/lazer-veda" if target_slug == "laser-veda-edition" else f"/magazine/{target_slug}"
     context.update({
         "seo": {
             "title": f"{issue['title']} — Digital Edition | Brands Out Loud",
@@ -185,6 +193,7 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
         },
         "issue": issue,
         "other_issues": other_issues,
+        "back_url": back_url,
         "download_url": f"/download_proxy?pdf={quote(pdf_url, safe='')}",
     })
     return templates.TemplateResponse(request, PDF_VIEWER_TEMPLATE, context)
@@ -193,7 +202,8 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
 @router.get("/magazine/{issue_slug}/viewer-frame", tags=["Pages"])
 async def serve_issue_pdf_frame(request: Request, issue_slug: str):
     """Serves the standalone flipbook iframe document for a magazine issue."""
-    issue = await magazine_service.get_issue(issue_slug)
+    target_slug = "laser-veda-edition" if issue_slug == "lazer-veda" else issue_slug
+    issue = await magazine_service.get_issue(target_slug)
     if not issue or not issue.get("pdf_url"):
         raise HTTPException(status_code=404, detail="Issue PDF not found")
     raw_pdf_url = issue["pdf_url"]
