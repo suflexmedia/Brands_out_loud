@@ -577,27 +577,40 @@
                 return window.innerWidth || document.documentElement.clientWidth || 0;
             }
 
+            function isMobileOrTablet() {
+                const w = getEffectiveWidth();
+                const touch = Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+                return w <= 768 || touch;
+            }
+
+            function getEffectiveDpr() {
+                const raw = window.devicePixelRatio || 1;
+                return isMobileOrTablet() ? Math.min(raw, 1.25) : Math.min(raw, 2.0);
+            }
+
+            function getRenderMultiplier() {
+                if (isMobileOrTablet()) return 1.0;
+                return isFullscreen ? 1.5 : 1.2;
+            }
+
+            function getWindowRadius() {
+                return isMobileOrTablet() ? 2 : 3;
+            }
+
             let pdfDoc = null;
             let totalPages = 0;
             let currentPage = 1;
             let viewport = null;
-            let pagesCache = {};
             let isFullscreen = false;
             let isDragging = false;
             let pageFlip = null;
             const hasBlankStart = !(getEffectiveWidth() <= 768);
             const renderedPages = new Set();
             const pageShells = {};
-            const INITIAL_LOAD_PERCENT = 0.25;
-            const QUALITY_FACTOR = 1.0;
-
-            function getQuickScale() {
-                return Math.max(window.devicePixelRatio || 1, 1) * 0.9;
-            }
-
-            function getHighScale() {
-                return (isFullscreen ? 2.0 : 1.8) * (window.devicePixelRatio || 1);
-            }
+            const pageAnnotations = {};
+            const renderTasks = {};
+            let isUpdatingWindow = false;
+            let pendingWindowCenter = null;
 
             function calculatePageDimensions() {
                 const container = document.getElementById("flipbook-container");
@@ -623,72 +636,6 @@
                     width: Math.max(240, Math.floor(pageWidth)),
                     height: Math.max(320, Math.floor(pageHeight))
                 };
-            }
-
-            async function renderPage(pageNum, quality = "low") {
-                if (!pdfDoc) return null;
-                const cache = pagesCache[pageNum];
-                if (cache && ((quality === "low" && cache.lowCanvas) || (quality === "high" && cache.highCanvas))) {
-                    return cache;
-                }
-
-                try {
-                    const page = await pdfDoc.getPage(pageNum);
-                    let baseViewport;
-                    let links;
-                    if (!cache) {
-                        baseViewport = page.getViewport({ scale: 1 });
-                        const annotations = await page.getAnnotations();
-                        links = annotations
-                            .filter((ann) => ann.subtype === "Link" && ann.url && ann.rect)
-                            .map((ann) => {
-                                try {
-                                    const [x1, y1, x2, y2] = baseViewport.convertToViewportRectangle(ann.rect);
-                                    return {
-                                        url: ann.url,
-                                        rect: [Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1)]
-                                    };
-                                } catch (e) {
-                                    return null;
-                                }
-                            })
-                            .filter(Boolean);
-                    } else {
-                        baseViewport = cache.baseViewport;
-                        links = cache.links;
-                    }
-
-                    let desiredScale;
-                    const pageCanvasEl = document.querySelector(`.page[data-page="${pageNum}"] canvas`);
-                    if (pageCanvasEl && baseViewport) {
-                        const targetPxW = pageCanvasEl.width || Math.floor(pageCanvasEl.clientWidth * (window.devicePixelRatio || 1));
-                        const targetPxH = pageCanvasEl.height || Math.floor(pageCanvasEl.clientHeight * (window.devicePixelRatio || 1));
-                        const displayScale = Math.min(targetPxW / baseViewport.width, targetPxH / baseViewport.height);
-                        desiredScale = Math.max(1, displayScale);
-                    } else {
-                        desiredScale = quality === "low" ? getQuickScale() : getHighScale();
-                    }
-
-                    const renderViewport = page.getViewport({ scale: desiredScale });
-                    const canvas = document.createElement("canvas");
-                    const context = canvas.getContext("2d", { alpha: false });
-                    canvas.height = renderViewport.height;
-                    canvas.width = renderViewport.width;
-
-                    await page.render({ canvasContext: context, viewport: renderViewport }).promise;
-
-                    pagesCache[pageNum] = {
-                        ...(cache || {}),
-                        baseViewport,
-                        links,
-                        lowCanvas: quality === "low" ? canvas : cache ? cache.lowCanvas : null,
-                        highCanvas: quality === "high" ? canvas : cache ? cache.highCanvas : null
-                    };
-                    return pagesCache[pageNum];
-                } catch (error) {
-                    console.error(`Error rendering page ${pageNum}:`, error);
-                    return null;
-                }
             }
 
             function addUrlOverlays(pageContent, links, baseViewport) {
@@ -722,10 +669,8 @@
                 content.className = "page-content";
 
                 const canvas = document.createElement("canvas");
-                const dpr = window.devicePixelRatio || 1;
-                const mult = (isFullscreen ? 2.5 : 2.0) * QUALITY_FACTOR;
-                canvas.width = Math.floor(dimensions.width * dpr * mult);
-                canvas.height = Math.floor(dimensions.height * dpr * mult);
+                canvas.width = 1;
+                canvas.height = 1;
 
                 const placeholder = document.createElement("div");
                 placeholder.className = "page-placeholder";
@@ -736,7 +681,7 @@
                 content.appendChild(canvas);
                 content.appendChild(placeholder);
                 page.appendChild(content);
-                return { page, content, canvas };
+                return { page, content, canvas, placeholder };
             }
 
             function createBlankPageShell(dimensions) {
@@ -751,41 +696,167 @@
                 return page;
             }
 
-            function drawInto(targetCanvas, sourceCanvas) {
-                const ctx = targetCanvas.getContext("2d", { alpha: false });
-                ctx.imageSmoothingEnabled = true;
-                if (ctx.imageSmoothingQuality) ctx.imageSmoothingQuality = "high";
-                ctx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
-                ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, 0, 0, targetCanvas.width, targetCanvas.height);
-            }
+            async function renderPageDirect(pageNum) {
+                if (!pdfDoc) return;
+                const shell = pageShells[pageNum];
+                if (!shell) return;
+                if (renderedPages.has(pageNum)) return;
 
-            async function upgradePageCanvasToHigh(pageNum) {
-                const data = await renderPage(pageNum, "high");
-                if (!data) return;
-                const pageEl = document.querySelector(`.page[data-page="${pageNum}"]`);
-                if (!pageEl) return;
-                const canvas = pageEl.querySelector("canvas");
-                if (canvas && data.highCanvas) drawInto(canvas, data.highCanvas);
-            }
+                if (renderTasks[pageNum]) {
+                    try {
+                        renderTasks[pageNum].cancel();
+                    } catch (e) {}
+                    delete renderTasks[pageNum];
+                }
 
-            function rebuildAllPagesForQuality() {
-                const dims = calculatePageDimensions();
-                document.querySelectorAll("#flipbook .page").forEach((pageEl) => {
-                    if (pageEl.dataset.blank === "true") return;
-                    const canvas = pageEl.querySelector("canvas");
-                    if (!canvas) return;
-                    const dpr = window.devicePixelRatio || 1;
-                    const mult = (isFullscreen ? 2.5 : 2.0) * QUALITY_FACTOR;
-                    const targetW = Math.floor(dims.width * dpr * mult);
-                    const targetH = Math.floor(dims.height * dpr * mult);
-                    if (canvas.width === targetW && canvas.height === targetH) return;
-                    canvas.width = targetW;
-                    canvas.height = targetH;
-                    const pageNum = parseInt(pageEl.dataset.page, 10);
-                    if (!Number.isNaN(pageNum) && renderedPages.has(pageNum)) {
-                        upgradePageCanvasToHigh(pageNum);
+                try {
+                    const page = await pdfDoc.getPage(pageNum);
+                    let cachedData = pageAnnotations[pageNum];
+                    if (!cachedData) {
+                        const baseViewport = page.getViewport({ scale: 1 });
+                        const annotations = await page.getAnnotations();
+                        const links = annotations
+                            .filter((ann) => ann.subtype === "Link" && ann.url && ann.rect)
+                            .map((ann) => {
+                                try {
+                                    const [x1, y1, x2, y2] = baseViewport.convertToViewportRectangle(ann.rect);
+                                    return {
+                                        url: ann.url,
+                                        rect: [Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1)]
+                                    };
+                                } catch (e) {
+                                    return null;
+                                }
+                            })
+                            .filter(Boolean);
+                        cachedData = { baseViewport, links };
+                        pageAnnotations[pageNum] = cachedData;
                     }
-                });
+
+                    const dims = calculatePageDimensions();
+                    const dpr = getEffectiveDpr();
+                    const mult = getRenderMultiplier();
+                    const targetW = Math.max(1, Math.floor(dims.width * dpr * mult));
+                    const targetH = Math.max(1, Math.floor(dims.height * dpr * mult));
+
+                    shell.canvas.width = targetW;
+                    shell.canvas.height = targetH;
+
+                    const renderViewport = page.getViewport({ scale: targetW / cachedData.baseViewport.width });
+                    const ctx = shell.canvas.getContext("2d", { alpha: false });
+                    const task = page.render({ canvasContext: ctx, viewport: renderViewport });
+                    renderTasks[pageNum] = task;
+
+                    await task.promise;
+                    delete renderTasks[pageNum];
+                    renderedPages.add(pageNum);
+
+                    if (shell.placeholder) {
+                        shell.placeholder.style.display = "none";
+                    }
+
+                    shell.content.querySelectorAll(".url-overlay").forEach((el) => el.remove());
+                    if (cachedData.links && cachedData.links.length > 0) {
+                        addUrlOverlays(shell.content, cachedData.links, cachedData.baseViewport);
+                    }
+
+                    try {
+                        page.cleanup();
+                    } catch (e) {}
+                } catch (error) {
+                    delete renderTasks[pageNum];
+                    if (error && error.name === "RenderingCancelledException") {
+                        return;
+                    }
+                    console.error(`Error rendering page ${pageNum}:`, error);
+                }
+            }
+
+            function evictPage(pageNum) {
+                if (renderTasks[pageNum]) {
+                    try {
+                        renderTasks[pageNum].cancel();
+                    } catch (e) {}
+                    delete renderTasks[pageNum];
+                }
+
+                const shell = pageShells[pageNum];
+                if (!shell) return;
+
+                shell.canvas.width = 1;
+                shell.canvas.height = 1;
+
+                shell.content.querySelectorAll(".url-overlay").forEach((el) => el.remove());
+
+                if (shell.placeholder) {
+                    shell.placeholder.style.display = "flex";
+                }
+
+                renderedPages.delete(pageNum);
+            }
+
+            async function updateActiveWindow(centerPage) {
+                if (!pdfDoc || totalPages === 0) return;
+                if (isUpdatingWindow) {
+                    pendingWindowCenter = centerPage;
+                    return;
+                }
+                isUpdatingWindow = true;
+
+                const radius = getWindowRadius();
+                const minPage = Math.max(1, centerPage - radius);
+                const maxPage = Math.min(totalPages, centerPage + radius);
+                const targetSet = new Set();
+                for (let i = minPage; i <= maxPage; i++) {
+                    targetSet.add(i);
+                }
+
+                for (const p of Array.from(renderedPages)) {
+                    if (!targetSet.has(p)) {
+                        evictPage(p);
+                    }
+                }
+
+                for (const pStr of Object.keys(renderTasks)) {
+                    const p = parseInt(pStr, 10);
+                    if (!targetSet.has(p)) {
+                        evictPage(p);
+                    }
+                }
+
+                const needed = Array.from(targetSet)
+                    .filter((p) => !renderedPages.has(p))
+                    .sort((a, b) => Math.abs(a - centerPage) - Math.abs(b - centerPage));
+
+                for (const p of needed) {
+                    if (pendingWindowCenter !== null && pendingWindowCenter !== centerPage) {
+                        break;
+                    }
+                    await renderPageDirect(p);
+                }
+
+                isUpdatingWindow = false;
+                if (pendingWindowCenter !== null) {
+                    const nextCenter = pendingWindowCenter;
+                    pendingWindowCenter = null;
+                    updateActiveWindow(nextCenter);
+                }
+            }
+
+            function rebuildActivePagesForQuality() {
+                const dims = calculatePageDimensions();
+                for (let i = 1; i <= totalPages; i++) {
+                    const shell = pageShells[i];
+                    if (shell) {
+                        shell.page.style.width = `${dims.width}px`;
+                        shell.page.style.height = `${dims.height}px`;
+                    }
+                }
+                const active = Array.from(renderedPages);
+                for (const p of active) {
+                    evictPage(p);
+                }
+                updateActiveWindow(currentPage);
             }
 
             function updateControls() {
@@ -806,7 +877,10 @@
                     const progress = x / (rect.width || 1);
                     const targetPage = Math.max(1, Math.min(totalPages, Math.round(progress * (totalPages - 1) + 1)));
                     if (targetPage !== currentPage && pageFlip) {
+                        currentPage = targetPage;
+                        updateControls();
                         pageFlip.turnToPage(hasBlankStart ? targetPage : targetPage - 1);
+                        updateActiveWindow(targetPage);
                     }
                 }
 
@@ -949,7 +1023,7 @@
                 if (pageFlip) {
                     setTimeout(() => {
                         pageFlip.update();
-                        setTimeout(rebuildAllPagesForQuality, 100);
+                        setTimeout(rebuildActivePagesForQuality, 100);
                     }, 50);
                 }
             }
@@ -963,7 +1037,10 @@
                 const msgType = msg.type || msg.action;
                 if (msgType === "flipToPage" && pageFlip) {
                     const tp = Math.max(1, Math.min(totalPages, msg.page || 1));
+                    currentPage = tp;
+                    updateControls();
                     pageFlip.turnToPage(hasBlankStart ? tp : tp - 1);
+                    updateActiveWindow(tp);
                 } else if (msgType === "nextPage" && pageFlip && currentPage < totalPages) {
                     pageFlip.flipNext();
                 } else if (msgType === "prevPage" && pageFlip && currentPage > 1) {
@@ -972,37 +1049,6 @@
                     document.getElementById("fullscreenBtn").click();
                 }
             });
-
-            async function renderAndDisplayPage(pageNum, quality) {
-                if (renderedPages.has(pageNum)) return;
-                const shell = pageShells[pageNum];
-                if (!shell) return;
-                const q = quality || "low";
-                const data = await renderPage(pageNum, q);
-                if (!data) return;
-                const src = q === "high" ? data.highCanvas : data.lowCanvas;
-                if (src) drawInto(shell.canvas, src);
-                if (data.links && data.links.length > 0) {
-                    addUrlOverlays(shell.content, data.links, data.baseViewport);
-                }
-                const ph = shell.content.querySelector(".page-placeholder");
-                if (ph) ph.remove();
-                renderedPages.add(pageNum);
-                if (q === "low") {
-                    upgradePageCanvasToHigh(pageNum).catch(() => {});
-                }
-            }
-
-            function ensureNearbyPagesRendered(centerPage, range) {
-                const r = range || 3;
-                const start = Math.max(1, centerPage - r);
-                const end = Math.min(totalPages, centerPage + r);
-                for (let i = start; i <= end; i++) {
-                    if (!renderedPages.has(i)) {
-                        renderAndDisplayPage(i, i <= centerPage + 1 ? "high" : "low");
-                    }
-                }
-            }
 
             function initPDF() {
                 const flipbook = document.getElementById("flipbook");
@@ -1041,9 +1087,9 @@
                             flipbook.appendChild(createBlankPageShell(dims));
                         }
                         for (let i = 1; i <= totalPages; i++) {
-                            const { page, content, canvas } = createFlipPageShell(i, dims);
-                            flipbook.appendChild(page);
-                            pageShells[i] = { page, content, canvas };
+                            const shell = createFlipPageShell(i, dims);
+                            flipbook.appendChild(shell.page);
+                            pageShells[i] = shell;
                         }
                         if (hasBlankStart && totalPages % 2 === 0) {
                             flipbook.appendChild(createBlankPageShell(dims));
@@ -1073,30 +1119,27 @@
                             const idx = e.data || 0;
                             currentPage = hasBlankStart ? Math.min(totalPages, Math.max(1, idx)) : Math.min(totalPages, idx + 1);
                             updateControls();
-                            ensureNearbyPagesRendered(currentPage, 4);
-                            const leftPage = currentPage % 2 === 0 ? currentPage : Math.max(1, currentPage - 1);
-                            const rightPage = Math.min(totalPages, leftPage + 1);
-                            if (renderedPages.has(leftPage)) upgradePageCanvasToHigh(leftPage);
-                            if (rightPage !== leftPage && renderedPages.has(rightPage)) upgradePageCanvasToHigh(rightPage);
+                            updateActiveWindow(currentPage);
                         });
 
                         currentPage = 1;
                         updateControls();
 
-                        const initialCount = Math.min(totalPages, Math.max(4, Math.ceil(totalPages * INITIAL_LOAD_PERCENT)));
                         const loaderEl = document.getElementById("globalLoading");
                         const loaderText = loaderEl ? loaderEl.querySelector(".text") : null;
+                        if (loaderText) {
+                            loaderText.textContent = "Rendering initial page...";
+                        }
 
-                        for (let i = 1; i <= initialCount; i++) {
-                            await renderAndDisplayPage(i, i <= 2 ? "high" : "low");
-                            if (loaderText) {
-                                loaderText.textContent = `Rendering pages: ${Math.round((i / initialCount) * 100)}%`;
-                            }
+                        await renderPageDirect(1);
+                        if (!isMobileOrTablet() && totalPages >= 2) {
+                            await renderPageDirect(2);
                         }
 
                         if (loaderEl) loaderEl.style.display = "none";
                         document.body.classList.remove("loading");
-                        ensureNearbyPagesRendered(initialCount, 6);
+
+                        updateActiveWindow(1);
                     })
                     .catch((error) => {
                         console.error("Error loading PDF:", error);
@@ -1111,7 +1154,7 @@
                 resizeTimeout = setTimeout(() => {
                     if (pageFlip) {
                         pageFlip.update();
-                        rebuildAllPagesForQuality();
+                        rebuildActivePagesForQuality();
                     }
                 }, 150);
             });
