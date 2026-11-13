@@ -8,6 +8,13 @@ from database_handler import db_handler
 PUBLISHED = {"status": "published"}
 
 
+def _normalize_asset_url(url: Optional[str]) -> str:
+    """Normalizes legacy asset paths to canonical paths."""
+    if not url:
+        return ""
+    return str(url).replace("/lazerveda/", "/laserveda/")
+
+
 def issue_card(issue: Dict[str, Any]) -> Dict[str, Any]:
     """Flattens an issue document into the archive-card shape."""
     slug = issue.get("slug", "")
@@ -19,7 +26,7 @@ def issue_card(issue: Dict[str, Any]) -> Dict[str, Any]:
         "season_label": issue.get("season_label", ""),
         "badge": issue.get("badge", ""),
         "description": issue.get("description", ""),
-        "cover_image_url": issue.get("cover_image_url", ""),
+        "cover_image_url": _normalize_asset_url(issue.get("cover_image_url", "")),
         "cover_variant": issue.get("cover_variant", "edition-bg-1"),
         "cover_title_lines": issue.get("cover_title_lines", []),
         "brand": issue.get("brand", "BOL"),
@@ -46,7 +53,7 @@ def book_card(book: Dict[str, Any]) -> Dict[str, Any]:
         "price": book.get("price", {}),
         "brand": book.get("brand", "BOL"),
         "tag": book.get("tag", ""),
-        "cover_image_url": book.get("cover_image_url", ""),
+        "cover_image_url": _normalize_asset_url(book.get("cover_image_url", "")),
         "cover_variant": book.get("cover_variant", "cover-gradient-1"),
         "cover_title_lines": book.get("cover_title_lines", []),
         "background_number": book.get("background_number", ""),
@@ -100,6 +107,9 @@ async def get_books(issue_slug: str) -> List[Dict[str, Any]]:
 def _hydrate_book_detail(doc: Dict[str, Any]) -> Dict[str, Any]:
     """Merges detailed fields onto a base book card payload."""
     detail = book_card(doc)
+    cta_banner = dict(doc.get("cta_banner") or {})
+    if cta_banner.get("image_url"):
+        cta_banner["image_url"] = _normalize_asset_url(cta_banner["image_url"])
     detail.update({
         "cover_subtitle": doc.get("cover_subtitle", ""),
         "description": doc.get("description", ""),
@@ -109,12 +119,12 @@ def _hydrate_book_detail(doc: Dict[str, Any]) -> Dict[str, Any]:
         "sample_url": doc.get("sample_url", "#"),
         "purchase_label": doc.get("purchase_label", ""),
         "sample_label": doc.get("sample_label", ""),
-        "author_avatar_url": doc.get("author_avatar_url", ""),
+        "author_avatar_url": _normalize_asset_url(doc.get("author_avatar_url", "")),
         "about": doc.get("about", {}),
         "covers": doc.get("covers", []),
         "highlights": doc.get("highlights", []),
         "audience": doc.get("audience", []),
-        "cta_banner": doc.get("cta_banner", {}),
+        "cta_banner": cta_banner,
     })
     return detail
 

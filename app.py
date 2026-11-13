@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import StreamingResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 from dotenv import load_dotenv
@@ -198,6 +198,17 @@ async def log_request_time(request: Request, call_next):
     Middleware to log the total execution time of the request
     and track public page views in MongoDB for analytics.
     """
+    req_path = request.url.path
+    if req_path.startswith("/static/images/lazerveda/"):
+        return RedirectResponse(
+            url=req_path.replace("/static/images/lazerveda/", "/static/images/laserveda/"),
+            status_code=301,
+        )
+    if req_path == "/static/css/lazerveda_book.css":
+        return RedirectResponse(url="/static/css/laserveda_book.css", status_code=301)
+    if req_path == "/static/css/lazerveda_order.css":
+        return RedirectResponse(url="/static/css/laserveda_order.css", status_code=301)
+
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
