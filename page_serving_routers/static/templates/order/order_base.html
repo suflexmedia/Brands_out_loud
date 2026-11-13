@@ -1,33 +1,37 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}Order LaserVEDA® | Brands Out Loud{% endblock %}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/static/css/lazerveda_order.css?v={{ asset_version }}" />
-        {% block head_extra %}{% endblock %}
-    </head>
-    <body>
-        <main class="lvo-canvas{% block canvas_modifier %}{% endblock %}">
-            <header class="lvo-topbar">
-                <a href="{{ book_page_url }}" class="lvo-back-top-link">
-                    <img
-                        src="/static/images/lazerveda/order/arrow_left_white.svg"
-                        alt=""
-                        class="lvo-back-top-icon"
-                    />
-                    <span>Back to the book</span>
-                </a>
-            </header>
-            {% block content %}{% endblock %}
-        </main>
-        {% block page_js %}{% endblock %}
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Order LaserVEDA® | Brands Out Loud{% endblock %}
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/static/css/laserveda_order.css?v={{ asset_version }}"
+    />
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body>
+    <main class="lvo-canvas{% block canvas_modifier %}{% endblock %}">
+      <header class="lvo-topbar">
+        <a href="{{ book_page_url }}" class="lvo-back-top-link">
+          <img
+            src="/static/images/laserveda/order/arrow_left_white.svg"
+            alt=""
+            class="lvo-back-top-icon"
+          />
+          <span>Back to the book</span>
+        </a>
+      </header>
+      {% block content %}{% endblock %}
+    </main>
+    {% block page_js %}{% endblock %}
+  </body>
 </html>
-

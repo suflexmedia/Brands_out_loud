@@ -27,12 +27,12 @@ OTP_EXPIRY_SECONDS = 600
 OTP_RESEND_COOLDOWN_SECONDS = 30
 
 BOOK_ITEM = {
-    "slug": "lazer-veda",
+    "slug": "laser-veda",
     "title": "LaserVEDA",
     "subtitle": "HEALING AT THE SPEED OF LIGHT",
     "author": "Dr. Prof. Chandrashekhar Yavagal",
     "edition": "Hardcover · English · Qty 1",
-    "cover_url": "/static/images/lazerveda/book_cover.png",
+    "cover_url": "/static/images/laserveda/book_cover.png",
     "sale_price": 799,
     "original_price": 999,
     "discount_amount": 200,
@@ -129,7 +129,7 @@ def _base_order_context(order: Optional[dict], active_step: int) -> dict:
         "book": BOOK_ITEM,
         "order": order or {},
         "active_step": active_step,
-        "book_page_url": "/magazine/lazer-veda",
+        "book_page_url": "/magazine/laser-veda",
         "sample_chapter_url": "/magazine/laser-veda-edition/read",
         "reader_url": "/magazine/laser-veda-edition/read",
     }
@@ -145,8 +145,9 @@ async def serve_order_details(request: Request):
     return templates.TemplateResponse(request, "order/order_details.html", context)
 
 
+@router.get("/magazine/laser-veda/order", tags=["Pages"])
 @router.get("/magazine/lazer-veda/order", tags=["Pages"])
-async def redirect_lazerveda_order():
+async def redirect_laserveda_order():
     """Redirects the book-scoped order URL to the canonical order step 1 route."""
     return RedirectResponse(url="/order", status_code=302)
 

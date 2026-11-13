@@ -1,197 +1,198 @@
-{% extends 'order/order_base.html' %}
-
-{% block title %}Review Order — LaserVEDA® | Brands Out Loud{% endblock %}
-
-{% block head_extra %}
-{% if razorpay_configured %}
+{% extends 'order/order_base.html' %} {% block title %}Review Order — LaserVEDA®
+| Brands Out Loud{% endblock %} {% block head_extra %} {% if razorpay_configured
+%}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-{% endif %}
-{% endblock %}
-
-{% block content %}
+{% endif %} {% endblock %} {% block content %}
 <section class="lvo-page-intro">
-    <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
-    <h1 class="lvo-page-heading">Your next chapter, ready to go.</h1>
-    <p class="lvo-page-copy">Check your details and place your book order.</p>
+  <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
+  <h1 class="lvo-page-heading">Your next chapter, ready to go.</h1>
+  <p class="lvo-page-copy">Check your details and place your book order.</p>
 </section>
 
 <section class="lvo-surface">
-    {% include 'order/_order_stepper.html' %}
+  {% include 'order/_order_stepper.html' %}
 
-    <div class="lvo-divider"></div>
+  <div class="lvo-divider"></div>
 
-    <div class="lvo-checkout-grid">
-        <div class="lvo-main-col">
-            <div class="lvo-section-intro">
-                <h2 class="lvo-section-title">Review your order</h2>
-                <p class="lvo-section-copy">Almost there. Make sure everything looks right.</p>
-            </div>
+  <div class="lvo-checkout-grid">
+    <div class="lvo-main-col">
+      <div class="lvo-section-intro">
+        <h2 class="lvo-section-title">Review your order</h2>
+        <p class="lvo-section-copy">
+          Almost there. Make sure everything looks right.
+        </p>
+      </div>
 
-            <div class="lvo-notice-box lvo-notice-box--green">
-                <img
-                    src="/static/images/lazerveda/order/circle_check_green.svg"
-                    alt=""
-                    class="lvo-notice-icon"
-                />
-                <div class="lvo-notice-msg">
-                    <p class="lvo-notice-title">Phone number verified</p>
-                    <p class="lvo-notice-sub">{{ order.phone }} is verified for this order.</p>
-                </div>
-            </div>
-
-            <div class="lvo-review-block">
-                <div class="lvo-review-header">
-                    <h3 class="lvo-review-heading">Contact details</h3>
-                    <a href="/order" class="lvo-inline-action">Edit details</a>
-                </div>
-                <p class="lvo-review-primary">{{ order.first_name }} {{ order.last_name }}</p>
-                <p class="lvo-review-secondary">
-                    {{ order.email }}<br />{{ order.phone }}
-                </p>
-            </div>
-
-            <div class="lvo-divider"></div>
-
-            <div class="lvo-review-block">
-                <div class="lvo-review-header">
-                    <h3 class="lvo-review-heading">Shipping address</h3>
-                    <a href="/order" class="lvo-inline-action">Edit details</a>
-                </div>
-                <p class="lvo-review-secondary">
-                    {{ order.address_line_1 }}<br />
-                    {% if order.address_line_2 %}{{ order.address_line_2 }}<br />{% endif %}
-                    ZIP {{ order.zip_code }}
-                </p>
-            </div>
-
-            <div class="lvo-divider"></div>
-
-            <div class="lvo-breakdown">
-                <div class="lvo-breakdown-row">
-                    <span class="lvo-breakdown-label">Book price · 1 hardcover</span>
-                    <span class="lvo-breakdown-value">₹{{ book.original_price }}</span>
-                </div>
-                <div class="lvo-breakdown-row">
-                    <span class="lvo-breakdown-label">Book discount</span>
-                    <span class="lvo-breakdown-value">- ₹{{ book.discount_amount }}</span>
-                </div>
-                <div class="lvo-breakdown-row">
-                    <span class="lvo-total-label">Order total</span>
-                    <span class="lvo-total-amount">₹{{ book.sale_price }}</span>
-                </div>
-            </div>
-
-            <div class="lvo-error-banner" id="reviewError" role="alert"></div>
-
-            <div class="lvo-actions-stack">
-                <button type="button" class="lvo-btn-primary" id="placeOrderBtn">
-                    <span>Place order · ₹{{ book.sale_price }}</span>
-                    <img
-                        src="/static/images/lazerveda/order/arrow_right_white.svg"
-                        alt=""
-                        class="lvo-btn-arrow"
-                    />
-                </button>
-                <p class="lvo-form-footnote">
-                    By placing this order, you confirm that your contact details and shipping address are correct.
-                </p>
-            </div>
+      <div class="lvo-notice-box lvo-notice-box--green">
+        <img
+          src="/static/images/laserveda/order/circle_check_green.svg"
+          alt=""
+          class="lvo-notice-icon"
+        />
+        <div class="lvo-notice-msg">
+          <p class="lvo-notice-title">Phone number verified</p>
+          <p class="lvo-notice-sub">
+            {{ order.phone }} is verified for this order.
+          </p>
         </div>
+      </div>
 
-        {% set summary_heading = "Your order" %}
-        {% set total_label = "Total" %}
-        {% set summary_note = book.note %}
-        {% include 'order/_order_summary.html' %}
+      <div class="lvo-review-block">
+        <div class="lvo-review-header">
+          <h3 class="lvo-review-heading">Contact details</h3>
+          <a href="/order" class="lvo-inline-action">Edit details</a>
+        </div>
+        <p class="lvo-review-primary">
+          {{ order.first_name }} {{ order.last_name }}
+        </p>
+        <p class="lvo-review-secondary">
+          {{ order.email }}<br />{{ order.phone }}
+        </p>
+      </div>
+
+      <div class="lvo-divider"></div>
+
+      <div class="lvo-review-block">
+        <div class="lvo-review-header">
+          <h3 class="lvo-review-heading">Shipping address</h3>
+          <a href="/order" class="lvo-inline-action">Edit details</a>
+        </div>
+        <p class="lvo-review-secondary">
+          {{ order.address_line_1 }}<br />
+          {% if order.address_line_2 %}{{ order.address_line_2 }}<br />{% endif
+          %} ZIP {{ order.zip_code }}
+        </p>
+      </div>
+
+      <div class="lvo-divider"></div>
+
+      <div class="lvo-breakdown">
+        <div class="lvo-breakdown-row">
+          <span class="lvo-breakdown-label">Book price · 1 hardcover</span>
+          <span class="lvo-breakdown-value">₹{{ book.original_price }}</span>
+        </div>
+        <div class="lvo-breakdown-row">
+          <span class="lvo-breakdown-label">Book discount</span>
+          <span class="lvo-breakdown-value">- ₹{{ book.discount_amount }}</span>
+        </div>
+        <div class="lvo-breakdown-row">
+          <span class="lvo-total-label">Order total</span>
+          <span class="lvo-total-amount">₹{{ book.sale_price }}</span>
+        </div>
+      </div>
+
+      <div class="lvo-error-banner" id="reviewError" role="alert"></div>
+
+      <div class="lvo-actions-stack">
+        <button type="button" class="lvo-btn-primary" id="placeOrderBtn">
+          <span>Place order · ₹{{ book.sale_price }}</span>
+          <img
+            src="/static/images/laserveda/order/arrow_right_white.svg"
+            alt=""
+            class="lvo-btn-arrow"
+          />
+        </button>
+        <p class="lvo-form-footnote">
+          By placing this order, you confirm that your contact details and
+          shipping address are correct.
+        </p>
+      </div>
     </div>
+
+    {% set summary_heading = "Your order" %} {% set total_label = "Total" %} {%
+    set summary_note = book.note %} {% include 'order/_order_summary.html' %}
+  </div>
 </section>
-{% endblock %}
-
-{% block page_js %}
+{% endblock %} {% block page_js %}
 <script>
-    const placeOrderBtn = document.getElementById("placeOrderBtn");
-    const reviewError = document.getElementById("reviewError");
+  const placeOrderBtn = document.getElementById("placeOrderBtn");
+  const reviewError = document.getElementById("reviewError");
 
-    function showReviewError(message) {
-        reviewError.textContent = message;
-        reviewError.classList.add("is-visible");
-    }
+  function showReviewError(message) {
+    reviewError.textContent = message;
+    reviewError.classList.add("is-visible");
+  }
 
-    async function completeOrderVerification(verificationPayload) {
-        const verifyRes = await fetch("/api/order/razorpay/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(verificationPayload),
-        });
-        const verifyData = await verifyRes.json();
-        if (!verifyRes.ok) {
-            showReviewError(verifyData.detail || "Payment verification failed.");
-            placeOrderBtn.disabled = false;
-            return;
-        }
-        window.location.href = verifyData.redirect_url || "/order/placed";
-    }
-
-    placeOrderBtn.addEventListener("click", async () => {
-        reviewError.classList.remove("is-visible");
-        placeOrderBtn.disabled = true;
-
-        try {
-            const createRes = await fetch("/api/order/razorpay/create", { method: "POST" });
-            const orderData = await createRes.json();
-            if (!createRes.ok) {
-                showReviewError(orderData.detail || "Unable to initiate payment.");
-                placeOrderBtn.disabled = false;
-                return;
-            }
-
-            if (orderData.status === "already_confirmed") {
-                window.location.href = orderData.redirect_url || "/order/confirmed";
-                return;
-            }
-
-            if (orderData.mode === "razorpay" && typeof Razorpay !== "undefined") {
-                const options = {
-                    key: orderData.key_id,
-                    amount: orderData.amount,
-                    currency: orderData.currency,
-                    name: orderData.name || "Brands Out Loud",
-                    description: orderData.description || "LaserVEDA Hardcover",
-                    order_id: orderData.razorpay_order_id,
-                    prefill: orderData.prefill || {},
-                    theme: { color: "#1a2b70" },
-                    handler: async function (response) {
-                        await completeOrderVerification({
-                            mode: "razorpay",
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                        });
-                    },
-                    modal: {
-                        ondismiss: function () {
-                            placeOrderBtn.disabled = false;
-                        },
-                    },
-                };
-                const rzp = new Razorpay(options);
-                rzp.on("payment.failed", function (resp) {
-                    const desc = resp && resp.error ? resp.error.description : "Payment failed.";
-                    showReviewError(desc);
-                    placeOrderBtn.disabled = false;
-                });
-                rzp.open();
-                return;
-            }
-
-            await completeOrderVerification({
-                mode: "sandbox",
-                razorpay_order_id: orderData.razorpay_order_id,
-            });
-        } catch (err) {
-            showReviewError("Network error while placing your order. Please try again.");
-            placeOrderBtn.disabled = false;
-        }
+  async function completeOrderVerification(verificationPayload) {
+    const verifyRes = await fetch("/api/order/razorpay/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(verificationPayload),
     });
+    const verifyData = await verifyRes.json();
+    if (!verifyRes.ok) {
+      showReviewError(verifyData.detail || "Payment verification failed.");
+      placeOrderBtn.disabled = false;
+      return;
+    }
+    window.location.href = verifyData.redirect_url || "/order/placed";
+  }
+
+  placeOrderBtn.addEventListener("click", async () => {
+    reviewError.classList.remove("is-visible");
+    placeOrderBtn.disabled = true;
+
+    try {
+      const createRes = await fetch("/api/order/razorpay/create", {
+        method: "POST",
+      });
+      const orderData = await createRes.json();
+      if (!createRes.ok) {
+        showReviewError(orderData.detail || "Unable to initiate payment.");
+        placeOrderBtn.disabled = false;
+        return;
+      }
+
+      if (orderData.status === "already_confirmed") {
+        window.location.href = orderData.redirect_url || "/order/confirmed";
+        return;
+      }
+
+      if (orderData.mode === "razorpay" && typeof Razorpay !== "undefined") {
+        const options = {
+          key: orderData.key_id,
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: orderData.name || "Brands Out Loud",
+          description: orderData.description || "LaserVEDA Hardcover",
+          order_id: orderData.razorpay_order_id,
+          prefill: orderData.prefill || {},
+          theme: { color: "#1a2b70" },
+          handler: async function (response) {
+            await completeOrderVerification({
+              mode: "razorpay",
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+          },
+          modal: {
+            ondismiss: function () {
+              placeOrderBtn.disabled = false;
+            },
+          },
+        };
+        const rzp = new Razorpay(options);
+        rzp.on("payment.failed", function (resp) {
+          const desc =
+            resp && resp.error ? resp.error.description : "Payment failed.";
+          showReviewError(desc);
+          placeOrderBtn.disabled = false;
+        });
+        rzp.open();
+        return;
+      }
+
+      await completeOrderVerification({
+        mode: "sandbox",
+        razorpay_order_id: orderData.razorpay_order_id,
+      });
+    } catch (err) {
+      showReviewError(
+        "Network error while placing your order. Please try again.",
+      );
+      placeOrderBtn.disabled = false;
+    }
+  });
 </script>
 {% endblock %}
-

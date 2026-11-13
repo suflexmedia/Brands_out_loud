@@ -1,235 +1,241 @@
-{% extends 'order/order_base.html' %}
-
-{% block title %}Order Details — LaserVEDA® | Brands Out Loud{% endblock %}
-
-{% block content %}
+{% extends 'order/order_base.html' %} {% block title %}Order Details —
+LaserVEDA® | Brands Out Loud{% endblock %} {% block content %}
 <section class="lvo-page-intro">
-    <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
-    <h1 class="lvo-page-heading">A good read starts here.</h1>
-    <p class="lvo-page-copy">Tell us where to send your copy of LaserVEDA.</p>
+  <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
+  <h1 class="lvo-page-heading">A good read starts here.</h1>
+  <p class="lvo-page-copy">Tell us where to send your copy of LaserVEDA.</p>
 </section>
 
 <section class="lvo-surface">
-    {% include 'order/_order_stepper.html' %}
+  {% include 'order/_order_stepper.html' %}
 
-    <div class="lvo-divider"></div>
+  <div class="lvo-divider"></div>
 
-    <div class="lvo-checkout-grid">
-        <div class="lvo-main-col">
-            <form class="lvo-form" id="orderDetailsForm" novalidate>
-                <div class="lvo-section-intro">
-                    <h2 class="lvo-section-title">Contact details</h2>
-                    <p class="lvo-section-copy">We’ll use these details for your book order.</p>
-                </div>
-
-                <div class="lvo-row-2">
-                    <div class="lvo-field">
-                        <label for="firstName" class="lvo-label">First Name</label>
-                        <input
-                            id="firstName"
-                            name="first_name"
-                            type="text"
-                            class="lvo-input"
-                            placeholder="Aarav"
-                            value="{{ order.first_name | default('') }}"
-                            required
-                        />
-                    </div>
-                    <div class="lvo-field">
-                        <label for="lastName" class="lvo-label">Last Name</label>
-                        <input
-                            id="lastName"
-                            name="last_name"
-                            type="text"
-                            class="lvo-input"
-                            placeholder="Sharma"
-                            value="{{ order.last_name | default('') }}"
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div class="lvo-row-2">
-                    <div class="lvo-field">
-                        <label for="phoneNumber" class="lvo-label">Phone Number</label>
-                        <input
-                            id="phoneNumber"
-                            name="phone"
-                            type="tel"
-                            class="lvo-input"
-                            placeholder="+91 98765 43210"
-                            value="{{ order.phone | default('') }}"
-                            required
-                        />
-                        <p class="lvo-field-hint">A 6-digit OTP will verify this number.</p>
-                    </div>
-                    <div class="lvo-field">
-                        <label for="emailId" class="lvo-label">Email ID</label>
-                        <input
-                            id="emailId"
-                            name="email"
-                            type="email"
-                            class="lvo-input"
-                            placeholder="aarav.sharma@gmail.com"
-                            value="{{ order.email | default('') }}"
-                            required
-                        />
-                        <p class="lvo-field-hint">Your order confirmation will be sent here.</p>
-                    </div>
-                </div>
-
-                <div class="lvo-divider"></div>
-
-                <div class="lvo-section-intro">
-                    <h2 class="lvo-section-title">Shipping address</h2>
-                    <p class="lvo-section-copy">Add the address for your hardcover copy.</p>
-                </div>
-
-                <div class="lvo-field">
-                    <label for="addressLine1" class="lvo-label">Address Line 1</label>
-                    <input
-                        id="addressLine1"
-                        name="address_line_1"
-                        type="text"
-                        class="lvo-input"
-                        placeholder="24, Lakeview Apartments"
-                        value="{{ order.address_line_1 | default('') }}"
-                        required
-                    />
-                </div>
-
-                <div class="lvo-row-address">
-                    <div class="lvo-field">
-                        <label for="addressLine2" class="lvo-label">
-                            Address Line 2 <span class="lvo-label-optional">(optional)</span>
-                        </label>
-                        <input
-                            id="addressLine2"
-                            name="address_line_2"
-                            type="text"
-                            class="lvo-input"
-                            placeholder="Indiranagar, Bengaluru, Karnataka"
-                            value="{{ order.address_line_2 | default('') }}"
-                        />
-                    </div>
-                    <div class="lvo-field">
-                        <label for="zipCode" class="lvo-label">ZIP</label>
-                        <input
-                            id="zipCode"
-                            name="zip_code"
-                            type="text"
-                            inputmode="numeric"
-                            maxlength="6"
-                            class="lvo-input"
-                            placeholder="560038"
-                            value="{{ order.zip_code | default('') }}"
-                            required
-                        />
-                        <p class="lvo-field-hint">6-digit postal code</p>
-                    </div>
-                </div>
-
-                <div class="lvo-error-banner" id="detailsError" role="alert"></div>
-
-                <div class="lvo-actions-stack">
-                    <button type="submit" class="lvo-btn-primary" id="detailsSubmitBtn">
-                        <span>Send OTP &amp; continue</span>
-                        <img
-                            src="/static/images/lazerveda/order/arrow_right_white.svg"
-                            alt=""
-                            class="lvo-btn-arrow"
-                        />
-                    </button>
-                    <p class="lvo-form-footnote">
-                        All fields are required unless marked optional. Review your order before placing it.
-                    </p>
-                </div>
-            </form>
+  <div class="lvo-checkout-grid">
+    <div class="lvo-main-col">
+      <form class="lvo-form" id="orderDetailsForm" novalidate>
+        <div class="lvo-section-intro">
+          <h2 class="lvo-section-title">Contact details</h2>
+          <p class="lvo-section-copy">
+            We’ll use these details for your book order.
+          </p>
         </div>
 
-        {% set summary_heading = "Your order" %}
-        {% set total_label = "Total" %}
-        {% set summary_note = book.note %}
-        {% include 'order/_order_summary.html' %}
+        <div class="lvo-row-2">
+          <div class="lvo-field">
+            <label for="firstName" class="lvo-label">First Name</label>
+            <input
+              id="firstName"
+              name="first_name"
+              type="text"
+              class="lvo-input"
+              placeholder="Aarav"
+              value="{{ order.first_name | default('') }}"
+              required
+            />
+          </div>
+          <div class="lvo-field">
+            <label for="lastName" class="lvo-label">Last Name</label>
+            <input
+              id="lastName"
+              name="last_name"
+              type="text"
+              class="lvo-input"
+              placeholder="Sharma"
+              value="{{ order.last_name | default('') }}"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="lvo-row-2">
+          <div class="lvo-field">
+            <label for="phoneNumber" class="lvo-label">Phone Number</label>
+            <input
+              id="phoneNumber"
+              name="phone"
+              type="tel"
+              class="lvo-input"
+              placeholder="+91 98765 43210"
+              value="{{ order.phone | default('') }}"
+              required
+            />
+            <p class="lvo-field-hint">A 6-digit OTP will verify this number.</p>
+          </div>
+          <div class="lvo-field">
+            <label for="emailId" class="lvo-label">Email ID</label>
+            <input
+              id="emailId"
+              name="email"
+              type="email"
+              class="lvo-input"
+              placeholder="aarav.sharma@gmail.com"
+              value="{{ order.email | default('') }}"
+              required
+            />
+            <p class="lvo-field-hint">
+              Your order confirmation will be sent here.
+            </p>
+          </div>
+        </div>
+
+        <div class="lvo-divider"></div>
+
+        <div class="lvo-section-intro">
+          <h2 class="lvo-section-title">Shipping address</h2>
+          <p class="lvo-section-copy">
+            Add the address for your hardcover copy.
+          </p>
+        </div>
+
+        <div class="lvo-field">
+          <label for="addressLine1" class="lvo-label">Address Line 1</label>
+          <input
+            id="addressLine1"
+            name="address_line_1"
+            type="text"
+            class="lvo-input"
+            placeholder="24, Lakeview Apartments"
+            value="{{ order.address_line_1 | default('') }}"
+            required
+          />
+        </div>
+
+        <div class="lvo-row-address">
+          <div class="lvo-field">
+            <label for="addressLine2" class="lvo-label">
+              Address Line 2 <span class="lvo-label-optional">(optional)</span>
+            </label>
+            <input
+              id="addressLine2"
+              name="address_line_2"
+              type="text"
+              class="lvo-input"
+              placeholder="Indiranagar, Bengaluru, Karnataka"
+              value="{{ order.address_line_2 | default('') }}"
+            />
+          </div>
+          <div class="lvo-field">
+            <label for="zipCode" class="lvo-label">ZIP</label>
+            <input
+              id="zipCode"
+              name="zip_code"
+              type="text"
+              inputmode="numeric"
+              maxlength="6"
+              class="lvo-input"
+              placeholder="560038"
+              value="{{ order.zip_code | default('') }}"
+              required
+            />
+            <p class="lvo-field-hint">6-digit postal code</p>
+          </div>
+        </div>
+
+        <div class="lvo-error-banner" id="detailsError" role="alert"></div>
+
+        <div class="lvo-actions-stack">
+          <button type="submit" class="lvo-btn-primary" id="detailsSubmitBtn">
+            <span>Send OTP &amp; continue</span>
+            <img
+              src="/static/images/laserveda/order/arrow_right_white.svg"
+              alt=""
+              class="lvo-btn-arrow"
+            />
+          </button>
+          <p class="lvo-form-footnote">
+            All fields are required unless marked optional. Review your order
+            before placing it.
+          </p>
+        </div>
+      </form>
     </div>
+
+    {% set summary_heading = "Your order" %} {% set total_label = "Total" %} {%
+    set summary_note = book.note %} {% include 'order/_order_summary.html' %}
+  </div>
 </section>
-{% endblock %}
-
-{% block page_js %}
+{% endblock %} {% block page_js %}
 <script>
-    const detailsForm = document.getElementById("orderDetailsForm");
-    const detailsError = document.getElementById("detailsError");
-    const detailsSubmitBtn = document.getElementById("detailsSubmitBtn");
+  const detailsForm = document.getElementById("orderDetailsForm");
+  const detailsError = document.getElementById("detailsError");
+  const detailsSubmitBtn = document.getElementById("detailsSubmitBtn");
 
-    function showDetailsError(message) {
-        detailsError.textContent = message;
-        detailsError.classList.add("is-visible");
+  function showDetailsError(message) {
+    detailsError.textContent = message;
+    detailsError.classList.add("is-visible");
+  }
+
+  function clearDetailsError() {
+    detailsError.textContent = "";
+    detailsError.classList.remove("is-visible");
+    detailsForm
+      .querySelectorAll(".lvo-input")
+      .forEach((el) => el.classList.remove("is-error"));
+  }
+
+  detailsForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    clearDetailsError();
+
+    const payload = {
+      first_name: document.getElementById("firstName").value.trim(),
+      last_name: document.getElementById("lastName").value.trim(),
+      phone: document.getElementById("phoneNumber").value.trim(),
+      email: document.getElementById("emailId").value.trim(),
+      address_line_1: document.getElementById("addressLine1").value.trim(),
+      address_line_2: document.getElementById("addressLine2").value.trim(),
+      zip_code: document
+        .getElementById("zipCode")
+        .value.replace(/\D/g, "")
+        .slice(0, 6),
+    };
+
+    if (!payload.first_name || !payload.last_name) {
+      showDetailsError("Please enter your first and last name.");
+      return;
+    }
+    if (payload.phone.replace(/\D/g, "").length < 10) {
+      document.getElementById("phoneNumber").classList.add("is-error");
+      showDetailsError("Please enter a valid 10-digit phone number.");
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)) {
+      document.getElementById("emailId").classList.add("is-error");
+      showDetailsError("Please enter a valid email address.");
+      return;
+    }
+    if (!payload.address_line_1) {
+      document.getElementById("addressLine1").classList.add("is-error");
+      showDetailsError("Please enter your street or apartment address.");
+      return;
+    }
+    if (!/^\d{6}$/.test(payload.zip_code)) {
+      document.getElementById("zipCode").classList.add("is-error");
+      showDetailsError("Please enter a valid 6-digit postal ZIP code.");
+      return;
     }
 
-    function clearDetailsError() {
-        detailsError.textContent = "";
-        detailsError.classList.remove("is-visible");
-        detailsForm.querySelectorAll(".lvo-input").forEach((el) => el.classList.remove("is-error"));
+    detailsSubmitBtn.disabled = true;
+    try {
+      const response = await fetch("/api/order/details", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        showDetailsError(
+          data.detail || "Could not save your details. Please try again.",
+        );
+        detailsSubmitBtn.disabled = false;
+        return;
+      }
+      window.location.href = data.redirect_url || "/order/verify";
+    } catch (err) {
+      showDetailsError("Network error while sending OTP. Please try again.");
+      detailsSubmitBtn.disabled = false;
     }
-
-    detailsForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        clearDetailsError();
-
-        const payload = {
-            first_name: document.getElementById("firstName").value.trim(),
-            last_name: document.getElementById("lastName").value.trim(),
-            phone: document.getElementById("phoneNumber").value.trim(),
-            email: document.getElementById("emailId").value.trim(),
-            address_line_1: document.getElementById("addressLine1").value.trim(),
-            address_line_2: document.getElementById("addressLine2").value.trim(),
-            zip_code: document.getElementById("zipCode").value.replace(/\D/g, "").slice(0, 6),
-        };
-
-        if (!payload.first_name || !payload.last_name) {
-            showDetailsError("Please enter your first and last name.");
-            return;
-        }
-        if (payload.phone.replace(/\D/g, "").length < 10) {
-            document.getElementById("phoneNumber").classList.add("is-error");
-            showDetailsError("Please enter a valid 10-digit phone number.");
-            return;
-        }
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email)) {
-            document.getElementById("emailId").classList.add("is-error");
-            showDetailsError("Please enter a valid email address.");
-            return;
-        }
-        if (!payload.address_line_1) {
-            document.getElementById("addressLine1").classList.add("is-error");
-            showDetailsError("Please enter your street or apartment address.");
-            return;
-        }
-        if (!/^\d{6}$/.test(payload.zip_code)) {
-            document.getElementById("zipCode").classList.add("is-error");
-            showDetailsError("Please enter a valid 6-digit postal ZIP code.");
-            return;
-        }
-
-        detailsSubmitBtn.disabled = true;
-        try {
-            const response = await fetch("/api/order/details", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                showDetailsError(data.detail || "Could not save your details. Please try again.");
-                detailsSubmitBtn.disabled = false;
-                return;
-            }
-            window.location.href = data.redirect_url || "/order/verify";
-        } catch (err) {
-            showDetailsError("Network error while sending OTP. Please try again.");
-            detailsSubmitBtn.disabled = false;
-        }
-    });
+  });
 </script>
 {% endblock %}
-

@@ -139,7 +139,8 @@ async def get_book_by_slug(slug: str) -> Optional[Dict[str, Any]]:
 
     async def _fetch() -> Optional[Dict[str, Any]]:
         db = db_handler.get_db()
-        doc = await db["books"].find_one({**PUBLISHED, "slug": slug}, {"_id": 0})
+        slug_filter = [slug, "laser-veda"] if slug == "lazer-veda" else [slug]
+        doc = await db["books"].find_one({**PUBLISHED, "slug": {"$in": slug_filter}}, {"_id": 0})
         if not doc:
             return None
         return _hydrate_book_detail(doc)

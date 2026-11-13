@@ -19,7 +19,7 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "static", "template
 LISTING_TEMPLATE = "magazine_remaster.html"
 ISSUE_TEMPLATE = "magazine_issue.html"
 BOOK_TEMPLATE = "magazine-book.html"
-LAZERVEDA_TEMPLATE = "lazerveda-book.html"
+LASERVEDA_TEMPLATE = "laserveda-book.html"
 PDF_VIEWER_TEMPLATE = "magazine_pdf_viewer.html"
 PDF_FRAME_TEMPLATE = "magazine_flipbook_frame.html"
 
@@ -122,21 +122,40 @@ async def serve_magazine_listing(request: Request):
     return templates.TemplateResponse(request, LISTING_TEMPLATE, await build_listing_context())
 
 
-@router.get("/magazine/lazer-veda", tags=["Pages"])
-async def serve_lazerveda_book(request: Request):
+@router.get("/magazine/laser-veda", tags=["Pages"])
+async def serve_laserveda_book(request: Request):
     """Serves the dedicated LaserVEDA book landing page."""
     context = await base_context(active_nav="magazine")
     context["seo"] = {
         "title": "LaserVEDA® — Healing at the Speed of Light | Brands Out Loud",
         "description": "From Pain to Purpose - A Doctor's Journey Through Loss, Light, and the Fight to Make Healing Gentle Again.",
     }
-    return templates.TemplateResponse(request, LAZERVEDA_TEMPLATE, context)
+    return templates.TemplateResponse(request, LASERVEDA_TEMPLATE, context)
+
+
+@router.get("/magazine/lazer-veda", tags=["Pages"])
+async def serve_laserveda_legacy_redirect():
+    """Redirects legacy lazer-veda spelling to canonical laser-veda."""
+    return RedirectResponse(url="/magazine/laser-veda", status_code=301)
+
+
+@router.get("/magazine/laser-veda/read", tags=["Pages"])
+async def serve_laserveda_pdf_reader(request: Request):
+    """Serves the interactive flipbook PDF reader for LaserVEDA."""
+    return await serve_issue_pdf_reader(request, "laser-veda-edition")
 
 
 @router.get("/magazine/lazer-veda/read", tags=["Pages"])
-async def serve_lazerveda_pdf_reader(request: Request):
-    """Serves the interactive flipbook PDF reader for LaserVEDA."""
-    return await serve_issue_pdf_reader(request, "laser-veda-edition")
+async def serve_laserveda_pdf_reader_legacy_redirect():
+    """Redirects legacy reader URL spelling to canonical laser-veda reader."""
+    return RedirectResponse(url="/magazine/laser-veda/read", status_code=301)
+
+
+@router.get("/magazine/laser-veda/order", tags=["Pages"])
+@router.get("/magazine/lazer-veda/order", tags=["Pages"])
+async def serve_laserveda_order_redirect():
+    """Redirects book-scoped order URLs to the canonical order step 1 route."""
+    return RedirectResponse(url="/order", status_code=302)
 
 
 @router.get("/magazine/the-hidden-lens", tags=["Pages"])
@@ -176,7 +195,7 @@ async def serve_hidden_lens_v2(request: Request):
 @router.get("/magazine/{issue_slug}/read", tags=["Pages"])
 async def serve_issue_pdf_reader(request: Request, issue_slug: str):
     """Serves the interactive flipbook PDF reader for a magazine issue."""
-    target_slug = "laser-veda-edition" if issue_slug == "lazer-veda" else issue_slug
+    target_slug = "laser-veda-edition" if issue_slug in ("laser-veda", "lazer-veda") else issue_slug
     issue = await magazine_service.get_issue(target_slug)
     if not issue or not issue.get("pdf_url"):
         raise HTTPException(status_code=404, detail="Issue PDF not found")
@@ -184,7 +203,7 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
     all_issues = await magazine_service.get_issues()
     other_issues = [item for item in all_issues if item["slug"] != target_slug][:6]
     pdf_url = issue["pdf_url"]
-    back_url = "/magazine/lazer-veda" if target_slug == "laser-veda-edition" else f"/magazine/{target_slug}"
+    back_url = "/magazine/laser-veda" if target_slug == "laser-veda-edition" else f"/magazine/{target_slug}"
     context.update({
         "seo": {
             "title": f"{issue['title']} — Digital Edition | Brands Out Loud",
@@ -202,7 +221,7 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
 @router.get("/magazine/{issue_slug}/viewer-frame", tags=["Pages"])
 async def serve_issue_pdf_frame(request: Request, issue_slug: str):
     """Serves the standalone flipbook iframe document for a magazine issue."""
-    target_slug = "laser-veda-edition" if issue_slug == "lazer-veda" else issue_slug
+    target_slug = "laser-veda-edition" if issue_slug in ("laser-veda", "lazer-veda") else issue_slug
     issue = await magazine_service.get_issue(target_slug)
     if not issue or not issue.get("pdf_url"):
         raise HTTPException(status_code=404, detail="Issue PDF not found")
@@ -224,10 +243,10 @@ async def serve_book_detail(request: Request, issue_slug: str, book_slug: str):
             return RedirectResponse(url=book_fallback["url"], status_code=301)
         raise HTTPException(status_code=404, detail="Book not found")
     custom_template = context["book"].get("custom_template")
-    if custom_template == LAZERVEDA_TEMPLATE:
+    if custom_template == LASERVEDA_TEMPLATE:
         context["seo"] = {
             "title": "LaserVEDA® — Healing at the Speed of Light | Brands Out Loud",
             "description": context["book"].get("subtitle") or context["book"].get("description", ""),
         }
-        return templates.TemplateResponse(request, LAZERVEDA_TEMPLATE, context)
+        return templates.TemplateResponse(request, LASERVEDA_TEMPLATE, context)
     return templates.TemplateResponse(request, BOOK_TEMPLATE, context)

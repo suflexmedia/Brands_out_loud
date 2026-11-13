@@ -1,264 +1,318 @@
-{% extends 'order/order_base.html' %}
-
-{% block title %}Verify Phone — LaserVEDA® | Brands Out Loud{% endblock %}
-
-{% block content %}
+{% extends 'order/order_base.html' %} {% block title %}Verify Phone — LaserVEDA®
+| Brands Out Loud{% endblock %} {% block content %}
 <section class="lvo-page-intro">
-    <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
-    <h1 class="lvo-page-heading">One quick check. Then your book.</h1>
-    <p class="lvo-page-copy">Verify your phone number to continue to the order review.</p>
+  <p class="lvo-eyebrow">THE BOOK · YOUR JOURNEY</p>
+  <h1 class="lvo-page-heading">One quick check. Then your book.</h1>
+  <p class="lvo-page-copy">
+    Verify your phone number to continue to the order review.
+  </p>
 </section>
 
 <section class="lvo-surface">
-    {% include 'order/_order_stepper.html' %}
+  {% include 'order/_order_stepper.html' %}
 
-    <div class="lvo-divider"></div>
+  <div class="lvo-divider"></div>
 
-    <div class="lvo-checkout-grid">
-        <div class="lvo-main-col">
-            <form class="lvo-verify-stack" id="otpVerifyForm" novalidate>
-                <div class="lvo-icon-badge">
-                    <img src="/static/images/lazerveda/order/smartphone_orange.svg" alt="" />
-                </div>
-
-                <div class="lvo-section-intro">
-                    <h2 class="lvo-section-title">Verify your phone number</h2>
-                    <p class="lvo-section-copy">
-                        Enter the 6-digit code sent to {{ order.phone }}.
-                    </p>
-                </div>
-
-                <a href="/order" class="lvo-inline-action">Change phone number</a>
-
-                {% if demo_otp %}
-                <div class="lvo-demo-otp-pill" id="demoOtpPill">
-                    Test OTP: <span id="demoOtpCode">{{ demo_otp }}</span>
-                </div>
-                {% endif %}
-
-                <div class="lvo-otp-block">
-                    <span class="lvo-otp-label">Verification code</span>
-                    <div class="lvo-otp-digits" id="otpDigitsGroup">
-                        <input type="text" inputmode="numeric" maxlength="1" class="lvo-otp-input" aria-label="Digit 1" autocomplete="one-time-code" />
-                        <input type="text" inputmode="numeric" maxlength="1" class="lvo-otp-input" aria-label="Digit 2" />
-                        <input type="text" inputmode="numeric" maxlength="1" class="lvo-otp-input" aria-label="Digit 3" />
-                        <input type="text" inputmode="numeric" maxlength="1" class="lvo-otp-input" aria-label="Digit 4" />
-                        <input type="text" inputmode="numeric" maxlength="1" class="lvo-otp-input" aria-label="Digit 5" />
-                        <input type="text" inputmode="numeric" maxlength="1" class="lvo-otp-input" aria-label="Digit 6" />
-                    </div>
-                    <p class="lvo-field-hint" id="otpDigitStatus">
-                        Enter all 6 digits. Select verify to check your code.
-                    </p>
-                </div>
-
-                <div class="lvo-resend-row">
-                    <span class="lvo-resend-prompt">Didn’t receive the code?</span>
-                    <button type="button" class="lvo-resend-btn" id="resendOtpBtn" disabled>
-                        Resend OTP in <span id="resendCountdown">{{ "%02d:%02d" | format(remaining_cooldown // 60, remaining_cooldown % 60) }}</span>
-                    </button>
-                </div>
-
-                <div class="lvo-error-banner" id="otpError" role="alert"></div>
-
-                <button type="submit" class="lvo-btn-primary" id="verifySubmitBtn">
-                    <span>Verify &amp; review order</span>
-                    <img
-                        src="/static/images/lazerveda/order/arrow_right_white.svg"
-                        alt=""
-                        class="lvo-btn-arrow"
-                    />
-                </button>
-
-                <div class="lvo-divider"></div>
-
-                <div class="lvo-notice-box lvo-notice-box--orange">
-                    <img
-                        src="/static/images/lazerveda/order/info_orange.svg"
-                        alt=""
-                        class="lvo-notice-icon"
-                    />
-                    <div class="lvo-notice-msg">
-                        <p class="lvo-notice-title">Your details are saved for this order.</p>
-                        <p class="lvo-notice-sub">
-                            You can return to edit your contact and shipping details without starting again.
-                        </p>
-                    </div>
-                </div>
-
-                <a href="/order" class="lvo-back-link">
-                    <img src="/static/images/lazerveda/order/arrow_left_dark.svg" alt="" />
-                    <span>Back to details</span>
-                </a>
-            </form>
+  <div class="lvo-checkout-grid">
+    <div class="lvo-main-col">
+      <form class="lvo-verify-stack" id="otpVerifyForm" novalidate>
+        <div class="lvo-icon-badge">
+          <img
+            src="/static/images/laserveda/order/smartphone_orange.svg"
+            alt=""
+          />
         </div>
 
-        {% set summary_heading = "Your order" %}
-        {% set total_label = "Total" %}
-        {% set summary_note = book.note %}
-        {% include 'order/_order_summary.html' %}
+        <div class="lvo-section-intro">
+          <h2 class="lvo-section-title">Verify your phone number</h2>
+          <p class="lvo-section-copy">
+            Enter the 6-digit code sent to {{ order.phone }}.
+          </p>
+        </div>
+
+        <a href="/order" class="lvo-inline-action">Change phone number</a>
+
+        {% if demo_otp %}
+        <div class="lvo-demo-otp-pill" id="demoOtpPill">
+          Test OTP: <span id="demoOtpCode">{{ demo_otp }}</span>
+        </div>
+        {% endif %}
+
+        <div class="lvo-otp-block">
+          <span class="lvo-otp-label">Verification code</span>
+          <div class="lvo-otp-digits" id="otpDigitsGroup">
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              class="lvo-otp-input"
+              aria-label="Digit 1"
+              autocomplete="one-time-code"
+            />
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              class="lvo-otp-input"
+              aria-label="Digit 2"
+            />
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              class="lvo-otp-input"
+              aria-label="Digit 3"
+            />
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              class="lvo-otp-input"
+              aria-label="Digit 4"
+            />
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              class="lvo-otp-input"
+              aria-label="Digit 5"
+            />
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="1"
+              class="lvo-otp-input"
+              aria-label="Digit 6"
+            />
+          </div>
+          <p class="lvo-field-hint" id="otpDigitStatus">
+            Enter all 6 digits. Select verify to check your code.
+          </p>
+        </div>
+
+        <div class="lvo-resend-row">
+          <span class="lvo-resend-prompt">Didn’t receive the code?</span>
+          <button
+            type="button"
+            class="lvo-resend-btn"
+            id="resendOtpBtn"
+            disabled
+          >
+            Resend OTP in
+            <span id="resendCountdown"
+              >{{ "%02d:%02d" | format(remaining_cooldown // 60,
+              remaining_cooldown % 60) }}</span
+            >
+          </button>
+        </div>
+
+        <div class="lvo-error-banner" id="otpError" role="alert"></div>
+
+        <button type="submit" class="lvo-btn-primary" id="verifySubmitBtn">
+          <span>Verify &amp; review order</span>
+          <img
+            src="/static/images/laserveda/order/arrow_right_white.svg"
+            alt=""
+            class="lvo-btn-arrow"
+          />
+        </button>
+
+        <div class="lvo-divider"></div>
+
+        <div class="lvo-notice-box lvo-notice-box--orange">
+          <img
+            src="/static/images/laserveda/order/info_orange.svg"
+            alt=""
+            class="lvo-notice-icon"
+          />
+          <div class="lvo-notice-msg">
+            <p class="lvo-notice-title">
+              Your details are saved for this order.
+            </p>
+            <p class="lvo-notice-sub">
+              You can return to edit your contact and shipping details without
+              starting again.
+            </p>
+          </div>
+        </div>
+
+        <a href="/order" class="lvo-back-link">
+          <img
+            src="/static/images/laserveda/order/arrow_left_dark.svg"
+            alt=""
+          />
+          <span>Back to details</span>
+        </a>
+      </form>
     </div>
+
+    {% set summary_heading = "Your order" %} {% set total_label = "Total" %} {%
+    set summary_note = book.note %} {% include 'order/_order_summary.html' %}
+  </div>
 </section>
-{% endblock %}
-
-{% block page_js %}
+{% endblock %} {% block page_js %}
 <script>
-    const otpInputs = Array.from(document.querySelectorAll(".lvo-otp-input"));
-    const otpForm = document.getElementById("otpVerifyForm");
-    const otpError = document.getElementById("otpError");
-    const otpStatus = document.getElementById("otpDigitStatus");
-    const verifySubmitBtn = document.getElementById("verifySubmitBtn");
-    const resendBtn = document.getElementById("resendOtpBtn");
-    let cooldown = Number("{{ remaining_cooldown | default(30) }}");
+  const otpInputs = Array.from(document.querySelectorAll(".lvo-otp-input"));
+  const otpForm = document.getElementById("otpVerifyForm");
+  const otpError = document.getElementById("otpError");
+  const otpStatus = document.getElementById("otpDigitStatus");
+  const verifySubmitBtn = document.getElementById("verifySubmitBtn");
+  const resendBtn = document.getElementById("resendOtpBtn");
+  let cooldown = Number("{{ remaining_cooldown | default(30) }}");
 
-    function updateDigitVisuals() {
-        let count = 0;
-        let lastFilledIdx = -1;
-        otpInputs.forEach((input, idx) => {
-            input.classList.remove("is-active");
-            if (input.value) {
-                count += 1;
-                lastFilledIdx = idx;
-            }
-        });
-        if (lastFilledIdx >= 0) {
-            otpInputs[lastFilledIdx].classList.add("is-active");
-        }
-        otpStatus.textContent = count === 6
-            ? "6 digits entered. Select verify to check your code."
-            : `${count} of 6 digits entered. Select verify to check your code.`;
+  function updateDigitVisuals() {
+    let count = 0;
+    let lastFilledIdx = -1;
+    otpInputs.forEach((input, idx) => {
+      input.classList.remove("is-active");
+      if (input.value) {
+        count += 1;
+        lastFilledIdx = idx;
+      }
+    });
+    if (lastFilledIdx >= 0) {
+      otpInputs[lastFilledIdx].classList.add("is-active");
     }
+    otpStatus.textContent =
+      count === 6
+        ? "6 digits entered. Select verify to check your code."
+        : `${count} of 6 digits entered. Select verify to check your code.`;
+  }
 
-    otpInputs.forEach((input, index) => {
-        input.addEventListener("input", (event) => {
-            const clean = event.target.value.replace(/\D/g, "");
-            if (clean.length > 1) {
-                clean.slice(0, 6).split("").forEach((digit, offset) => {
-                    if (otpInputs[offset]) {
-                        otpInputs[offset].value = digit;
-                    }
-                });
-                const nextFocus = Math.min(clean.length, 5);
-                otpInputs[nextFocus].focus();
-            } else {
-                event.target.value = clean;
-                if (clean && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
-                }
+  otpInputs.forEach((input, index) => {
+    input.addEventListener("input", (event) => {
+      const clean = event.target.value.replace(/\D/g, "");
+      if (clean.length > 1) {
+        clean
+          .slice(0, 6)
+          .split("")
+          .forEach((digit, offset) => {
+            if (otpInputs[offset]) {
+              otpInputs[offset].value = digit;
             }
-            updateDigitVisuals();
-        });
-
-        input.addEventListener("keydown", (event) => {
-            if (event.key === "Backspace" && !event.target.value && index > 0) {
-                otpInputs[index - 1].focus();
-                otpInputs[index - 1].value = "";
-                updateDigitVisuals();
-            }
-        });
-
-        input.addEventListener("paste", (event) => {
-            event.preventDefault();
-            const pasted = (event.clipboardData || window.clipboardData)
-                .getData("text")
-                .replace(/\D/g, "")
-                .slice(0, 6);
-            pasted.split("").forEach((digit, offset) => {
-                if (otpInputs[offset]) {
-                    otpInputs[offset].value = digit;
-                }
-            });
-            updateDigitVisuals();
-            if (pasted.length > 0) {
-                otpInputs[Math.min(pasted.length - 1, 5)].focus();
-            }
-        });
+          });
+        const nextFocus = Math.min(clean.length, 5);
+        otpInputs[nextFocus].focus();
+      } else {
+        event.target.value = clean;
+        if (clean && index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+      }
+      updateDigitVisuals();
     });
 
-    if (otpInputs[0]) {
-        otpInputs[0].focus();
-    }
-
-    function renderCooldown() {
-        if (cooldown <= 0) {
-            resendBtn.disabled = false;
-            resendBtn.classList.add("is-ready");
-            resendBtn.textContent = "Resend OTP";
-            return;
-        }
-        resendBtn.disabled = true;
-        resendBtn.classList.remove("is-ready");
-        const mins = String(Math.floor(cooldown / 60)).padStart(2, "0");
-        const secs = String(cooldown % 60).padStart(2, "0");
-        resendBtn.textContent = `Resend OTP in ${mins}:${secs}`;
-    }
-
-    renderCooldown();
-    const timer = setInterval(() => {
-        if (cooldown > 0) {
-            cooldown -= 1;
-            renderCooldown();
-        }
-    }, 1000);
-
-    resendBtn.addEventListener("click", async () => {
-        if (cooldown > 0) {
-            return;
-        }
-        otpError.classList.remove("is-visible");
-        resendBtn.disabled = true;
-        try {
-            const response = await fetch("/api/order/resend-otp", { method: "POST" });
-            const data = await response.json();
-            if (!response.ok) {
-                otpError.textContent = data.detail || "Unable to resend OTP right now.";
-                otpError.classList.add("is-visible");
-                resendBtn.disabled = false;
-                return;
-            }
-            cooldown = data.cooldown || 30;
-            renderCooldown();
-            const demoCodeEl = document.getElementById("demoOtpCode");
-            if (demoCodeEl && data.demo_otp) {
-                demoCodeEl.textContent = data.demo_otp;
-            }
-        } catch (err) {
-            otpError.textContent = "Network error while resending OTP.";
-            otpError.classList.add("is-visible");
-            resendBtn.disabled = false;
-        }
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Backspace" && !event.target.value && index > 0) {
+        otpInputs[index - 1].focus();
+        otpInputs[index - 1].value = "";
+        updateDigitVisuals();
+      }
     });
 
-    otpForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        otpError.classList.remove("is-visible");
-        const code = otpInputs.map((input) => input.value.trim()).join("");
-        if (code.length !== 6) {
-            otpError.textContent = "Please enter the complete 6-digit verification code.";
-            otpError.classList.add("is-visible");
-            return;
+    input.addEventListener("paste", (event) => {
+      event.preventDefault();
+      const pasted = (event.clipboardData || window.clipboardData)
+        .getData("text")
+        .replace(/\D/g, "")
+        .slice(0, 6);
+      pasted.split("").forEach((digit, offset) => {
+        if (otpInputs[offset]) {
+          otpInputs[offset].value = digit;
         }
-        verifySubmitBtn.disabled = true;
-        try {
-            const response = await fetch("/api/order/verify-otp", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ otp: code }),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                otpError.textContent = data.detail || "Invalid verification code.";
-                otpError.classList.add("is-visible");
-                verifySubmitBtn.disabled = false;
-                return;
-            }
-            clearInterval(timer);
-            window.location.href = data.redirect_url || "/order/review";
-        } catch (err) {
-            otpError.textContent = "Network error while verifying OTP.";
-            otpError.classList.add("is-visible");
-            verifySubmitBtn.disabled = false;
-        }
+      });
+      updateDigitVisuals();
+      if (pasted.length > 0) {
+        otpInputs[Math.min(pasted.length - 1, 5)].focus();
+      }
     });
+  });
+
+  if (otpInputs[0]) {
+    otpInputs[0].focus();
+  }
+
+  function renderCooldown() {
+    if (cooldown <= 0) {
+      resendBtn.disabled = false;
+      resendBtn.classList.add("is-ready");
+      resendBtn.textContent = "Resend OTP";
+      return;
+    }
+    resendBtn.disabled = true;
+    resendBtn.classList.remove("is-ready");
+    const mins = String(Math.floor(cooldown / 60)).padStart(2, "0");
+    const secs = String(cooldown % 60).padStart(2, "0");
+    resendBtn.textContent = `Resend OTP in ${mins}:${secs}`;
+  }
+
+  renderCooldown();
+  const timer = setInterval(() => {
+    if (cooldown > 0) {
+      cooldown -= 1;
+      renderCooldown();
+    }
+  }, 1000);
+
+  resendBtn.addEventListener("click", async () => {
+    if (cooldown > 0) {
+      return;
+    }
+    otpError.classList.remove("is-visible");
+    resendBtn.disabled = true;
+    try {
+      const response = await fetch("/api/order/resend-otp", { method: "POST" });
+      const data = await response.json();
+      if (!response.ok) {
+        otpError.textContent = data.detail || "Unable to resend OTP right now.";
+        otpError.classList.add("is-visible");
+        resendBtn.disabled = false;
+        return;
+      }
+      cooldown = data.cooldown || 30;
+      renderCooldown();
+      const demoCodeEl = document.getElementById("demoOtpCode");
+      if (demoCodeEl && data.demo_otp) {
+        demoCodeEl.textContent = data.demo_otp;
+      }
+    } catch (err) {
+      otpError.textContent = "Network error while resending OTP.";
+      otpError.classList.add("is-visible");
+      resendBtn.disabled = false;
+    }
+  });
+
+  otpForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    otpError.classList.remove("is-visible");
+    const code = otpInputs.map((input) => input.value.trim()).join("");
+    if (code.length !== 6) {
+      otpError.textContent =
+        "Please enter the complete 6-digit verification code.";
+      otpError.classList.add("is-visible");
+      return;
+    }
+    verifySubmitBtn.disabled = true;
+    try {
+      const response = await fetch("/api/order/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ otp: code }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        otpError.textContent = data.detail || "Invalid verification code.";
+        otpError.classList.add("is-visible");
+        verifySubmitBtn.disabled = false;
+        return;
+      }
+      clearInterval(timer);
+      window.location.href = data.redirect_url || "/order/review";
+    } catch (err) {
+      otpError.textContent = "Network error while verifying OTP.";
+      otpError.classList.add("is-visible");
+      verifySubmitBtn.disabled = false;
+    }
+  });
 </script>
 {% endblock %}
-
