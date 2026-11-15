@@ -92,13 +92,16 @@ async def _build_magazine() -> str:
             continue
         entries += _url_entry(f"/magazine/{slug}", _format_date(issue.get("created_at")), "0.7", "monthly")
 
-    async for book in db["books"].find({"status": "published"}, {"slug": 1, "issue_slug": 1, "created_at": 1}):
+    async for book in db["books"].find(
+        {"status": "published"}, {"slug": 1, "issue_slug": 1, "custom_url": 1, "created_at": 1}
+    ):
         slug = book.get("slug")
         issue_slug = book.get("issue_slug")
         if not slug or not issue_slug:
             continue
+        book_path = book.get("custom_url") or f"/magazine/{issue_slug}/{slug}"
         entries += _url_entry(
-            f"/magazine/{issue_slug}/{slug}", _format_date(book.get("created_at")), "0.6", "monthly"
+            book_path, _format_date(book.get("created_at")), "0.6", "monthly"
         )
     return _wrap(entries)
 

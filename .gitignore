@@ -9,3 +9,5 @@ __pycache__/
 page_serving_routers/static/templates/figma_reference/
 page_serving_routers/static/templates/figma_reference/**
 **/figma_reference/**
+Helper/
+Helper/**

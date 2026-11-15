@@ -21,9 +21,12 @@
     <section class="book-hero-section">
         <div class="book-hero-container">
             <div class="book-cover-wrapper">
+                {% if book.cover_image_url %}
+                <img src="{{ book.cover_image_url }}" alt="{{ book.title }}" class="book-cover-image" />
+                {% else %}
                 <div class="book-cover-spine"></div>
                 <div class="book-cover-header">
-                    <div class="book-cover-brand">{{ book.brand }}</div>
+                    <div class="book-cover-brand">{{ book.brand | default("BOL PRESS", true) }}</div>
                     <div class="book-cover-divider"></div>
                 </div>
                 <div class="book-cover-graphics">
@@ -32,11 +35,13 @@
                     <div class="book-cover-circle-3"></div>
                 </div>
                 <div class="book-cover-main">
-                    <h2 class="book-cover-title">{% for line in book.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h2>
-                    {% if book.subtitle %}<p class="book-cover-subtitle">{{ book.subtitle }}</p>{% endif %}
+                    <h2 class="book-cover-title">{% if book.cover_title_lines %}{% for line in book.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ book.title }}{% endif %}</h2>
+                    {% set cover_sub = book.cover_subtitle or book.subtitle %}
+                    {% if cover_sub %}<p class="book-cover-subtitle">{{ cover_sub }}</p>{% endif %}
                 </div>
                 <div class="book-cover-divider-main"></div>
-                <div class="book-cover-author">{{ book.author_name | upper }}</div>
+                <div class="book-cover-author">{{ book.author_name | default("", true) | upper }}</div>
+                {% endif %}
             </div>
 
             <div class="book-purchase-card">
@@ -54,10 +59,12 @@
                         </div>
                     </div>
 
-                    {% if rating.stars or rating.score %}
+                    {% set star_count = rating.stars | default(0, true) | int(0) %}
+                    {% set star_text = ('★' * star_count) if star_count > 0 else (rating.stars if rating.stars is string else '') %}
+                    {% if star_text or rating.score %}
                     <div class="book-rating-box">
-                        <div class="book-stars">{{ rating.stars }}</div>
-                        <span class="book-rating-score">{{ rating.score }}</span>
+                        {% if star_text %}<div class="book-stars">{{ star_text }}</div>{% endif %}
+                        {% if rating.score %}<span class="book-rating-score">{{ rating.score }}</span>{% endif %}
                     </div>
                     {% endif %}
                 </div>
@@ -86,12 +93,14 @@
                 </div>
                 {% endif %}
 
+                {% set store_href = book.store_url | default('#', true) %}
+                {% set sample_href = book.sample_url | default('#', true) %}
                 <div class="book-action-buttons">
-                    <a href="{{ book.store_url | default('#', true) }}" class="btn-purchase-now" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ store_href }}" class="btn-purchase-now"{% if store_href.startswith('http') %} target="_blank" rel="noopener noreferrer"{% endif %}>
                         <i class="ph ph-shopping-cart-simple"></i>
-                        <span>{{ sections.purchase_label | default("Purchase Now", true) }}</span>
+                        <span>{{ book.purchase_label or sections.purchase_label | default("Purchase Now", true) }}</span>
                     </a>
-                    <a href="{{ book.sample_url | default('#', true) }}" class="btn-read-sample">{{ sections.sample_label | default("Read a Sample", true) }}</a>
+                    <a href="{{ sample_href }}" class="btn-read-sample"{% if sample_href.startswith('http') %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ book.sample_label or sections.sample_label | default("Read a Sample", true) }}</a>
                 </div>
             </div>
         </div>
@@ -140,8 +149,9 @@
                 </div>
 
                 {% if covers | length > 4 %}
+                {% for chunk in covers[4:] | batch(3) %}
                 <div class="covers-row covers-row-3">
-                    {% for card in covers[4:] %}
+                    {% for card in chunk %}
                     <div class="cover-card">
                         <div class="cover-card-num">{{ card.num }}</div>
                         <h3 class="cover-card-title">{{ card.title | safe }}</h3>
@@ -149,6 +159,7 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% endfor %}
                 {% endif %}
             </div>
         </div>
@@ -173,14 +184,16 @@
                 </div>
 
                 {% if highlights | length > 3 %}
+                {% for chunk in highlights[3:] | batch(3) %}
                 <div class="highlights-row highlights-row-2">
-                    {% for card in highlights[3:] %}
+                    {% for card in chunk %}
                     <div class="highlight-card">
                         <div class="highlight-card-num">{{ card.num }}</div>
                         <p class="highlight-card-text">{{ card.text }}</p>
                     </div>
                     {% endfor %}
                 </div>
+                {% endfor %}
                 {% endif %}
             </div>
         </div>
@@ -218,7 +231,7 @@
             <div class="cta-banner-left">
                 <h2 class="cta-banner-title">{{ cta_banner.title | default(book.title, true) }}</h2>
                 {% if cta_banner.description %}<p class="cta-banner-desc">{{ cta_banner.description }}</p>{% endif %}
-                <a href="{{ book.store_url | default('#', true) }}" class="btn-cta-purchase" target="_blank" rel="noopener noreferrer">{{ cta_banner.cta_label | default("Purchase for", true) }}{% if price.current %} {{ price.current }}{% endif %} →</a>
+                <a href="{{ store_href }}" class="btn-cta-purchase"{% if store_href.startswith('http') %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ cta_banner.cta_label | default("Purchase for", true) }}{% if price.current %} {{ price.current }}{% endif %} →</a>
             </div>
             <div class="cta-3d-cards-wrapper">
                 <img src="{{ cta_banner.image_url | default('/static/images/remaster-homepage/magazine-books/book-founder-issue.png', true) }}" alt="{{ book.title }}" class="cta-cards-img" />
@@ -237,21 +250,25 @@
             <div class="more-books-grid">
                 {% for item in more_books %}
                 <a href="{{ item.url }}" class="book-item-card">
-                    <div class="book-item-cover {{ item.cover_variant }}">
+                    <div class="book-item-cover {{ item.cover_variant | default('cover-gradient-1', true) }}"{% if item.cover_image_url %} style="background-image: url('{{ item.cover_image_url }}'); background-size: cover; background-position: center;"{% endif %}>
+                        {% if not item.cover_image_url %}
                         <div class="book-item-cover-header">
-                            <span class="book-item-brand">{{ item.brand }}</span>
+                            <span class="book-item-brand">{{ item.brand | default('BOL', true) }}</span>
                             <span class="book-item-tag">{{ item.tag }}</span>
                         </div>
                         <div class="book-item-line"></div>
-                        <h3 class="book-item-cover-title">{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}</h3>
+                        <h3 class="book-item-cover-title">{% if item.cover_title_lines %}{% for line in item.cover_title_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor %}{% else %}{{ item.title }}{% endif %}</h3>
                         <div class="book-item-bg-num">{{ item.background_number }}</div>
+                        {% endif %}
                     </div>
                     <div class="book-item-info">
+                        {% if item.category or item.pages_label %}
                         <div class="book-item-meta">
-                            <span class="book-item-cat">{{ item.category | upper }}</span>
-                            <span class="book-item-dot">·</span>
-                            <span class="book-item-pages">{{ item.pages_label | upper }}</span>
+                            {% if item.category %}<span class="book-item-cat">{{ item.category | upper }}</span>{% endif %}
+                            {% if item.category and item.pages_label %}<span class="book-item-dot">·</span>{% endif %}
+                            {% if item.pages_label %}<span class="book-item-pages">{{ item.pages_label | upper }}</span>{% endif %}
                         </div>
+                        {% endif %}
                         <h4 class="book-item-title">{{ item.title }}</h4>
                         {% if item.author_name %}<div class="book-item-author">by {{ item.author_name }}</div>{% endif %}
                         {% if item.price and item.price.current %}<div class="book-item-price">{{ item.price.current }}</div>{% endif %}

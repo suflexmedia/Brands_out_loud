@@ -1,0 +1,260 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}My Account & Library — Brands Out Loud{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/profile.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+<main class="profile-page-main">
+    <header class="profile-minimal-topbar">
+        <a href="/" class="profile-topbar-logo-link" aria-label="Brands Out Loud Home">
+            <img src="{{ site.nav.logo_url | default('/static/images/brand/bol_logo.png') }}" alt="Brands Out Loud" class="profile-topbar-logo" />
+        </a>
+        <div class="profile-topbar-actions">
+            <a href="/" class="profile-topbar-back-btn">
+                <i class="ph ph-arrow-left"></i>
+                <span>Back to Home</span>
+            </a>
+            <button type="button" class="profile-topbar-logout-btn" onclick="handleBolLogout()">
+                <i class="ph ph-sign-out"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+    </header>
+
+    <section class="profile-hero-section">
+        <div class="profile-hero-container">
+            <div class="profile-user-badge">
+                <div class="profile-avatar-circle" id="profileHeaderAvatar">U</div>
+                <div class="profile-user-meta">
+                    <div class="profile-user-greeting">Welcome back,</div>
+                    <h1 class="profile-user-fullname" id="profileHeaderName">Account Member</h1>
+                    <div class="profile-user-submeta">
+                        <span class="profile-meta-item" id="profileHeaderEmail">
+                            <i class="ph ph-envelope"></i>
+                            <span>Loading email...</span>
+                        </span>
+                        <span class="profile-meta-item" id="profileHeaderPhone">
+                            <i class="ph ph-phone"></i>
+                            <span>Loading mobile...</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-tabs-nav" role="tablist">
+                <button type="button" class="profile-tab-btn active" data-tab="purchases" role="tab" aria-selected="true">
+                    <i class="ph ph-books"></i>
+                    <span>My Library & Orders</span>
+                </button>
+                <button type="button" class="profile-tab-btn" data-tab="edit" role="tab" aria-selected="false">
+                    <i class="ph ph-user-gear"></i>
+                    <span>Account Details</span>
+                </button>
+                <button type="button" class="profile-tab-btn" data-tab="security" role="tab" aria-selected="false">
+                    <i class="ph ph-shield-check"></i>
+                    <span>Security & Sign Out</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile-content-section">
+        <div class="profile-content-container">
+            <div class="profile-tab-pane active" id="tabPurchases" role="tabpanel">
+                <div class="profile-pane-header">
+                    <div class="profile-pane-title-wrap">
+                        <h2 class="profile-pane-title">Purchased Editions & E-Books</h2>
+                        <p class="profile-pane-subtitle">Access your digital copies anytime and track physical book delivery.</p>
+                    </div>
+                    <button type="button" class="profile-btn-refresh" id="refreshPurchasesBtn" onclick="loadUserPurchases()">
+                        <i class="ph ph-arrows-clockwise"></i>
+                        <span>Refresh</span>
+                    </button>
+                </div>
+
+                <div id="purchasesLoading" class="profile-state-loading">
+                    <div class="profile-spinner"></div>
+                    <p>Loading your purchases and library...</p>
+                </div>
+
+                <div id="purchasesEmpty" class="profile-empty-state" style="display: none;">
+                    <div class="empty-icon-wrap">
+                        <i class="ph ph-book-open"></i>
+                    </div>
+                    <h3>Your Library is Waiting</h3>
+                    <p>You haven't ordered any book or magazine editions yet. Discover our premiere publications.</p>
+                    <a href="/magazine/laser-veda" class="btn-primary empty-cta-btn">
+                        <span>Explore LaserVEDA® Book</span>
+                        <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div id="purchasesList" class="profile-purchases-grid" style="display: none;"></div>
+            </div>
+
+            <div class="profile-tab-pane" id="tabEdit" role="tabpanel">
+                <div class="profile-edit-grid">
+                    <div class="profile-card profile-info-card">
+                        <div class="profile-card-header">
+                            <i class="ph ph-identification-card"></i>
+                            <div>
+                                <h3 class="profile-card-title">Personal Details</h3>
+                                <p class="profile-card-desc">Update your display name and organisation details.</p>
+                            </div>
+                        </div>
+
+                        <div id="profileDetailsAlert" class="profile-alert" style="display: none;"></div>
+
+                        <form id="profileDetailsForm" class="profile-form">
+                            <div class="form-row">
+                                <label for="editFullName" class="form-label">Full Name</label>
+                                <div class="form-input-wrap">
+                                    <i class="ph ph-user input-icon"></i>
+                                    <input type="text" id="editFullName" name="name" class="profile-input" placeholder="Enter your full name" required />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="editCompanyName" class="form-label">Company / Practice (Optional)</label>
+                                <div class="form-input-wrap">
+                                    <i class="ph ph-buildings input-icon"></i>
+                                    <input type="text" id="editCompanyName" name="company_name" class="profile-input" placeholder="e.g. Laser Therapy Center" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="editEmail" class="form-label">Primary Email Address</label>
+                                <div class="form-input-wrap input-disabled">
+                                    <i class="ph ph-envelope input-icon"></i>
+                                    <input type="email" id="editEmail" class="profile-input" disabled />
+                                </div>
+                                <span class="form-helper-text">Email address is linked to order invoices and cannot be changed here.</span>
+                            </div>
+
+                            <button type="submit" class="btn-primary profile-btn-save" id="saveDetailsBtn">
+                                <span>Save Changes</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="profile-card profile-phone-card">
+                        <div class="profile-card-header">
+                            <i class="ph ph-device-mobile"></i>
+                            <div>
+                                <h3 class="profile-card-title">Mobile Verification</h3>
+                                <p class="profile-card-desc">Your phone is secured with AES-256 reversible encryption.</p>
+                            </div>
+                        </div>
+
+                        <div class="current-phone-box">
+                            <span class="phone-label">Current Mobile Number</span>
+                            <div class="phone-display">
+                                <span class="phone-value" id="currentPhoneDisplay">—</span>
+                                <span class="phone-verified-tag"><i class="ph ph-check-circle"></i> Verified</span>
+                            </div>
+                        </div>
+
+                        <div id="phoneChangeToggleWrap" class="phone-toggle-wrap">
+                            <button type="button" class="profile-btn-secondary" id="openPhoneChangeBtn" onclick="togglePhoneChangeModule(true)">
+                                <i class="ph ph-pencil-simple"></i>
+                                <span>Change Mobile Number</span>
+                            </button>
+                        </div>
+
+                        <div id="phoneChangeModule" class="phone-change-module" style="display: none;">
+                            <div id="phoneAlert" class="profile-alert" style="display: none;"></div>
+
+                            <div id="phoneStep1" class="phone-step">
+                                <label for="newPhoneInput" class="form-label">New Mobile Number</label>
+                                <div class="phone-input-group">
+                                    <span class="country-prefix">+91</span>
+                                    <input type="tel" id="newPhoneInput" class="profile-input" placeholder="98765 43210" maxlength="10" />
+                                </div>
+                                <div class="phone-actions-row">
+                                    <button type="button" class="profile-btn-text" onclick="togglePhoneChangeModule(false)">Cancel</button>
+                                    <button type="button" class="btn-primary profile-btn-save" id="sendPhoneOtpBtn" onclick="requestPhoneChangeOtp()">
+                                        <span>Send Verification OTP</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="phoneStep2" class="phone-step" style="display: none;">
+                                <div class="otp-instruction-text">
+                                    Enter the 6-digit verification code sent to <strong id="otpTargetPhone">+91</strong>:
+                                </div>
+
+                                <div class="demo-otp-pill" id="phoneDemoOtpWrap" style="display: none;">
+                                    <i class="ph ph-info"></i>
+                                    <span>Demo OTP: <strong id="phoneDemoOtpCode">123456</strong></span>
+                                </div>
+
+                                <div class="auth-otp-row">
+                                    <input type="text" class="profile-otp-digit" maxlength="1" inputmode="numeric" />
+                                    <input type="text" class="profile-otp-digit" maxlength="1" inputmode="numeric" />
+                                    <input type="text" class="profile-otp-digit" maxlength="1" inputmode="numeric" />
+                                    <input type="text" class="profile-otp-digit" maxlength="1" inputmode="numeric" />
+                                    <input type="text" class="profile-otp-digit" maxlength="1" inputmode="numeric" />
+                                    <input type="text" class="profile-otp-digit" maxlength="1" inputmode="numeric" />
+                                </div>
+
+                                <div class="phone-actions-row">
+                                    <button type="button" class="profile-btn-text" id="resendPhoneOtpBtn" onclick="requestPhoneChangeOtp()">Resend Code</button>
+                                    <button type="button" class="btn-primary profile-btn-save" id="verifyPhoneOtpBtn" onclick="confirmPhoneChangeOtp()">
+                                        <span>Verify & Update</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-tab-pane" id="tabSecurity" role="tabpanel">
+                <div class="profile-security-grid">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <i class="ph ph-sign-out"></i>
+                            <div>
+                                <h3 class="profile-card-title">Session Management</h3>
+                                <p class="profile-card-desc">Sign out of your Brands Out Loud account on this browser.</p>
+                            </div>
+                        </div>
+                        <p class="security-note">Signing out will clear your active login tokens and require credentials next time.</p>
+                        <button type="button" class="profile-btn-logout-large" onclick="handleBolLogout()">
+                            <i class="ph ph-sign-out"></i>
+                            <span>Sign Out Now</span>
+                        </button>
+                    </div>
+
+                    <div class="profile-card danger-card">
+                        <div class="profile-card-header">
+                            <i class="ph ph-warning-octagon"></i>
+                            <div>
+                                <h3 class="profile-card-title text-danger">Delete Account</h3>
+                                <p class="profile-card-desc">Permanently erase your account, identity records, and profile.</p>
+                            </div>
+                        </div>
+                        <p class="security-note">
+                            In accordance with data protection regulations, this permanently purges your encrypted credentials from our database.
+                        </p>
+                        <button type="button" class="profile-btn-delete-account" onclick="confirmDeleteMyAccount()">
+                            <i class="ph ph-trash"></i>
+                            <span>Delete My Account Permanently</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block page_js %}
+<script src="/static/js/profile.js?v={{ asset_version }}"></script>
+{% endblock %}

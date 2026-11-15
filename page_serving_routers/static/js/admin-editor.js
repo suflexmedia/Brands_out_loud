@@ -2,8 +2,8 @@
     "use strict";
 
     const TEXTAREA_KEYS = /(description|desc|excerpt|summary|quote|answer|paragraph|text|note|terms|message)$/i;
-    const IMAGE_KEYS = /(image_url|logo_url|icon_url|avatar_url|media_url|video_url|og_image|cover_image_url)$/i;
-    const LABEL_OVERRIDES = { seo: "SEO", cta: "Call To Action" };
+    const IMAGE_KEYS = /(image_url|logo_url|icon_url|avatar_url|media_url|video_url|og_image|cover_image_url|pdf_url|file_url|sample_url|store_url)$/i;
+    const LABEL_OVERRIDES = { seo: "SEO", cta: "Call To Action", pdf_url: "PDF URL" };
 
     function humanise(key) {
         if (LABEL_OVERRIDES[key]) return LABEL_OVERRIDES[key];
@@ -47,6 +47,10 @@
         return data.url;
     }
 
+    function isImageFile(url) {
+        return /\.(jpe?g|png|gif|webp|svg|bmp|ico|avif)(\?.*)?$/i.test(String(url || ""));
+    }
+
     function buildImageField(key, value) {
         const group = el("div", "form-group");
         group.appendChild(el("label", null, humanise(key)));
@@ -58,7 +62,7 @@
         input.dataset.field = key;
 
         const preview = el("img", "image-preview");
-        if (value) {
+        if (value && isImageFile(value)) {
             preview.src = value;
             preview.classList.add("visible");
         }
@@ -76,8 +80,12 @@
         });
 
         input.addEventListener("input", function () {
-            preview.src = input.value;
-            preview.classList.toggle("visible", !!input.value);
+            if (input.value && isImageFile(input.value)) {
+                preview.src = input.value;
+                preview.classList.add("visible");
+            } else {
+                preview.classList.remove("visible");
+            }
         });
 
         picker.addEventListener("change", async function () {
@@ -86,9 +94,14 @@
             try {
                 const url = await uploadFile(picker.files[0]);
                 input.value = url;
-                preview.src = url;
-                preview.classList.add("visible");
+                if (isImageFile(url)) {
+                    preview.src = url;
+                    preview.classList.add("visible");
+                } else {
+                    preview.classList.remove("visible");
+                }
                 input.dispatchEvent(new Event("input", { bubbles: true }));
+                input.dispatchEvent(new Event("change", { bubbles: true }));
                 showToast("File uploaded");
             } catch (error) {
                 showToast(error.message, true);
@@ -164,14 +177,15 @@
         return "";
     }
 
-    function buildArrayField(key, value, path) {
+    function buildArrayField(key, value, path, schema) {
         const wrapper = el("div", "sub-section");
         wrapper.appendChild(el("div", "sub-section-title", humanise(key)));
 
         const list = el("div");
         wrapper.appendChild(list);
 
-        const template = value.length ? value[0] : "";
+        const schemaTemplate = Array.isArray(schema) && schema.length ? schema[0] : undefined;
+        const template = value.length ? value[0] : schemaTemplate !== undefined ? schemaTemplate : "";
         const readers = [];
 
         function renderItem(itemValue, index) {
@@ -194,7 +208,7 @@
 
             let reader;
             if (itemValue && typeof itemValue === "object" && !Array.isArray(itemValue)) {
-                const body = buildObjectFields(itemValue, path + "." + index);
+                const body = buildObjectFields(itemValue, path + "." + index, schemaTemplate);
                 item.appendChild(body);
                 reader = body.__read;
             } else {
@@ -237,7 +251,11 @@
         const add = el("button", "btn btn-small repeat-add", "+ Add " + humanise(key));
         add.type = "button";
         add.addEventListener("click", function () {
-            list.appendChild(renderItem(blankLike(template), list.children.length));
+            const nextItem = blankLike(template);
+            if (nextItem && typeof nextItem === "object" && !Array.isArray(nextItem) && "num" in nextItem) {
+                nextItem.num = String(list.children.length + 1).padStart(2, "0");
+            }
+            list.appendChild(renderItem(nextItem, list.children.length));
             reindex();
         });
         wrapper.appendChild(add);
@@ -250,20 +268,21 @@
         return wrapper;
     }
 
-    function buildObjectFields(obj, path) {
+    function buildObjectFields(obj, path, schema) {
         const container = el("div");
         const readers = {};
 
         Object.keys(obj).forEach(function (key) {
             const value = obj[key];
+            const childSchema = schema && typeof schema === "object" ? schema[key] : undefined;
             let node;
 
             if (Array.isArray(value)) {
-                node = buildArrayField(key, value, path + "." + key);
+                node = buildArrayField(key, value, path + "." + key, childSchema);
             } else if (value && typeof value === "object") {
                 node = el("div", "sub-section");
                 node.appendChild(el("div", "sub-section-title", humanise(key)));
-                const inner = buildObjectFields(value, path + "." + key);
+                const inner = buildObjectFields(value, path + "." + key, childSchema);
                 node.appendChild(inner);
                 node.__read = inner.__read;
             } else {
@@ -284,7 +303,7 @@
         return container;
     }
 
-    function renderEditor(mountId, data, onChange) {
+    function renderEditor(mountId, data, onChange, schema) {
         const mount = document.getElementById(mountId);
         mount.innerHTML = "";
         const readers = {};
@@ -296,11 +315,12 @@
             card.appendChild(header);
 
             const value = data[sectionKey];
+            const sectionSchema = schema && typeof schema === "object" ? schema[sectionKey] : undefined;
             let node;
             if (Array.isArray(value)) {
-                node = buildArrayField(sectionKey, value, sectionKey);
+                node = buildArrayField(sectionKey, value, sectionKey, sectionSchema);
             } else if (value && typeof value === "object") {
-                node = buildObjectFields(value, sectionKey);
+                node = buildObjectFields(value, sectionKey, sectionSchema);
             } else {
                 node = buildScalarField(sectionKey, value);
             }
@@ -328,6 +348,14 @@
 
     let galleryTarget = null;
     let galleryItems = [];
+    let lastActiveField = null;
+
+    document.addEventListener("focusin", function (e) {
+        const target = e.target;
+        if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA") && target.id !== "gallery-search" && target.type !== "file") {
+            lastActiveField = target;
+        }
+    });
 
     function ensureGalleryDom() {
         if (document.getElementById("gallery-panel")) return;
@@ -435,9 +463,11 @@
 
             tile.appendChild(el("div", "gallery-item-name", item.display_name || item.object_name));
             tile.addEventListener("click", function () {
-                if (galleryTarget) {
-                    galleryTarget.value = item.url;
-                    galleryTarget.dispatchEvent(new Event("input", { bubbles: true }));
+                const target = galleryTarget || lastActiveField;
+                if (target && document.body.contains(target)) {
+                    target.value = item.url;
+                    target.dispatchEvent(new Event("input", { bubbles: true }));
+                    target.dispatchEvent(new Event("change", { bubbles: true }));
                     showToast("Inserted into field");
                     closeGallery();
                 } else if (navigator.clipboard) {
@@ -463,7 +493,7 @@
 
     function openGallery(targetInput) {
         ensureGalleryDom();
-        galleryTarget = targetInput || null;
+        galleryTarget = targetInput || lastActiveField || null;
         document.getElementById("gallery-panel").classList.add("open");
         document.getElementById("gallery-backdrop").classList.add("visible");
         document.getElementById("gallery-tab").classList.add("shifted");

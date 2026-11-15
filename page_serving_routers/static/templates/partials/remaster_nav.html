@@ -11,6 +11,36 @@
     </div>
     <div class="remaster-nav-right">
         <a href="{{ nav.cta.href }}" class="btn-primary remaster-nav-book">{{ nav.cta.label }}</a>
+        <a href="/login" class="remaster-nav-auth" id="navAuthBtn">
+            <i class="ph ph-user"></i>
+            <span id="navAuthLabel">Sign In</span>
+        </a>
+        <div class="remaster-user-container" id="navUserContainer" style="display: none;">
+            <button type="button" class="remaster-avatar-pill" id="navAvatarBtn" onclick="toggleNavUserDropdown(event)" aria-haspopup="true" aria-expanded="false">
+                <span class="remaster-avatar-circle" id="navAvatarInitials">U</span>
+                <i class="ph ph-caret-down remaster-avatar-caret" id="navAvatarCaret"></i>
+            </button>
+            <div class="remaster-user-dropdown" id="navUserDropdown">
+                <div class="user-dropdown-header">
+                    <div class="user-dropdown-name" id="navDropdownName">User Name</div>
+                    <div class="user-dropdown-email" id="navDropdownEmail">user@example.com</div>
+                </div>
+                <div class="user-dropdown-divider"></div>
+                <a href="/profile#purchases" class="user-dropdown-item">
+                    <i class="ph ph-books"></i>
+                    <span>My Purchases & E-Books</span>
+                </a>
+                <a href="/profile#edit" class="user-dropdown-item">
+                    <i class="ph ph-user-gear"></i>
+                    <span>Edit Profile</span>
+                </a>
+                <div class="user-dropdown-divider"></div>
+                <button type="button" class="user-dropdown-item user-dropdown-logout" onclick="handleBolLogout()">
+                    <i class="ph ph-sign-out"></i>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -18,4 +48,108 @@
     {% for link in nav.links %}
     <a href="{{ link.href }}" class="mobile-menu-link{% if link.key == active_nav %} active{% endif %}">{{ link.label }}</a>
     {% endfor %}
+    <div class="mobile-menu-actions">
+        <a href="{{ nav.cta.href }}" class="btn-primary mobile-menu-cta">{{ nav.cta.label }}</a>
+        <a href="/login" class="remaster-nav-auth mobile-menu-auth" id="mobileNavAuthBtn">
+            <i class="ph ph-user"></i>
+            <span id="mobileNavAuthLabel">Sign In / Register</span>
+        </a>
+        <div class="mobile-user-card" id="mobileUserCard" style="display: none;">
+            <div class="mobile-user-info">
+                <span class="remaster-avatar-circle mobile-avatar" id="mobileAvatarInitials">U</span>
+                <div class="mobile-user-text">
+                    <div class="mobile-user-name" id="mobileUserName">User Name</div>
+                    <div class="mobile-user-email" id="mobileUserEmail">user@example.com</div>
+                </div>
+            </div>
+            <a href="/profile#purchases" class="mobile-user-link">
+                <i class="ph ph-books"></i>
+                <span>My Purchases & E-Books</span>
+            </a>
+            <a href="/profile#edit" class="mobile-user-link">
+                <i class="ph ph-user-gear"></i>
+                <span>Edit Profile</span>
+            </a>
+            <button type="button" class="mobile-user-link mobile-logout-btn" onclick="handleBolLogout()">
+                <i class="ph ph-sign-out"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+    </div>
 </div>
+
+<script>
+    function getInitials(name) {
+        if (!name) return "U";
+        const parts = name.trim().split(/\s+/);
+        if (parts.length >= 2) {
+            return (parts[0][0] + parts[1][0]).toUpperCase();
+        }
+        return parts[0].slice(0, 2).toUpperCase();
+    }
+
+    function toggleNavUserDropdown(e) {
+        if (e) e.stopPropagation();
+        const dropdown = document.getElementById("navUserDropdown");
+        const caret = document.getElementById("navAvatarCaret");
+        if (!dropdown) return;
+        const isOpen = dropdown.classList.toggle("is-open");
+        if (caret) caret.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+    }
+
+    document.addEventListener("click", function (e) {
+        const container = document.getElementById("navUserContainer");
+        const dropdown = document.getElementById("navUserDropdown");
+        const caret = document.getElementById("navAvatarCaret");
+        if (container && dropdown && !container.contains(e.target)) {
+            dropdown.classList.remove("is-open");
+            if (caret) caret.style.transform = "rotate(0deg)";
+        }
+    });
+
+    async function handleBolLogout() {
+        try {
+            await fetch("/api/auth/logout", { method: "POST" });
+        } catch (e) {}
+        localStorage.removeItem("bol_token");
+        localStorage.removeItem("bol_user");
+        window.location.href = "/";
+    }
+
+    (function () {
+        try {
+            const token = localStorage.getItem("bol_token");
+            const rawUser = localStorage.getItem("bol_user");
+            if (token && rawUser) {
+                const user = JSON.parse(rawUser);
+                const fullName = user.name || "User";
+                const email = user.email || "";
+                const initials = getInitials(fullName);
+
+                const authBtn = document.getElementById("navAuthBtn");
+                const userContainer = document.getElementById("navUserContainer");
+                const avatarInitials = document.getElementById("navAvatarInitials");
+                const dropdownName = document.getElementById("navDropdownName");
+                const dropdownEmail = document.getElementById("navDropdownEmail");
+
+                if (authBtn) authBtn.style.display = "none";
+                if (userContainer) userContainer.style.display = "inline-flex";
+                if (avatarInitials) avatarInitials.textContent = initials;
+                if (dropdownName) dropdownName.textContent = fullName;
+                if (dropdownEmail) dropdownEmail.textContent = email;
+
+                const mAuthBtn = document.getElementById("mobileNavAuthBtn");
+                const mUserCard = document.getElementById("mobileUserCard");
+                const mAvatar = document.getElementById("mobileAvatarInitials");
+                const mName = document.getElementById("mobileUserName");
+                const mEmail = document.getElementById("mobileUserEmail");
+
+                if (mAuthBtn) mAuthBtn.style.display = "none";
+                if (mUserCard) mUserCard.style.display = "flex";
+                if (mAvatar) mAvatar.textContent = initials;
+                if (mName) mName.textContent = fullName;
+                if (mEmail) mEmail.textContent = email;
+            }
+        } catch (e) {}
+    })();
+</script>

@@ -18,6 +18,7 @@ def invalidate_blog_caches() -> None:
 def invalidate_magazine_caches() -> None:
     """Clears every cache entry that can contain magazine or book content."""
     cache_manager.invalidate("magazine_listing")
+    cache_manager.invalidate("magazine_all_books")
     cache_manager.invalidate("magazines")
     cache_manager.invalidate("magazines_grid")
     cache_manager.invalidate_pattern("magazine_issue_")

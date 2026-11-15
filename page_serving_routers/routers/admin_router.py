@@ -143,6 +143,8 @@ EDITABLE_PAGE_SLUGS = {
 
 
 @router.get("/magazine-issues")
+@router.get("/magazine_issues")
+@router.get("/magazine issues")
 async def admin_magazine_issues_page(request: Request):
     """Serve the magazine issues and books management page."""
     if not await is_authenticated(request):

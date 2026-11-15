@@ -1,139 +1,338 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layouts/remaster_base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Register - Brands Out Loud</title>
-    <link rel="icon" type="image/png" href="static/icon/website_icon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
-    <link rel="stylesheet" href="/static/css/login.css">
-</head>
+{% block title %}Sign In / Register — Brands Out Loud{% endblock %}
 
-<body>
-    <div class="auth-page">
-        <div class="auth-left">
-            <a href="/" class="auth-logo-link">
-                <img src="/static/images/header_logo.png" alt="Brands Out Loud" class="auth-logo">
-            </a>
-            <div class="auth-left-content">
-                <h1 class="auth-left-title">Stay ahead of the curve.</h1>
-                <p class="auth-left-desc">Get exclusive access to in-depth business insights, industry reports, and leadership stories.</p>
-            </div>
-            <div class="auth-left-footer">
-                <span>&copy; 2025 Brands Out Loud</span>
-            </div>
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/login.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+<div class="auth-remaster-wrapper">
+    <div class="auth-ambient-glow"></div>
+    <div class="auth-ambient-glow auth-glow-secondary"></div>
+
+    <header class="auth-minimal-topbar">
+        <a href="/" class="auth-topbar-logo-link" aria-label="Brands Out Loud Home">
+            <img src="{{ site.nav.logo_url | default('/static/images/brand/bol_logo.png') }}" alt="Brands Out Loud" class="auth-topbar-logo" />
+        </a>
+        <a href="/" class="auth-topbar-back-btn">
+            <i class="ph ph-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+    </header>
+
+    <section class="auth-remaster-section">
+        <div class="auth-header-block">
+            <span class="auth-eyebrow">BOL MEMBER PORTAL</span>
+            <h1 class="auth-main-heading">Access Executive <span class="highlight-blue">Intelligence</span></h1>
+            <p class="auth-sub-heading">Sign in to your member account or join Brands Out Loud for exclusive research, book editions, and industry deep-dives.</p>
         </div>
 
-        <div class="auth-right">
-            <div class="auth-card">
-                <div class="auth-tabs">
-                    <button class="auth-tab active" data-tab="login">Login</button>
-                    <button class="auth-tab" data-tab="register">Register</button>
-                </div>
+        <div class="auth-card-surface">
+            <div class="auth-tabs-pill" id="authTabsGroup">
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" data-target="login">Sign In</button>
+                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" data-target="register">Create Account</button>
+            </div>
 
-                <div class="auth-form-container">
+            <div class="auth-card-body">
+                <div id="loginWrapper" class="auth-view is-active">
+                    <div class="auth-view-header">
+                        <h2 class="auth-view-title">Welcome back</h2>
+                        <p class="auth-view-subtitle" id="loginHeaderSubtitle">Enter your credentials or use mobile OTP to sign in</p>
+                    </div>
 
-                    <form id="login-form" class="auth-form active" novalidate>
-                        <div class="auth-form-header">
-                            <h2 class="auth-form-title">Welcome back</h2>
-                            <p class="auth-form-subtitle">Sign in to your account</p>
-                        </div>
+                    <div class="auth-method-pill" id="loginMethodGroup">
+                        <button type="button" class="auth-method-btn active" id="loginMethodPasswordBtn" data-login-method="password">Password</button>
+                        <button type="button" class="auth-method-btn" id="loginMethodOtpBtn" data-login-method="otp">Mobile OTP</button>
+                    </div>
 
-                        <div id="login-message" class="auth-message"></div>
+                    <div id="loginAlert" class="auth-alert" role="alert" style="display: none;"></div>
 
-                        <div class="auth-form-fields">
-                            <div class="form-field">
-                                <label for="login-email">Email</label>
-                                <input type="email" id="login-email" name="email" placeholder="name@example.com" required>
-                                <span class="field-error">Please enter a valid email</span>
+                    <form id="loginForm" class="auth-subview is-active" novalidate>
+                        <div class="auth-fields-stack auth-fields-login">
+                            <div class="auth-field-group">
+                                <label for="loginIdentifier" class="auth-label">Email or Mobile Number</label>
+                                <input
+                                    type="text"
+                                    id="loginIdentifier"
+                                    name="identifier"
+                                    class="auth-input"
+                                    placeholder="name@example.com or +91 9876543210"
+                                    required
+                                    autocomplete="username"
+                                />
+                                <span class="auth-error-msg" id="loginIdentifierError">Please enter your email or registered phone number.</span>
                             </div>
 
-                            <div class="form-field">
-                                <label for="login-password">Password</label>
-                                <div class="password-field-wrap">
-                                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
-                                    <button type="button" class="password-toggle" data-target="login-password" aria-label="Toggle password visibility">
+                            <div class="auth-field-group">
+                                <div class="auth-label-row">
+                                    <label for="loginPassword" class="auth-label">Password</label>
+                                    <a href="mailto:support@brandsoutloud.com?subject=Password%20Reset%20Request" class="auth-inline-link">Forgot password?</a>
+                                </div>
+                                <div class="auth-password-wrap">
+                                    <input
+                                        type="password"
+                                        id="loginPassword"
+                                        name="password"
+                                        class="auth-input"
+                                        placeholder="Enter your password"
+                                        required
+                                        autocomplete="current-password"
+                                    />
+                                    <button type="button" class="auth-password-toggle" data-toggle="loginPassword" aria-label="Toggle password visibility">
                                         <i class="ph ph-eye"></i>
                                     </button>
                                 </div>
-                                <span class="field-error">Password is required</span>
+                                <span class="auth-error-msg" id="loginPasswordError">Please enter your password.</span>
                             </div>
                         </div>
 
-                        <div class="auth-form-bottom">
-                            <button type="submit" class="auth-submit-btn" id="login-submit-btn">Sign In</button>
-                            <p class="auth-switch-text">
-                                Don't have an account? <a class="auth-switch-link" data-switch="register">Create one</a>
-                            </p>
-                        </div>
+                        <button type="submit" class="auth-btn-primary" id="loginSubmitBtn">
+                            <span class="auth-btn-label">Sign In to Account</span>
+                            <span class="auth-btn-arrow">→</span>
+                        </button>
+
+                        <p class="auth-footer-prompt">
+                            Don’t have an account yet?
+                            <a href="#register" class="auth-switch-link" data-switch="register">Create an account</a>
+                        </p>
                     </form>
 
-                    <form id="register-form" class="auth-form" novalidate>
-                        <div class="auth-form-header">
-                            <h2 class="auth-form-title">Create Account</h2>
-                            <p class="auth-form-subtitle">Join Brands Out Loud today</p>
+                    <form id="loginOtpRequestForm" class="auth-subview" novalidate style="display: none;">
+                        <div class="auth-fields-stack auth-fields-login">
+                            <div class="auth-field-group">
+                                <label for="loginOtpPhone" class="auth-label">Registered Mobile Number</label>
+                                <div class="auth-phone-wrap">
+                                    <span class="auth-phone-prefix">+91</span>
+                                    <input
+                                        type="tel"
+                                        id="loginOtpPhone"
+                                        name="phone"
+                                        class="auth-input auth-phone-input"
+                                        placeholder="9876543210"
+                                        maxlength="10"
+                                        required
+                                        autocomplete="tel"
+                                    />
+                                </div>
+                                <span class="auth-error-msg" id="loginOtpPhoneError">Please enter your registered 10-digit mobile number.</span>
+                            </div>
                         </div>
 
-                        <div id="register-message" class="auth-message"></div>
+                        <button type="submit" class="auth-btn-primary" id="loginOtpSendBtn">
+                            <span class="auth-btn-label">Send Login Code</span>
+                            <span class="auth-btn-arrow">→</span>
+                        </button>
 
-                        <div class="auth-form-fields">
-                            <div class="form-field">
-                                <label for="register-name">Full Name</label>
-                                <input type="text" id="register-name" name="name" placeholder="John Doe" required>
-                                <span class="field-error">Name is required</span>
+                        <p class="auth-footer-prompt">
+                            Don’t have an account yet?
+                            <a href="#register" class="auth-switch-link" data-switch="register">Create an account</a>
+                        </p>
+                    </form>
+
+                    <form id="loginOtpVerifyForm" class="auth-subview" novalidate style="display: none;">
+                        <div class="auth-view-header">
+                            <div class="auth-icon-badge">
+                                <i class="ph ph-device-mobile"></i>
+                            </div>
+                            <h2 class="auth-view-title">Enter Login Code</h2>
+                            <p class="auth-view-subtitle">
+                                Enter the 6-digit code sent to
+                                <strong id="loginOtpDisplayPhone">+91 XXXXXXXXXX</strong>
+                            </p>
+                            <button type="button" class="auth-back-action" id="loginOtpBackToPhoneBtn">
+                                <i class="ph ph-arrow-left"></i>
+                                <span>Change number</span>
+                            </button>
+                        </div>
+
+                        <div class="auth-demo-otp-pill" id="loginDemoOtpPill" style="display: none;">
+                            Test OTP: <span id="loginDemoOtpCode">123456</span>
+                        </div>
+
+                        <div class="auth-otp-block">
+                            <label class="auth-label auth-label-center">Enter 6-digit verification code</label>
+                            <div class="auth-otp-digits" id="loginOtpDigitsGroup">
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit login-otp-digit" aria-label="Digit 1" autocomplete="one-time-code" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit login-otp-digit" aria-label="Digit 2" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit login-otp-digit" aria-label="Digit 3" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit login-otp-digit" aria-label="Digit 4" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit login-otp-digit" aria-label="Digit 5" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit login-otp-digit" aria-label="Digit 6" />
+                            </div>
+                            <span class="auth-error-msg text-center" id="loginOtpDigitsError">Please enter the full 6-digit verification code.</span>
+                        </div>
+
+                        <div class="auth-resend-row">
+                            <span class="auth-resend-text">Didn’t receive the code?</span>
+                            <button type="button" class="auth-resend-btn" id="loginResendOtpBtn" disabled>
+                                Resend Code (<span id="loginResendTimer">30s</span>)
+                            </button>
+                        </div>
+
+                        <button type="submit" class="auth-btn-primary" id="loginOtpVerifySubmitBtn">
+                            <span class="auth-btn-label">Verify &amp; Sign In</span>
+                            <span class="auth-btn-arrow">→</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div id="registerWrapper" class="auth-view">
+                    <form id="registerForm" class="auth-subview is-active" novalidate>
+                        <div class="auth-view-header">
+                            <h2 class="auth-view-title">Create your account</h2>
+                            <p class="auth-view-subtitle">Step 1 of 2 · Enter your details to get started</p>
+                        </div>
+
+                        <div id="registerAlert" class="auth-alert" role="alert" style="display: none;"></div>
+
+                        <div class="auth-fields-stack auth-fields-grid">
+                            <div class="auth-field-group">
+                                <label for="regName" class="auth-label">Full Name</label>
+                                <input
+                                    type="text"
+                                    id="regName"
+                                    name="name"
+                                    class="auth-input"
+                                    placeholder="e.g. Aarav Sharma"
+                                    required
+                                    autocomplete="name"
+                                />
+                                <span class="auth-error-msg" id="regNameError">Please enter your full name.</span>
                             </div>
 
-                            <div class="form-field">
-                                <label for="register-email">Email</label>
-                                <input type="email" id="register-email" name="email" placeholder="name@example.com" required>
-                                <span class="field-error">Please enter a valid email</span>
+                            <div class="auth-field-group">
+                                <label for="regEmail" class="auth-label">Email Address</label>
+                                <input
+                                    type="email"
+                                    id="regEmail"
+                                    name="email"
+                                    class="auth-input"
+                                    placeholder="aarav@company.com"
+                                    required
+                                    autocomplete="email"
+                                />
+                                <span class="auth-error-msg" id="regEmailError">Please enter a valid email address.</span>
                             </div>
 
-                            <div class="form-row">
-                                <div class="form-field">
-                                    <label for="register-phone">Phone <span class="optional-tag">(optional)</span></label>
-                                    <input type="tel" id="register-phone" name="phone" placeholder="+91 9876543210">
+                            <div class="auth-field-group">
+                                <label for="regPhone" class="auth-label">Mobile Number <span class="auth-tag-pill">OTP Verification</span></label>
+                                <div class="auth-phone-wrap">
+                                    <span class="auth-phone-prefix">+91</span>
+                                    <input
+                                        type="tel"
+                                        id="regPhone"
+                                        name="phone"
+                                        class="auth-input auth-phone-input"
+                                        placeholder="9876543210"
+                                        maxlength="10"
+                                        required
+                                        autocomplete="tel"
+                                    />
                                 </div>
-                                <div class="form-field">
-                                    <label for="register-company">Company <span class="optional-tag">(optional)</span></label>
-                                    <input type="text" id="register-company" name="company_name" placeholder="Company Inc.">
-                                </div>
+                                <span class="auth-error-msg" id="regPhoneError">Please enter a valid 10-digit mobile number.</span>
                             </div>
 
-                            <div class="form-field">
-                                <label for="register-password">Password</label>
-                                <div class="password-field-wrap">
-                                    <input type="password" id="register-password" name="password" placeholder="Min. 6 characters" required>
-                                    <button type="button" class="password-toggle" data-target="register-password" aria-label="Toggle password visibility">
+                            <div class="auth-field-group">
+                                <label for="regCompany" class="auth-label">Company / Organization <span class="auth-optional-tag">(Optional)</span></label>
+                                <input
+                                    type="text"
+                                    id="regCompany"
+                                    name="company_name"
+                                    class="auth-input"
+                                    placeholder="Your company or venture name"
+                                    autocomplete="organization"
+                                />
+                            </div>
+
+                            <div class="auth-field-group auth-field-full">
+                                <label for="regPassword" class="auth-label">Password <span class="auth-hint-inline">(Min. 6 characters)</span></label>
+                                <div class="auth-password-wrap">
+                                    <input
+                                        type="password"
+                                        id="regPassword"
+                                        name="password"
+                                        class="auth-input"
+                                        placeholder="Create a strong password"
+                                        required
+                                        autocomplete="new-password"
+                                    />
+                                    <button type="button" class="auth-password-toggle" data-toggle="regPassword" aria-label="Toggle password visibility">
                                         <i class="ph ph-eye"></i>
                                     </button>
                                 </div>
-                                <span class="field-error">Password must be at least 6 characters</span>
+                                <span class="auth-error-msg" id="regPasswordError">Password must be at least 6 characters long.</span>
                             </div>
                         </div>
 
-                        <div class="auth-form-bottom">
-                            <button type="submit" class="auth-submit-btn" id="register-submit-btn">Create Account</button>
-                            <p class="auth-switch-text">
-                                Already have an account? <a class="auth-switch-link" data-switch="login">Sign in</a>
-                            </p>
-                        </div>
+                        <button type="submit" class="auth-btn-primary" id="regContinueBtn">
+                            <span class="auth-btn-label">Continue to OTP Verification</span>
+                            <span class="auth-btn-arrow">→</span>
+                        </button>
+
+                        <p class="auth-footer-prompt">
+                            Already registered?
+                            <a href="#login" class="auth-switch-link" data-switch="login">Sign in</a>
+                        </p>
                     </form>
 
+                    <form id="otpVerifyForm" class="auth-subview" novalidate style="display: none;">
+                        <div class="auth-view-header">
+                            <div class="auth-icon-badge">
+                                <i class="ph ph-device-mobile"></i>
+                            </div>
+                            <h2 class="auth-view-title">Verify your mobile</h2>
+                            <p class="auth-view-subtitle">
+                                Step 2 of 2 · Enter the 6-digit code sent to
+                                <strong id="otpDisplayPhone">+91 XXXXXXXXXX</strong>
+                            </p>
+                            <button type="button" class="auth-back-action" id="otpBackToDetailsBtn">
+                                <i class="ph ph-arrow-left"></i>
+                                <span>Edit details</span>
+                            </button>
+                        </div>
+
+                        <div id="otpAlert" class="auth-alert" role="alert" style="display: none;"></div>
+
+                        <div class="auth-demo-otp-pill" id="demoOtpPill">
+                            Test OTP: <span id="demoOtpCode">123456</span>
+                        </div>
+
+                        <div class="auth-otp-block">
+                            <label class="auth-label auth-label-center">Enter 6-digit verification code</label>
+                            <div class="auth-otp-digits" id="otpInputsGroup">
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit" aria-label="Digit 1" autocomplete="one-time-code" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit" aria-label="Digit 2" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit" aria-label="Digit 3" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit" aria-label="Digit 4" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit" aria-label="Digit 5" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="auth-otp-digit" aria-label="Digit 6" />
+                            </div>
+                            <span class="auth-error-msg text-center" id="otpDigitsError">Please enter the full 6-digit verification code.</span>
+                        </div>
+
+                        <div class="auth-resend-row">
+                            <span class="auth-resend-text">Didn’t receive the code?</span>
+                            <button type="button" class="auth-resend-btn" id="resendOtpBtn" disabled>
+                                Resend Code (<span id="resendTimer">30s</span>)
+                            </button>
+                        </div>
+
+                        <button type="submit" class="auth-btn-primary" id="otpSubmitBtn">
+                            <span class="auth-btn-label">Verify &amp; Create Account</span>
+                            <span class="auth-btn-arrow">→</span>
+                        </button>
+                    </form>
                 </div>
             </div>
-
-            <a href="/" class="auth-back-link"><i class="ph ph-arrow-left"></i> Back to Home</a>
         </div>
-    </div>
+    </section>
+</div>
+{% endblock %}
 
-    <script src="/static/js/login.js"></script>
-</body>
-
-</html>
+{% block page_js %}
+<script src="/static/js/login.js?v={{ asset_version }}"></script>
+{% endblock %}

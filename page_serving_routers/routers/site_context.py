@@ -9,7 +9,7 @@ from database_handler import db_handler
 
 JSON_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "JSON_FILES")
 
-ASSET_VERSION = "3"
+ASSET_VERSION = "5"
 
 
 def _load_seed(name: str) -> Dict[str, Any]:

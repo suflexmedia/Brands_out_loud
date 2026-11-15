@@ -1,4 +1,6 @@
+from typing import Optional
 from fastapi import APIRouter, Request, HTTPException, Query
+from pydantic import BaseModel
 from database_handler import db_handler
 from cache_manager import cache_manager
 from datetime import datetime, timezone, timedelta
@@ -519,6 +521,7 @@ async def analytics_registered_users(
     request: Request,
     page: int = Query(1, ge=1),
     per_page: int = Query(50, ge=1, le=200),
+    inactive_days: Optional[int] = Query(None, ge=1),
 ):
     """
     Returns paginated list of registered users (from the public users collection).
@@ -528,19 +531,39 @@ async def analytics_registered_users(
 
     db = db_handler.get_db()
 
-    total = await db["users"].count_documents({})
+    query = {}
+    if inactive_days:
+        threshold = datetime.now(timezone.utc) - timedelta(days=inactive_days)
+        query = {
+            "$or": [
+                {"last_login_at": {"$lt": threshold}},
+                {"last_login_at": {"$exists": False}, "created_at": {"$lt": threshold}},
+            ]
+        }
+
+    total = await db["users"].count_documents(query)
     skip = (page - 1) * per_page
 
     users = await db["users"].find(
-        {},
+        query,
         {"password": 0}
     ).sort("created_at", -1).skip(skip).limit(per_page).to_list(per_page)
+
+    from common.crypto_utils import decrypt_pii
 
     for u in users:
         if "_id" in u:
             u["_id"] = str(u["_id"])
         if "created_at" in u and hasattr(u["created_at"], "isoformat"):
             u["created_at"] = u["created_at"].isoformat()
+        if "last_login_at" in u and hasattr(u["last_login_at"], "isoformat"):
+            u["last_login_at"] = u["last_login_at"].isoformat()
+        if "name" in u and u["name"]:
+            u["name"] = decrypt_pii(u["name"]) or u["name"]
+        if "phone_encrypted" in u and u["phone_encrypted"]:
+            u["phone"] = decrypt_pii(u["phone_encrypted"]) or u.get("phone", "")
+        if "company_name" in u and u["company_name"]:
+            u["company_name"] = decrypt_pii(u["company_name"]) or u["company_name"]
 
     total_pages = max(1, (total + per_page - 1) // per_page)
 
@@ -552,6 +575,55 @@ async def analytics_registered_users(
         "total_pages": total_pages,
         "has_next": page < total_pages,
         "has_prev": page > 1,
+    }
+
+
+@router.delete("/registered-users/{user_id}")
+async def delete_registered_user(request: Request, user_id: str):
+    """Deletes a customer account from the public users collection."""
+    if not await is_authenticated(request):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    from bson import ObjectId
+    try:
+        obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+
+    db = db_handler.get_db()
+    result = await db["users"].delete_one({"_id": obj_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return {"status": "ok", "message": "User deleted successfully"}
+
+
+class PurgeInactiveUsersRequest(BaseModel):
+    """Request payload specifying the inactivity threshold in days."""
+
+    inactive_days: int = 180
+
+
+@router.post("/registered-users/purge-inactive")
+async def purge_inactive_users(request: Request, data: PurgeInactiveUsersRequest):
+    """Bulk deletes inactive user accounts older than a given number of days."""
+    if not await is_authenticated(request):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    days = max(30, int(data.inactive_days))
+    threshold = datetime.now(timezone.utc) - timedelta(days=days)
+    query = {
+        "$or": [
+            {"last_login_at": {"$lt": threshold}},
+            {"last_login_at": {"$exists": False}, "created_at": {"$lt": threshold}},
+        ]
+    }
+    db = db_handler.get_db()
+    result = await db["users"].delete_many(query)
+    return {
+        "status": "ok",
+        "message": f"Successfully deleted {result.deleted_count} inactive user(s).",
+        "deleted_count": result.deleted_count,
     }
 
 

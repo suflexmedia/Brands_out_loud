@@ -1,0 +1,34 @@
+<aside class="lvo-summary-card">
+    <h2 class="lvo-summary-heading">{{ summary_heading | default("Your order") }}</h2>
+
+    <div class="lvo-summary-artwork">
+        <img
+            src="{{ book.cover_url }}"
+            alt="{{ book.title }} cover"
+            class="lvo-summary-cover"
+        />
+    </div>
+
+    <div class="lvo-summary-meta">
+        <h3 class="lvo-summary-book-title">{{ book.title }}</h3>
+        <p class="lvo-summary-book-subtitle">{{ book.subtitle }}</p>
+        <p class="lvo-summary-author">{{ book.author }}</p>
+        <p class="lvo-summary-edition">{{ book.edition }}</p>
+    </div>
+
+    <div class="lvo-divider"></div>
+
+    <div class="lvo-summary-price-row">
+        <span class="lvo-price-sale">₹{{ book.sale_price }}</span>
+        <span class="lvo-price-original">₹{{ book.original_price }}</span>
+        <span class="lvo-price-discount">Save ₹{{ book.discount_amount }}</span>
+    </div>
+
+    <div class="lvo-summary-total-row">
+        <span class="lvo-total-label">{{ total_label | default("Total") }}</span>
+        <span class="lvo-total-amount">₹{{ book.sale_price }}</span>
+    </div>
+
+    <p class="lvo-summary-note">{{ summary_note | default(book.note) }}</p>
+</aside>
+

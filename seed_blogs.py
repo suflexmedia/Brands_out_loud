@@ -31,6 +31,46 @@ CATEGORY_HEADINGS = {
 
 MAX_NAVBAR_POSTS = 3
 
+CATEGORY_IMAGE_POOLS = {
+    "business": [
+        "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&auto=format&fit=crop&q=80",
+    ],
+    "technology": [
+        "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80",
+    ],
+    "semiconductor": [
+        "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/163100/circuit-circuit-board-resistor-computer-163100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1517055729445-fa7d27394b48?w=1200&auto=format&fit=crop&q=80",
+    ],
+    "gcc": [
+        "https://images.pexels.com/photos/162031/dubai-tower-arab-khalifa-162031.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/2044434/pexels-photo-2044434.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1546412414-e1885259563a?w=1200&auto=format&fit=crop&q=80",
+    ],
+    "sustainability": [
+        "https://images.pexels.com/photos/414837/pexels-photo-414837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/9875441/pexels-photo-9875441.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&auto=format&fit=crop&q=80",
+    ],
+}
+DEFAULT_FALLBACK_IMAGE = "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+
 
 BLOG_TOPICS = {
     "business": [
@@ -171,10 +211,11 @@ BLOG_TOPICS = {
 }
 
 
-def build_dynamic_sections(slug: str, title: str, category: str) -> list:
+def build_dynamic_sections(slug: str, title: str, category: str, index: int = 0) -> list:
     """Build a rich set of dynamic sections that exercises every supported type."""
-    img_seed_1 = f"{slug}-inline-1"
-    img_seed_2 = f"{slug}-inline-2"
+    pool = CATEGORY_IMAGE_POOLS.get(category.lower(), [DEFAULT_FALLBACK_IMAGE])
+    img_url_1 = pool[(index + 1) % len(pool)]
+    img_url_2 = pool[(index + 2) % len(pool)]
 
     return [
         {
@@ -242,7 +283,7 @@ def build_dynamic_sections(slug: str, title: str, category: str) -> list:
         {
             "type": "image",
             "content": {
-                "url": f"https://picsum.photos/seed/{img_seed_1}/1200/500",
+                "url": img_url_1,
                 "alt": f"Strategic framework illustration for {title}",
             },
         },
@@ -326,7 +367,7 @@ def build_dynamic_sections(slug: str, title: str, category: str) -> list:
         {
             "type": "image",
             "content": {
-                "url": f"https://picsum.photos/seed/{img_seed_2}/1200/500",
+                "url": img_url_2,
                 "alt": f"Innovation and collaboration visual for {title}",
             },
         },
@@ -385,6 +426,9 @@ def build_blog_document(title: str, slug: str, category: str, index: int) -> dic
     blog_date = date(2025, 1, 15) + timedelta(days=days_offset)
     date_str = blog_date.strftime("%Y-%m-%d")
 
+    pool = CATEGORY_IMAGE_POOLS.get(category.lower(), [DEFAULT_FALLBACK_IMAGE])
+    main_image_url = pool[index % len(pool)]
+
     return {
         "slug": slug,
         "status": "published",
@@ -399,9 +443,9 @@ def build_blog_document(title: str, slug: str, category: str, index: int) -> dic
                 f"{category.upper()} sector over the next 12 months."
             ),
             "blogCategory": category,
-            "mainImageUrl": f"https://picsum.photos/seed/{slug}/1200/600",
+            "mainImageUrl": main_image_url,
             "mainImageAlt": f"Featured image for {title}",
-            "dynamicSections": build_dynamic_sections(slug, title, category),
+            "dynamicSections": build_dynamic_sections(slug, title, category, index),
         },
     }
 

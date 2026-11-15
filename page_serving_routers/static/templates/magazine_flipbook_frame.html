@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <title>{{ issue_title | default("Magazine Flipbook Viewer") }}</title>
+        <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                background: radial-gradient(circle at 50% 30%, #0e1230 0%, #06081e 100%);
+                overflow: hidden;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #flipbook-container {
+                flex: 1;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                perspective: 2000px;
+                overflow: hidden;
+                min-height: 400px;
+                padding: 10px 10px 70px 10px;
+            }
+
+            body.fullscreen-mode {
+                background: #000000;
+            }
+
+            body.fullscreen-mode #flipbook-container {
+                padding: 40px 40px 75px 40px;
+            }
+
+            .flipbook {
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .page {
+                background: #ffffff;
+                box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
+                cursor: pointer;
+            }
+
+            .page .page-content {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .page canvas {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .page[data-blank="true"] {
+                background: transparent;
+                box-shadow: none;
+                cursor: default;
+            }
+
+            .paywall-page {
+                background: #0b0e66 !important;
+                color: #ffffff;
+                cursor: default;
+            }
+
+            .paywall-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 32px 28px;
+                text-align: center;
+                background: radial-gradient(circle at 50% 20%, rgba(28, 75, 160, 0.45) 0%, rgba(11, 14, 102, 0.95) 75%);
+                height: 100%;
+                box-sizing: border-box;
+            }
+
+            .paywall-card {
+                max-width: 440px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .paywall-lock-badge {
+                width: 58px;
+                height: 58px;
+                border-radius: 50%;
+                background: rgba(255, 107, 61, 0.18);
+                border: 1px solid rgba(255, 107, 61, 0.45);
+                color: #ff6b3d;
+                font-size: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 24px rgba(255, 107, 61, 0.35);
+            }
+
+            .paywall-eyebrow {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #ff6b3d;
+            }
+
+            .paywall-title {
+                font-size: 22px;
+                font-weight: 800;
+                line-height: 1.25;
+                color: #ffffff;
+                margin: 0;
+            }
+
+            .paywall-desc {
+                font-size: 13px;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.8);
+                margin: 0;
+            }
+
+            .paywall-perks {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 10px;
+                padding: 12px 14px;
+                text-align: left;
+                margin: 4px 0;
+            }
+
+            .paywall-perk {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.92);
+            }
+
+            .paywall-perk i {
+                color: #34d399;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .btn-paywall-unlock {
+                width: 100%;
+                padding: 14px 22px;
+                border-radius: 30px;
+                background: #ff6b3d;
+                color: #ffffff;
+                border: none;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                box-shadow: 0 4px 20px rgba(255, 107, 61, 0.45);
+                transition: background 0.2s ease, transform 0.2s ease;
+                margin-top: 4px;
+            }
+
+            .btn-paywall-unlock:hover {
+                background: #f05a2b;
+                transform: translateY(-1px);
+            }
+
+            .paywall-guarantee {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.65);
+                margin-top: 2px;
+            }
+
+            .paywall-guarantee i {
+                color: #34d399;
+            }
+
+            .nav-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 46px;
+                height: 46px;
+                background: rgba(14, 18, 48, 0.85);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #ffffff;
+                border-radius: 50%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 1000;
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+                user-select: none;
+                font-size: 20px;
+                backdrop-filter: blur(8px);
+                transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            }
+
+            .nav-arrow:hover {
+                background: #1c4ba0;
+                border-color: #ffffff;
+                transform: translateY(-50%) scale(1.05);
+            }
+
+            .nav-arrow.prev {
+                left: 18px;
+            }
+
+            .nav-arrow.next {
+                right: 18px;
+            }
+
+            .nav-arrow.disabled {
+                opacity: 0.25;
+                cursor: not-allowed;
+            }
+
+            @media (max-width: 768px) {
+                .nav-arrow {
+                    display: none !important;
+                }
+            }
+
+            #controls {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(10, 12, 28, 0.92);
+                backdrop-filter: blur(14px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                z-index: 1500;
+            }
+
+            .progress-container {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .preview-badge-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                background: rgba(255, 107, 61, 0.18);
+                border: 1px solid rgba(255, 107, 61, 0.4);
+                color: #ff8b66;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+
+            .page-info {
+                color: #ffffff;
+                font-size: 13px;
+                font-weight: 600;
+                min-width: 80px;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            .progress-bar {
+                flex: 1;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.18);
+                border-radius: 3px;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #1c4ba0 0%, #ff6b3d 100%);
+                border-radius: 3px;
+                position: relative;
+                transition: width 0.3s ease;
+            }
+
+            .progress-thumb {
+                position: absolute;
+                top: 50%;
+                right: -7px;
+                transform: translateY(-50%);
+                width: 14px;
+                height: 14px;
+                background: #ffffff;
+                border: 2px solid #ff6b3d;
+                border-radius: 50%;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+                cursor: grab;
+            }
+
+            .progress-thumb:active {
+                cursor: grabbing;
+            }
+
+            .control-btn {
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #ffffff;
+                padding: 8px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                transition: all 0.2s ease;
+                font-size: 13px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .control-btn:hover {
+                background: rgba(255, 255, 255, 0.18);
+                border-color: rgba(255, 255, 255, 0.4);
+            }
+
+            .control-btn-unlock {
+                background: #ff6b3d;
+                border-color: #ff6b3d;
+                color: #ffffff;
+                font-weight: 700;
+                box-shadow: 0 2px 10px rgba(255, 107, 61, 0.35);
+            }
+
+            .control-btn-unlock:hover {
+                background: #f05a2b;
+                border-color: #f05a2b;
+            }
+
+            @media (max-width: 768px) {
+                #controls {
+                    padding: 10px 14px;
+                    gap: 10px;
+                }
+
+                .preview-badge-pill {
+                    display: none;
+                }
+
+                #controls .control-btn span {
+                    display: none !important;
+                }
+
+                #controls .control-btn {
+                    padding: 8px 10px;
+                    gap: 0;
+                }
+            }
+
+            .url-overlay {
+                position: absolute;
+                border: 1px solid #3b82f6;
+                background: rgba(59, 130, 246, 0.18);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                pointer-events: all;
+                border-radius: 4px;
+                z-index: 50;
+                min-width: 18px;
+                min-height: 12px;
+            }
+
+            .url-overlay:hover {
+                background: rgba(59, 130, 246, 0.45);
+                box-shadow: 0 0 14px rgba(59, 130, 246, 0.7);
+            }
+
+            .page-loading {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                z-index: 2000;
+            }
+
+            .page-loading .spinner {
+                width: 44px;
+                height: 44px;
+                border: 3px solid rgba(255, 255, 255, 0.2);
+                border-top: 3px solid #ff6b3d;
+                border-radius: 50%;
+                animation: spin 0.9s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .page-loading .text {
+                color: rgba(255, 255, 255, 0.9);
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .page-placeholder {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #0f1333;
+                z-index: 5;
+            }
+
+            .placeholder-spinner {
+                width: 28px;
+                height: 28px;
+                border: 3px solid rgba(255, 255, 255, 0.2);
+                border-top: 3px solid #ff6b3d;
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+
+            body.loading #controls {
+                opacity: 0.5;
+                pointer-events: none;
+            }
+
+            body.loading .flipbook {
+                visibility: hidden;
+            }
+
+            body.loading .nav-arrow {
+                display: none !important;
+            }
+        </style>
+    </head>
+    <body class="loading">
+        <div id="flipbook-container">
+            <div class="flipbook" id="flipbook"></div>
+
+            <button type="button" class="nav-arrow prev" id="prevBtn" aria-label="Previous page">
+                <i class="ph ph-arrow-left"></i>
+            </button>
+            <button type="button" class="nav-arrow next" id="nextBtn" aria-label="Next page">
+                <i class="ph ph-arrow-right"></i>
+            </button>
+
+            <div id="globalLoading" class="page-loading">
+                <div class="spinner"></div>
+                <div class="text">Loading Sample Preview...</div>
+            </div>
+        </div>
+
+        <div id="controls">
+            <div class="progress-container">
+                <span class="preview-badge-pill"><i class="ph ph-bookmark-simple"></i> Free Preview</span>
+                <span class="page-info" id="pageInfo">Page 1 / 8</span>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%">
+                        <div class="progress-thumb" id="progressThumb"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="control-btn control-btn-unlock" id="toolbarUnlockBtn">
+                <i class="ph ph-shopping-bag"></i>
+                <span>Unlock Full Book (₹799)</span>
+            </button>
+
+            <button type="button" class="control-btn" id="fullscreenBtn">
+                <i class="ph ph-arrow-square-out" id="fullscreenIcon"></i>
+                <span id="fullscreenText">Fullscreen</span>
+            </button>
+        </div>
+
+        <script>
+            const PROXY_PDF_URL = {{ proxy_pdf_url | tojson }};
+            const RAW_PDF_URL = {{ raw_pdf_url | tojson }};
+            const PDFJS_VERSION = "3.11.174";
+            const CMAP_URL = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/cmaps/`;
+            const STANDARD_FONT_DATA_URL = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`;
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
+
+            const PREVIEW_PAGE_LIMIT = 8;
+
+            function getEffectiveWidth() {
+                try {
+                    if (window.parent && window.parent !== window) return window.parent.innerWidth;
+                } catch (e) {}
+                return window.innerWidth || document.documentElement.clientWidth || 0;
+            }
+
+            function isMobileOrTablet() {
+                const w = getEffectiveWidth();
+                const touch = Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+                return w <= 768 || touch;
+            }
+
+            function getEffectiveDpr() {
+                const raw = window.devicePixelRatio || 1;
+                return isMobileOrTablet() ? Math.min(raw, 1.25) : Math.min(raw, 2.0);
+            }
+
+            function getRenderMultiplier() {
+                if (isMobileOrTablet()) return 1.0;
+                return isFullscreen ? 1.5 : 1.2;
+            }
+
+            function getWindowRadius() {
+                return isMobileOrTablet() ? 2 : 3;
+            }
+
+            function navigateToOrder() {
+                try {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.location.href = "/order";
+                        return;
+                    }
+                } catch (e) {}
+                window.location.href = "/order";
+            }
+
+            let pdfDoc = null;
+            let previewTotalPages = 1;
+            let totalFlipPages = 1;
+            let currentPage = 1;
+            let viewport = null;
+            let isFullscreen = false;
+            let isDragging = false;
+            let pageFlip = null;
+            const hasBlankStart = !(getEffectiveWidth() <= 768);
+            const renderedPages = new Set();
+            const pageShells = {};
+            const pageAnnotations = {};
+            const renderTasks = {};
+            let isUpdatingWindow = false;
+            let pendingWindowCenter = null;
+
+            function calculatePageDimensions() {
+                const container = document.getElementById("flipbook-container");
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+                if (!viewport) return { width: 300, height: 400 };
+
+                const pageAspectRatio = viewport.width / viewport.height;
+                const padding = isFullscreen ? 40 : 20;
+                const controlsHeight = 65;
+                const availableWidth = containerWidth - padding * 2;
+                const availableHeight = containerHeight - controlsHeight - padding * 2;
+                const singlePageMode = getEffectiveWidth() <= 768 || containerWidth <= 768;
+
+                let pageWidth = (availableWidth * 0.98) / (singlePageMode ? 1 : 2);
+                let pageHeight = pageWidth / pageAspectRatio;
+                if (pageHeight > availableHeight * 0.95) {
+                    pageHeight = availableHeight * 0.95;
+                    pageWidth = pageHeight * pageAspectRatio;
+                }
+
+                return {
+                    width: Math.max(240, Math.floor(pageWidth)),
+                    height: Math.max(320, Math.floor(pageHeight))
+                };
+            }
+
+            function addUrlOverlays(pageContent, links, baseViewport) {
+                const bw = baseViewport.width || 1;
+                const bh = baseViewport.height || 1;
+                links.forEach((link) => {
+                    const [left, top, width, height] = link.rect;
+                    const overlay = document.createElement("div");
+                    overlay.className = "url-overlay";
+                    overlay.style.left = `${(left / bw) * 100}%`;
+                    overlay.style.top = `${(top / bh) * 100}%`;
+                    overlay.style.width = `${Math.max(0, (width / bw) * 100)}%`;
+                    overlay.style.height = `${Math.max(0, (height / bh) * 100)}%`;
+                    overlay.title = link.url;
+                    overlay.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        window.open(link.url, "_blank", "noopener");
+                    });
+                    pageContent.appendChild(overlay);
+                });
+            }
+
+            function createFlipPageShell(pageNum, dimensions) {
+                const page = document.createElement("div");
+                page.className = "page";
+                page.dataset.page = pageNum;
+                page.style.width = `${dimensions.width}px`;
+                page.style.height = `${dimensions.height}px`;
+
+                const content = document.createElement("div");
+                content.className = "page-content";
+
+                const canvas = document.createElement("canvas");
+                canvas.width = 1;
+                canvas.height = 1;
+
+                const placeholder = document.createElement("div");
+                placeholder.className = "page-placeholder";
+                const spinner = document.createElement("div");
+                spinner.className = "placeholder-spinner";
+                placeholder.appendChild(spinner);
+
+                content.appendChild(canvas);
+                content.appendChild(placeholder);
+                page.appendChild(content);
+                return { page, content, canvas, placeholder };
+            }
+
+            function createBlankPageShell(dimensions) {
+                const page = document.createElement("div");
+                page.className = "page";
+                page.dataset.blank = "true";
+                page.style.width = `${dimensions.width}px`;
+                page.style.height = `${dimensions.height}px`;
+                const content = document.createElement("div");
+                content.className = "page-content";
+                page.appendChild(content);
+                return page;
+            }
+
+            function createPaywallPageShell(dimensions) {
+                const page = document.createElement("div");
+                page.className = "page paywall-page";
+                page.dataset.page = "paywall";
+                page.style.width = `${dimensions.width}px`;
+                page.style.height = `${dimensions.height}px`;
+
+                const content = document.createElement("div");
+                content.className = "page-content paywall-content";
+
+                content.innerHTML = `
+                    <div class="paywall-card">
+                        <div class="paywall-lock-badge">
+                            <i class="ph ph-lock-key"></i>
+                        </div>
+                        <span class="paywall-eyebrow">Sample Preview Limit Reached</span>
+                        <h2 class="paywall-title">Unlock Full Digital Access + Hardcover Collector Book</h2>
+                        <p class="paywall-desc">Experience the complete editorial publication with all chapters, high-resolution photo spreads, plus the luxury hardcover book shipped to your address.</p>
+                        <div class="paywall-perks">
+                            <div class="paywall-perk"><i class="ph ph-check-circle"></i><span>Complete 160+ page digital interactive flipbook</span></div>
+                            <div class="paywall-perk"><i class="ph ph-check-circle"></i><span>Collector's Hardcover Edition with foil cover</span></div>
+                            <div class="paywall-perk"><i class="ph ph-check-circle"></i><span>Complimentary All-India doorstep delivery</span></div>
+                        </div>
+                        <button type="button" class="btn-paywall-unlock" id="paywallCardUnlockBtn">
+                            <i class="ph ph-shopping-bag"></i>
+                            <span>Unlock Complete Bundle — ₹799</span>
+                        </button>
+                        <div class="paywall-guarantee">
+                            <i class="ph ph-shield-check"></i>
+                            <span>Instant Online Access + Hardcover dispatched to your address</span>
+                        </div>
+                    </div>
+                `;
+
+                const btn = content.querySelector("#paywallCardUnlockBtn");
+                if (btn) {
+                    btn.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        navigateToOrder();
+                    });
+                }
+
+                page.appendChild(content);
+                return page;
+            }
+
+            async function renderPageDirect(pageNum) {
+                if (!pdfDoc) return;
+                if (pageNum > previewTotalPages) return;
+                const shell = pageShells[pageNum];
+                if (!shell) return;
+                if (renderedPages.has(pageNum)) return;
+
+                if (renderTasks[pageNum]) {
+                    try {
+                        renderTasks[pageNum].cancel();
+                    } catch (e) {}
+                    delete renderTasks[pageNum];
+                }
+
+                try {
+                    const page = await pdfDoc.getPage(pageNum);
+                    let cachedData = pageAnnotations[pageNum];
+                    if (!cachedData) {
+                        const baseViewport = page.getViewport({ scale: 1 });
+                        const annotations = await page.getAnnotations();
+                        const links = annotations
+                            .filter((ann) => ann.subtype === "Link" && ann.url && ann.rect)
+                            .map((ann) => {
+                                try {
+                                    const [x1, y1, x2, y2] = baseViewport.convertToViewportRectangle(ann.rect);
+                                    return {
+                                        url: ann.url,
+                                        rect: [Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1)]
+                                    };
+                                } catch (e) {
+                                    return null;
+                                }
+                            })
+                            .filter(Boolean);
+                        cachedData = { baseViewport, links };
+                        pageAnnotations[pageNum] = cachedData;
+                    }
+
+                    const dims = calculatePageDimensions();
+                    const dpr = getEffectiveDpr();
+                    const mult = getRenderMultiplier();
+                    const targetW = Math.max(1, Math.floor(dims.width * dpr * mult));
+                    const targetH = Math.max(1, Math.floor(dims.height * dpr * mult));
+
+                    shell.canvas.width = targetW;
+                    shell.canvas.height = targetH;
+
+                    const renderViewport = page.getViewport({ scale: targetW / cachedData.baseViewport.width });
+                    const ctx = shell.canvas.getContext("2d", { alpha: false });
+                    const task = page.render({ canvasContext: ctx, viewport: renderViewport });
+                    renderTasks[pageNum] = task;
+
+                    await task.promise;
+                    delete renderTasks[pageNum];
+                    renderedPages.add(pageNum);
+
+                    if (shell.placeholder) {
+                        shell.placeholder.style.display = "none";
+                    }
+
+                    shell.content.querySelectorAll(".url-overlay").forEach((el) => el.remove());
+                    if (cachedData.links && cachedData.links.length > 0) {
+                        addUrlOverlays(shell.content, cachedData.links, cachedData.baseViewport);
+                    }
+
+                    try {
+                        page.cleanup();
+                    } catch (e) {}
+                } catch (error) {
+                    delete renderTasks[pageNum];
+                    if (error && error.name === "RenderingCancelledException") {
+                        return;
+                    }
+                    console.error(`Error rendering page ${pageNum}:`, error);
+                }
+            }
+
+            function evictPage(pageNum) {
+                if (renderTasks[pageNum]) {
+                    try {
+                        renderTasks[pageNum].cancel();
+                    } catch (e) {}
+                    delete renderTasks[pageNum];
+                }
+
+                const shell = pageShells[pageNum];
+                if (!shell) return;
+
+                shell.canvas.width = 1;
+                shell.canvas.height = 1;
+
+                shell.content.querySelectorAll(".url-overlay").forEach((el) => el.remove());
+
+                if (shell.placeholder) {
+                    shell.placeholder.style.display = "flex";
+                }
+
+                renderedPages.delete(pageNum);
+            }
+
+            async function updateActiveWindow(centerPage) {
+                if (!pdfDoc || previewTotalPages === 0) return;
+                if (isUpdatingWindow) {
+                    pendingWindowCenter = centerPage;
+                    return;
+                }
+                isUpdatingWindow = true;
+
+                const radius = getWindowRadius();
+                const minPage = Math.max(1, centerPage - radius);
+                const maxPage = Math.min(previewTotalPages, centerPage + radius);
+                const targetSet = new Set();
+                for (let i = minPage; i <= maxPage; i++) {
+                    targetSet.add(i);
+                }
+
+                for (const p of Array.from(renderedPages)) {
+                    if (!targetSet.has(p)) {
+                        evictPage(p);
+                    }
+                }
+
+                for (const pStr of Object.keys(renderTasks)) {
+                    const p = parseInt(pStr, 10);
+                    if (!targetSet.has(p)) {
+                        evictPage(p);
+                    }
+                }
+
+                const needed = Array.from(targetSet)
+                    .filter((p) => !renderedPages.has(p))
+                    .sort((a, b) => Math.abs(a - centerPage) - Math.abs(b - centerPage));
+
+                for (const p of needed) {
+                    if (pendingWindowCenter !== null && pendingWindowCenter !== centerPage) {
+                        break;
+                    }
+                    await renderPageDirect(p);
+                }
+
+                isUpdatingWindow = false;
+                if (pendingWindowCenter !== null) {
+                    const nextCenter = pendingWindowCenter;
+                    pendingWindowCenter = null;
+                    updateActiveWindow(nextCenter);
+                }
+            }
+
+            function rebuildActivePagesForQuality() {
+                const dims = calculatePageDimensions();
+                for (let i = 1; i <= previewTotalPages; i++) {
+                    const shell = pageShells[i];
+                    if (shell) {
+                        shell.page.style.width = `${dims.width}px`;
+                        shell.page.style.height = `${dims.height}px`;
+                    }
+                }
+                const active = Array.from(renderedPages);
+                for (const p of active) {
+                    evictPage(p);
+                }
+                updateActiveWindow(currentPage);
+            }
+
+            function updateControls() {
+                const isPaywall = currentPage > previewTotalPages;
+                const pageText = isPaywall ? "Preview Complete" : `Page ${currentPage} / ${previewTotalPages}`;
+                document.getElementById("pageInfo").textContent = pageText;
+
+                const progress = totalFlipPages > 1 ? ((currentPage - 1) / (totalFlipPages - 1)) * 100 : 0;
+                document.getElementById("progressFill").style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                document.getElementById("prevBtn").classList.toggle("disabled", currentPage <= 1);
+                document.getElementById("nextBtn").classList.toggle("disabled", currentPage >= totalFlipPages);
+            }
+
+            function initProgressBar() {
+                const progressBar = document.getElementById("progressBar");
+                const progressThumb = document.getElementById("progressThumb");
+
+                function updateProgressFromMouse(e) {
+                    const rect = progressBar.getBoundingClientRect();
+                    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                    const progress = x / (rect.width || 1);
+                    const targetPage = Math.max(1, Math.min(totalFlipPages, Math.round(progress * (totalFlipPages - 1) + 1)));
+                    if (targetPage !== currentPage && pageFlip) {
+                        currentPage = targetPage;
+                        updateControls();
+                        pageFlip.turnToPage(hasBlankStart ? targetPage : targetPage - 1);
+                        if (targetPage <= previewTotalPages) {
+                            updateActiveWindow(targetPage);
+                        }
+                    }
+                }
+
+                progressThumb.addEventListener("mousedown", (e) => {
+                    isDragging = true;
+                    e.preventDefault();
+                });
+                document.addEventListener("mousemove", (e) => {
+                    if (isDragging) updateProgressFromMouse(e);
+                });
+                document.addEventListener("mouseup", () => {
+                    isDragging = false;
+                });
+                progressBar.addEventListener("click", (e) => {
+                    if (!isDragging) updateProgressFromMouse(e);
+                });
+            }
+
+            document.getElementById("prevBtn").addEventListener("click", () => {
+                if (pageFlip && currentPage > 1) pageFlip.flipPrev();
+            });
+
+            document.getElementById("nextBtn").addEventListener("click", () => {
+                if (pageFlip && currentPage < totalFlipPages) pageFlip.flipNext();
+            });
+
+            document.getElementById("toolbarUnlockBtn").addEventListener("click", navigateToOrder);
+
+            document.getElementById("fullscreenBtn").addEventListener("click", () => {
+                if (!isFullscreen) {
+                    const target = document.documentElement;
+                    if (target.requestFullscreen) target.requestFullscreen();
+                    else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
+                } else {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                }
+            });
+
+            function handleFullscreenChange() {
+                isFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+                document.body.classList.toggle("fullscreen-mode", isFullscreen);
+                document.getElementById("fullscreenText").textContent = isFullscreen ? "Exit Fullscreen" : "Fullscreen";
+                if (pageFlip) {
+                    setTimeout(() => {
+                        pageFlip.update();
+                        setTimeout(rebuildActivePagesForQuality, 100);
+                    }, 50);
+                }
+            }
+
+            document.addEventListener("fullscreenchange", handleFullscreenChange);
+            document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+
+            window.addEventListener("message", (event) => {
+                if (event.origin !== window.location.origin) return;
+                const msg = event.data || {};
+                const msgType = msg.type || msg.action;
+                if (msgType === "flipToPage" && pageFlip) {
+                    const tp = Math.max(1, Math.min(totalFlipPages, msg.page || 1));
+                    currentPage = tp;
+                    updateControls();
+                    pageFlip.turnToPage(hasBlankStart ? tp : tp - 1);
+                    if (tp <= previewTotalPages) updateActiveWindow(tp);
+                } else if (msgType === "nextPage" && pageFlip && currentPage < totalFlipPages) {
+                    pageFlip.flipNext();
+                } else if (msgType === "prevPage" && pageFlip && currentPage > 1) {
+                    pageFlip.flipPrev();
+                } else if (msgType === "toggleFullscreen") {
+                    document.getElementById("fullscreenBtn").click();
+                }
+            });
+
+            function initPDF() {
+                const flipbook = document.getElementById("flipbook");
+                document.getElementById("prevBtn").style.display = "flex";
+                document.getElementById("nextBtn").style.display = "flex";
+                initProgressBar();
+
+                const loadingTask = pdfjsLib.getDocument({
+                    url: PROXY_PDF_URL,
+                    disableAutoFetch: true,
+                    disableStream: false,
+                    disableRange: false,
+                    cMapUrl: CMAP_URL,
+                    cMapPacked: true,
+                    standardFontDataUrl: STANDARD_FONT_DATA_URL
+                });
+
+                loadingTask.onProgress = function (progress) {
+                    const textEl = document.querySelector("#globalLoading .text");
+                    if (textEl && progress.total > 0) {
+                        textEl.textContent = `Loading Sample Preview: ${Math.round((progress.loaded / progress.total) * 100)}%`;
+                    }
+                };
+
+                loadingTask.promise
+                    .then(async (doc) => {
+                        pdfDoc = doc;
+                        previewTotalPages = Math.min(pdfDoc.numPages, PREVIEW_PAGE_LIMIT);
+                        totalFlipPages = previewTotalPages + 1;
+
+                        const firstPage = await pdfDoc.getPage(1);
+                        viewport = firstPage.getViewport({ scale: 1 });
+                        document.getElementById("pageInfo").textContent = `Page 1 / ${previewTotalPages}`;
+                        const dims = calculatePageDimensions();
+
+                        flipbook.innerHTML = "";
+                        if (hasBlankStart) {
+                            flipbook.appendChild(createBlankPageShell(dims));
+                        }
+                        for (let i = 1; i <= previewTotalPages; i++) {
+                            const shell = createFlipPageShell(i, dims);
+                            flipbook.appendChild(shell.page);
+                            pageShells[i] = shell;
+                        }
+
+                        const paywallShell = createPaywallPageShell(dims);
+                        flipbook.appendChild(paywallShell);
+
+                        if (hasBlankStart && totalFlipPages % 2 === 0) {
+                            flipbook.appendChild(createBlankPageShell(dims));
+                        }
+
+                        pageFlip = new St.PageFlip(flipbook, {
+                            width: Math.max(300, dims.width),
+                            height: Math.max(400, dims.height),
+                            size: getEffectiveWidth() <= 768 ? "fixed" : "stretch",
+                            minWidth: 260,
+                            maxWidth: 4000,
+                            minHeight: 360,
+                            maxHeight: 6000,
+                            showCover: false,
+                            usePortrait: true,
+                            autoSize: true,
+                            drawShadow: true,
+                            flippingTime: 700,
+                            maxShadowOpacity: 0.5,
+                            mobileScrollSupport: true
+                        });
+
+                        pageFlip.loadFromHTML(document.querySelectorAll("#flipbook .page"));
+                        if (hasBlankStart) pageFlip.turnToPage(1);
+
+                        pageFlip.on("flip", (e) => {
+                            const idx = e.data || 0;
+                            currentPage = hasBlankStart ? Math.min(totalFlipPages, Math.max(1, idx)) : Math.min(totalFlipPages, idx + 1);
+                            updateControls();
+                            if (currentPage <= previewTotalPages) {
+                                updateActiveWindow(currentPage);
+                            }
+                        });
+
+                        currentPage = 1;
+                        updateControls();
+
+                        const loaderEl = document.getElementById("globalLoading");
+                        const loaderText = loaderEl ? loaderEl.querySelector(".text") : null;
+                        if (loaderText) {
+                            loaderText.textContent = "Rendering initial preview...";
+                        }
+
+                        await renderPageDirect(1);
+                        if (!isMobileOrTablet() && previewTotalPages >= 2) {
+                            await renderPageDirect(2);
+                        }
+
+                        if (loaderEl) loaderEl.style.display = "none";
+                        document.body.classList.remove("loading");
+
+                        updateActiveWindow(1);
+                    })
+                    .catch((error) => {
+                        console.error("Error loading preview:", error);
+                        document.getElementById("globalLoading").innerHTML =
+                            `<div style="color: white; text-align: center; padding: 20px;"><h3>Error loading sample preview</h3><p>${error.message || "Please try refreshing the page"}</p></div>`;
+                    });
+            }
+
+            let resizeTimeout;
+            window.addEventListener("resize", () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    if (pageFlip) {
+                        pageFlip.update();
+                        rebuildActivePagesForQuality();
+                    }
+                }, 150);
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (!pageFlip) return;
+                if (e.key === "ArrowLeft") {
+                    if (hasBlankStart && currentPage <= 1) return;
+                    pageFlip.flipPrev();
+                } else if (e.key === "ArrowRight") {
+                    pageFlip.flipNext();
+                } else if (e.key === "f" || e.key === "F") {
+                    document.getElementById("fullscreenBtn").click();
+                }
+            });
+
+            initPDF();
+        </script>
+    </body>
+</html>

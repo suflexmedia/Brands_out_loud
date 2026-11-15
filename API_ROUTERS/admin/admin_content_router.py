@@ -29,6 +29,11 @@ async def get_page(page_id: str, _admin: dict = Depends(require_admin)):
     db = db_handler.get_db()
     doc = await db["page_content"].find_one({"_id": page_id}) or {}
     doc.pop("_id", None)
+    if page_id == "book_detail":
+        from page_serving_routers.routers import magazine_service
+
+        sections = {**magazine_service.get_hidden_lens_v2_data()["default_sections"], **(doc.get("sections") or {})}
+        doc["sections"] = sections
     return doc
 
 
@@ -103,10 +108,20 @@ async def preview_page(page_id: str, request: Request, _admin: dict = Depends(re
         return render(magazine_router.ISSUE_TEMPLATE, context)
 
     if page_id == "book_detail":
+        from page_serving_routers.routers import magazine_service
+
         sample = await db["books"].find_one({"status": "published"}, {"slug": 1, "issue_slug": 1})
-        if not sample:
-            return unavailable("Create a published book to preview this page.")
-        context = await magazine_router.build_book_context(sample["issue_slug"], sample["slug"], content)
+        if sample:
+            context = await magazine_router.build_book_context(sample["issue_slug"], sample["slug"], content)
+            fallback_book = magazine_service.get_hidden_lens_v2_data()["book"]
+            book = dict(context["book"])
+            for field in ("badges", "rating", "about", "covers", "highlights", "audience"):
+                val = book.get(field)
+                if not val or (isinstance(val, dict) and not any(val.values())):
+                    book[field] = fallback_book[field]
+            context["book"] = book
+        else:
+            context = await magazine_router.build_hidden_lens_v2_context(content)
         return render(magazine_router.BOOK_TEMPLATE, context)
 
     return unavailable("No preview is configured for this page.")

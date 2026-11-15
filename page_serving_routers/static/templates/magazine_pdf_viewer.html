@@ -1,0 +1,401 @@
+{% extends 'layouts/remaster_base.html' %}
+
+{% block title %}{{ issue.title }} — Sample Preview | Brands Out Loud{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="/static/css/magazine_remaster.css?v={{ asset_version }}" />
+<link rel="stylesheet" href="/static/css/magazine_pdf_viewer.css?v={{ asset_version }}" />
+{% endblock %}
+
+{% block content %}
+<div class="pdf-reader-page">
+    <section class="pdf-hero-section">
+        <div class="pdf-hero-watermark">SAMPLE PREVIEW</div>
+        <img src="/static/images/hero_wave_line.svg" class="pdf-hero-wave" alt="" />
+        <div class="pdf-hero-container">
+            <div class="pdf-hero-breadcrumbs">
+                <a href="/magazine">Magazine</a>
+                <span class="crumb-sep">/</span>
+                <a href="{{ back_url }}">{{ issue.title }}</a>
+                <span class="crumb-sep">/</span>
+                <span class="crumb-current">Sample Preview</span>
+            </div>
+
+            <div class="pdf-hero-grid">
+                <div class="pdf-hero-left">
+                    <div class="pdf-hero-badge-row">
+                        <span class="pdf-hero-badge">
+                            <i class="ph ph-sparkle"></i>
+                            <span>Sample Chapter Preview · Pages 1–8</span>
+                        </span>
+                        {% if issue.issue_number %}
+                        <span class="pdf-hero-pill">Issue {{ issue.issue_number }}</span>
+                        {% endif %}
+                        {% if issue.season_label %}
+                        <span class="pdf-hero-pill">{{ issue.season_label }}</span>
+                        {% endif %}
+                    </div>
+
+                    <h1 class="pdf-hero-title">{{ issue.title }}</h1>
+
+                    <p class="pdf-hero-subtitle">
+                        Read sample preview pages online. To experience the complete unabridged edition, order the collector's bundle to receive instant full digital access plus the hardcover book delivered to your doorstep.
+                    </p>
+
+                    <div class="pdf-hero-stats-row">
+                        {% for stat in reader_stats %}
+                        {% if not loop.first %}<div class="pdf-hero-stat-divider"></div>{% endif %}
+                        <div class="pdf-hero-stat-block">
+                            <div class="pdf-hero-stat-num">{{ stat.value }}</div>
+                            <div class="pdf-hero-stat-label">{{ stat.label }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="pdf-hero-actions-row">
+                        <a href="#reader-stage" class="btn-pdf-hero-read">
+                            <i class="ph ph-book-open"></i>
+                            <span>Start Free Preview</span>
+                            <span class="btn-arrow">↓</span>
+                        </a>
+                        {% if physical_book %}
+                        <a href="{{ physical_book.order_url | default('/order') }}" class="btn-pdf-hero-order">
+                            <i class="ph ph-shopping-bag"></i>
+                            <span>Order Complete Bundle (₹{{ physical_book.price.sale | default(799) }})</span>
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        {% else %}
+                        <a href="/order" class="btn-pdf-hero-order">
+                            <i class="ph ph-shopping-bag"></i>
+                            <span>Order Complete Bundle (₹799)</span>
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        {% endif %}
+                        <a href="{{ back_url }}" class="btn-pdf-hero-back">
+                            <i class="ph ph-arrow-left"></i>
+                            <span>Issue Overview</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pdf-hero-right">
+                    <div class="pdf-hero-preview-card">
+                        <div class="pdf-preview-cover-wrap">
+                            {% if physical_book and physical_book.cover_image_url %}
+                            <img src="{{ physical_book.cover_image_url }}" alt="{{ physical_book.title }}" class="pdf-preview-cover-img" />
+                            {% elif issue.cover_image_url %}
+                            <img src="{{ issue.cover_image_url }}" alt="{{ issue.title }}" class="pdf-preview-cover-img" />
+                            {% else %}
+                            <div class="pdf-preview-cover-fallback">
+                                <span class="pdf-preview-fallback-brand">BOL</span>
+                                <span class="pdf-preview-fallback-title">{{ issue.title }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="pdf-preview-badge">Sample Preview Edition</div>
+                        </div>
+                        <div class="pdf-preview-meta">
+                            <div class="pdf-preview-title">{{ physical_book.title if physical_book else issue.title }}</div>
+                            <div class="pdf-preview-caption">Instant Digital Reader + Hardcover Book Delivered</div>
+                            <div class="pdf-preview-links">
+                                <a href="#reader-stage" class="pdf-preview-jump-btn">
+                                    <i class="ph ph-eye"></i>
+                                    <span>Read Preview</span>
+                                </a>
+                                {% if physical_book %}
+                                <a href="{{ physical_book.order_url | default('/order') }}" class="pdf-preview-order-btn">
+                                    <i class="ph ph-shopping-bag"></i>
+                                    <span>Order Bundle</span>
+                                </a>
+                                {% else %}
+                                <a href="/order" class="pdf-preview-order-btn">
+                                    <i class="ph ph-shopping-bag"></i>
+                                    <span>Order Bundle</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reader-stage" class="pdf-stage-section" aria-label="Magazine Interactive Viewer">
+        <div class="pdf-stage-container">
+            <div class="pdf-stage-dock">
+                <div class="pdf-dock-left">
+                    <span class="pdf-dock-status-dot"></span>
+                    <span class="pdf-dock-title">{{ issue.title }}</span>
+                    <span class="pdf-dock-badge">Sample Preview · Pages 1–8</span>
+                </div>
+                <div class="pdf-dock-right">
+                    <button type="button" id="btn-toggle-shortcuts" class="btn-stage-dock" title="View Keyboard Shortcuts">
+                        <i class="ph ph-keyboard"></i>
+                        <span>Shortcuts</span>
+                    </button>
+                    <button type="button" id="btn-share-dock" class="btn-stage-dock" title="Share Preview Link">
+                        <i class="ph ph-share-network"></i>
+                        <span>Share</span>
+                    </button>
+                    <button type="button" id="btn-fullscreen-dock" class="btn-stage-dock" title="Toggle Fullscreen">
+                        <i class="ph ph-arrows-out"></i>
+                        <span>Fullscreen (F)</span>
+                    </button>
+                    {% if physical_book %}
+                    <a href="{{ physical_book.order_url | default('/order') }}" class="btn-stage-dock btn-dock-accent" title="Order Complete Bundle">
+                        <i class="ph ph-shopping-bag"></i>
+                        <span>Unlock Full Book (₹{{ physical_book.price.sale | default(799) }})</span>
+                    </a>
+                    {% else %}
+                    <a href="/order" class="btn-stage-dock btn-dock-accent" title="Order Complete Bundle">
+                        <i class="ph ph-shopping-bag"></i>
+                        <span>Unlock Full Book (₹799)</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div id="pdf-shortcuts-panel" class="pdf-shortcuts-panel" hidden>
+                <div class="pdf-shortcuts-inner">
+                    <div class="shortcut-item">
+                        <span class="shortcut-keys"><kbd>←</kbd> <kbd>→</kbd></span>
+                        <span class="shortcut-desc">Flip preview pages forward / backward</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-keys"><kbd>F</kbd></span>
+                        <span class="shortcut-desc">Toggle fullscreen reader mode</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-keys"><kbd>Esc</kbd></span>
+                        <span class="shortcut-desc">Exit fullscreen mode</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-keys"><i class="ph ph-cursor-click"></i></span>
+                        <span class="shortcut-desc">Click or drag page corners to turn</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pdf-stage-frame-wrap" id="pdf-stage-frame-wrap">
+                <iframe
+                    id="my-flipbook-container"
+                    class="pdf-stage-iframe"
+                    src="/magazine/{{ issue.slug }}/viewer-frame"
+                    title="{{ issue.title }} Sample Preview Reader"
+                    allow="fullscreen"
+                    allowfullscreen="true"
+                ></iframe>
+            </div>
+
+            <div class="pdf-stage-footer-bar">
+                <div class="pdf-footer-left">
+                    <span class="pdf-hint-pill"><kbd>←</kbd> <kbd>→</kbd> Flip pages</span>
+                    <span class="pdf-hint-pill"><kbd>F</kbd> Fullscreen</span>
+                    <span class="pdf-hint-pill"><i class="ph ph-mouse-left-click"></i> Click corners</span>
+                </div>
+                <div class="pdf-footer-right">
+                    <span class="pdf-hint-note">
+                        <i class="ph ph-sparkle"></i>
+                        <span>Free preview pages 1 to 8 · Complete edition unlocked with book order</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if physical_book %}
+    <section class="pdf-order-banner-section">
+        <div class="pdf-order-banner-card">
+            <div class="pdf-order-visual-side">
+                <div class="pdf-order-book-stack">
+                    <div class="pdf-order-book-shadow"></div>
+                    {% if physical_book.cover_image_url %}
+                    <img src="{{ physical_book.cover_image_url }}" alt="{{ physical_book.title }}" class="pdf-order-book-cover" />
+                    {% else %}
+                    <div class="pdf-order-book-cover fallback-cover">
+                        <span>{{ physical_book.title }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="pdf-order-book-badge">
+                        <i class="ph ph-certificate"></i>
+                        <span>Digital + Hardcover Bundle</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pdf-order-content-side">
+                <span class="pdf-order-eyebrow">COMPLETE COLLECTOR'S BUNDLE</span>
+                <h2 class="pdf-order-heading">Order once. Get the full digital edition + the physical book.</h2>
+                <p class="pdf-order-description">
+                    When you order {{ physical_book.title }}, you get both formats in a single purchase: instant access to read the complete high-resolution digital edition online, plus our deluxe Smyth-sewn hardcover book dispatched directly to your address.
+                </p>
+
+                <div class="pdf-order-specs-row">
+                    <div class="pdf-order-spec-item">
+                        <i class="ph ph-device-mobile"></i>
+                        <span>Instant Full Digital Access</span>
+                    </div>
+                    <div class="pdf-order-spec-item">
+                        <i class="ph ph-book-bookmark"></i>
+                        <span>Hardcover Collector Volume</span>
+                    </div>
+                    <div class="pdf-order-spec-item">
+                        <i class="ph ph-truck"></i>
+                        <span>Free All-India Doorstep Delivery</span>
+                    </div>
+                </div>
+
+                <div class="pdf-order-pricing-row">
+                    <div class="pdf-price-box">
+                        {% if physical_book.price and physical_book.price.sale %}
+                        <span class="pdf-price-current">₹{{ physical_book.price.sale }}</span>
+                        {% if physical_book.price.original %}
+                        <span class="pdf-price-original">₹{{ physical_book.price.original }}</span>
+                        <span class="pdf-price-save">Save {{ (((physical_book.price.original - physical_book.price.sale) / physical_book.price.original) * 100) | round | int }}%</span>
+                        {% endif %}
+                        {% else %}
+                        <span class="pdf-price-current">₹799</span>
+                        <span class="pdf-price-original">₹999</span>
+                        <span class="pdf-price-save">Save 20%</span>
+                        {% endif %}
+                    </div>
+                    <div class="pdf-order-cta-group">
+                        <a href="{{ physical_book.order_url | default('/order') }}" class="btn-order-primary">
+                            <i class="ph ph-shopping-bag"></i>
+                            <span>Order Complete Bundle</span>
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        <a href="{{ back_url }}" class="btn-order-secondary">
+                            <span>View Book Story</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if other_issues %}
+    <section class="pdf-explore-section">
+        <div class="pdf-explore-container">
+            <div class="pdf-explore-header-row">
+                <div class="pdf-explore-title-group">
+                    <span class="pdf-explore-eyebrow">DIGITAL ARCHIVE</span>
+                    <h2 class="pdf-explore-title">Explore more <span class="highlight-blue">editions</span></h2>
+                    <p class="pdf-explore-subtitle">Discover curated sample previews and founder stories across our publications.</p>
+                </div>
+                <a href="/magazine" class="btn-explore-all">
+                    <span>All Editions</span>
+                    <span class="btn-arrow">→</span>
+                </a>
+            </div>
+
+            <div class="pdf-explore-grid">
+                {% for item in other_issues %}
+                <a href="{% if item.pdf_url %}/magazine/{{ item.slug }}/read{% else %}{{ item.url }}{% endif %}" class="pdf-explore-card">
+                    <div class="pdf-explore-cover"{% if item.cover_image_url %} style="background-image: url('{{ item.cover_image_url }}');"{% endif %}>
+                        <div class="pdf-explore-cover-overlay"></div>
+                        <div class="pdf-explore-cover-badges">
+                            {% if item.pdf_url %}
+                            <span class="pdf-explore-badge-reader">
+                                <i class="ph ph-book-open"></i>
+                                <span>Sample Preview</span>
+                            </span>
+                            {% elif item.badge %}
+                            <span class="pdf-explore-badge-reader">{{ item.badge }}</span>
+                            {% endif %}
+                            {% if item.issue_number %}
+                            <span class="pdf-explore-badge-issue">#{{ item.issue_number }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="pdf-explore-body">
+                        <h3 class="pdf-explore-card-title">{{ item.title }}</h3>
+                        <div class="pdf-explore-card-cta">
+                            <span>{% if item.pdf_url %}Preview Sample Pages{% else %}Explore Issue{% endif %}</span>
+                            <span class="btn-arrow">→</span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+
+<div id="pdf-toast" class="pdf-toast" aria-live="polite"></div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    (function () {
+        const iframeEl = document.getElementById("my-flipbook-container");
+        const shortcutsPanel = document.getElementById("pdf-shortcuts-panel");
+        const shortcutsBtn = document.getElementById("btn-toggle-shortcuts");
+        const shareBtn = document.getElementById("btn-share-dock");
+        const fullscreenBtn = document.getElementById("btn-fullscreen-dock");
+        const toastEl = document.getElementById("pdf-toast");
+
+        function showToast(message) {
+            if (!toastEl) return;
+            toastEl.textContent = message;
+            toastEl.classList.add("active");
+            clearTimeout(toastEl._timer);
+            toastEl._timer = setTimeout(function () {
+                toastEl.classList.remove("active");
+            }, 3000);
+        }
+
+        if (shortcutsBtn && shortcutsPanel) {
+            shortcutsBtn.addEventListener("click", function () {
+                const isHidden = shortcutsPanel.hasAttribute("hidden");
+                if (isHidden) {
+                    shortcutsPanel.removeAttribute("hidden");
+                    shortcutsBtn.classList.add("active");
+                } else {
+                    shortcutsPanel.setAttribute("hidden", "");
+                    shortcutsBtn.classList.remove("active");
+                }
+            });
+        }
+
+        if (shareBtn) {
+            shareBtn.addEventListener("click", function () {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(window.location.href).then(function () {
+                        showToast("Preview link copied to clipboard!");
+                    }).catch(function () {
+                        showToast("Link: " + window.location.href);
+                    });
+                } else {
+                    showToast("Link: " + window.location.href);
+                }
+            });
+        }
+
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener("click", function () {
+                if (iframeEl && iframeEl.contentWindow) {
+                    iframeEl.contentWindow.postMessage({ type: "toggleFullscreen" }, window.location.origin);
+                }
+            });
+        }
+
+        document.addEventListener("keydown", function (e) {
+            if (!iframeEl || !iframeEl.contentWindow) return;
+            if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable)) return;
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                iframeEl.contentWindow.postMessage({ type: "prevPage" }, window.location.origin);
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                iframeEl.contentWindow.postMessage({ type: "nextPage" }, window.location.origin);
+            } else if (e.key === "f" || e.key === "F") {
+                e.preventDefault();
+                iframeEl.contentWindow.postMessage({ type: "toggleFullscreen" }, window.location.origin);
+            }
+        });
+    })();
+</script>
+{% endblock %}

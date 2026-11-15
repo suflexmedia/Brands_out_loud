@@ -31,7 +31,7 @@
         {% if featured_post %}
         <a class="blog-featured-card" href="{{ featured_post.url }}">
             <div class="featured-card-image-wrap">
-                <img src="{{ featured_post.image_url }}" class="featured-card-img" alt="{{ featured_post.image_alt | default(featured_post.title, true) }}" />
+                <img src="{{ featured_post.image_url }}" class="featured-card-img" alt="{{ featured_post.image_alt | default(featured_post.title, true) }}" onerror="this.onerror=null;this.src='https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';" />
                 <span class="badge-featured">{{ content.hero.badge_label }}</span>
             </div>
             <div class="featured-card-content">
@@ -60,7 +60,7 @@
             {% if must_read_main %}
             <a class="must-read-main-card" href="{{ must_read_main.url }}">
                 <div class="must-read-cover-wrap">
-                    <img src="{{ must_read_main.image_url }}" class="must-read-cover-img" alt="{{ must_read_main.image_alt | default(must_read_main.title, true) }}" />
+                    <img src="{{ must_read_main.image_url }}" class="must-read-cover-img" alt="{{ must_read_main.image_alt | default(must_read_main.title, true) }}" onerror="this.onerror=null;this.src='https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';" />
                     <span class="category-chip">{{ must_read_main.category_label | upper }}</span>
                 </div>
                 <div class="must-read-body">
@@ -78,7 +78,7 @@
             <div class="must-read-trending-column">
                 {% for post in trending_posts %}
                 <a class="trending-card" href="{{ post.url }}">
-                    <img src="{{ post.image_url }}" alt="{{ post.image_alt | default(post.title, true) }}" class="trending-thumb" />
+                    <img src="{{ post.image_url }}" alt="{{ post.image_alt | default(post.title, true) }}" class="trending-thumb" onerror="this.onerror=null;this.src='https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';" />
                     <div class="trending-content">
                         <span class="trending-category">{{ post.category_label | upper }}</span>
                         <h4 class="trending-title">{{ post.title }}</h4>
@@ -105,7 +105,7 @@
             {% for post in latest['items'] %}
             <a class="grid-card" data-category="{{ post.category | lower }}" href="{{ post.url }}">
                 <div class="grid-card-thumb">
-                    <img src="{{ post.image_url }}" alt="{{ post.image_alt | default(post.title, true) }}" class="grid-thumb-img" />
+                    <img src="{{ post.image_url }}" alt="{{ post.image_alt | default(post.title, true) }}" class="grid-thumb-img" onerror="this.onerror=null;this.src='https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';" />
                     <span class="grid-category-chip">{{ post.category_label | upper }}</span>
                 </div>
                 <div class="grid-card-body">
@@ -235,7 +235,7 @@
 
             card.innerHTML =
                 '<div class="grid-card-thumb">' +
-                '<img src="' + escapeHtml(item.image_url) + '" alt="' + escapeHtml(item.image_alt || item.title) + '" class="grid-thumb-img" />' +
+                '<img src="' + escapeHtml(item.image_url) + '" alt="' + escapeHtml(item.image_alt || item.title) + '" class="grid-thumb-img" onerror="this.onerror=null;this.src=\'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\';" />' +
                 '<span class="grid-category-chip">' + label + "</span>" +
                 "</div>" +
                 '<div class="grid-card-body">' +

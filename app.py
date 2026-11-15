@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import StreamingResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 from dotenv import load_dotenv
@@ -21,6 +21,7 @@ from page_serving_routers.routers.contact_router import router as contact_router
 from page_serving_routers.routers.auth_router import router as auth_router
 from page_serving_routers.routers.sitemap_router import router as sitemap_router
 from page_serving_routers.routers.admin_router import router as admin_router
+from page_serving_routers.routers.order_router import router as order_router
 from API_ROUTERS.admin.admin_blog_router import router as admin_blog_api_router
 from API_ROUTERS.admin.admin_magazine_router import router as admin_magazine_api_router
 from API_ROUTERS.admin.admin_analytics_router import router as admin_analytics_api_router
@@ -79,6 +80,13 @@ async def lifespan(app: FastAPI):
             )
         except Exception as idx_err:
             print(f"Index note for books: {idx_err}")
+
+        try:
+            await db["book_orders"].create_index(
+                [("session_id", ASCENDING)], unique=True, name="book_orders_session_unique"
+            )
+        except Exception as idx_err:
+            print(f"Index note for book_orders: {idx_err}")
 
         if await db["blogs"].count_documents({}) == 0:
             try:
@@ -151,7 +159,7 @@ class HealthCheck(BaseModel):
     """Data model for health check response."""
     status: str
 
-TRACKED_PREFIXES = ("/", "/blog", "/magazine", "/contact", "/login")
+TRACKED_PREFIXES = ("/", "/blog", "/magazine", "/contact", "/login", "/order")
 EXCLUDED_PREFIXES = ("/static/", "/admin/", "/api/", "/health", "/download_proxy", "/favicon", "/sitemap", "/robots.txt")
 
 
@@ -169,7 +177,7 @@ def _parse_device_type(ua: str) -> str:
 
 def _should_track(path: str, method: str) -> bool:
     """Decide whether a request path should be tracked for analytics."""
-    if method != "GET":
+    if method != "GET" or path.endswith("/viewer-frame"):
         return False
     for prefix in EXCLUDED_PREFIXES:
         if path.startswith(prefix):
@@ -190,6 +198,17 @@ async def log_request_time(request: Request, call_next):
     Middleware to log the total execution time of the request
     and track public page views in MongoDB for analytics.
     """
+    req_path = request.url.path
+    if req_path.startswith("/static/images/lazerveda/"):
+        return RedirectResponse(
+            url=req_path.replace("/static/images/lazerveda/", "/static/images/laserveda/"),
+            status_code=301,
+        )
+    if req_path == "/static/css/lazerveda_book.css":
+        return RedirectResponse(url="/static/css/laserveda_book.css", status_code=301)
+    if req_path == "/static/css/lazerveda_order.css":
+        return RedirectResponse(url="/static/css/laserveda_order.css", status_code=301)
+
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
@@ -234,6 +253,7 @@ app.include_router(blog_router)
 app.include_router(contact_router)
 app.include_router(auth_router)
 app.include_router(admin_router)
+app.include_router(order_router)
 app.include_router(admin_blog_api_router)
 app.include_router(admin_magazine_api_router)
 app.include_router(admin_analytics_api_router)
@@ -312,6 +332,64 @@ async def download_proxy(
             "Content-Disposition": f'attachment; filename="{safe_filename}"',
             "Cache-Control": "no-cache",
         }
+    )
+
+
+@app.get("/api/pdf-proxy")
+async def pdf_inline_proxy(
+    request: Request,
+    url: str = Query(..., description="URL of the PDF to stream inline"),
+):
+    """Proxies a PDF inline with HTTP Range support for same-origin PDF.js rendering."""
+    from urllib.parse import urlparse
+
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https") or not parsed.netloc:
+        raise HTTPException(status_code=400, detail="Invalid PDF URL")
+
+    upstream_headers = {}
+    range_header = request.headers.get("range")
+    if range_header:
+        upstream_headers["Range"] = range_header
+
+    client = httpx.AsyncClient(follow_redirects=True, timeout=60.0)
+    try:
+        upstream_req = client.build_request("GET", url, headers=upstream_headers)
+        upstream = await client.send(upstream_req, stream=True)
+    except httpx.HTTPError as exc:
+        await client.aclose()
+        raise HTTPException(status_code=502, detail=f"Failed to fetch PDF: {exc}")
+
+    if upstream.status_code >= 400:
+        status_code = upstream.status_code
+        await upstream.aclose()
+        await client.aclose()
+        raise HTTPException(status_code=status_code, detail="Upstream PDF error")
+
+    resp_headers = {
+        "Content-Type": upstream.headers.get("content-type", "application/pdf"),
+        "Content-Disposition": "inline",
+        "Accept-Ranges": upstream.headers.get("accept-ranges", "bytes"),
+        "Cache-Control": "public, max-age=3600",
+    }
+    for key in ("content-length", "content-range", "etag", "last-modified"):
+        val = upstream.headers.get(key)
+        if val:
+            resp_headers[key.title()] = val
+
+    async def stream_body():
+        try:
+            async for chunk in upstream.aiter_bytes(chunk_size=65536):
+                yield chunk
+        finally:
+            await upstream.aclose()
+            await client.aclose()
+
+    return StreamingResponse(
+        stream_body(),
+        status_code=upstream.status_code,
+        media_type="application/pdf",
+        headers=resp_headers,
     )
 
 
