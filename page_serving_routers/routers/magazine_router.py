@@ -1,13 +1,17 @@
 """Serves the magazine issue listing, per-issue book grids and book detail pages."""
 
 import os
+import re
 from urllib.parse import quote
+from bson import ObjectId
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
+from database_handler.connection import db_handler
 from page_serving_routers.routers import magazine_service
+from page_serving_routers.routers.auth_router import get_authenticated_user_payload
 from page_serving_routers.routers.site_context import base_context
 
 router = APIRouter()
@@ -192,6 +196,68 @@ async def serve_hidden_lens_v2(request: Request):
     return templates.TemplateResponse(request, BOOK_TEMPLATE, context)
 
 
+async def check_user_book_access(request: Request, issue_slug: str) -> bool:
+    """Verifies whether the current user or session holds a confirmed purchase for this issue or book."""
+    db = db_handler.get_db()
+    if db is None:
+        return False
+
+    target = "laser-veda" if issue_slug in ("laser-veda", "lazer-veda", "laser-veda-edition") else issue_slug
+    valid_slugs = [target, f"{target}-edition", target.replace("-edition", "")]
+
+    order_session = request.cookies.get("lv_order_session")
+    if order_session:
+        session_order = await db["book_orders"].find_one({
+            "session_id": order_session,
+            "status": {"$in": ["confirmed", "shipped", "delivered"]},
+        })
+        if session_order:
+            order_slug = session_order.get("book_slug") or (session_order.get("item") or {}).get("slug") or "laser-veda"
+            if order_slug in valid_slugs or target == "laser-veda":
+                return True
+
+    user_payload = get_authenticated_user_payload(request)
+    if not user_payload:
+        return False
+
+    user_id = user_payload.get("user_id")
+    if not user_id:
+        return False
+
+    query_conditions = [{"user_id": user_id}]
+    try:
+        user_doc = await db["users"].find_one({"_id": ObjectId(user_id)})
+    except Exception:
+        user_doc = None
+
+    if user_doc:
+        user_email = user_doc.get("email", "").lower().strip()
+        if user_email:
+            query_conditions.append({"email": {"$regex": f"^{re.escape(user_email)}$", "$options": "i"}})
+        raw_phone = user_doc.get("phone", "")
+        if not raw_phone:
+            try:
+                from utils.crypto_utils import decrypt_pii
+                raw_phone = decrypt_pii(user_doc.get("phone_encrypted", ""))
+            except Exception:
+                raw_phone = ""
+        digits = re.sub(r"\D", "", raw_phone or "")
+        if len(digits) >= 10:
+            query_conditions.append({"phone": {"$regex": re.escape(digits[-10:])}})
+
+    order = await db["book_orders"].find_one({
+        "$or": query_conditions,
+        "status": {"$in": ["confirmed", "shipped", "delivered"]},
+    })
+
+    if order:
+        order_slug = order.get("book_slug") or (order.get("item") or {}).get("slug") or "laser-veda"
+        if order_slug in valid_slugs or target == "laser-veda":
+            return True
+
+    return False
+
+
 @router.get("/magazine/{issue_slug}/read", tags=["Pages"])
 async def serve_issue_pdf_reader(request: Request, issue_slug: str):
     """Serves the interactive flipbook PDF reader for a magazine issue."""
@@ -219,15 +285,30 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
     elif physical_book:
         if not physical_book.get("order_url"):
             physical_book["order_url"] = "/order" if target_slug == "laser-veda-edition" else physical_book.get("url", "/order")
-    reader_stats = [
-        {"value": "Pages 1–8", "label": "Free Sample Preview"},
-        {"value": "Both Included", "label": "Digital + Hardcover"},
-        {"value": "All-India", "label": "Doorstep Delivery"},
-    ]
+
+    has_full_access = await check_user_book_access(request, target_slug)
+
+    if has_full_access:
+        reader_stats = [
+            {"value": "Complete Edition", "label": "Full Access Unlocked"},
+            {"value": "Interactive Flipbook", "label": "All Chapters & Spreads"},
+            {"value": "Order Confirmed", "label": "Hardcover Dispatched"},
+        ]
+        seo_title = f"{issue['title']} — Complete Edition | Brands Out Loud"
+        seo_desc = f"Read the full interactive edition of {issue['title']} on Brands Out Loud."
+    else:
+        reader_stats = [
+            {"value": "Pages 1–8", "label": "Free Sample Preview"},
+            {"value": "Both Included", "label": "Digital + Hardcover"},
+            {"value": "All-India", "label": "Doorstep Delivery"},
+        ]
+        seo_title = f"{issue['title']} — Sample Preview | Brands Out Loud"
+        seo_desc = f"Read the free sample preview of {issue['title']}. Order the complete bundle to get instant full digital access + collector's hardcover book delivered."
+
     context.update({
         "seo": {
-            "title": f"{issue['title']} — Sample Preview | Brands Out Loud",
-            "description": f"Read the free sample preview of {issue['title']}. Order the complete bundle to get instant full digital access + collector's hardcover book delivered.",
+            "title": seo_title,
+            "description": seo_desc,
             "og_image": issue.get("cover_image_url", ""),
         },
         "issue": issue,
@@ -235,6 +316,7 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
         "back_url": back_url,
         "physical_book": physical_book,
         "reader_stats": reader_stats,
+        "has_full_access": has_full_access,
     })
     return templates.TemplateResponse(request, PDF_VIEWER_TEMPLATE, context)
 
@@ -246,11 +328,13 @@ async def serve_issue_pdf_frame(request: Request, issue_slug: str):
     issue = await magazine_service.get_issue(target_slug)
     if not issue or not issue.get("pdf_url"):
         raise HTTPException(status_code=404, detail="Issue PDF not found")
+    has_full_access = await check_user_book_access(request, target_slug)
     raw_pdf_url = issue["pdf_url"]
     return templates.TemplateResponse(request, PDF_FRAME_TEMPLATE, {
         "issue_title": issue.get("title", "Magazine Flipbook Viewer"),
         "raw_pdf_url": raw_pdf_url,
         "proxy_pdf_url": f"/api/pdf-proxy?url={quote(raw_pdf_url, safe='')}",
+        "has_full_access": has_full_access,
     })
 
 

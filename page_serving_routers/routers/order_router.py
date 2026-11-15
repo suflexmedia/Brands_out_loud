@@ -281,6 +281,7 @@ async def save_order_details(payload: OrderDetailsRequest, request: Request, res
         "user_id": user_id,
         "book_slug": BOOK_ITEM["slug"],
         "book_title": BOOK_ITEM["title"],
+        "item": BOOK_ITEM,
         "amount": BOOK_ITEM["sale_price"],
         "original_price": BOOK_ITEM["original_price"],
         "discount_amount": BOOK_ITEM["discount_amount"],
