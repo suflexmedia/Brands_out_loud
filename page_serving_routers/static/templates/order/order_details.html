@@ -60,7 +60,7 @@ LaserVEDA® | Brands Out Loud{% endblock %} {% block content %}
               value="{{ order.phone | default('') }}"
               required
             />
-            <p class="lvo-field-hint">A 6-digit OTP will verify this number.</p>
+            <p class="lvo-field-hint">For courier and delivery updates.</p>
           </div>
           <div class="lvo-field">
             <label for="emailId" class="lvo-label">Email ID</label>
@@ -136,7 +136,7 @@ LaserVEDA® | Brands Out Loud{% endblock %} {% block content %}
 
         <div class="lvo-actions-stack">
           <button type="submit" class="lvo-btn-primary" id="detailsSubmitBtn">
-            <span>Send OTP &amp; continue</span>
+            <span>Continue to Review &amp; Pay</span>
             <img
               src="/static/images/laserveda/order/arrow_right_white.svg"
               alt=""
@@ -231,9 +231,9 @@ LaserVEDA® | Brands Out Loud{% endblock %} {% block content %}
         detailsSubmitBtn.disabled = false;
         return;
       }
-      window.location.href = data.redirect_url || "/order/verify";
+      window.location.href = data.redirect_url || "/order/review";
     } catch (err) {
-      showDetailsError("Network error while sending OTP. Please try again.");
+      showDetailsError("Network error while saving details. Please try again.");
       detailsSubmitBtn.disabled = false;
     }
   });

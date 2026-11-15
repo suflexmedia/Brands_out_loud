@@ -30,7 +30,7 @@
             {% endif %}
             <div class="hero-actions-row">
                 <a href="{% if featured_issue.pdf_url %}/magazine/{{ featured_issue.slug }}/read{% else %}{{ featured_issue.url | default(content.hero.primary_cta.href) | default('/magazine/the-founder-issue') }}{% endif %}" class="btn-read-online">
-                    <span>{{ content.hero.primary_cta.label | default("Read online") }}</span>
+                    <span>{{ content.hero.primary_cta.label | default("Preview Issue") }}</span>
                     <span class="btn-arrow">→</span>
                 </a>
                 <a href="{{ content.hero.secondary_cta.href | default('#') }}" class="btn-order-print">
@@ -170,7 +170,7 @@
                 <div class="edition-badge">{{ issue.badge | default("ISSUE " ~ issue.issue_number ~ " · " ~ issue.season_label) }}</div>
                 <h3 class="edition-name">{{ issue.title }}</h3>
                 <a href="{% if issue.pdf_url %}/magazine/{{ issue.slug }}/read{% else %}{{ issue.url | default('/magazine/' ~ issue.slug) }}{% endif %}" class="edition-link">
-                    <span>Read online</span>
+                    <span>Preview Issue</span>
                     <span class="edition-arrow">→</span>
                 </a>
             </div>

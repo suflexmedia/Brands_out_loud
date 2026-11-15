@@ -16,7 +16,7 @@
 
             body {
                 font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                background: #141726;
+                background: radial-gradient(circle at 50% 30%, #0e1230 0%, #06081e 100%);
                 overflow: hidden;
                 height: 100vh;
                 display: flex;
@@ -52,7 +52,7 @@
 
             .page {
                 background: #ffffff;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+                box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
                 cursor: pointer;
             }
 
@@ -60,6 +60,7 @@
                 position: relative;
                 width: 100%;
                 height: 100%;
+                overflow: hidden;
             }
 
             .page canvas {
@@ -74,27 +75,161 @@
                 cursor: default;
             }
 
+            .paywall-page {
+                background: #0b0e66 !important;
+                color: #ffffff;
+                cursor: default;
+            }
+
+            .paywall-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 32px 28px;
+                text-align: center;
+                background: radial-gradient(circle at 50% 20%, rgba(28, 75, 160, 0.45) 0%, rgba(11, 14, 102, 0.95) 75%);
+                height: 100%;
+                box-sizing: border-box;
+            }
+
+            .paywall-card {
+                max-width: 440px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .paywall-lock-badge {
+                width: 58px;
+                height: 58px;
+                border-radius: 50%;
+                background: rgba(255, 107, 61, 0.18);
+                border: 1px solid rgba(255, 107, 61, 0.45);
+                color: #ff6b3d;
+                font-size: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 24px rgba(255, 107, 61, 0.35);
+            }
+
+            .paywall-eyebrow {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #ff6b3d;
+            }
+
+            .paywall-title {
+                font-size: 22px;
+                font-weight: 800;
+                line-height: 1.25;
+                color: #ffffff;
+                margin: 0;
+            }
+
+            .paywall-desc {
+                font-size: 13px;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.8);
+                margin: 0;
+            }
+
+            .paywall-perks {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 10px;
+                padding: 12px 14px;
+                text-align: left;
+                margin: 4px 0;
+            }
+
+            .paywall-perk {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.92);
+            }
+
+            .paywall-perk i {
+                color: #34d399;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .btn-paywall-unlock {
+                width: 100%;
+                padding: 14px 22px;
+                border-radius: 30px;
+                background: #ff6b3d;
+                color: #ffffff;
+                border: none;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                box-shadow: 0 4px 20px rgba(255, 107, 61, 0.45);
+                transition: background 0.2s ease, transform 0.2s ease;
+                margin-top: 4px;
+            }
+
+            .btn-paywall-unlock:hover {
+                background: #f05a2b;
+                transform: translateY(-1px);
+            }
+
+            .paywall-guarantee {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.65);
+                margin-top: 2px;
+            }
+
+            .paywall-guarantee i {
+                color: #34d399;
+            }
+
             .nav-arrow {
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
                 width: 46px;
                 height: 46px;
-                background: rgba(255, 255, 255, 0.92);
-                color: #0b0e66;
+                background: rgba(14, 18, 48, 0.85);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #ffffff;
                 border-radius: 50%;
                 display: none;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
                 z-index: 1000;
-                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
                 user-select: none;
                 font-size: 20px;
+                backdrop-filter: blur(8px);
+                transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
             }
 
             .nav-arrow:hover {
-                background: #ffffff;
+                background: #1c4ba0;
+                border-color: #ffffff;
+                transform: translateY(-50%) scale(1.05);
             }
 
             .nav-arrow.prev {
@@ -106,7 +241,7 @@
             }
 
             .nav-arrow.disabled {
-                opacity: 0.3;
+                opacity: 0.25;
                 cursor: not-allowed;
             }
 
@@ -121,9 +256,10 @@
                 bottom: 0;
                 left: 0;
                 right: 0;
-                background: rgba(10, 12, 24, 0.9);
-                backdrop-filter: blur(10px);
-                padding: 14px 20px;
+                background: rgba(10, 12, 28, 0.92);
+                backdrop-filter: blur(14px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 12px 20px;
                 display: flex;
                 align-items: center;
                 gap: 16px;
@@ -134,30 +270,47 @@
                 flex: 1;
                 display: flex;
                 align-items: center;
-                gap: 14px;
+                gap: 12px;
+            }
+
+            .preview-badge-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                background: rgba(255, 107, 61, 0.18);
+                border: 1px solid rgba(255, 107, 61, 0.4);
+                color: #ff8b66;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                white-space: nowrap;
             }
 
             .page-info {
                 color: #ffffff;
                 font-size: 13px;
                 font-weight: 600;
-                min-width: 72px;
+                min-width: 80px;
                 text-align: center;
+                white-space: nowrap;
             }
 
             .progress-bar {
                 flex: 1;
-                height: 4px;
-                background: rgba(255, 255, 255, 0.22);
-                border-radius: 2px;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.18);
+                border-radius: 3px;
                 position: relative;
                 cursor: pointer;
             }
 
             .progress-fill {
                 height: 100%;
-                background: #3b82f6;
-                border-radius: 2px;
+                background: linear-gradient(90deg, #1c4ba0 0%, #ff6b3d 100%);
+                border-radius: 3px;
                 position: relative;
                 transition: width 0.3s ease;
             }
@@ -165,13 +318,14 @@
             .progress-thumb {
                 position: absolute;
                 top: 50%;
-                right: -8px;
+                right: -7px;
                 transform: translateY(-50%);
-                width: 15px;
-                height: 15px;
+                width: 14px;
+                height: 14px;
                 background: #ffffff;
+                border: 2px solid #ff6b3d;
                 border-radius: 50%;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
                 cursor: grab;
             }
 
@@ -181,9 +335,9 @@
 
             .control-btn {
                 background: rgba(255, 255, 255, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.25);
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 color: #ffffff;
-                padding: 8px 13px;
+                padding: 8px 14px;
                 border-radius: 6px;
                 cursor: pointer;
                 display: flex;
@@ -192,14 +346,37 @@
                 transition: all 0.2s ease;
                 font-size: 13px;
                 font-weight: 600;
+                white-space: nowrap;
             }
 
             .control-btn:hover {
-                background: rgba(255, 255, 255, 0.16);
-                border-color: rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.18);
+                border-color: rgba(255, 255, 255, 0.4);
+            }
+
+            .control-btn-unlock {
+                background: #ff6b3d;
+                border-color: #ff6b3d;
+                color: #ffffff;
+                font-weight: 700;
+                box-shadow: 0 2px 10px rgba(255, 107, 61, 0.35);
+            }
+
+            .control-btn-unlock:hover {
+                background: #f05a2b;
+                border-color: #f05a2b;
             }
 
             @media (max-width: 768px) {
+                #controls {
+                    padding: 10px 14px;
+                    gap: 10px;
+                }
+
+                .preview-badge-pill {
+                    display: none;
+                }
+
                 #controls .control-btn span {
                     display: none !important;
                 }
@@ -236,17 +413,17 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 10px;
+                gap: 12px;
                 z-index: 2000;
             }
 
             .page-loading .spinner {
-                width: 40px;
-                height: 40px;
-                border: 3px solid rgba(255, 255, 255, 0.28);
+                width: 44px;
+                height: 44px;
+                border: 3px solid rgba(255, 255, 255, 0.2);
                 border-top: 3px solid #ff6b3d;
                 border-radius: 50%;
-                animation: spin 1s linear infinite;
+                animation: spin 0.9s linear infinite;
             }
 
             @keyframes spin {
@@ -259,8 +436,9 @@
             }
 
             .page-loading .text {
-                color: rgba(255, 255, 255, 0.85);
+                color: rgba(255, 255, 255, 0.9);
                 font-size: 14px;
+                font-weight: 500;
             }
 
             .page-placeholder {
@@ -269,15 +447,15 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background: #f0f2f8;
+                background: #0f1333;
                 z-index: 5;
             }
 
             .placeholder-spinner {
                 width: 28px;
                 height: 28px;
-                border: 3px solid #dde2ef;
-                border-top: 3px solid #1c4ba0;
+                border: 3px solid rgba(255, 255, 255, 0.2);
+                border-top: 3px solid #ff6b3d;
                 border-radius: 50%;
                 animation: spin 0.8s linear infinite;
             }
@@ -294,189 +472,6 @@
             body.loading .nav-arrow {
                 display: none !important;
             }
-
-            .toast-notification {
-                position: fixed;
-                bottom: -100px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(11, 14, 102, 0.96);
-                color: #ffffff;
-                padding: 12px 22px;
-                border-radius: 8px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-                z-index: 3000;
-                transition: bottom 0.3s ease;
-                font-size: 14px;
-                font-weight: 500;
-            }
-
-            .toast-notification.show {
-                bottom: 72px;
-            }
-
-            .download-modal-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.65);
-                display: none;
-                justify-content: center;
-                align-items: center;
-                z-index: 5000;
-                backdrop-filter: blur(4px);
-            }
-
-            .download-modal-overlay.show {
-                display: flex;
-            }
-
-            .download-modal {
-                background: #fbfaf7;
-                border-radius: 16px;
-                padding: 24px;
-                max-width: 520px;
-                width: 92%;
-                position: relative;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
-            }
-
-            .download-modal-close {
-                position: absolute;
-                top: 10px;
-                right: 12px;
-                background: none;
-                border: none;
-                font-size: 24px;
-                cursor: pointer;
-                color: #5f6368;
-                width: 32px;
-                height: 32px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-            }
-
-            .download-modal-close:hover {
-                background: rgba(0, 0, 0, 0.06);
-                color: #111827;
-            }
-
-            .download-modal h2 {
-                font-size: 21px;
-                font-weight: 800;
-                color: #0b0e66;
-                margin: 0 0 18px 0;
-            }
-
-            .download-form-row {
-                display: flex;
-                gap: 14px;
-                margin-bottom: 12px;
-            }
-
-            .download-form-field {
-                flex: 1;
-                position: relative;
-            }
-
-            .download-form-field.full-width {
-                width: 100%;
-            }
-
-            .download-form-field label {
-                position: absolute;
-                top: 12px;
-                left: 14px;
-                font-size: 13px;
-                color: #5f6368;
-                pointer-events: none;
-                transition: all 0.2s ease;
-            }
-
-            .download-form-field input {
-                width: 100%;
-                padding: 28px 14px 10px 14px;
-                border: 1px solid #e5e2dc;
-                border-radius: 8px;
-                font-size: 15px;
-                background: #f5f3ef;
-                color: #1a1a1a;
-                outline: none;
-                transition: all 0.2s ease;
-            }
-
-            .download-form-field input:focus {
-                border-color: #1c4ba0;
-                background: #ffffff;
-            }
-
-            .download-form-field input:focus + label,
-            .download-form-field input:not(:placeholder-shown) + label {
-                top: 7px;
-                font-size: 11px;
-                color: #1c4ba0;
-            }
-
-            .download-form-field .optional-tag {
-                color: #6b7280;
-                font-size: 11px;
-            }
-
-            .download-form-error {
-                color: #dc3545;
-                font-size: 12px;
-                margin-top: 4px;
-                display: none;
-            }
-
-            .download-form-field.error input {
-                border-color: #dc3545;
-            }
-
-            .download-form-field.error .download-form-error {
-                display: block;
-            }
-
-            .download-form-footer {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 12px;
-                margin-top: 14px;
-                font-size: 12px;
-                color: #5f6368;
-            }
-
-            .download-form-submit {
-                background: #0b0e66;
-                color: #ffffff;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-            }
-
-            .download-form-submit:hover {
-                background: #1c4ba0;
-            }
-
-            .download-form-submit:disabled {
-                background: #cbd5e1;
-                cursor: not-allowed;
-            }
-
-            @media (max-width: 480px) {
-                .download-form-row {
-                    flex-direction: column;
-                    gap: 10px;
-                }
-            }
         </style>
     </head>
     <body class="loading">
@@ -492,13 +487,14 @@
 
             <div id="globalLoading" class="page-loading">
                 <div class="spinner"></div>
-                <div class="text">Loading PDF...</div>
+                <div class="text">Loading Sample Preview...</div>
             </div>
         </div>
 
         <div id="controls">
             <div class="progress-container">
-                <span class="page-info" id="pageInfo">1 / 1</span>
+                <span class="preview-badge-pill"><i class="ph ph-bookmark-simple"></i> Free Preview</span>
+                <span class="page-info" id="pageInfo">Page 1 / 8</span>
                 <div class="progress-bar" id="progressBar">
                     <div class="progress-fill" id="progressFill" style="width: 0%">
                         <div class="progress-thumb" id="progressThumb"></div>
@@ -506,60 +502,15 @@
                 </div>
             </div>
 
-            <button type="button" class="control-btn" id="downloadBtn">
-                <i class="ph ph-download"></i>
-                <span id="downloadButtonText">Download</span>
+            <button type="button" class="control-btn control-btn-unlock" id="toolbarUnlockBtn">
+                <i class="ph ph-shopping-bag"></i>
+                <span>Unlock Full Book (₹799)</span>
             </button>
 
             <button type="button" class="control-btn" id="fullscreenBtn">
                 <i class="ph ph-arrow-square-out" id="fullscreenIcon"></i>
                 <span id="fullscreenText">Fullscreen</span>
             </button>
-        </div>
-
-        <div id="downloadToast" class="toast-notification">
-            <span>Download started! It will continue in the background.</span>
-        </div>
-
-        <div id="downloadModalOverlay" class="download-modal-overlay">
-            <div class="download-modal">
-                <button type="button" class="download-modal-close" id="downloadModalClose">&times;</button>
-                <h2>Download PDF copy</h2>
-                <form id="downloadForm">
-                    <div class="download-form-row">
-                        <div class="download-form-field">
-                            <input type="text" id="firstName" name="firstName" placeholder=" " required />
-                            <label for="firstName">First name</label>
-                            <div class="download-form-error">Please enter your first name</div>
-                        </div>
-                        <div class="download-form-field">
-                            <input type="text" id="lastName" name="lastName" placeholder=" " />
-                            <label for="lastName">Last name <span class="optional-tag">(optional)</span></label>
-                        </div>
-                    </div>
-                    <div class="download-form-row">
-                        <div class="download-form-field full-width">
-                            <input type="email" id="workEmail" name="workEmail" placeholder=" " required />
-                            <label for="workEmail">Email address</label>
-                            <div class="download-form-error">Please enter a valid email address</div>
-                        </div>
-                    </div>
-                    <div class="download-form-row">
-                        <div class="download-form-field">
-                            <input type="text" id="companyName" name="companyName" placeholder=" " />
-                            <label for="companyName">Company <span class="optional-tag">(optional)</span></label>
-                        </div>
-                        <div class="download-form-field">
-                            <input type="text" id="mobileNumber" name="mobileNumber" placeholder=" " />
-                            <label for="mobileNumber">Mobile <span class="optional-tag">(optional)</span></label>
-                        </div>
-                    </div>
-                    <div class="download-form-footer">
-                        <span>Instant PDF download via Brands Out Loud</span>
-                        <button type="submit" class="download-form-submit" id="downloadFormSubmit">Download PDF</button>
-                    </div>
-                </form>
-            </div>
         </div>
 
         <script>
@@ -569,6 +520,8 @@
             const CMAP_URL = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/cmaps/`;
             const STANDARD_FONT_DATA_URL = `https://unpkg.com/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`;
             pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
+
+            const PREVIEW_PAGE_LIMIT = 8;
 
             function getEffectiveWidth() {
                 try {
@@ -597,8 +550,19 @@
                 return isMobileOrTablet() ? 2 : 3;
             }
 
+            function navigateToOrder() {
+                try {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.location.href = "/order";
+                        return;
+                    }
+                } catch (e) {}
+                window.location.href = "/order";
+            }
+
             let pdfDoc = null;
-            let totalPages = 0;
+            let previewTotalPages = 1;
+            let totalFlipPages = 1;
             let currentPage = 1;
             let viewport = null;
             let isFullscreen = false;
@@ -696,8 +660,55 @@
                 return page;
             }
 
+            function createPaywallPageShell(dimensions) {
+                const page = document.createElement("div");
+                page.className = "page paywall-page";
+                page.dataset.page = "paywall";
+                page.style.width = `${dimensions.width}px`;
+                page.style.height = `${dimensions.height}px`;
+
+                const content = document.createElement("div");
+                content.className = "page-content paywall-content";
+
+                content.innerHTML = `
+                    <div class="paywall-card">
+                        <div class="paywall-lock-badge">
+                            <i class="ph ph-lock-key"></i>
+                        </div>
+                        <span class="paywall-eyebrow">Sample Preview Limit Reached</span>
+                        <h2 class="paywall-title">Unlock Full Digital Access + Hardcover Collector Book</h2>
+                        <p class="paywall-desc">Experience the complete editorial publication with all chapters, high-resolution photo spreads, plus the luxury hardcover book shipped to your address.</p>
+                        <div class="paywall-perks">
+                            <div class="paywall-perk"><i class="ph ph-check-circle"></i><span>Complete 160+ page digital interactive flipbook</span></div>
+                            <div class="paywall-perk"><i class="ph ph-check-circle"></i><span>Collector's Hardcover Edition with foil cover</span></div>
+                            <div class="paywall-perk"><i class="ph ph-check-circle"></i><span>Complimentary All-India doorstep delivery</span></div>
+                        </div>
+                        <button type="button" class="btn-paywall-unlock" id="paywallCardUnlockBtn">
+                            <i class="ph ph-shopping-bag"></i>
+                            <span>Unlock Complete Bundle — ₹799</span>
+                        </button>
+                        <div class="paywall-guarantee">
+                            <i class="ph ph-shield-check"></i>
+                            <span>Instant Online Access + Hardcover dispatched to your address</span>
+                        </div>
+                    </div>
+                `;
+
+                const btn = content.querySelector("#paywallCardUnlockBtn");
+                if (btn) {
+                    btn.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        navigateToOrder();
+                    });
+                }
+
+                page.appendChild(content);
+                return page;
+            }
+
             async function renderPageDirect(pageNum) {
                 if (!pdfDoc) return;
+                if (pageNum > previewTotalPages) return;
                 const shell = pageShells[pageNum];
                 if (!shell) return;
                 if (renderedPages.has(pageNum)) return;
@@ -796,7 +807,7 @@
             }
 
             async function updateActiveWindow(centerPage) {
-                if (!pdfDoc || totalPages === 0) return;
+                if (!pdfDoc || previewTotalPages === 0) return;
                 if (isUpdatingWindow) {
                     pendingWindowCenter = centerPage;
                     return;
@@ -805,7 +816,7 @@
 
                 const radius = getWindowRadius();
                 const minPage = Math.max(1, centerPage - radius);
-                const maxPage = Math.min(totalPages, centerPage + radius);
+                const maxPage = Math.min(previewTotalPages, centerPage + radius);
                 const targetSet = new Set();
                 for (let i = minPage; i <= maxPage; i++) {
                     targetSet.add(i);
@@ -845,7 +856,7 @@
 
             function rebuildActivePagesForQuality() {
                 const dims = calculatePageDimensions();
-                for (let i = 1; i <= totalPages; i++) {
+                for (let i = 1; i <= previewTotalPages; i++) {
                     const shell = pageShells[i];
                     if (shell) {
                         shell.page.style.width = `${dims.width}px`;
@@ -860,11 +871,14 @@
             }
 
             function updateControls() {
-                document.getElementById("pageInfo").textContent = `${currentPage} / ${totalPages}`;
-                const progress = totalPages > 1 ? ((currentPage - 1) / (totalPages - 1)) * 100 : 0;
-                document.getElementById("progressFill").style.width = `${progress}%`;
+                const isPaywall = currentPage > previewTotalPages;
+                const pageText = isPaywall ? "Preview Complete" : `Page ${currentPage} / ${previewTotalPages}`;
+                document.getElementById("pageInfo").textContent = pageText;
+
+                const progress = totalFlipPages > 1 ? ((currentPage - 1) / (totalFlipPages - 1)) * 100 : 0;
+                document.getElementById("progressFill").style.width = `${Math.min(100, Math.max(0, progress))}%`;
                 document.getElementById("prevBtn").classList.toggle("disabled", currentPage <= 1);
-                document.getElementById("nextBtn").classList.toggle("disabled", currentPage >= totalPages);
+                document.getElementById("nextBtn").classList.toggle("disabled", currentPage >= totalFlipPages);
             }
 
             function initProgressBar() {
@@ -875,12 +889,14 @@
                     const rect = progressBar.getBoundingClientRect();
                     const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
                     const progress = x / (rect.width || 1);
-                    const targetPage = Math.max(1, Math.min(totalPages, Math.round(progress * (totalPages - 1) + 1)));
+                    const targetPage = Math.max(1, Math.min(totalFlipPages, Math.round(progress * (totalFlipPages - 1) + 1)));
                     if (targetPage !== currentPage && pageFlip) {
                         currentPage = targetPage;
                         updateControls();
                         pageFlip.turnToPage(hasBlankStart ? targetPage : targetPage - 1);
-                        updateActiveWindow(targetPage);
+                        if (targetPage <= previewTotalPages) {
+                            updateActiveWindow(targetPage);
+                        }
                     }
                 }
 
@@ -904,106 +920,10 @@
             });
 
             document.getElementById("nextBtn").addEventListener("click", () => {
-                if (pageFlip && currentPage < totalPages) pageFlip.flipNext();
+                if (pageFlip && currentPage < totalFlipPages) pageFlip.flipNext();
             });
 
-            function showDownloadToast() {
-                const toast = document.getElementById("downloadToast");
-                toast.classList.add("show");
-                setTimeout(() => toast.classList.remove("show"), 3000);
-            }
-
-            function showDownloadModal() {
-                document.getElementById("downloadModalOverlay").classList.add("show");
-            }
-
-            function hideDownloadModal() {
-                document.getElementById("downloadModalOverlay").classList.remove("show");
-                document.getElementById("downloadForm").reset();
-                document.querySelectorAll(".download-form-field").forEach((f) => f.classList.remove("error"));
-            }
-
-            function performDownload() {
-                const filename = decodeURIComponent(RAW_PDF_URL.split("/").pop() || "magazine.pdf");
-                showDownloadToast();
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({ action: "download", pdfUrl: RAW_PDF_URL, filename }, window.location.origin);
-                    return;
-                }
-                const a = document.createElement("a");
-                a.href = `/download_proxy?pdf=${encodeURIComponent(RAW_PDF_URL)}&filename=${encodeURIComponent(filename)}`;
-                a.download = filename;
-                a.style.display = "none";
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
-
-            async function submitDownloadForm(firstName, lastName, email, companyName, mobileNumber) {
-                try {
-                    const response = await fetch("/api/pdf-download-form", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            first_name: firstName,
-                            last_name: lastName,
-                            email: email,
-                            company_name: companyName,
-                            mobile_number: mobileNumber,
-                            pdf_link: RAW_PDF_URL
-                        })
-                    });
-                    return response.ok;
-                } catch (err) {
-                    return false;
-                }
-            }
-
-            document.getElementById("downloadBtn").addEventListener("click", () => {
-                try {
-                    if (localStorage.getItem("bol_token")) {
-                        performDownload();
-                        return;
-                    }
-                } catch (e) {}
-                showDownloadModal();
-            });
-
-            document.getElementById("downloadModalClose").addEventListener("click", hideDownloadModal);
-            document.getElementById("downloadModalOverlay").addEventListener("click", (e) => {
-                if (e.target === e.currentTarget) hideDownloadModal();
-            });
-
-            document.getElementById("downloadForm").addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const firstName = document.getElementById("firstName").value.trim();
-                const lastName = document.getElementById("lastName").value.trim();
-                const email = document.getElementById("workEmail").value.trim();
-                const companyName = document.getElementById("companyName").value.trim();
-                const mobileNumber = document.getElementById("mobileNumber").value.trim();
-
-                let hasError = false;
-                document.querySelectorAll(".download-form-field").forEach((f) => f.classList.remove("error"));
-
-                if (!firstName) {
-                    document.getElementById("firstName").closest(".download-form-field").classList.add("error");
-                    hasError = true;
-                }
-                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                    document.getElementById("workEmail").closest(".download-form-field").classList.add("error");
-                    hasError = true;
-                }
-                if (hasError) return;
-
-                const submitBtn = document.getElementById("downloadFormSubmit");
-                submitBtn.disabled = true;
-                submitBtn.textContent = "Processing...";
-                await submitDownloadForm(firstName, lastName, email, companyName, mobileNumber);
-                hideDownloadModal();
-                performDownload();
-                submitBtn.disabled = false;
-                submitBtn.textContent = "Download PDF";
-            });
+            document.getElementById("toolbarUnlockBtn").addEventListener("click", navigateToOrder);
 
             document.getElementById("fullscreenBtn").addEventListener("click", () => {
                 if (!isFullscreen) {
@@ -1036,12 +956,12 @@
                 const msg = event.data || {};
                 const msgType = msg.type || msg.action;
                 if (msgType === "flipToPage" && pageFlip) {
-                    const tp = Math.max(1, Math.min(totalPages, msg.page || 1));
+                    const tp = Math.max(1, Math.min(totalFlipPages, msg.page || 1));
                     currentPage = tp;
                     updateControls();
                     pageFlip.turnToPage(hasBlankStart ? tp : tp - 1);
-                    updateActiveWindow(tp);
-                } else if (msgType === "nextPage" && pageFlip && currentPage < totalPages) {
+                    if (tp <= previewTotalPages) updateActiveWindow(tp);
+                } else if (msgType === "nextPage" && pageFlip && currentPage < totalFlipPages) {
                     pageFlip.flipNext();
                 } else if (msgType === "prevPage" && pageFlip && currentPage > 1) {
                     pageFlip.flipPrev();
@@ -1069,29 +989,35 @@
                 loadingTask.onProgress = function (progress) {
                     const textEl = document.querySelector("#globalLoading .text");
                     if (textEl && progress.total > 0) {
-                        textEl.textContent = `Loading PDF: ${Math.round((progress.loaded / progress.total) * 100)}%`;
+                        textEl.textContent = `Loading Sample Preview: ${Math.round((progress.loaded / progress.total) * 100)}%`;
                     }
                 };
 
                 loadingTask.promise
                     .then(async (doc) => {
                         pdfDoc = doc;
-                        totalPages = pdfDoc.numPages;
+                        previewTotalPages = Math.min(pdfDoc.numPages, PREVIEW_PAGE_LIMIT);
+                        totalFlipPages = previewTotalPages + 1;
+
                         const firstPage = await pdfDoc.getPage(1);
                         viewport = firstPage.getViewport({ scale: 1 });
-                        document.getElementById("pageInfo").textContent = `1 / ${totalPages}`;
+                        document.getElementById("pageInfo").textContent = `Page 1 / ${previewTotalPages}`;
                         const dims = calculatePageDimensions();
 
                         flipbook.innerHTML = "";
                         if (hasBlankStart) {
                             flipbook.appendChild(createBlankPageShell(dims));
                         }
-                        for (let i = 1; i <= totalPages; i++) {
+                        for (let i = 1; i <= previewTotalPages; i++) {
                             const shell = createFlipPageShell(i, dims);
                             flipbook.appendChild(shell.page);
                             pageShells[i] = shell;
                         }
-                        if (hasBlankStart && totalPages % 2 === 0) {
+
+                        const paywallShell = createPaywallPageShell(dims);
+                        flipbook.appendChild(paywallShell);
+
+                        if (hasBlankStart && totalFlipPages % 2 === 0) {
                             flipbook.appendChild(createBlankPageShell(dims));
                         }
 
@@ -1117,9 +1043,11 @@
 
                         pageFlip.on("flip", (e) => {
                             const idx = e.data || 0;
-                            currentPage = hasBlankStart ? Math.min(totalPages, Math.max(1, idx)) : Math.min(totalPages, idx + 1);
+                            currentPage = hasBlankStart ? Math.min(totalFlipPages, Math.max(1, idx)) : Math.min(totalFlipPages, idx + 1);
                             updateControls();
-                            updateActiveWindow(currentPage);
+                            if (currentPage <= previewTotalPages) {
+                                updateActiveWindow(currentPage);
+                            }
                         });
 
                         currentPage = 1;
@@ -1128,11 +1056,11 @@
                         const loaderEl = document.getElementById("globalLoading");
                         const loaderText = loaderEl ? loaderEl.querySelector(".text") : null;
                         if (loaderText) {
-                            loaderText.textContent = "Rendering initial page...";
+                            loaderText.textContent = "Rendering initial preview...";
                         }
 
                         await renderPageDirect(1);
-                        if (!isMobileOrTablet() && totalPages >= 2) {
+                        if (!isMobileOrTablet() && previewTotalPages >= 2) {
                             await renderPageDirect(2);
                         }
 
@@ -1142,9 +1070,9 @@
                         updateActiveWindow(1);
                     })
                     .catch((error) => {
-                        console.error("Error loading PDF:", error);
+                        console.error("Error loading preview:", error);
                         document.getElementById("globalLoading").innerHTML =
-                            `<div style="color: white; text-align: center; padding: 20px;"><h3>Error loading PDF</h3><p>${error.message || "Please try refreshing the page"}</p></div>`;
+                            `<div style="color: white; text-align: center; padding: 20px;"><h3>Error loading sample preview</h3><p>${error.message || "Please try refreshing the page"}</p></div>`;
                     });
             }
 
@@ -1160,7 +1088,6 @@
             });
 
             document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") hideDownloadModal();
                 if (!pageFlip) return;
                 if (e.key === "ArrowLeft") {
                     if (hasBlankStart && currentPage <= 1) return;
@@ -1176,4 +1103,3 @@
         </script>
     </body>
 </html>
-

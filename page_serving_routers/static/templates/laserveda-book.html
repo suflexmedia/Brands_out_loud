@@ -93,8 +93,12 @@ at the Speed of Light | Brands Out Loud{% endblock %} {% block page_css %}
         </div>
 
         <div class="lv-hero-cta-row">
-          <a href="/magazine/laser-veda-edition/read" class="lv-btn-orange">
-            <span>Read Book Online</span>
+          <a href="/order" class="lv-btn-orange">
+            <span>Buy Book Bundle</span>
+            <span class="lv-btn-arrow">→</span>
+          </a>
+          <a href="/magazine/laser-veda-edition/read" class="lv-btn-sample lv-hero-read-btn">
+            <span>Preview Sample Chapters</span>
             <span class="lv-btn-arrow">→</span>
           </a>
         </div>
@@ -653,8 +657,7 @@ at the Speed of Light | Brands Out Loud{% endblock %} {% block page_css %}
                 Get the <span class="lv-text-blue">Book</span>
               </h2>
               <p class="lv-getbook-desc">
-                Pick up your copy of LaserVEDA - in hardcover or as an eBook and
-                start noticing what you’ve been trained to overlook.
+                Order the complete LaserVEDA bundle — receive the deluxe collector's hardcover delivered to your doorstep plus instant full digital reader access.
               </p>
               <div class="lv-getbook-rule"></div>
             </div>
@@ -676,12 +679,13 @@ at the Speed of Light | Brands Out Loud{% endblock %} {% block page_css %}
             </div>
 
             <div class="lv-getbook-actions">
-              <a href="/magazine/laser-veda-edition/read" class="lv-btn-buy">
-                <span>Read Book Online</span>
+              <a href="/order" class="lv-btn-buy">
+                <span>Buy Book Bundle</span>
                 <span class="lv-btn-arrow">→</span>
               </a>
               <a href="/magazine/laser-veda-edition/read" class="lv-btn-sample">
-                Download &amp; Read Online
+                <span>Preview Sample Chapters</span>
+                <span class="lv-btn-arrow">→</span>
               </a>
             </div>
           </div>
@@ -784,6 +788,32 @@ at the Speed of Light | Brands Out Loud{% endblock %} {% block page_css %}
       </div>
     </div>
   </section>
+
+  <div class="lv-auth-modal" id="lvAuthModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lv-auth-modal-backdrop" id="lvAuthModalBackdrop"></div>
+    <div class="lv-auth-modal-dialog">
+      <button type="button" class="lv-auth-modal-close" id="lvAuthModalClose" aria-label="Close modal">
+        <i class="ph ph-x"></i>
+      </button>
+      <div class="lv-auth-modal-badge">
+        <i class="ph ph-lock-key"></i>
+      </div>
+      <h3 class="lv-auth-modal-title">Sign in to Buy LaserVEDA</h3>
+      <p class="lv-auth-modal-copy">
+        Please sign in or create a Brands Out Loud member account to proceed with your book order and delivery details.
+      </p>
+      <div class="lv-auth-modal-actions">
+        <a href="/login?next=/order" class="lv-auth-btn lv-auth-btn--primary">
+          <span>Sign In to Account</span>
+          <span class="lv-btn-arrow">→</span>
+        </a>
+        <a href="/login?tab=register&next=/order" class="lv-auth-btn lv-auth-btn--secondary">
+          <span>Create New Account</span>
+        </a>
+      </div>
+      <p class="lv-auth-modal-hint">Quick verification · Secure executive checkout</p>
+    </div>
+  </div>
 </div>
 {% endblock %} {% block page_js %}
 <script>
@@ -803,5 +833,39 @@ at the Speed of Light | Brands Out Loud{% endblock %} {% block page_css %}
       button.setAttribute("aria-expanded", "true");
     }
   }
+
+  const authModal = document.getElementById("lvAuthModal");
+  const authModalClose = document.getElementById("lvAuthModalClose");
+  const authModalBackdrop = document.getElementById("lvAuthModalBackdrop");
+
+  function openAuthModal() {
+    if (authModal) {
+      authModal.classList.add("is-open");
+      authModal.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  function closeAuthModal() {
+    if (authModal) {
+      authModal.classList.remove("is-open");
+      authModal.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  if (authModalClose) authModalClose.addEventListener("click", closeAuthModal);
+  if (authModalBackdrop) authModalBackdrop.addEventListener("click", closeAuthModal);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeAuthModal();
+  });
+
+  document.querySelectorAll('a[href="/order"]').forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const token = localStorage.getItem("bol_token");
+      if (!token) {
+        e.preventDefault();
+        openAuthModal();
+      }
+    });
+  });
 </script>
 {% endblock %}

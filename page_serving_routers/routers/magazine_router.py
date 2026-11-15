@@ -204,16 +204,37 @@ async def serve_issue_pdf_reader(request: Request, issue_slug: str):
     other_issues = [item for item in all_issues if item["slug"] != target_slug][:6]
     pdf_url = issue["pdf_url"]
     back_url = "/magazine/laser-veda" if target_slug == "laser-veda-edition" else f"/magazine/{target_slug}"
+    books = await magazine_service.get_books(target_slug)
+    physical_book = books[0] if books else None
+    if not physical_book and target_slug == "laser-veda-edition":
+        physical_book = {
+            "title": "LaserVEDA",
+            "subtitle": "HEALING AT THE SPEED OF LIGHT",
+            "author_name": "Dr. Prof. Chandrashekhar Yavagal",
+            "cover_image_url": "/static/images/laserveda/book_cover.png",
+            "pages_label": "Collector's Edition",
+            "price": {"sale": 799, "original": 999},
+            "order_url": "/order",
+        }
+    elif physical_book:
+        if not physical_book.get("order_url"):
+            physical_book["order_url"] = "/order" if target_slug == "laser-veda-edition" else physical_book.get("url", "/order")
+    reader_stats = [
+        {"value": "Pages 1–8", "label": "Free Sample Preview"},
+        {"value": "Both Included", "label": "Digital + Hardcover"},
+        {"value": "All-India", "label": "Doorstep Delivery"},
+    ]
     context.update({
         "seo": {
-            "title": f"{issue['title']} — Digital Edition | Brands Out Loud",
-            "description": issue.get("description") or f"Read {issue['title']} online in our interactive magazine viewer.",
+            "title": f"{issue['title']} — Sample Preview | Brands Out Loud",
+            "description": f"Read the free sample preview of {issue['title']}. Order the complete bundle to get instant full digital access + collector's hardcover book delivered.",
             "og_image": issue.get("cover_image_url", ""),
         },
         "issue": issue,
         "other_issues": other_issues,
         "back_url": back_url,
-        "download_url": f"/download_proxy?pdf={quote(pdf_url, safe='')}",
+        "physical_book": physical_book,
+        "reader_stats": reader_stats,
     })
     return templates.TemplateResponse(request, PDF_VIEWER_TEMPLATE, context)
 

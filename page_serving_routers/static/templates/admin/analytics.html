@@ -562,6 +562,63 @@
             border-color: #9333ea;
         }
 
+        .btn-delete-user {
+            padding: 0.25rem 0.55rem;
+            background: #fff0f0;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .btn-delete-user:hover {
+            background: #d32f2f;
+            color: #ffffff;
+        }
+
+        .users-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: #fbfbfb;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .users-filter-bar select {
+            padding: 0.35rem 0.6rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .btn-purge-inactive {
+            margin-left: auto;
+            padding: 0.35rem 0.75rem;
+            background: #fff0f0;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-purge-inactive:hover {
+            background: #d32f2f;
+            color: #ffffff;
+        }
+
         @media (max-width: 1024px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -822,6 +879,16 @@
                 <h3>Registered Users</h3>
                 <button class="modal-close" onclick="closeModal('users-modal')">&times; Close</button>
             </div>
+            <div class="users-filter-bar">
+                <label style="font-family:'Space Mono', monospace;font-size:0.8rem;font-weight:700;">Filter Activity:</label>
+                <select id="users-filter-select" onchange="changeUsersFilter(this.value)">
+                    <option value="">All Registered Users</option>
+                    <option value="30">Inactive (> 30 days)</option>
+                    <option value="90">Inactive (> 90 days)</option>
+                    <option value="180">Inactive (> 180 days)</option>
+                </select>
+                <button class="btn-purge-inactive" onclick="purgeInactiveUsersPrompt()">Purge Inactive Users</button>
+            </div>
             <div class="modal-body">
                 <table>
                     <thead>
@@ -831,6 +898,8 @@
                             <th>Phone</th>
                             <th>Company</th>
                             <th>Joined</th>
+                            <th>Last Active</th>
+                            <th style="text-align:right;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="users-modal-body"></tbody>
@@ -1300,8 +1369,19 @@
             }
         }
 
+        let usersInactiveFilter = '';
+
+        function changeUsersFilter(val) {
+            usersInactiveFilter = val;
+            usersCurrentPage = 1;
+            loadUsersPage(1);
+        }
+
         async function openUsersModal() {
             usersCurrentPage = 1;
+            usersInactiveFilter = '';
+            const filterEl = document.getElementById('users-filter-select');
+            if (filterEl) filterEl.value = '';
             openModal('users-modal');
             await loadUsersPage(1);
         }
@@ -1309,10 +1389,14 @@
         async function loadUsersPage(page) {
             usersCurrentPage = page;
             try {
-                const data = await apiFetch('/admin/api/analytics/registered-users', { page, per_page: 50 });
+                const params = { page, per_page: 50 };
+                if (usersInactiveFilter) {
+                    params.inactive_days = usersInactiveFilter;
+                }
+                const data = await apiFetch('/admin/api/analytics/registered-users', params);
                 const tbody = document.getElementById('users-modal-body');
                 tbody.innerHTML = data.users.length === 0
-                    ? '<tr><td colspan="5" style="text-align:center;color:#888;">No registered users yet</td></tr>'
+                    ? '<tr><td colspan="7" style="text-align:center;color:#888;">No users found matching criteria</td></tr>'
                     : data.users.map(u => {
                         let joined = '—';
                         if (u.created_at) {
@@ -1322,12 +1406,25 @@
                                 joined = String(u.created_at);
                             }
                         }
+                        let lastActive = '—';
+                        if (u.last_login_at) {
+                            try {
+                                lastActive = new Date(u.last_login_at).toLocaleDateString();
+                            } catch (e) {
+                                lastActive = String(u.last_login_at);
+                            }
+                        }
+                        const label = (u.email || u.name || 'this user').replace(/'/g, "\\'");
                         return `<tr>
                             <td>${u.name || '—'}</td>
                             <td class="path-cell" title="${u.email || ''}">${u.email || ''}</td>
                             <td>${u.phone || '—'}</td>
                             <td>${u.company_name || '—'}</td>
                             <td style="white-space:nowrap;">${joined}</td>
+                            <td style="white-space:nowrap;">${lastActive}</td>
+                            <td style="text-align:right;white-space:nowrap;">
+                                <button class="btn-delete-user" onclick="deleteRegisteredUser('${u._id}', '${label}')">Delete</button>
+                            </td>
                         </tr>`;
                     }).join('');
 
@@ -1337,6 +1434,56 @@
                 document.getElementById('users-next-btn').disabled = !data.has_next;
             } catch (e) {
                 console.error('Users modal error:', e);
+            }
+        }
+
+        async function deleteRegisteredUser(userId, userIdentifier) {
+            if (!confirm(`Are you sure you want to permanently delete user "${userIdentifier}"?\nThis action cannot be undone.`)) {
+                return;
+            }
+            try {
+                const res = await fetch(`/admin/api/analytics/registered-users/${userId}`, {
+                    method: 'DELETE',
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert(data.detail || 'Failed to delete user.');
+                    return;
+                }
+                await loadUsersPage(usersCurrentPage);
+                await loadRegisteredUsersCount();
+            } catch (err) {
+                alert('Network error while deleting user.');
+            }
+        }
+
+        async function purgeInactiveUsersPrompt() {
+            const daysInput = prompt('Enter inactivity cutoff in days (e.g. 90 or 180):', '180');
+            if (!daysInput) return;
+            const days = parseInt(daysInput.trim());
+            if (isNaN(days) || days < 30) {
+                alert('Please enter a valid number of days (minimum 30).');
+                return;
+            }
+            if (!confirm(`Permanently delete all registered users who have been inactive for more than ${days} days?`)) {
+                return;
+            }
+            try {
+                const res = await fetch('/admin/api/analytics/registered-users/purge-inactive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ inactive_days: days }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert(data.detail || 'Failed to purge inactive users.');
+                    return;
+                }
+                alert(data.message || 'Inactive users purged successfully.');
+                await loadUsersPage(1);
+                await loadRegisteredUsersCount();
+            } catch (err) {
+                alert('Network error while purging inactive users.');
             }
         }
     </script>

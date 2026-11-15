@@ -8,13 +8,16 @@ import secrets
 import time
 from typing import Optional
 
+from bson import ObjectId
 import httpx
 from fastapi import APIRouter, HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
+from common.crypto_utils import decrypt_pii
 from database_handler import db_handler
+from page_serving_routers.routers.auth_router import get_authenticated_user_payload
 from page_serving_routers.routers.site_context import ASSET_VERSION
 
 router = APIRouter()
@@ -31,14 +34,14 @@ BOOK_ITEM = {
     "title": "LaserVEDA",
     "subtitle": "HEALING AT THE SPEED OF LIGHT",
     "author": "Dr. Prof. Chandrashekhar Yavagal",
-    "edition": "Hardcover · English · Qty 1",
+    "edition": "Deluxe Hardcover + Full Digital Access · Qty 1",
     "cover_url": "/static/images/laserveda/book_cover.png",
     "sale_price": 799,
     "original_price": 999,
     "discount_amount": 200,
     "amount_paise": 79900,
     "currency": "INR",
-    "note": "One copy. A new perspective on healing.",
+    "note": "Deluxe Hardcover delivered to your address + Full Digital Edition unlocked.",
 }
 
 
@@ -103,8 +106,18 @@ async def _generate_order_number(db) -> str:
 
 def _razorpay_credentials() -> tuple:
     """Returns configured Razorpay key ID and key secret from environment."""
-    key_id = os.environ.get("RAZORPAY_KEY_ID", "").strip()
-    key_secret = os.environ.get("RAZORPAY_KEY_SECRET", "").strip()
+    key_id = (
+        os.environ.get("RAZORPAY_KEY_ID")
+        or os.environ.get("RAZORPAY_API_KEY")
+        or os.environ.get("RAZORPAY_API_Key")
+        or ""
+    ).strip().strip('"').strip("'")
+    key_secret = (
+        os.environ.get("RAZORPAY_KEY_SECRET")
+        or os.environ.get("RAZORPAY_SECRET")
+        or os.environ.get("RAZORPAY_Key_Secret")
+        or ""
+    ).strip().strip('"').strip("'")
     return key_id, key_secret
 
 
@@ -137,10 +150,40 @@ def _base_order_context(order: Optional[dict], active_step: int) -> dict:
 
 @router.get("/order", tags=["Pages"])
 async def serve_order_details(request: Request):
-    """Serves step 1 of the LaserVEDA book order flow."""
+    """Serves step 1 of the LaserVEDA book order flow with auth protection and prefill."""
+    user_payload = get_authenticated_user_payload(request)
+    if not user_payload:
+        return RedirectResponse(url="/login?next=/order", status_code=302)
+
+    db = db_handler.get_db()
+    user_doc = None
+    user_id = user_payload.get("user_id")
+    if user_id:
+        try:
+            user_doc = await db["users"].find_one({"_id": ObjectId(user_id)})
+        except Exception:
+            pass
+
     order = await _get_order_by_request(request)
     if order and order.get("status") == "confirmed":
         order = None
+
+    if not order:
+        order = {}
+
+    if user_doc:
+        plain_name = decrypt_pii(user_doc.get("name", "")) or user_doc.get("name", "")
+        plain_phone = decrypt_pii(user_doc.get("phone_encrypted", "")) or user_doc.get("phone", "")
+        parts = plain_name.split(" ", 1)
+        if not order.get("first_name"):
+            order["first_name"] = parts[0] if parts else ""
+        if not order.get("last_name") and len(parts) > 1:
+            order["last_name"] = parts[1]
+        if not order.get("email"):
+            order["email"] = user_doc.get("email", "")
+        if not order.get("phone"):
+            order["phone"] = plain_phone
+
     context = _base_order_context(order, active_step=1)
     return templates.TemplateResponse(request, "order/order_details.html", context)
 
@@ -154,34 +197,25 @@ async def redirect_laserveda_order():
 
 @router.get("/order/verify", tags=["Pages"])
 async def serve_order_verify(request: Request):
-    """Serves step 2 phone OTP verification for the active order session."""
-    order = await _get_order_by_request(request)
-    if not order or not order.get("phone"):
-        return RedirectResponse(url="/order", status_code=302)
-    if order.get("status") == "confirmed":
-        return RedirectResponse(url="/order/confirmed", status_code=302)
-    sent_at = order.get("otp_sent_at", 0)
-    remaining_cooldown = max(0, int(OTP_RESEND_COOLDOWN_SECONDS - (time.time() - sent_at)))
-    context = _base_order_context(order, active_step=2)
-    context.update({
-        "remaining_cooldown": remaining_cooldown,
-        "demo_otp": "" if _is_sms_live() else order.get("otp_code", ""),
-    })
-    return templates.TemplateResponse(request, "order/order_verify.html", context)
+    """Redirects legacy phone verification step directly to order review."""
+    return RedirectResponse(url="/order/review", status_code=302)
 
 
 @router.get("/order/review", tags=["Pages"])
 async def serve_order_review(request: Request):
-    """Serves step 3 order review and Razorpay payment initiation."""
+    """Serves step 2 order review and Razorpay payment initiation."""
+    user_payload = get_authenticated_user_payload(request)
+    if not user_payload:
+        return RedirectResponse(url="/login?next=/order", status_code=302)
+
     order = await _get_order_by_request(request)
-    if not order or not order.get("phone"):
+    if not order or not order.get("address_line_1"):
         return RedirectResponse(url="/order", status_code=302)
-    if not order.get("phone_verified"):
-        return RedirectResponse(url="/order/verify", status_code=302)
     if order.get("status") == "confirmed":
         return RedirectResponse(url="/order/confirmed", status_code=302)
+
     key_id, key_secret = _razorpay_credentials()
-    context = _base_order_context(order, active_step=3)
+    context = _base_order_context(order, active_step=2)
     context["razorpay_configured"] = bool(key_id and key_secret)
     return templates.TemplateResponse(request, "order/order_review.html", context)
 
@@ -192,7 +226,7 @@ async def serve_order_placed(request: Request):
     order = await _get_order_by_request(request)
     if not order or order.get("status") != "confirmed":
         return RedirectResponse(url="/order", status_code=302)
-    context = _base_order_context(order, active_step=4)
+    context = _base_order_context(order, active_step=3)
     return templates.TemplateResponse(request, "order/order_placed.html", context)
 
 
@@ -202,13 +236,18 @@ async def serve_order_confirmed(request: Request):
     order = await _get_order_by_request(request)
     if not order or order.get("status") != "confirmed":
         return RedirectResponse(url="/order", status_code=302)
-    context = _base_order_context(order, active_step=5)
+    context = _base_order_context(order, active_step=3)
     return templates.TemplateResponse(request, "order/order_confirmed.html", context)
 
 
 @router.post("/api/order/details", tags=["Order API"])
 async def save_order_details(payload: OrderDetailsRequest, request: Request, response: Response):
-    """Validates contact and shipping details, issues an OTP, and persists the draft order."""
+    """Validates contact and shipping details and advances directly to review without OTP."""
+    user_payload = get_authenticated_user_payload(request)
+    if not user_payload:
+        raise HTTPException(status_code=401, detail="Please sign in to place your book order.")
+
+    user_id = user_payload.get("user_id")
     first_name = _clean_text(payload.first_name)
     last_name = _clean_text(payload.last_name)
     email = _clean_text(payload.email).lower()
@@ -231,18 +270,15 @@ async def save_order_details(payload: OrderDetailsRequest, request: Request, res
     db = db_handler.get_db()
     existing = await _get_order_by_request(request)
     now = time.time()
-    otp_code = _generate_otp()
 
     if existing and existing.get("status") != "confirmed":
         session_id = existing["session_id"]
-        phone_changed = existing.get("phone") != phone
-        already_verified = bool(existing.get("phone_verified")) and not phone_changed
     else:
         session_id = secrets.token_urlsafe(32)
-        already_verified = False
 
     order_doc = {
         "session_id": session_id,
+        "user_id": user_id,
         "book_slug": BOOK_ITEM["slug"],
         "book_title": BOOK_ITEM["title"],
         "amount": BOOK_ITEM["sale_price"],
@@ -256,11 +292,8 @@ async def save_order_details(payload: OrderDetailsRequest, request: Request, res
         "address_line_1": address_line_1,
         "address_line_2": address_line_2,
         "zip_code": zip_code,
-        "otp_code": otp_code,
-        "otp_sent_at": now,
-        "otp_expires_at": now + OTP_EXPIRY_SECONDS,
-        "phone_verified": already_verified,
-        "status": "verified" if already_verified else "otp_pending",
+        "phone_verified": True,
+        "status": "details_saved",
         "updated_at": now,
     }
 
@@ -278,92 +311,21 @@ async def save_order_details(payload: OrderDetailsRequest, request: Request, res
         max_age=7 * 24 * 3600,
     )
 
-    print(f"[LaserVEDA Order OTP] Phone: {phone} | OTP: {otp_code}")
-
-    result = {
+    return {
         "status": "ok",
-        "redirect_url": "/order/verify",
+        "redirect_url": "/order/review",
     }
-    if not _is_sms_live():
-        result["demo_otp"] = otp_code
-    return result
 
 
 @router.post("/api/order/resend-otp", tags=["Order API"])
 async def resend_order_otp(request: Request):
-    """Issues a fresh 6-digit OTP for the active order session after cooldown."""
-    order = await _get_order_by_request(request)
-    if not order or not order.get("phone"):
-        raise HTTPException(status_code=400, detail="Order session expired. Please start again.")
-    if order.get("status") == "confirmed":
-        raise HTTPException(status_code=400, detail="This order is already confirmed.")
-
-    now = time.time()
-    elapsed = now - order.get("otp_sent_at", 0)
-    if elapsed < OTP_RESEND_COOLDOWN_SECONDS:
-        wait = int(OTP_RESEND_COOLDOWN_SECONDS - elapsed)
-        raise HTTPException(status_code=429, detail=f"Please wait {wait}s before requesting another OTP.")
-
-    otp_code = _generate_otp()
-    db = db_handler.get_db()
-    await db["book_orders"].update_one(
-        {"session_id": order["session_id"]},
-        {
-            "$set": {
-                "otp_code": otp_code,
-                "otp_sent_at": now,
-                "otp_expires_at": now + OTP_EXPIRY_SECONDS,
-                "phone_verified": False,
-                "status": "otp_pending",
-                "updated_at": now,
-            }
-        },
-    )
-
-    print(f"[LaserVEDA Order OTP Resent] Phone: {order['phone']} | OTP: {otp_code}")
-
-    result = {
-        "status": "ok",
-        "cooldown": OTP_RESEND_COOLDOWN_SECONDS,
-    }
-    if not _is_sms_live():
-        result["demo_otp"] = otp_code
-    return result
+    """Safe fallback for legacy resend OTP requests."""
+    return {"status": "ok", "cooldown": 0}
 
 
 @router.post("/api/order/verify-otp", tags=["Order API"])
 async def verify_order_otp(payload: VerifyOtpRequest, request: Request):
-    """Verifies the 6-digit OTP and advances the order session to review."""
-    order = await _get_order_by_request(request)
-    if not order or not order.get("phone"):
-        raise HTTPException(status_code=400, detail="Order session expired. Please enter your details again.")
-    if order.get("status") == "confirmed":
-        return {"status": "ok", "redirect_url": "/order/confirmed"}
-
-    entered = re.sub(r"\D", "", payload.otp or "")
-    if len(entered) != 6:
-        raise HTTPException(status_code=400, detail="Please enter the complete 6-digit verification code.")
-
-    now = time.time()
-    if now > order.get("otp_expires_at", 0):
-        raise HTTPException(status_code=400, detail="Your verification code has expired. Please resend a new OTP.")
-
-    expected = str(order.get("otp_code", ""))
-    if not hmac.compare_digest(entered, expected):
-        raise HTTPException(status_code=400, detail="Incorrect verification code. Please check and try again.")
-
-    db = db_handler.get_db()
-    await db["book_orders"].update_one(
-        {"session_id": order["session_id"]},
-        {
-            "$set": {
-                "phone_verified": True,
-                "status": "verified",
-                "verified_at": now,
-                "updated_at": now,
-            }
-        },
-    )
+    """Advances order session directly to review without separate OTP verification."""
     return {"status": "ok", "redirect_url": "/order/review"}
 
 
@@ -371,10 +333,8 @@ async def verify_order_otp(payload: VerifyOtpRequest, request: Request):
 async def create_razorpay_order(request: Request):
     """Creates a Razorpay order via REST API or returns sandbox config when creds are absent."""
     order = await _get_order_by_request(request)
-    if not order or not order.get("phone"):
-        raise HTTPException(status_code=400, detail="Order session not found.")
-    if not order.get("phone_verified"):
-        raise HTTPException(status_code=400, detail="Please verify your phone number first.")
+    if not order or not order.get("address_line_1"):
+        raise HTTPException(status_code=400, detail="Please complete your shipping address first.")
     if order.get("status") == "confirmed":
         return {"status": "already_confirmed", "redirect_url": "/order/confirmed"}
 
@@ -424,6 +384,7 @@ async def create_razorpay_order(request: Request):
         )
 
     if rzp_res.status_code >= 400:
+        print(f"Razorpay order creation failed: {rzp_res.status_code} {rzp_res.text}")
         raise HTTPException(status_code=502, detail="Unable to initiate Razorpay payment. Please try again.")
 
     rzp_data = rzp_res.json()
@@ -460,8 +421,8 @@ async def create_razorpay_order(request: Request):
 async def verify_razorpay_payment(payload: RazorpayVerifyRequest, request: Request):
     """Verifies Razorpay signature (or sandbox checkout) and confirms the book order."""
     order = await _get_order_by_request(request)
-    if not order or not order.get("phone_verified"):
-        raise HTTPException(status_code=400, detail="Verified order session not found.")
+    if not order or not order.get("address_line_1"):
+        raise HTTPException(status_code=400, detail="Order session not found.")
     if order.get("status") == "confirmed":
         return {
             "status": "ok",
@@ -514,7 +475,7 @@ async def verify_razorpay_payment(payload: RazorpayVerifyRequest, request: Reque
 @router.post("/api/order/razorpay/webhook", tags=["Order API"])
 async def razorpay_webhook(request: Request):
     """Handles asynchronous Razorpay payment webhooks when webhook secret is configured."""
-    webhook_secret = os.environ.get("RAZORPAY_WEBHOOK_SECRET", "").strip()
+    webhook_secret = os.environ.get("RAZORPAY_WEBHOOK_SECRET", "").strip().strip('"').strip("'")
     if not webhook_secret:
         raise HTTPException(status_code=503, detail="Razorpay webhook secret is not configured.")
 
@@ -526,27 +487,36 @@ async def razorpay_webhook(request: Request):
 
     event = await request.json()
     event_name = event.get("event", "")
+    rzp_order_id = None
+    rzp_payment_id = ""
+
     if event_name == "payment.captured":
         entity = event.get("payload", {}).get("payment", {}).get("entity", {})
         rzp_order_id = entity.get("order_id")
-        rzp_payment_id = entity.get("id")
-        if rzp_order_id:
-            db = db_handler.get_db()
-            existing = await db["book_orders"].find_one({"razorpay_order_id": rzp_order_id})
-            if existing and existing.get("status") != "confirmed":
-                order_number = await _generate_order_number(db)
-                now = time.time()
-                await db["book_orders"].update_one(
-                    {"_id": existing["_id"]},
-                    {
-                        "$set": {
-                            "razorpay_payment_id": rzp_payment_id or "",
-                            "order_number": order_number,
-                            "payment_mode": "razorpay",
-                            "status": "confirmed",
-                            "confirmed_at": now,
-                            "updated_at": now,
-                        }
-                    },
-                )
+        rzp_payment_id = entity.get("id") or ""
+    elif event_name == "order.paid":
+        order_entity = event.get("payload", {}).get("order", {}).get("entity", {})
+        payment_entity = event.get("payload", {}).get("payment", {}).get("entity", {})
+        rzp_order_id = order_entity.get("id")
+        rzp_payment_id = payment_entity.get("id") or ""
+
+    if rzp_order_id:
+        db = db_handler.get_db()
+        existing = await db["book_orders"].find_one({"razorpay_order_id": rzp_order_id})
+        if existing and existing.get("status") != "confirmed":
+            order_number = await _generate_order_number(db)
+            now = time.time()
+            await db["book_orders"].update_one(
+                {"_id": existing["_id"]},
+                {
+                    "$set": {
+                        "razorpay_payment_id": rzp_payment_id,
+                        "order_number": order_number,
+                        "payment_mode": "razorpay",
+                        "status": "confirmed",
+                        "confirmed_at": now,
+                        "updated_at": now,
+                    }
+                },
+            )
     return {"status": "ok"}

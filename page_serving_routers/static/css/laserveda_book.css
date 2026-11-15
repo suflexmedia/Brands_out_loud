@@ -321,6 +321,14 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 1.38vw;
+}
+
+.lv-hero-read-btn {
+  padding: 1.25vw 3vw;
+  gap: 0.69vw;
+  font-size: 1.25vw;
+  line-height: 1.53vw;
 }
 
 .lv-btn-orange {
@@ -1941,14 +1949,18 @@
 
   .lv-hero-cta-row {
     width: 100%;
+    flex-direction: column;
+    gap: 3.2vw;
   }
 
-  .lv-btn-orange {
+  .lv-btn-orange,
+  .lv-hero-read-btn {
     width: 100%;
     padding: 3.8vw 8vw;
     font-size: 4vw;
     line-height: 5vw;
     border-radius: 99vw;
+    justify-content: center;
   }
 
   .lv-btn-arrow {
@@ -2614,5 +2626,206 @@
   .remaster-footer-copyright {
     font-size: 3.2vw;
     line-height: 4.2vw;
+  }
+}
+
+.lv-auth-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.lv-auth-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lv-auth-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 19, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lv-auth-modal-dialog {
+  position: relative;
+  width: 90vw;
+  max-width: 28vw;
+  background: #0b0e66;
+  background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1.25vw;
+  padding: 2.2vw 2vw;
+  box-shadow: 0 1.5vw 4vw rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  transform: translateY(1vw);
+  transition: transform 0.25s ease;
+}
+
+.lv-auth-modal.is-open .lv-auth-modal-dialog {
+  transform: translateY(0);
+}
+
+.lv-auth-modal-close {
+  position: absolute;
+  top: 1vw;
+  right: 1vw;
+  width: 2vw;
+  height: 2vw;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1vw;
+  transition: all 0.2s ease;
+}
+
+.lv-auth-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.lv-auth-modal-badge {
+  width: 3.8vw;
+  height: 3.8vw;
+  border-radius: 50%;
+  background: rgba(255, 107, 61, 0.15);
+  border: 1px solid rgba(255, 107, 61, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff6b3d;
+  font-size: 1.8vw;
+  margin-bottom: 1.2vw;
+}
+
+.lv-auth-modal-title {
+  color: #ffffff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.35vw;
+  line-height: 1.7vw;
+  margin: 0 0 0.6vw 0;
+}
+
+.lv-auth-modal-copy {
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Inter", sans-serif;
+  font-size: 0.88vw;
+  line-height: 1.35vw;
+  margin: 0 0 1.6vw 0;
+}
+
+.lv-auth-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65vw;
+  width: 100%;
+}
+
+.lv-auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5vw;
+  width: 100%;
+  padding: 0.8vw 1.2vw;
+  border-radius: 6.87vw;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: 0.95vw;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.lv-auth-btn--primary {
+  background: linear-gradient(91.39deg, #ff6b3d 0%, #ff8359 100%);
+  color: #ffffff;
+  box-shadow: 0 0.3vw 0.9vw rgba(255, 107, 61, 0.35);
+}
+
+.lv-auth-btn--primary:hover {
+  transform: translateY(-0.1vw);
+  box-shadow: 0 0.5vw 1.2vw rgba(255, 107, 61, 0.45);
+}
+
+.lv-auth-btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.lv-auth-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.lv-auth-modal-hint {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72vw;
+  margin: 1vw 0 0 0;
+  font-family: "Inter", sans-serif;
+}
+
+@media (max-width: 768px) {
+  .lv-auth-modal-dialog {
+    max-width: 90vw;
+    border-radius: 5vw;
+    padding: 7vw 5vw 6vw;
+  }
+  .lv-auth-modal-close {
+    top: 3.5vw;
+    right: 3.5vw;
+    width: 8vw;
+    height: 8vw;
+    font-size: 4.5vw;
+  }
+  .lv-auth-modal-badge {
+    width: 14vw;
+    height: 14vw;
+    font-size: 7vw;
+    margin-bottom: 4vw;
+  }
+  .lv-auth-modal-title {
+    font-size: 5.5vw;
+    line-height: 7vw;
+    margin-bottom: 2.5vw;
+  }
+  .lv-auth-modal-copy {
+    font-size: 3.6vw;
+    line-height: 5.2vw;
+    margin-bottom: 6vw;
+  }
+  .lv-auth-modal-actions {
+    gap: 3vw;
+  }
+  .lv-auth-btn {
+    padding: 3.5vw 5vw;
+    font-size: 3.8vw;
+  }
+  .lv-auth-modal-hint {
+    font-size: 3vw;
+    margin-top: 4vw;
   }
 }
